@@ -232,14 +232,35 @@ function buildLetterHtml(
 function isMobile(): boolean {
   if (typeof navigator === "undefined") return false
   return (
-    /Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(
+    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
       navigator.userAgent
     ) ||
-    (navigator.maxTouchPoints > 1 && /Macintosh/i.test(navigator.userAgent))
+    (navigator.maxTouchPoints > 1 && /Macintosh/.test(navigator.userAgent))
   )
 }
 
-/* ── Desktop: hidden iframe ── */
+/* ── Instant blob download (used for mobile PDF save) ── */
+function downloadBlob(
+  content: string,
+  filename: string,
+  mime = "text/html;charset=utf-8"
+): void {
+  const blob = new Blob([content], { type: mime })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement("a")
+  a.href = url
+  a.download = filename
+  a.style.display = "none"
+  document.body.appendChild(a)
+  a.click()
+  // Clean up on next microtask – no visible delay
+  queueMicrotask(() => {
+    document.body.removeChild(a)
+    URL.revokeObjectURL(url)
+  })
+}
+
+/* ── Desktop: hidden iframe (no new tab flash) ── */
 function printViaIframe(html: string): void {
   const iframe = document.createElement("iframe")
   iframe.style.cssText =
@@ -257,81 +278,76 @@ function printViaIframe(html: string): void {
   doc.write(html)
   doc.close()
 
-  setTimeout(() => {
-    try {
-      iframe.contentWindow?.focus()
-      iframe.contentWindow?.print()
-    } catch {
-      printViaNewWindow(html)
-    }
+  // Use requestAnimationFrame instead of setTimeout for faster response
+  requestAnimationFrame(() => {
     setTimeout(() => {
-      if (iframe.parentNode) document.body.removeChild(iframe)
-    }, 2000)
-  }, 500)
+      try {
+        iframe.contentWindow?.focus()
+        iframe.contentWindow?.print()
+      } catch {
+        printViaNewWindow(html)
+      }
+      setTimeout(() => {
+        if (iframe.parentNode) document.body.removeChild(iframe)
+      }, 1500)
+    }, 250)
+  })
 }
 
-/* ── Mobile: new window with ONLY the letter ── */
+/* ── Mobile print: new window with only the letter ── */
 function printViaNewWindow(html: string): void {
   const win = window.open("", "_blank")
   if (!win) {
-    downloadAsHtml(html, "Kuendigung.html")
+    downloadBlob(html, "Kuendigung.html")
     return
   }
   win.document.open()
   win.document.write(html)
   win.document.close()
 
-  const tryPrint = () => {
+  // Minimal delay – just enough for the DOM to be ready
+  requestAnimationFrame(() => {
     try {
       win.focus()
       win.print()
     } catch {
-      /* user has the clean letter open */
+      // The user still has the clean letter visible in the new tab
     }
-  }
-  if ("onload" in win) {
-    win.onload = tryPrint
-  } else {
-    setTimeout(tryPrint, 800)
-  }
+  })
 }
 
-/* ── Fallback: download as .html ── */
-function downloadAsHtml(html: string, filename: string): void {
-  const blob = new Blob([html], { type: "text/html;charset=utf-8" })
-  const url = URL.createObjectURL(blob)
-  const a = document.createElement("a")
-  a.href = url
-  a.download = filename
-  document.body.appendChild(a)
-  a.click()
-  setTimeout(() => {
-    document.body.removeChild(a)
-    URL.revokeObjectURL(url)
-  }, 200)
-}
+/**
+ * PDF / Save as PDF
+ * Desktop: triggers print dialog (user picks "Save as PDF")
+ * Mobile:  instant .html file download – no dialog, no delay
+ */
+export function generatePdf(text: string, companyName: string): void {
+  const dateStr = new Date().toISOString().slice(0, 10)
+  const safeName = companyName.replace(/[^a-zA-Z0-9]/g, "_")
+  const filename = `Kuendigung_${safeName}_${dateStr}`
+  const html = buildLetterHtml(text, companyName, filename)
 
-/* ── Route to correct strategy ── */
-function triggerPrint(html: string): void {
   if (isMobile()) {
-    printViaNewWindow(html)
+    // Instant download – no print dialog, no hanging
+    downloadBlob(html, `${filename}.html`)
   } else {
     printViaIframe(html)
   }
 }
 
-/** PDF / Save as PDF */
-export function generatePdf(text: string, companyName: string): void {
-  const dateStr = new Date().toISOString().slice(0, 10)
-  const safeName = companyName.replace(/[^a-zA-Z0-9]/g, "_")
-  const html = buildLetterHtml(text, companyName, `Kuendigung_${safeName}_${dateStr}`)
-  triggerPrint(html)
-}
-
-/** Print */
+/**
+ * Print
+ * Desktop: hidden iframe print
+ * Mobile:  new window with only the letter → print dialog
+ */
 export function printKundigung(text: string): void {
   const html = buildLetterHtml(text, "", "Kuendigungsschreiben drucken")
-  triggerPrint(html)
+
+  if (isMobile()) {
+    printViaNewWindow(html)
+  } else {
+    printViaIframe(html)
+  }
 }
 
 /** Mail */
