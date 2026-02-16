@@ -1,5 +1,8 @@
+import html2canvas from "html2canvas"
+import jsPDF from "jspdf"
+
 /**
- * Shared HTML builder for styled Kündigung letter.
+ * HTML Builder: Собирает красивое письмо для генерации PDF
  */
 function buildLetterHtml(
   text: string,
@@ -97,12 +100,11 @@ function buildLetterHtml(
   const esc = (s: string) =>
     s.replace(/</g, "&lt;").replace(/>/g, "&gt;")
 
+  // Возвращаем чистый HTML только для генерации картинки
   return `<!DOCTYPE html>
 <html lang="de">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>${title}</title>
 <style>
   @page { size: A4; margin: 0; }
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -168,7 +170,6 @@ function buildLetterHtml(
   .footer span { font-size: 7pt; color: #94a3b8; font-weight: 500; }
   .footer-right { display: flex; align-items: center; gap: 4mm; }
   .footer-divider { width: 0.5pt; height: 3mm; background: #cbd5e1; }
-  @media print { body { -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
 </style>
 </head>
 <body>
@@ -228,109 +229,18 @@ function buildLetterHtml(
 </html>`
 }
 
-/* ── Mobile detection ── */
-function isMobile(): boolean {
-  if (typeof navigator === "undefined") return false
-  return (
-    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-      navigator.userAgent
-    ) ||
-    (navigator.maxTouchPoints > 1 && /Macintosh/.test(navigator.userAgent))
-  )
-}
-
-/* ── Desktop: hidden iframe print (no blank tab) ── */
-function printViaIframe(html: string): void {
-  const iframe = document.createElement("iframe")
-  iframe.style.cssText =
-    "position:fixed;left:-9999px;top:-9999px;width:210mm;height:297mm;border:none"
-  document.body.appendChild(iframe)
-
-  const doc = iframe.contentDocument || iframe.contentWindow?.document
-  if (!doc) {
-    document.body.removeChild(iframe)
-    printViaNewWindow(html)
-    return
-  }
-
-  doc.open()
-  doc.write(html)
-  doc.close()
-
-  requestAnimationFrame(() => {
-    setTimeout(() => {
-      try {
-        iframe.contentWindow?.focus()
-        iframe.contentWindow?.print()
-      } catch {
-        printViaNewWindow(html)
-      }
-      setTimeout(() => {
-        if (iframe.parentNode) document.body.removeChild(iframe)
-      }, 1500)
-    }, 250)
-  })
-}
-
-/* ── Mobile print: new window with button fallback ── */
-function printViaNewWindow(html: string): void {
-  const win = window.open("", "_blank")
-  if (!win) return
-
-  // 1. Стиль для кнопки (видна только на экране, скрыта при печати)
-  const btnStyle = `
-    position: fixed; bottom: 20px; right: 20px; z-index: 9999;
-    background: #1a9a82; color: white; border: none; padding: 12px 24px;
-    border-radius: 30px; font-weight: bold; font-size: 16px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3); cursor: pointer;
-    font-family: sans-serif; -webkit-appearance: none;
-  `
-  // CSS, чтобы скрыть кнопку на бумаге
-  const printCss = `<style>@media print { .print-btn-mobile { display: none !important; } }</style>`
-  
-  // Сама кнопка
-  const printBtn = `<button class="print-btn-mobile" style="${btnStyle}" onclick="window.print()">🖨️ Drucken</button>`
-
-  // 2. Вставляем кнопку и скрипт в HTML письма
-  const htmlWithBtn = html
-    .replace("</head>", `${printCss}</head>`)
-    .replace("</body>", `${printBtn}
-      <script>
-        // Попытка авто-запуска печати
-        window.onload = function() {
-          setTimeout(function() {
-            try { window.print(); } catch(e) {}
-          }, 500);
-        };
-      </script></body>`)
-
-  // 3. Открываем и пишем
-  win.document.open()
-  win.document.write(htmlWithBtn)
-  win.document.close()
-  
-  requestAnimationFrame(() => {
-    win.focus()
-  })
-}
-
-/* ── Real PDF generation via html2canvas + jsPDF ── */
+/**
+ * Universal PDF Generator
+ * Использует html2canvas + jsPDF для создания файла.
+ */
 async function generateRealPdf(html: string, filename: string): Promise<void> {
   try {
-    // Dynamic imports - requires 'html2canvas' and 'jspdf' packages
-    const [html2canvasModule, jsPDFModule] = await Promise.all([
-      import("html2canvas"),
-      import("jspdf"),
-    ])
-    const html2canvas = html2canvasModule.default
-    const jsPDF = jsPDFModule.default
-
-    // Create an off-screen container to render the letter
+    // Создаем невидимый контейнер
     const container = document.createElement("div")
     container.style.cssText =
       "position:fixed;left:-9999px;top:0;width:794px;min-height:1123px;background:#fff;z-index:-1"
     
-    // Strip external structure to keep only content
+    // Чистим HTML от лишнего
     container.innerHTML = html
       .replace(/<!DOCTYPE[^>]*>/i, "")
       .replace(/<\/?html[^>]*>/gi, "")
@@ -339,7 +249,7 @@ async function generateRealPdf(html: string, filename: string): Promise<void> {
     
     document.body.appendChild(container)
 
-    // Inject the <style> block from the HTML into the container
+    // Вставляем стили
     const styleMatch = html.match(/<style[\s\S]*?<\/style>/i)
     if (styleMatch) {
       const styleEl = document.createElement("style")
@@ -347,9 +257,10 @@ async function generateRealPdf(html: string, filename: string): Promise<void> {
       container.prepend(styleEl)
     }
 
-    // Wait a frame for layout
+    // Ждем отрисовку
     await new Promise((r) => requestAnimationFrame(r))
 
+    // Делаем скриншот
     const canvas = await html2canvas(container, {
       scale: 2,
       useCORS: true,
@@ -361,7 +272,7 @@ async function generateRealPdf(html: string, filename: string): Promise<void> {
 
     const imgData = canvas.toDataURL("image/jpeg", 0.95)
 
-    // A4 in mm
+    // Генерируем PDF
     // @ts-ignore
     const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" })
     pdf.addImage(imgData, "JPEG", 0, 0, 210, 297)
@@ -369,17 +280,13 @@ async function generateRealPdf(html: string, filename: string): Promise<void> {
 
     document.body.removeChild(container)
   } catch (err) {
-    console.error("PDF Generation failed:", err)
-    // Fallback if libraries are missing or error occurs
-    alert("PDF konnte nicht generiert werden. Bitte nutzen Sie die Druck-Funktion.")
-    printViaNewWindow(html)
+    console.error("PDF Fail:", err)
+    alert("Fehler beim Erstellen des PDF.")
   }
 }
 
 /**
- * PDF / Save
- * Desktop: print dialog → "Save as PDF"
- * Mobile:  generates and downloads a real .pdf file
+ * Основная функция: СКАЧАТЬ PDF
  */
 export function generatePdf(text: string, companyName: string): void {
   const dateStr = new Date().toISOString().slice(0, 10)
@@ -387,26 +294,17 @@ export function generatePdf(text: string, companyName: string): void {
   const filename = `Kuendigung_${safeName}_${dateStr}`
   const html = buildLetterHtml(text, companyName, filename)
 
-  if (isMobile()) {
-    generateRealPdf(html, filename)
-  } else {
-    printViaIframe(html)
-  }
+  generateRealPdf(html, filename)
 }
 
 /**
- * Print
- * Desktop: hidden iframe → print dialog
- * Mobile:  new window with only the letter → native print dialog
+ * Вторая функция: Тоже СКАЧАТЬ PDF
+ * (Мы заменили печать на скачивание, чтобы не ломать кнопки на сайте)
  */
 export function printKundigung(text: string): void {
-  const html = buildLetterHtml(text, "", "Kuendigungsschreiben drucken")
-
-  if (isMobile()) {
-    printViaNewWindow(html)
-  } else {
-    printViaIframe(html)
-  }
+  // Просто вызываем генерацию PDF с общим именем
+  const html = buildLetterHtml(text, "", "Kündigung")
+  generateRealPdf(html, "Kuendigungsschreiben")
 }
 
 /** Mail */
