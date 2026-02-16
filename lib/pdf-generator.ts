@@ -406,10 +406,19 @@ function buildLetterHtml(text: string, companyName: string, title: string): stri
 }
 
 /**
- * Create a hidden iframe, write HTML to it, trigger action, and clean up.
- * This avoids opening a blank new tab.
+ * Detect mobile / tablet devices where hidden-iframe print fails.
  */
-function withHiddenIframe(html: string, action: "print" | "pdf"): void {
+function isMobileDevice(): boolean {
+  if (typeof navigator === "undefined") return false
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+    navigator.userAgent
+  ) || (navigator.maxTouchPoints > 1 && /Macintosh/.test(navigator.userAgent))
+}
+
+/**
+ * Desktop path: hidden iframe keeps the main page untouched.
+ */
+function printViaIframe(html: string): void {
   const iframe = document.createElement("iframe")
   iframe.style.position = "fixed"
   iframe.style.left = "-9999px"
@@ -429,31 +438,70 @@ function withHiddenIframe(html: string, action: "print" | "pdf"): void {
   iframeDoc.write(html)
   iframeDoc.close()
 
-  // Wait for content to render, then trigger print/save
   setTimeout(() => {
     try {
       iframe.contentWindow?.focus()
       iframe.contentWindow?.print()
     } catch {
-      // Fallback: download as HTML if print not available
-      const blob = new Blob([html], { type: "text/html;charset=utf-8" })
-      const url = URL.createObjectURL(blob)
-      const a = document.createElement("a")
-      a.href = url
-      a.download = "Kuendigung.html"
-      document.body.appendChild(a)
-      a.click()
-      document.body.removeChild(a)
-      URL.revokeObjectURL(url)
+      downloadHtmlBlob(html, "Kuendigung.html")
     }
-
-    // Clean up iframe after a delay (give print dialog time)
     setTimeout(() => {
-      if (iframe.parentNode) {
-        document.body.removeChild(iframe)
-      }
+      if (iframe.parentNode) document.body.removeChild(iframe)
     }, 1000)
   }, 400)
+}
+
+/**
+ * Mobile path: open a new window with ONLY the letter,
+ * auto-trigger print, then close.
+ */
+function printViaNewWindow(html: string): void {
+  const win = window.open("", "_blank")
+  if (!win) {
+    // Popup blocked – fall back to blob download
+    downloadHtmlBlob(html, "Kuendigung.html")
+    return
+  }
+  win.document.open()
+  win.document.write(html)
+  win.document.close()
+
+  // Give the page a moment to render, then trigger print
+  setTimeout(() => {
+    win.focus()
+    win.print()
+    // On iOS Safari, the user closes the share/print sheet themselves.
+    // On Android, we can try to close after a delay.
+    setTimeout(() => {
+      try { win.close() } catch { /* user may have already closed */ }
+    }, 2000)
+  }, 600)
+}
+
+/**
+ * Fallback: download the letter HTML as a file the user can open/print later.
+ */
+function downloadHtmlBlob(html: string, filename: string): void {
+  const blob = new Blob([html], { type: "text/html;charset=utf-8" })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement("a")
+  a.href = url
+  a.download = filename
+  document.body.appendChild(a)
+  a.click()
+  document.body.removeChild(a)
+  URL.revokeObjectURL(url)
+}
+
+/**
+ * Unified dispatcher: picks the right strategy for the current device.
+ */
+function triggerPrint(html: string): void {
+  if (isMobileDevice()) {
+    printViaNewWindow(html)
+  } else {
+    printViaIframe(html)
+  }
 }
 
 /**
@@ -463,15 +511,15 @@ export function generatePdf(text: string, companyName: string): void {
   const dateStr = new Date().toISOString().slice(0, 10)
   const filename = `Kuendigung_${companyName.replace(/[^a-zA-Z0-9äöüÄÖÜß]/g, "_")}_${dateStr}`
   const html = buildLetterHtml(text, companyName, filename)
-  withHiddenIframe(html, "pdf")
+  triggerPrint(html)
 }
 
 /**
- * Print the Kündigung directly via a hidden iframe (no blank window).
+ * Print the Kündigung directly.
  */
 export function printKundigung(text: string): void {
   const html = buildLetterHtml(text, "", "Kündigungsschreiben drucken")
-  withHiddenIframe(html, "print")
+  triggerPrint(html)
 }
 
 /**
