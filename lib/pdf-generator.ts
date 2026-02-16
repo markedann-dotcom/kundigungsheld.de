@@ -1,21 +1,29 @@
 /**
  * Shared HTML builder for styled Kündigung letter.
- * Parses the generated plain text into structured sections and renders a professional design.
  */
-function buildLetterHtml(text: string, companyName: string, title: string): string {
-  // Parse the letter structure from the template output
+function buildLetterHtml(
+  text: string,
+  companyName: string,
+  title: string
+): string {
   const lines = text.split("\n")
 
-  // Find key sections by scanning lines
   let senderBlock = ""
   let recipientBlock = ""
   let dateLine = ""
   let betreffLine = ""
-  let bodyLines: string[] = []
-  let closingLines: string[] = []
+  const bodyLines: string[] = []
+  const closingLines: string[] = []
 
-  let section: "sender" | "gap1" | "recipient" | "gap2" | "date" | "betreff" | "body" | "closing" = "sender"
-  let gapCount = 0
+  let section:
+    | "sender"
+    | "gap1"
+    | "recipient"
+    | "gap2"
+    | "date"
+    | "betreff"
+    | "body"
+    | "closing" = "sender"
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i]
@@ -23,27 +31,22 @@ function buildLetterHtml(text: string, companyName: string, title: string): stri
     if (section === "sender") {
       if (line.trim() === "") {
         section = "gap1"
-        gapCount = 0
       } else {
         senderBlock += (senderBlock ? "\n" : "") + line
       }
     } else if (section === "gap1") {
-      if (line.trim() === "") {
-        gapCount++
-      } else {
+      if (line.trim() !== "") {
         section = "recipient"
         recipientBlock += line
       }
     } else if (section === "recipient") {
       if (line.trim() === "") {
         section = "gap2"
-        gapCount = 0
       } else {
         recipientBlock += "\n" + line
       }
     } else if (section === "gap2") {
       if (line.trim() !== "") {
-        // Check if this line looks like a date line (contains "den" and a date pattern)
         if (line.includes(", den ")) {
           dateLine = line
           section = "date"
@@ -67,8 +70,10 @@ function buildLetterHtml(text: string, companyName: string, title: string): stri
         section = "body"
       }
     } else if (section === "body") {
-      // Detect closing: "Mit freundlichen Grüßen" signals the end
-      if (line.startsWith("Mit freundlichen Grüßen") || line.startsWith("Mit freundlichen Grussen")) {
+      if (
+        line.startsWith("Mit freundlichen Gr") ||
+        line.startsWith("Mit freundlichen Grussen")
+      ) {
         closingLines.push(line)
         section = "closing"
       } else {
@@ -79,262 +84,95 @@ function buildLetterHtml(text: string, companyName: string, title: string): stri
     }
   }
 
-  // Build body paragraphs: join lines into <p> blocks separated by empty lines
   const bodyHtml = bodyLines
     .join("\n")
     .split(/\n\n+/)
-    .map(p => `<p>${p.replace(/\n/g, "<br/>")}</p>`)
+    .map((p) => `<p>${p.replace(/\n/g, "<br/>")}</p>`)
     .join("")
 
-  const closingHtml = closingLines.map(l => l.trim() ? `<p>${l}</p>` : "").join("")
+  const closingHtml = closingLines
+    .map((l) => (l.trim() ? `<p>${l}</p>` : ""))
+    .join("")
 
-  const esc = (s: string) => s.replace(/</g, "&lt;").replace(/>/g, "&gt;")
+  const esc = (s: string) =>
+    s.replace(/</g, "&lt;").replace(/>/g, "&gt;")
 
   return `<!DOCTYPE html>
 <html lang="de">
 <head>
 <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>${title}</title>
 <style>
   @page { size: A4; margin: 0; }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-
   body {
     font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-    font-size: 10.5pt;
-    line-height: 1.6;
-    color: #1e293b;
-    background: #fff;
-    width: 210mm;
-    min-height: 297mm;
+    font-size: 10.5pt; line-height: 1.6; color: #1e293b;
+    background: #fff; width: 210mm; min-height: 297mm;
   }
-
-  .page {
-    position: relative;
-    width: 210mm;
-    min-height: 297mm;
-    padding: 0;
-  }
-
-  /* ── Top branded strip ── */
+  .page { position: relative; width: 210mm; min-height: 297mm; padding: 0; }
   .top-strip {
     height: 28mm;
     background: linear-gradient(135deg, #0f7a66 0%, #1a9a82 50%, #23b496 100%);
-    padding: 0 26mm;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    padding: 0 26mm; display: flex; align-items: center; justify-content: space-between;
   }
-  .brand {
-    display: flex;
-    align-items: center;
-    gap: 3mm;
-  }
+  .brand { display: flex; align-items: center; gap: 3mm; }
   .brand-shield {
-    width: 10mm;
-    height: 10mm;
-    background: rgba(255,255,255,0.2);
-    border: 0.6pt solid rgba(255,255,255,0.5);
-    border-radius: 2.5mm;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    width: 10mm; height: 10mm; background: rgba(255,255,255,0.2);
+    border: 0.6pt solid rgba(255,255,255,0.5); border-radius: 2.5mm;
+    display: flex; align-items: center; justify-content: center;
   }
-  .brand-shield svg {
-    width: 5.5mm;
-    height: 5.5mm;
-  }
-  .brand-text {
-    display: flex;
-    flex-direction: column;
-  }
-  .brand-name {
-    font-size: 14pt;
-    font-weight: 800;
-    color: #fff;
-    letter-spacing: -0.4pt;
-    line-height: 1.1;
-  }
-  .brand-sub {
-    font-size: 7pt;
-    color: rgba(255,255,255,0.75);
-    letter-spacing: 0.6pt;
-    text-transform: uppercase;
-    font-weight: 600;
-  }
+  .brand-shield svg { width: 5.5mm; height: 5.5mm; }
+  .brand-text { display: flex; flex-direction: column; }
+  .brand-name { font-size: 14pt; font-weight: 800; color: #fff; letter-spacing: -0.4pt; line-height: 1.1; }
+  .brand-sub { font-size: 7pt; color: rgba(255,255,255,0.75); letter-spacing: 0.6pt; text-transform: uppercase; font-weight: 600; }
   .doc-badge {
-    background: rgba(255,255,255,0.15);
-    border: 0.5pt solid rgba(255,255,255,0.3);
-    border-radius: 8pt;
-    padding: 1.5mm 4mm;
-    font-size: 7.5pt;
-    color: #fff;
-    font-weight: 600;
-    letter-spacing: 0.3pt;
-    text-transform: uppercase;
+    background: rgba(255,255,255,0.15); border: 0.5pt solid rgba(255,255,255,0.3);
+    border-radius: 8pt; padding: 1.5mm 4mm; font-size: 7.5pt; color: #fff;
+    font-weight: 600; letter-spacing: 0.3pt; text-transform: uppercase;
   }
-
-  /* ── Content area ── */
-  .content {
-    padding: 8mm 26mm 20mm 26mm;
-  }
-
-  /* Address blocks */
-  .address-row {
-    display: flex;
-    gap: 12mm;
-    margin-bottom: 7mm;
-  }
+  .content { padding: 8mm 26mm 20mm 26mm; }
+  .address-row { display: flex; gap: 12mm; margin-bottom: 7mm; }
   .address-block {
-    flex: 1;
-    background: #f8fafc;
-    border: 0.5pt solid #e2e8f0;
-    border-radius: 2.5mm;
-    padding: 4mm 5mm;
+    flex: 1; background: #f8fafc; border: 0.5pt solid #e2e8f0;
+    border-radius: 2.5mm; padding: 4mm 5mm;
   }
   .address-label {
-    font-size: 6.5pt;
-    color: #1a9a82;
-    text-transform: uppercase;
-    letter-spacing: 0.6pt;
-    font-weight: 700;
-    margin-bottom: 1.5mm;
-    display: flex;
-    align-items: center;
-    gap: 1mm;
+    font-size: 6.5pt; color: #1a9a82; text-transform: uppercase;
+    letter-spacing: 0.6pt; font-weight: 700; margin-bottom: 1.5mm;
+    display: flex; align-items: center; gap: 1mm;
   }
   .address-label::before {
-    content: '';
-    display: inline-block;
-    width: 1.5mm;
-    height: 1.5mm;
-    background: #1a9a82;
-    border-radius: 50%;
+    content: ''; display: inline-block; width: 1.5mm; height: 1.5mm;
+    background: #1a9a82; border-radius: 50%;
   }
-  .address-text {
-    font-size: 9.5pt;
-    line-height: 1.45;
-    color: #334155;
-    white-space: pre-line;
-  }
-
-  /* Date */
-  .meta-row {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    margin-bottom: 6mm;
-    gap: 3mm;
-  }
-  .date-line {
-    font-size: 9pt;
-    color: #64748b;
-    font-weight: 500;
-  }
-
-  /* Betreff */
-  .betreff-wrap {
-    margin-bottom: 5mm;
-    padding-bottom: 4mm;
-    border-bottom: 1.5pt solid #1a9a82;
-  }
-  .betreff-label {
-    font-size: 7pt;
-    color: #94a3b8;
-    text-transform: uppercase;
-    letter-spacing: 0.5pt;
-    font-weight: 600;
-    margin-bottom: 1mm;
-  }
-  .betreff {
-    font-size: 11.5pt;
-    font-weight: 700;
-    color: #0f172a;
-    letter-spacing: -0.2pt;
-  }
-
-  /* Body */
-  .body p {
-    margin-bottom: 3mm;
-    font-size: 10.5pt;
-    line-height: 1.6;
-    color: #334155;
-  }
-
-  /* Closing */
-  .closing {
-    margin-top: 7mm;
-  }
-  .closing p {
-    font-size: 10.5pt;
-    color: #334155;
-    line-height: 1.6;
-  }
-
-  /* Signature area */
-  .sig-area {
-    margin-top: 12mm;
-    padding-top: 4mm;
-    border-top: 0.5pt dashed #cbd5e1;
-    width: 55mm;
-  }
-  .sig-hint {
-    font-size: 7pt;
-    color: #94a3b8;
-    text-transform: uppercase;
-    letter-spacing: 0.4pt;
-    font-weight: 600;
-  }
-
-  /* ── Footer ── */
+  .address-text { font-size: 9.5pt; line-height: 1.45; color: #334155; white-space: pre-line; }
+  .meta-row { display: flex; justify-content: flex-end; align-items: center; margin-bottom: 6mm; gap: 3mm; }
+  .date-line { font-size: 9pt; color: #64748b; font-weight: 500; }
+  .betreff-wrap { margin-bottom: 5mm; padding-bottom: 4mm; border-bottom: 1.5pt solid #1a9a82; }
+  .betreff-label { font-size: 7pt; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5pt; font-weight: 600; margin-bottom: 1mm; }
+  .betreff { font-size: 11.5pt; font-weight: 700; color: #0f172a; letter-spacing: -0.2pt; }
+  .body p { margin-bottom: 3mm; font-size: 10.5pt; line-height: 1.6; color: #334155; }
+  .closing { margin-top: 7mm; }
+  .closing p { font-size: 10.5pt; color: #334155; line-height: 1.6; }
+  .sig-area { margin-top: 12mm; padding-top: 4mm; border-top: 0.5pt dashed #cbd5e1; width: 55mm; }
+  .sig-hint { font-size: 7pt; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.4pt; font-weight: 600; }
   .footer {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 14mm;
-    background: #f1f5f9;
-    border-top: 0.5pt solid #e2e8f0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 26mm;
+    position: absolute; bottom: 0; left: 0; right: 0; height: 14mm;
+    background: #f1f5f9; border-top: 0.5pt solid #e2e8f0;
+    display: flex; align-items: center; justify-content: space-between; padding: 0 26mm;
   }
-  .footer-left {
-    display: flex;
-    align-items: center;
-    gap: 2mm;
-  }
-  .footer-dot {
-    width: 1.5mm;
-    height: 1.5mm;
-    background: #1a9a82;
-    border-radius: 50%;
-  }
-  .footer span {
-    font-size: 7pt;
-    color: #94a3b8;
-    font-weight: 500;
-  }
-  .footer-right {
-    display: flex;
-    align-items: center;
-    gap: 4mm;
-  }
-  .footer-divider {
-    width: 0.5pt;
-    height: 3mm;
-    background: #cbd5e1;
-  }
-
-  @media print {
-    body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  }
+  .footer-left { display: flex; align-items: center; gap: 2mm; }
+  .footer-dot { width: 1.5mm; height: 1.5mm; background: #1a9a82; border-radius: 50%; }
+  .footer span { font-size: 7pt; color: #94a3b8; font-weight: 500; }
+  .footer-right { display: flex; align-items: center; gap: 4mm; }
+  .footer-divider { width: 0.5pt; height: 3mm; background: #cbd5e1; }
+  @media print { body { -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
 </style>
 </head>
 <body>
 <div class="page">
-
   <div class="top-strip">
     <div class="brand">
       <div class="brand-shield">
@@ -344,52 +182,38 @@ function buildLetterHtml(text: string, companyName: string, title: string): stri
         </svg>
       </div>
       <div class="brand-text">
-        <span class="brand-name">KündigungsHeld</span>
-        <span class="brand-sub">Rechtssichere Kündigungsschreiben</span>
+        <span class="brand-name">K\u00fcndigungsHeld</span>
+        <span class="brand-sub">Rechtssichere K\u00fcndigungsschreiben</span>
       </div>
     </div>
-    <span class="doc-badge">Kündigungsschreiben</span>
+    <span class="doc-badge">K\u00fcndigungsschreiben</span>
   </div>
 
   <div class="content">
-
     <div class="address-row">
       <div class="address-block">
         <div class="address-label">Absender</div>
         <div class="address-text">${esc(senderBlock)}</div>
       </div>
       <div class="address-block">
-        <div class="address-label">Empfänger</div>
+        <div class="address-label">Empf\u00e4nger</div>
         <div class="address-text">${esc(recipientBlock)}</div>
       </div>
     </div>
 
     ${dateLine ? `<div class="meta-row"><span class="date-line">${esc(dateLine)}</span></div>` : ""}
 
-    ${betreffLine ? `
-    <div class="betreff-wrap">
-      <div class="betreff-label">Betreff</div>
-      <div class="betreff">${esc(betreffLine)}</div>
-    </div>` : ""}
+    ${betreffLine ? `<div class="betreff-wrap"><div class="betreff-label">Betreff</div><div class="betreff">${esc(betreffLine)}</div></div>` : ""}
 
-    <div class="body">
-      ${bodyHtml}
-    </div>
-
-    <div class="closing">
-      ${closingHtml}
-    </div>
-
-    <div class="sig-area">
-      <div class="sig-hint">Unterschrift</div>
-    </div>
-
+    <div class="body">${bodyHtml}</div>
+    <div class="closing">${closingHtml}</div>
+    <div class="sig-area"><div class="sig-hint">Unterschrift</div></div>
   </div>
 
   <div class="footer">
     <div class="footer-left">
       <div class="footer-dot"></div>
-      <span>Erstellt mit KündigungsHeld</span>
+      <span>Erstellt mit K\u00fcndigungsHeld</span>
       <div class="footer-divider"></div>
       <span>kuendigungsheld.de</span>
     </div>
@@ -399,132 +223,134 @@ function buildLetterHtml(text: string, companyName: string, title: string): stri
       <span>${new Date().toLocaleDateString("de-DE", { day: "2-digit", month: "long", year: "numeric" })}</span>
     </div>
   </div>
-
 </div>
 </body>
 </html>`
 }
 
-/**
- * Detect mobile / tablet devices where hidden-iframe print fails.
- */
-function isMobileDevice(): boolean {
+/* ── Mobile detection ── */
+function isMobile(): boolean {
   if (typeof navigator === "undefined") return false
-  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-    navigator.userAgent
-  ) || (navigator.maxTouchPoints > 1 && /Macintosh/.test(navigator.userAgent))
+  return (
+    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      navigator.userAgent
+    ) ||
+    (navigator.maxTouchPoints > 1 && /Macintosh/.test(navigator.userAgent))
+  )
 }
 
-/**
- * Desktop path: hidden iframe keeps the main page untouched.
- */
+/* ── Instant blob download (used for mobile PDF save) ── */
+function downloadBlob(
+  content: string,
+  filename: string,
+  mime = "text/html;charset=utf-8"
+): void {
+  const blob = new Blob([content], { type: mime })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement("a")
+  a.href = url
+  a.download = filename
+  a.style.display = "none"
+  document.body.appendChild(a)
+  a.click()
+  // Clean up on next microtask – no visible delay
+  queueMicrotask(() => {
+    document.body.removeChild(a)
+    URL.revokeObjectURL(url)
+  })
+}
+
+/* ── Desktop: hidden iframe (no new tab flash) ── */
 function printViaIframe(html: string): void {
   const iframe = document.createElement("iframe")
-  iframe.style.position = "fixed"
-  iframe.style.left = "-9999px"
-  iframe.style.top = "-9999px"
-  iframe.style.width = "210mm"
-  iframe.style.height = "297mm"
-  iframe.style.border = "none"
+  iframe.style.cssText =
+    "position:fixed;left:-9999px;top:-9999px;width:210mm;height:297mm;border:none"
   document.body.appendChild(iframe)
 
-  const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document
-  if (!iframeDoc) {
+  const doc = iframe.contentDocument || iframe.contentWindow?.document
+  if (!doc) {
     document.body.removeChild(iframe)
+    printViaNewWindow(html)
     return
   }
 
-  iframeDoc.open()
-  iframeDoc.write(html)
-  iframeDoc.close()
+  doc.open()
+  doc.write(html)
+  doc.close()
 
-  setTimeout(() => {
-    try {
-      iframe.contentWindow?.focus()
-      iframe.contentWindow?.print()
-    } catch {
-      downloadHtmlBlob(html, "Kuendigung.html")
-    }
+  // Use requestAnimationFrame instead of setTimeout for faster response
+  requestAnimationFrame(() => {
     setTimeout(() => {
-      if (iframe.parentNode) document.body.removeChild(iframe)
-    }, 1000)
-  }, 400)
+      try {
+        iframe.contentWindow?.focus()
+        iframe.contentWindow?.print()
+      } catch {
+        printViaNewWindow(html)
+      }
+      setTimeout(() => {
+        if (iframe.parentNode) document.body.removeChild(iframe)
+      }, 1500)
+    }, 250)
+  })
 }
 
-/**
- * Mobile path: open a new window with ONLY the letter,
- * auto-trigger print, then close.
- */
+/* ── Mobile print: new window with only the letter ── */
 function printViaNewWindow(html: string): void {
   const win = window.open("", "_blank")
   if (!win) {
-    // Popup blocked – fall back to blob download
-    downloadHtmlBlob(html, "Kuendigung.html")
+    downloadBlob(html, "Kuendigung.html")
     return
   }
   win.document.open()
   win.document.write(html)
   win.document.close()
 
-  // Give the page a moment to render, then trigger print
-  setTimeout(() => {
-    win.focus()
-    win.print()
-    // On iOS Safari, the user closes the share/print sheet themselves.
-    // On Android, we can try to close after a delay.
-    setTimeout(() => {
-      try { win.close() } catch { /* user may have already closed */ }
-    }, 2000)
-  }, 600)
+  // Minimal delay – just enough for the DOM to be ready
+  requestAnimationFrame(() => {
+    try {
+      win.focus()
+      win.print()
+    } catch {
+      // The user still has the clean letter visible in the new tab
+    }
+  })
 }
 
 /**
- * Fallback: download the letter HTML as a file the user can open/print later.
+ * PDF / Save as PDF
+ * Desktop: triggers print dialog (user picks "Save as PDF")
+ * Mobile:  instant .html file download – no dialog, no delay
  */
-function downloadHtmlBlob(html: string, filename: string): void {
-  const blob = new Blob([html], { type: "text/html;charset=utf-8" })
-  const url = URL.createObjectURL(blob)
-  const a = document.createElement("a")
-  a.href = url
-  a.download = filename
-  document.body.appendChild(a)
-  a.click()
-  document.body.removeChild(a)
-  URL.revokeObjectURL(url)
-}
+export function generatePdf(text: string, companyName: string): void {
+  const dateStr = new Date().toISOString().slice(0, 10)
+  const safeName = companyName.replace(/[^a-zA-Z0-9]/g, "_")
+  const filename = `Kuendigung_${safeName}_${dateStr}`
+  const html = buildLetterHtml(text, companyName, filename)
 
-/**
- * Unified dispatcher: picks the right strategy for the current device.
- */
-function triggerPrint(html: string): void {
-  if (isMobileDevice()) {
-    printViaNewWindow(html)
+  if (isMobile()) {
+    // Instant download – no print dialog, no hanging
+    downloadBlob(html, `${filename}.html`)
   } else {
     printViaIframe(html)
   }
 }
 
 /**
- * Generate a styled PDF. Uses browser "Save as PDF" via print dialog in a hidden iframe.
- */
-export function generatePdf(text: string, companyName: string): void {
-  const dateStr = new Date().toISOString().slice(0, 10)
-  const filename = `Kuendigung_${companyName.replace(/[^a-zA-Z0-9äöüÄÖÜß]/g, "_")}_${dateStr}`
-  const html = buildLetterHtml(text, companyName, filename)
-  triggerPrint(html)
-}
-
-/**
- * Print the Kündigung directly.
+ * Print
+ * Desktop: hidden iframe print
+ * Mobile:  new window with only the letter → print dialog
  */
 export function printKundigung(text: string): void {
-  const html = buildLetterHtml(text, "", "Kündigungsschreiben drucken")
-  triggerPrint(html)
+  const html = buildLetterHtml(text, "", "Kuendigungsschreiben drucken")
+
+  if (isMobile()) {
+    printViaNewWindow(html)
+  } else {
+    printViaIframe(html)
+  }
 }
 
-/**
- * Open the default mail client with a prefilled Kündigung email.
- */
+/** Mail */
 export function openMailto(
   text: string,
   companyName: string,
@@ -536,9 +362,7 @@ export function openMailto(
   window.location.href = `mailto:${to}?subject=${subject}&body=${body}`
 }
 
-/**
- * Generate an .ics calendar file for a deadline reminder.
- */
+/** Calendar reminder (.ics) */
 export function addCalendarReminder(
   companyName: string,
   deadlineDate: string,
@@ -547,27 +371,29 @@ export function addCalendarReminder(
   const date = new Date(deadlineDate)
   date.setDate(date.getDate() - 7)
 
-  const formatDate = (d: Date) =>
+  const fmt = (d: Date) =>
     d.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z"
 
   const endDate = new Date(date)
   endDate.setHours(endDate.getHours() + 1)
 
-  const ics = `BEGIN:VCALENDAR
-VERSION:2.0
-PRODID:-//KuendigungsHeld//DE
-BEGIN:VEVENT
-DTSTART:${formatDate(date)}
-DTEND:${formatDate(endDate)}
-SUMMARY:Kündigungsfrist ${companyName} - Erinnerung
-DESCRIPTION:${description.replace(/\n/g, "\\n")}
-BEGIN:VALARM
-TRIGGER:-P1D
-ACTION:DISPLAY
-DESCRIPTION:Kündigungsfrist für ${companyName} läuft bald ab!
-END:VALARM
-END:VEVENT
-END:VCALENDAR`
+  const ics = [
+    "BEGIN:VCALENDAR",
+    "VERSION:2.0",
+    "PRODID:-//KuendigungsHeld//DE",
+    "BEGIN:VEVENT",
+    `DTSTART:${fmt(date)}`,
+    `DTEND:${fmt(endDate)}`,
+    `SUMMARY:Kündigungsfrist ${companyName} - Erinnerung`,
+    `DESCRIPTION:${description.replace(/\n/g, "\\n")}`,
+    "BEGIN:VALARM",
+    "TRIGGER:-P1D",
+    "ACTION:DISPLAY",
+    `DESCRIPTION:Kündigungsfrist für ${companyName} läuft bald ab!`,
+    "END:VALARM",
+    "END:VEVENT",
+    "END:VCALENDAR",
+  ].join("\r\n")
 
   const blob = new Blob([ics], { type: "text/calendar;charset=utf-8" })
   const url = URL.createObjectURL(blob)
