@@ -272,59 +272,65 @@ function printViaIframe(html: string): void {
   })
 }
 
-/* ── Mobile print: new window with only the letter ── */
+/* ── Mobile print: new window with auto-print script ── */
 function printViaNewWindow(html: string): void {
   const win = window.open("", "_blank")
   if (!win) return
-  win.document.open()
-  win.document.write(html)
-  win.document.close()
 
-  requestAnimationFrame(() => {
-    try {
-      win.focus()
-      win.print()
-    } catch {
-      // User still has the clean letter open in the new tab
-    }
-  })
+  // Inject a script that triggers print when the window loads
+  // This is more reliable on iOS/Android than calling win.print() from outside
+  const htmlWithAutoPrint = html.replace(
+    "</body>",
+    `<script>
+      window.onload = function() {
+        setTimeout(function() {
+          try { window.print(); } catch(e) {}
+        }, 800);
+      };
+    </script></body>`
+  )
+
+  win.document.open()
+  win.document.write(htmlWithAutoPrint)
+  win.document.close()
 }
 
 /* ── Real PDF generation via html2canvas + jsPDF ── */
 async function generateRealPdf(html: string, filename: string): Promise<void> {
-  // Dynamic imports so the bundles only load when the user clicks "PDF"
-  const [html2canvasModule, jsPDFModule] = await Promise.all([
-    import("html2canvas"),
-    import("jspdf"),
-  ])
-  const html2canvas = html2canvasModule.default
-  const jsPDF = jsPDFModule.default
-
-  // Create an off-screen container to render the letter
-  const container = document.createElement("div")
-  container.style.cssText =
-    "position:fixed;left:-9999px;top:0;width:794px;min-height:1123px;background:#fff;z-index:-1"
-  container.innerHTML = html
-    // Strip doctype/html/head/body wrappers – keep inner content
-    .replace(/<!DOCTYPE[^>]*>/i, "")
-    .replace(/<\/?html[^>]*>/gi, "")
-    .replace(/<head[\s\S]*?<\/head>/gi, "")
-    .replace(/<\/?body[^>]*>/gi, "")
-  document.body.appendChild(container)
-
-  // Inject the <style> block from the HTML into the container
-  const styleMatch = html.match(/<style[\s\S]*?<\/style>/i)
-  if (styleMatch) {
-    const styleEl = document.createElement("style")
-    styleEl.textContent = styleMatch[0]
-      .replace(/<\/?style[^>]*>/gi, "")
-    container.prepend(styleEl)
-  }
-
-  // Wait a frame for layout
-  await new Promise((r) => requestAnimationFrame(r))
-
   try {
+    // Dynamic imports - requires 'html2canvas' and 'jspdf' packages
+    const [html2canvasModule, jsPDFModule] = await Promise.all([
+      import("html2canvas"),
+      import("jspdf"),
+    ])
+    const html2canvas = html2canvasModule.default
+    const jsPDF = jsPDFModule.default
+
+    // Create an off-screen container to render the letter
+    const container = document.createElement("div")
+    container.style.cssText =
+      "position:fixed;left:-9999px;top:0;width:794px;min-height:1123px;background:#fff;z-index:-1"
+    
+    // Strip external structure to keep only content
+    container.innerHTML = html
+      .replace(/<!DOCTYPE[^>]*>/i, "")
+      .replace(/<\/?html[^>]*>/gi, "")
+      .replace(/<head[\s\S]*?<\/head>/gi, "")
+      .replace(/<\/?body[^>]*>/gi, "")
+    
+    document.body.appendChild(container)
+
+    // Inject the <style> block from the HTML into the container
+    const styleMatch = html.match(/<style[\s\S]*?<\/style>/i)
+    if (styleMatch) {
+      const styleEl = document.createElement("style")
+      styleEl.textContent = styleMatch[0].replace(/<\/?style[^>]*>/gi, "")
+      container.prepend(styleEl)
+    }
+
+    // Wait a frame for layout
+    await new Promise((r) => requestAnimationFrame(r))
+
     const canvas = await html2canvas(container, {
       scale: 2,
       useCORS: true,
@@ -337,11 +343,17 @@ async function generateRealPdf(html: string, filename: string): Promise<void> {
     const imgData = canvas.toDataURL("image/jpeg", 0.95)
 
     // A4 in mm
+    // @ts-ignore
     const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" })
     pdf.addImage(imgData, "JPEG", 0, 0, 210, 297)
     pdf.save(`${filename}.pdf`)
-  } finally {
+
     document.body.removeChild(container)
+  } catch (err) {
+    console.error("PDF Generation failed:", err)
+    // Fallback if libraries are missing or error occurs
+    alert("PDF konnte nicht generiert werden. Bitte nutzen Sie die Druck-Funktion.")
+    printViaNewWindow(html)
   }
 }
 
