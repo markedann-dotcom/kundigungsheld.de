@@ -88,208 +88,318 @@ function buildLetterHtml(text: string, companyName: string, title: string): stri
 
   const closingHtml = closingLines.map(l => l.trim() ? `<p>${l}</p>` : "").join("")
 
+  const esc = (s: string) => s.replace(/</g, "&lt;").replace(/>/g, "&gt;")
+
   return `<!DOCTYPE html>
 <html lang="de">
 <head>
 <meta charset="utf-8" />
 <title>${title}</title>
 <style>
-  @page {
-    size: A4;
-    margin: 0;
-  }
+  @page { size: A4; margin: 0; }
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
     font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
     font-size: 10.5pt;
-    line-height: 1.55;
+    line-height: 1.6;
     color: #1e293b;
     background: #fff;
     width: 210mm;
     min-height: 297mm;
-    padding: 0;
   }
 
   .page {
     position: relative;
     width: 210mm;
     min-height: 297mm;
-    padding: 22mm 24mm 28mm 26mm;
+    padding: 0;
   }
 
-  /* Top accent bar */
-  .accent-bar {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 5mm;
-    background: linear-gradient(90deg, #1a9a82 0%, #15a58a 40%, #11b693 100%);
-  }
-
-  /* Brand header */
-  .header {
+  /* ── Top branded strip ── */
+  .top-strip {
+    height: 28mm;
+    background: linear-gradient(135deg, #0f7a66 0%, #1a9a82 50%, #23b496 100%);
+    padding: 0 26mm;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding-bottom: 5mm;
-    border-bottom: 0.5pt solid #cbd5e1;
-    margin-bottom: 6mm;
   }
   .brand {
     display: flex;
     align-items: center;
-    gap: 2.5mm;
+    gap: 3mm;
   }
-  .brand-icon {
-    width: 8mm;
-    height: 8mm;
-    background: #1a9a82;
-    border-radius: 2mm;
+  .brand-shield {
+    width: 10mm;
+    height: 10mm;
+    background: rgba(255,255,255,0.2);
+    border: 0.6pt solid rgba(255,255,255,0.5);
+    border-radius: 2.5mm;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #fff;
-    font-size: 11pt;
-    font-weight: 700;
+  }
+  .brand-shield svg {
+    width: 5.5mm;
+    height: 5.5mm;
+  }
+  .brand-text {
+    display: flex;
+    flex-direction: column;
   }
   .brand-name {
-    font-size: 12pt;
-    font-weight: 700;
-    color: #1e293b;
-    letter-spacing: -0.3pt;
+    font-size: 14pt;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.4pt;
+    line-height: 1.1;
   }
-  .header-label {
-    font-size: 8pt;
-    color: #94a3b8;
+  .brand-sub {
+    font-size: 7pt;
+    color: rgba(255,255,255,0.75);
+    letter-spacing: 0.6pt;
     text-transform: uppercase;
-    letter-spacing: 0.5pt;
     font-weight: 600;
+  }
+  .doc-badge {
+    background: rgba(255,255,255,0.15);
+    border: 0.5pt solid rgba(255,255,255,0.3);
+    border-radius: 8pt;
+    padding: 1.5mm 4mm;
+    font-size: 7.5pt;
+    color: #fff;
+    font-weight: 600;
+    letter-spacing: 0.3pt;
+    text-transform: uppercase;
+  }
+
+  /* ── Content area ── */
+  .content {
+    padding: 8mm 26mm 20mm 26mm;
   }
 
   /* Address blocks */
   .address-row {
     display: flex;
-    gap: 14mm;
+    gap: 12mm;
     margin-bottom: 7mm;
   }
   .address-block {
     flex: 1;
+    background: #f8fafc;
+    border: 0.5pt solid #e2e8f0;
+    border-radius: 2.5mm;
+    padding: 4mm 5mm;
   }
   .address-label {
-    font-size: 7.5pt;
-    color: #94a3b8;
+    font-size: 6.5pt;
+    color: #1a9a82;
     text-transform: uppercase;
-    letter-spacing: 0.4pt;
-    font-weight: 600;
+    letter-spacing: 0.6pt;
+    font-weight: 700;
     margin-bottom: 1.5mm;
+    display: flex;
+    align-items: center;
+    gap: 1mm;
+  }
+  .address-label::before {
+    content: '';
+    display: inline-block;
+    width: 1.5mm;
+    height: 1.5mm;
+    background: #1a9a82;
+    border-radius: 50%;
   }
   .address-text {
-    font-size: 10pt;
-    line-height: 1.5;
+    font-size: 9.5pt;
+    line-height: 1.45;
     color: #334155;
     white-space: pre-line;
   }
 
-  /* Date & Betreff */
-  .date-line {
-    text-align: right;
-    font-size: 9.5pt;
-    color: #64748b;
+  /* Date */
+  .meta-row {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
     margin-bottom: 6mm;
+    gap: 3mm;
+  }
+  .date-line {
+    font-size: 9pt;
+    color: #64748b;
+    font-weight: 500;
+  }
+
+  /* Betreff */
+  .betreff-wrap {
+    margin-bottom: 5mm;
+    padding-bottom: 4mm;
+    border-bottom: 1.5pt solid #1a9a82;
+  }
+  .betreff-label {
+    font-size: 7pt;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.5pt;
+    font-weight: 600;
+    margin-bottom: 1mm;
   }
   .betreff {
-    font-size: 11pt;
+    font-size: 11.5pt;
     font-weight: 700;
-    color: #1e293b;
-    margin-bottom: 5mm;
-    padding-bottom: 3mm;
-    border-bottom: 0.5pt solid #e2e8f0;
+    color: #0f172a;
+    letter-spacing: -0.2pt;
   }
 
   /* Body */
   .body p {
     margin-bottom: 3mm;
     font-size: 10.5pt;
-    line-height: 1.55;
+    line-height: 1.6;
     color: #334155;
   }
 
   /* Closing */
   .closing {
-    margin-top: 8mm;
+    margin-top: 7mm;
   }
   .closing p {
     font-size: 10.5pt;
     color: #334155;
-    line-height: 1.55;
-  }
-  .signature-name {
-    font-weight: 700;
-    color: #1e293b;
-    margin-top: 10mm;
-    font-size: 11pt;
+    line-height: 1.6;
   }
 
-  /* Footer watermark */
-  .footer-bar {
+  /* Signature area */
+  .sig-area {
+    margin-top: 12mm;
+    padding-top: 4mm;
+    border-top: 0.5pt dashed #cbd5e1;
+    width: 55mm;
+  }
+  .sig-hint {
+    font-size: 7pt;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.4pt;
+    font-weight: 600;
+  }
+
+  /* ── Footer ── */
+  .footer {
     position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
-    padding: 3mm 26mm;
-    background: #f8fafc;
+    height: 14mm;
+    background: #f1f5f9;
     border-top: 0.5pt solid #e2e8f0;
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
+    padding: 0 26mm;
   }
-  .footer-bar span {
+  .footer-left {
+    display: flex;
+    align-items: center;
+    gap: 2mm;
+  }
+  .footer-dot {
+    width: 1.5mm;
+    height: 1.5mm;
+    background: #1a9a82;
+    border-radius: 50%;
+  }
+  .footer span {
     font-size: 7pt;
     color: #94a3b8;
+    font-weight: 500;
+  }
+  .footer-right {
+    display: flex;
+    align-items: center;
+    gap: 4mm;
+  }
+  .footer-divider {
+    width: 0.5pt;
+    height: 3mm;
+    background: #cbd5e1;
+  }
+
+  @media print {
+    body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   }
 </style>
 </head>
 <body>
 <div class="page">
-  <div class="accent-bar"></div>
 
-  <div class="header">
+  <div class="top-strip">
     <div class="brand">
-      <div class="brand-icon">K</div>
-      <span class="brand-name">KündigungsHeld</span>
+      <div class="brand-shield">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2L3 7v6c0 5.25 3.75 10.15 9 11.25C17.25 23.15 21 18.25 21 13V7l-9-5z" fill="rgba(255,255,255,0.9)"/>
+          <path d="M9.5 12.5l2 2 3.5-4" stroke="#1a9a82" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="brand-text">
+        <span class="brand-name">KündigungsHeld</span>
+        <span class="brand-sub">Rechtssichere Kündigungsschreiben</span>
+      </div>
     </div>
-    <span class="header-label">Kündigungsschreiben</span>
+    <span class="doc-badge">Kündigungsschreiben</span>
   </div>
 
-  <div class="address-row">
-    <div class="address-block">
-      <div class="address-label">Absender</div>
-      <div class="address-text">${senderBlock.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</div>
+  <div class="content">
+
+    <div class="address-row">
+      <div class="address-block">
+        <div class="address-label">Absender</div>
+        <div class="address-text">${esc(senderBlock)}</div>
+      </div>
+      <div class="address-block">
+        <div class="address-label">Empfänger</div>
+        <div class="address-text">${esc(recipientBlock)}</div>
+      </div>
     </div>
-    <div class="address-block">
-      <div class="address-label">Empfänger</div>
-      <div class="address-text">${recipientBlock.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</div>
+
+    ${dateLine ? `<div class="meta-row"><span class="date-line">${esc(dateLine)}</span></div>` : ""}
+
+    ${betreffLine ? `
+    <div class="betreff-wrap">
+      <div class="betreff-label">Betreff</div>
+      <div class="betreff">${esc(betreffLine)}</div>
+    </div>` : ""}
+
+    <div class="body">
+      ${bodyHtml}
+    </div>
+
+    <div class="closing">
+      ${closingHtml}
+    </div>
+
+    <div class="sig-area">
+      <div class="sig-hint">Unterschrift</div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <div class="footer-left">
+      <div class="footer-dot"></div>
+      <span>Erstellt mit KündigungsHeld</span>
+      <div class="footer-divider"></div>
+      <span>kuendigungsheld.de</span>
+    </div>
+    <div class="footer-right">
+      <span>Dokument-ID: KH-${Date.now().toString(36).toUpperCase()}</span>
+      <div class="footer-divider"></div>
+      <span>${new Date().toLocaleDateString("de-DE", { day: "2-digit", month: "long", year: "numeric" })}</span>
     </div>
   </div>
 
-  ${dateLine ? `<div class="date-line">${dateLine.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</div>` : ""}
-
-  ${betreffLine ? `<div class="betreff">${betreffLine.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</div>` : ""}
-
-  <div class="body">
-    ${bodyHtml}
-  </div>
-
-  <div class="closing">
-    ${closingHtml}
-  </div>
-
-  <div class="footer-bar">
-    <span>Erstellt mit KündigungsHeld &mdash; kündigungsheld.de</span>
-    <span>${new Date().toLocaleDateString("de-DE")}</span>
-  </div>
 </div>
 </body>
 </html>`
