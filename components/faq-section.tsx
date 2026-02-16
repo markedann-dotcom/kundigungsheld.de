@@ -37,7 +37,7 @@ const faqs = [
   {
     question: "Kann ich auch Verträge kündigen, die nicht in Ihrer Liste sind?",
     answer:
-      "Ja! Auch wenn ein Unternehmen nicht in unserer Datenbank mit über 120 Anbietern ist, können Sie unsere allgemeinen Vorlagen verwenden. Sie müssen lediglich die Anbieteradresse selbst eintragen.",
+      "Ja! Auch wenn ein Unternehmen nicht in unserer Datenbank mit über 150 Anbietern ist, können Sie unsere allgemeinen Vorlagen verwenden. Sie müssen lediglich die Anbieteradresse selbst eintragen.",
   },
   {
     question: "Was ist das Archiv und wie funktioniert es?",
@@ -48,7 +48,7 @@ const faqs = [
 
 export function FaqSection() {
   return (
-    <section id="faq" className="bg-white py-20 lg:py-28">
+    <section id="faq" className="bg-card py-20 lg:py-28">
       <div className="mx-auto max-w-3xl px-4 lg:px-8">
         <AnimateIn>
           <div className="text-center">

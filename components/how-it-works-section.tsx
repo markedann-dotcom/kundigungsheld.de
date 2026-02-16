@@ -7,7 +7,7 @@ const steps = [
     icon: Building2,
     title: "Anbieter auswählen",
     description:
-      "Suchen Sie Ihren Anbieter aus unserer Datenbank mit über 120 deutschen Unternehmen. Alle wichtigen Informationen wie Adresse und Kündigungsfristen werden automatisch eingefügt.",
+      "Suchen Sie Ihren Anbieter aus unserer Datenbank mit über 150 deutschen Unternehmen. Alle wichtigen Informationen wie Adresse und Kündigungsfristen werden automatisch eingefügt.",
   },
   {
     number: "02",
@@ -27,7 +27,7 @@ const steps = [
 
 export function HowItWorksSection() {
   return (
-    <section id="so-gehts" className="bg-[hsl(210,40%,98%)] py-20 lg:py-28">
+    <section id="so-gehts" className="bg-background py-20 lg:py-28">
       <div className="mx-auto max-w-7xl px-4 lg:px-8">
         <AnimateIn>
           <div className="mx-auto max-w-2xl text-center">

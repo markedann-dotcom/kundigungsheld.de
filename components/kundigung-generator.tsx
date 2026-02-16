@@ -188,7 +188,7 @@ export function KundigungGenerator() {
   }
 
   return (
-    <section id="generator" className="bg-white py-20 lg:py-28">
+    <section id="generator" className="bg-card py-20 lg:py-28">
       <div className="mx-auto max-w-7xl px-4 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
           <span className="text-sm font-semibold uppercase tracking-wider text-primary">
@@ -248,7 +248,7 @@ export function KundigungGenerator() {
                 placeholder="Unternehmen suchen (z.B. Telekom, Vodafone, Netflix...)"
                 value={search}
                 onChange={(e) => { setSearch(e.target.value); setCompanyPage(0) }}
-                className="w-full rounded-xl border border-border bg-white py-4 pl-12 pr-4 text-base text-foreground shadow-sm transition-all placeholder:text-muted-foreground/60 focus:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/20"
+                className="w-full rounded-xl border border-border bg-background py-4 pl-12 pr-4 text-base text-foreground shadow-sm transition-all placeholder:text-muted-foreground/60 focus:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/20"
               />
             </div>
 
@@ -290,7 +290,7 @@ export function KundigungGenerator() {
                 <button
                   key={company.id}
                   onClick={() => selectCompany(company)}
-                  className="group flex flex-col items-start rounded-xl border border-border/60 bg-white p-4 text-left transition-all duration-200 hover:border-primary/30 hover:shadow-md hover:shadow-primary/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2"
+                  className="group flex flex-col items-start rounded-xl border border-border/60 bg-background p-4 text-left transition-all duration-200 hover:border-primary/30 hover:shadow-md hover:shadow-primary/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2"
                 >
                   <div className="flex w-full items-start justify-between">
                     <h3 className="font-semibold text-foreground group-hover:text-primary">
@@ -655,7 +655,7 @@ export function KundigungGenerator() {
               </div>
             </div>
 
-            <div className="overflow-hidden rounded-2xl border border-border/80 bg-white shadow-lg">
+            <div className="overflow-hidden rounded-2xl border border-border/80 bg-background shadow-lg">
               <div className="flex flex-col gap-3 border-b border-border/60 bg-muted/30 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-6">
                 <span className="text-sm font-medium text-muted-foreground">Kündigungsschreiben</span>
                 <div className="flex flex-wrap gap-2">

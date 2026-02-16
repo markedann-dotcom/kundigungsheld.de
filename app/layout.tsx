@@ -3,6 +3,7 @@ import { Inter, Space_Grotesk } from 'next/font/google'
 
 import './globals.css'
 import { CookieBanner } from '@/components/cookie-banner'
+import { ThemeProvider } from '@/components/theme-provider'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 const spaceGrotesk = Space_Grotesk({ subsets: ['latin'], variable: '--font-space-grotesk' })
@@ -10,11 +11,11 @@ const spaceGrotesk = Space_Grotesk({ subsets: ['latin'], variable: '--font-space
 export const metadata: Metadata = {
   title: 'KündigungsHeld - Verträge einfach kündigen | 100% kostenlos',
   description:
-    'Erstellen Sie in wenigen Minuten rechtssichere Kündigungsschreiben für über 120 deutsche Unternehmen. 100% kostenlos, schnell und zuverlässig.',
+    'Erstellen Sie in wenigen Minuten rechtssichere Kündigungsschreiben für über 150 deutsche Unternehmen. 100% kostenlos, schnell und zuverlässig.',
   keywords: 'Kündigung, Kündigungsschreiben, Vertrag kündigen, Deutschland, Vorlage, kostenlos',
   openGraph: {
     title: 'KündigungsHeld - Verträge einfach kündigen',
-    description: 'Rechtssichere Kündigungsschreiben in 2 Minuten erstellen. Über 120 Unternehmen, 100% kostenlos.',
+    description: 'Rechtssichere Kündigungsschreiben in 2 Minuten erstellen. Über 150 Unternehmen, 100% kostenlos.',
     type: 'website',
     locale: 'de_DE',
     siteName: 'KündigungsHeld',
@@ -38,10 +39,12 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="de" className={`${inter.variable} ${spaceGrotesk.variable}`}>
+    <html lang="de" className={`${inter.variable} ${spaceGrotesk.variable}`} suppressHydrationWarning>
       <body className="font-sans antialiased">
-        {children}
-        <CookieBanner />
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+          {children}
+          <CookieBanner />
+        </ThemeProvider>
       </body>
     </html>
   )

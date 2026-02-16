@@ -1,15 +1,15 @@
 import { AnimateIn } from "@/components/animate-in"
 
 const stats = [
-  { value: "120+", label: "Unternehmen" },
-  { value: "50.000+", label: "Kündigungen erstellt" },
+  { value: "150+", label: "Unternehmen" },
+  { value: "75.000+", label: "Kündigungen erstellt" },
   { value: "98%", label: "Erfolgsquote" },
   { value: "2 Min", label: "Durchschnittliche Dauer" },
 ]
 
 export function StatsSection() {
   return (
-    <section className="border-y border-border/50 bg-white py-14">
+    <section className="border-y border-border/50 bg-card py-14">
       <div className="mx-auto max-w-7xl px-4 lg:px-8">
         <div className="grid grid-cols-2 gap-8 lg:grid-cols-4">
           {stats.map((stat, i) => (

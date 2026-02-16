@@ -14,7 +14,7 @@ export default function ImpressumPage() {
   return (
     <div className="min-h-screen">
       <Navbar />
-      <main className="bg-[hsl(210,40%,98%)] py-12 lg:py-16">
+      <main className="bg-background py-12 lg:py-16">
         <div className="mx-auto max-w-3xl px-4 lg:px-8">
           <div className="mb-8">
             <Button variant="ghost" size="sm" className="gap-2 text-muted-foreground" asChild>
@@ -25,7 +25,7 @@ export default function ImpressumPage() {
             </Button>
           </div>
 
-          <div className="rounded-2xl border border-border/60 bg-white p-6 shadow-sm sm:p-8 lg:p-10">
+          <div className="rounded-2xl border border-border/60 bg-card p-6 shadow-sm sm:p-8 lg:p-10">
             <h1 className="font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
               Impressum
             </h1>
@@ -51,7 +51,10 @@ export default function ImpressumPage() {
                   Kontakt
                 </h2>
                 <p className="leading-relaxed">
-                  E-Mail: kontakt@kuendigungsheld.de
+                  E-Mail:{" "}
+                  <a href="mailto:kundigungsheld@gmail.com" className="text-primary underline underline-offset-2 hover:text-primary/80">
+                    kundigungsheld@gmail.com
+                  </a>
                 </p>
               </section>
 

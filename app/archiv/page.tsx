@@ -13,7 +13,7 @@ export default function ArchivPage() {
   return (
     <div className="min-h-screen">
       <Navbar />
-      <main className="bg-[hsl(210,40%,98%)]">
+      <main className="bg-background">
         <ArchivClient />
       </main>
       <Footer />

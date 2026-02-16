@@ -48,7 +48,7 @@ const testimonials = [
 
 export function TestimonialsSection() {
   return (
-    <section id="stimmen" className="bg-[hsl(210,40%,98%)] py-20 lg:py-28">
+    <section id="stimmen" className="bg-background py-20 lg:py-28">
       <div className="mx-auto max-w-7xl px-4 lg:px-8">
         <AnimateIn>
           <div className="mx-auto max-w-2xl text-center">
@@ -70,7 +70,7 @@ export function TestimonialsSection() {
           {testimonials.map((t, i) => (
             <AnimateIn key={i} delay={i * 80}>
             <div
-              className="flex h-full flex-col rounded-2xl border border-border/60 bg-white p-6 transition-all duration-300 hover:shadow-md"
+              className="flex h-full flex-col rounded-2xl border border-border/60 bg-card p-6 transition-all duration-300 hover:shadow-md"
             >
               <div className="flex gap-0.5">
                 {Array.from({ length: 5 }).map((_, si) => (
