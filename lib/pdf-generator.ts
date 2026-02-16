@@ -239,28 +239,7 @@ function isMobile(): boolean {
   )
 }
 
-/* ── Instant blob download (used for mobile PDF save) ── */
-function downloadBlob(
-  content: string,
-  filename: string,
-  mime = "text/html;charset=utf-8"
-): void {
-  const blob = new Blob([content], { type: mime })
-  const url = URL.createObjectURL(blob)
-  const a = document.createElement("a")
-  a.href = url
-  a.download = filename
-  a.style.display = "none"
-  document.body.appendChild(a)
-  a.click()
-  // Clean up on next microtask – no visible delay
-  queueMicrotask(() => {
-    document.body.removeChild(a)
-    URL.revokeObjectURL(url)
-  })
-}
-
-/* ── Desktop: hidden iframe (no new tab flash) ── */
+/* ── Desktop: hidden iframe print (no blank tab) ── */
 function printViaIframe(html: string): void {
   const iframe = document.createElement("iframe")
   iframe.style.cssText =
@@ -278,7 +257,6 @@ function printViaIframe(html: string): void {
   doc.write(html)
   doc.close()
 
-  // Use requestAnimationFrame instead of setTimeout for faster response
   requestAnimationFrame(() => {
     setTimeout(() => {
       try {
@@ -297,29 +275,80 @@ function printViaIframe(html: string): void {
 /* ── Mobile print: new window with only the letter ── */
 function printViaNewWindow(html: string): void {
   const win = window.open("", "_blank")
-  if (!win) {
-    downloadBlob(html, "Kuendigung.html")
-    return
-  }
+  if (!win) return
   win.document.open()
   win.document.write(html)
   win.document.close()
 
-  // Minimal delay – just enough for the DOM to be ready
   requestAnimationFrame(() => {
     try {
       win.focus()
       win.print()
     } catch {
-      // The user still has the clean letter visible in the new tab
+      // User still has the clean letter open in the new tab
     }
   })
 }
 
+/* ── Real PDF generation via html2canvas + jsPDF ── */
+async function generateRealPdf(html: string, filename: string): Promise<void> {
+  // Dynamic imports so the bundles only load when the user clicks "PDF"
+  const [html2canvasModule, jsPDFModule] = await Promise.all([
+    import("html2canvas"),
+    import("jspdf"),
+  ])
+  const html2canvas = html2canvasModule.default
+  const jsPDF = jsPDFModule.default
+
+  // Create an off-screen container to render the letter
+  const container = document.createElement("div")
+  container.style.cssText =
+    "position:fixed;left:-9999px;top:0;width:794px;min-height:1123px;background:#fff;z-index:-1"
+  container.innerHTML = html
+    // Strip doctype/html/head/body wrappers – keep inner content
+    .replace(/<!DOCTYPE[^>]*>/i, "")
+    .replace(/<\/?html[^>]*>/gi, "")
+    .replace(/<head[\s\S]*?<\/head>/gi, "")
+    .replace(/<\/?body[^>]*>/gi, "")
+  document.body.appendChild(container)
+
+  // Inject the <style> block from the HTML into the container
+  const styleMatch = html.match(/<style[\s\S]*?<\/style>/i)
+  if (styleMatch) {
+    const styleEl = document.createElement("style")
+    styleEl.textContent = styleMatch[0]
+      .replace(/<\/?style[^>]*>/gi, "")
+    container.prepend(styleEl)
+  }
+
+  // Wait a frame for layout
+  await new Promise((r) => requestAnimationFrame(r))
+
+  try {
+    const canvas = await html2canvas(container, {
+      scale: 2,
+      useCORS: true,
+      logging: false,
+      width: 794,
+      height: 1123,
+      backgroundColor: "#ffffff",
+    })
+
+    const imgData = canvas.toDataURL("image/jpeg", 0.95)
+
+    // A4 in mm
+    const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" })
+    pdf.addImage(imgData, "JPEG", 0, 0, 210, 297)
+    pdf.save(`${filename}.pdf`)
+  } finally {
+    document.body.removeChild(container)
+  }
+}
+
 /**
- * PDF / Save as PDF
- * Desktop: triggers print dialog (user picks "Save as PDF")
- * Mobile:  instant .html file download – no dialog, no delay
+ * PDF / Save
+ * Desktop: print dialog → "Save as PDF"
+ * Mobile:  generates and downloads a real .pdf file
  */
 export function generatePdf(text: string, companyName: string): void {
   const dateStr = new Date().toISOString().slice(0, 10)
@@ -328,8 +357,7 @@ export function generatePdf(text: string, companyName: string): void {
   const html = buildLetterHtml(text, companyName, filename)
 
   if (isMobile()) {
-    // Instant download – no print dialog, no hanging
-    downloadBlob(html, `${filename}.html`)
+    generateRealPdf(html, filename)
   } else {
     printViaIframe(html)
   }
@@ -337,8 +365,8 @@ export function generatePdf(text: string, companyName: string): void {
 
 /**
  * Print
- * Desktop: hidden iframe print
- * Mobile:  new window with only the letter → print dialog
+ * Desktop: hidden iframe → print dialog
+ * Mobile:  new window with only the letter → native print dialog
  */
 export function printKundigung(text: string): void {
   const html = buildLetterHtml(text, "", "Kuendigungsschreiben drucken")
