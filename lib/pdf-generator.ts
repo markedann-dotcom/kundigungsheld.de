@@ -272,27 +272,46 @@ function printViaIframe(html: string): void {
   })
 }
 
-/* ── Mobile print: new window with auto-print script ── */
+/* ── Mobile print: new window with button fallback ── */
 function printViaNewWindow(html: string): void {
   const win = window.open("", "_blank")
   if (!win) return
 
-  // Inject a script that triggers print when the window loads
-  // This is more reliable on iOS/Android than calling win.print() from outside
-  const htmlWithAutoPrint = html.replace(
-    "</body>",
-    `<script>
-      window.onload = function() {
-        setTimeout(function() {
-          try { window.print(); } catch(e) {}
-        }, 800);
-      };
-    </script></body>`
-  )
+  // 1. Стиль для кнопки (видна только на экране, скрыта при печати)
+  const btnStyle = `
+    position: fixed; bottom: 20px; right: 20px; z-index: 9999;
+    background: #1a9a82; color: white; border: none; padding: 12px 24px;
+    border-radius: 30px; font-weight: bold; font-size: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3); cursor: pointer;
+    font-family: sans-serif; -webkit-appearance: none;
+  `
+  // CSS, чтобы скрыть кнопку на бумаге
+  const printCss = `<style>@media print { .print-btn-mobile { display: none !important; } }</style>`
+  
+  // Сама кнопка
+  const printBtn = `<button class="print-btn-mobile" style="${btnStyle}" onclick="window.print()">🖨️ Drucken</button>`
 
+  // 2. Вставляем кнопку и скрипт в HTML письма
+  const htmlWithBtn = html
+    .replace("</head>", `${printCss}</head>`)
+    .replace("</body>", `${printBtn}
+      <script>
+        // Попытка авто-запуска печати
+        window.onload = function() {
+          setTimeout(function() {
+            try { window.print(); } catch(e) {}
+          }, 500);
+        };
+      </script></body>`)
+
+  // 3. Открываем и пишем
   win.document.open()
-  win.document.write(htmlWithAutoPrint)
+  win.document.write(htmlWithBtn)
   win.document.close()
+  
+  requestAnimationFrame(() => {
+    win.focus()
+  })
 }
 
 /* ── Real PDF generation via html2canvas + jsPDF ── */
