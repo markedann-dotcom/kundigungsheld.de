@@ -27,7 +27,7 @@ export function BlogPreviewSection() {
   const featured = blogArticles.slice(0, 3)
 
   return (
-    <section id="blog" className="bg-white py-20 lg:py-28">
+    <section id="blog" className="bg-card py-20 lg:py-28">
       <div className="mx-auto max-w-7xl px-4 lg:px-8">
         <AnimateIn>
         <div className="mx-auto max-w-2xl text-center">
@@ -49,7 +49,7 @@ export function BlogPreviewSection() {
             <AnimateIn key={article.slug} delay={i * 100}>
             <Link
               href={`/blog/${article.slug}`}
-              className="group flex flex-col overflow-hidden rounded-2xl border border-border/60 bg-white transition-all hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5"
+              className="group flex flex-col overflow-hidden rounded-2xl border border-border/60 bg-background transition-all hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5"
             >
               <div className={`flex items-center gap-2 bg-gradient-to-r ${CATEGORY_COLORS[article.category] || "from-primary to-primary/80"} px-4 py-3`}>
                 {(() => {

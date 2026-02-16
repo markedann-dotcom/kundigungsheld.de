@@ -45,7 +45,7 @@ export function CookieBanner() {
 
   return (
     <div
-      className="fixed bottom-0 left-0 right-0 z-[60] border-t border-border/50 bg-white/95 px-4 py-4 shadow-2xl backdrop-blur-sm transition-all duration-500 animate-in slide-in-from-bottom-4 sm:px-6"
+      className="fixed bottom-0 left-0 right-0 z-[60] border-t border-border/50 bg-card/95 px-4 py-4 shadow-2xl backdrop-blur-sm transition-all duration-500 animate-in slide-in-from-bottom-4 sm:px-6"
       role="dialog"
       aria-label="Cookie-Hinweis"
     >

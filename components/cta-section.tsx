@@ -4,7 +4,7 @@ import { AnimateIn } from "@/components/animate-in"
 
 export function CtaSection() {
   return (
-    <section className="bg-[hsl(210,40%,98%)] py-20 lg:py-28">
+    <section className="bg-background py-20 lg:py-28">
       <div className="mx-auto max-w-7xl px-4 lg:px-8">
         <AnimateIn duration={800}>
         <div className="relative overflow-hidden rounded-3xl bg-primary px-6 py-16 text-center sm:px-12 lg:px-20">

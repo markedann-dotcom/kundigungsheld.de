@@ -15,7 +15,7 @@ export default function DatenschutzPage() {
   return (
     <div className="min-h-screen">
       <Navbar />
-      <main className="bg-[hsl(210,40%,98%)] py-12 lg:py-16">
+      <main className="bg-background py-12 lg:py-16">
         <div className="mx-auto max-w-3xl px-4 lg:px-8">
           <div className="mb-8">
             <Button variant="ghost" size="sm" className="gap-2 text-muted-foreground" asChild>
@@ -26,7 +26,7 @@ export default function DatenschutzPage() {
             </Button>
           </div>
 
-          <div className="rounded-2xl border border-border/60 bg-white p-6 shadow-sm sm:p-8 lg:p-10">
+          <div className="rounded-2xl border border-border/60 bg-card p-6 shadow-sm sm:p-8 lg:p-10">
             <h1 className="font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
               Datenschutzerklärung
             </h1>
@@ -175,9 +175,11 @@ export default function DatenschutzPage() {
                   Deutschland
                 </p>
                 <p className="mt-3 leading-relaxed">
-                  E-Mail: datenschutz@kuendigungsheld.de
+                  E-Mail:{" "}
+                  <a href="mailto:kundigungsheld@gmail.com" className="text-primary underline underline-offset-2 hover:text-primary/80">
+                    kundigungsheld@gmail.com
+                  </a>
                 </p>
-
                 <h3 className="mb-2 mt-6 font-display text-lg font-medium text-foreground">
                   Speicherdauer
                 </h3>
@@ -211,9 +213,7 @@ export default function DatenschutzPage() {
                   ein Beschwerderecht bei einer Aufsichtsbehörde zu,
                   insbesondere in dem Mitgliedstaat ihres gewöhnlichen
                   Aufenthalts, ihres Arbeitsplatzes oder des Orts des
-                  mutmaßlichen Verstoßes. Das Beschwerderecht besteht
-                  unbeschadet anderweitiger verwaltungsrechtlicher oder
-                  gerichtlicher Rechtsbehelfe.
+                  mutmaßlichen Verstoßes.
                 </p>
 
                 <h3 className="mb-2 mt-6 font-display text-lg font-medium text-foreground">
@@ -234,9 +234,7 @@ export default function DatenschutzPage() {
                   jederzeit das Recht auf unentgeltliche Auskunft über Ihre
                   gespeicherten personenbezogenen Daten, deren Herkunft und
                   Empfänger und den Zweck der Datenverarbeitung und ggf. ein
-                  Recht auf Berichtigung oder Löschung dieser Daten. Hierzu
-                  sowie zu weiteren Fragen zum Thema personenbezogene Daten
-                  können Sie sich jederzeit an uns wenden.
+                  Recht auf Berichtigung oder Löschung dieser Daten.
                 </p>
               </section>
 
@@ -261,10 +259,6 @@ export default function DatenschutzPage() {
                   <li>Uhrzeit der Serveranfrage</li>
                   <li>IP-Adresse</li>
                 </ul>
-                <p className="mt-3 leading-relaxed">
-                  Eine Zusammenführung dieser Daten mit anderen Datenquellen
-                  wird nicht vorgenommen.
-                </p>
 
                 <h3 className="mb-2 mt-6 font-display text-lg font-medium text-foreground">
                   Lokale Speicherung (localStorage)
@@ -277,9 +271,7 @@ export default function DatenschutzPage() {
                     nicht an unsere Server übertragen
                   </strong>
                   . Sie verbleiben ausschließlich auf Ihrem Endgerät und
-                  können jederzeit von Ihnen gelöscht werden, indem Sie die
-                  Browserdaten löschen oder die entsprechenden Einträge in
-                  unserem Archiv entfernen.
+                  können jederzeit von Ihnen gelöscht werden.
                 </p>
                 <p className="mt-3 leading-relaxed">
                   In der localStorage werden folgende Daten gespeichert:
@@ -292,12 +284,6 @@ export default function DatenschutzPage() {
                   <li>Status der Kündigung (erstellt/gesendet/bestätigt)</li>
                   <li>Persönliche Notizen</li>
                 </ul>
-                <p className="mt-3 leading-relaxed">
-                  Die Rechtsgrundlage für diese Verarbeitung ist Art. 6 Abs. 1
-                  lit. a DSGVO (Einwilligung) bzw. Art. 6 Abs. 1 lit. f DSGVO
-                  (berechtigtes Interesse an der Bereitstellung der
-                  Archivfunktion).
-                </p>
 
                 <h3 className="mb-2 mt-6 font-display text-lg font-medium text-foreground">
                   Besucherzähler
@@ -306,8 +292,7 @@ export default function DatenschutzPage() {
                   Wir verwenden einen einfachen, lokal im Browser gespeicherten
                   Besucherzähler. Dieser Zähler speichert keine personenbezogenen
                   Daten und dient ausschließlich der Anzeige einer ungefähren
-                  Besucherzahl auf der Website. Es werden keine Cookies gesetzt
-                  und keine Daten an Dritte übermittelt.
+                  Besucherzahl auf der Website.
                 </p>
               </section>
 
@@ -319,7 +304,10 @@ export default function DatenschutzPage() {
                   Bei Fragen zum Datenschutz erreichen Sie uns unter:
                 </p>
                 <p className="mt-3 leading-relaxed">
-                  E-Mail: datenschutz@kuendigungsheld.de
+                  E-Mail:{" "}
+                  <a href="mailto:kundigungsheld@gmail.com" className="text-primary underline underline-offset-2 hover:text-primary/80">
+                    kundigungsheld@gmail.com
+                  </a>
                 </p>
               </section>
             </div>

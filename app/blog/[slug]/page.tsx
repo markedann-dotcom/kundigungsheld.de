@@ -177,7 +177,7 @@ export default async function BlogArticlePage({ params }: Props) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(getArticleJsonLd(article)) }}
       />
       <Navbar />
-      <main className="bg-[hsl(210,40%,98%)]">
+      <main className="bg-background">
         <article className="py-12 lg:py-16">
           <div className="mx-auto max-w-3xl px-4 lg:px-8">
             <div className="mb-8">
@@ -242,7 +242,7 @@ export default async function BlogArticlePage({ params }: Props) {
               </div>
             </header>
 
-            <div className="rounded-2xl border border-border/60 bg-white p-6 shadow-sm sm:p-8 lg:p-10">
+            <div className="rounded-2xl border border-border/60 bg-card p-6 shadow-sm sm:p-8 lg:p-10">
               {renderContent(article.content)}
             </div>
 
@@ -272,7 +272,7 @@ export default async function BlogArticlePage({ params }: Props) {
                   <Link
                     key={a.slug}
                     href={`/blog/${a.slug}`}
-                    className="group flex flex-col rounded-2xl border border-border/60 bg-white p-6 transition-all hover:border-primary/30 hover:shadow-md"
+                    className="group flex flex-col rounded-2xl border border-border/60 bg-card p-6 transition-all hover:border-primary/30 hover:shadow-md"
                   >
                     <span className="inline-flex w-fit rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
                       {a.category}

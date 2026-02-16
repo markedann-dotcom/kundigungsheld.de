@@ -11,7 +11,7 @@ import { AnimateIn } from "@/components/animate-in"
 const features = [
   {
     icon: Building2,
-    title: "120+ Unternehmen",
+    title: "150+ Unternehmen",
     description:
       "Von Telekom bis Netflix, von Allianz bis Trade Republic - Adressen und Fristen aller wichtigen Anbieter.",
   },
@@ -49,7 +49,7 @@ const features = [
 
 export function FeaturesSection() {
   return (
-    <section id="funktionen" className="bg-white py-20 lg:py-28">
+    <section id="funktionen" className="bg-card py-20 lg:py-28">
       <div className="mx-auto max-w-7xl px-4 lg:px-8">
         <AnimateIn>
           <div className="mx-auto max-w-2xl text-center">
@@ -71,8 +71,8 @@ export function FeaturesSection() {
         <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {features.map((feature, i) => (
             <AnimateIn key={feature.title} delay={i * 80}>
-              <div className="group relative h-full rounded-2xl border border-border/60 bg-white p-7 transition-all duration-300 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5">
-                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/8 text-primary transition-colors duration-300 group-hover:bg-primary group-hover:text-white">
+              <div className="group relative h-full rounded-2xl border border-border/60 bg-background p-7 transition-all duration-300 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5">
+                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/8 text-primary transition-colors duration-300 group-hover:bg-primary group-hover:text-primary-foreground">
                   <feature.icon className="h-6 w-6" />
                 </div>
                 <h3 className="font-display text-lg font-semibold text-foreground">

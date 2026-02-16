@@ -14,7 +14,7 @@ const links = {
   ],
   unternehmen: [
     { label: "Blog", href: "/blog" },
-    { label: "Kontakt", href: "mailto:kontakt@kundigungsheld.de" },
+    { label: "Kontakt", href: "mailto:kundigungsheld@gmail.com" },
   ],
   rechtliches: [
     { label: "Impressum", href: "/impressum" },
@@ -88,7 +88,7 @@ export function Footer() {
         <ArrowUp className="h-5 w-5" />
       </button>
 
-      <footer className="border-t border-border/50 bg-white">
+      <footer className="border-t border-border/50 bg-card">
         <div className="mx-auto max-w-7xl px-4 py-14 lg:px-8">
           <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
             <div>
@@ -104,6 +104,12 @@ export function Footer() {
                 Deutschlands beliebtester Kündigungsgenerator. Erstellen Sie
                 rechtssichere Kündigungsschreiben in Minuten. 100% kostenlos.
               </p>
+              <a
+                href="mailto:kundigungsheld@gmail.com"
+                className="mt-3 inline-flex text-sm text-primary transition-colors hover:text-primary/80"
+              >
+                kundigungsheld@gmail.com
+              </a>
 
               {/* Visitor counter */}
               <div className="mt-5 flex items-center gap-2 rounded-lg border border-border/60 bg-secondary/50 px-3 py-2">

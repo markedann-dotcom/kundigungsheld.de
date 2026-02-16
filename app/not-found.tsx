@@ -8,7 +8,7 @@ export default function NotFound() {
   return (
     <div className="min-h-screen">
       <Navbar />
-      <main className="bg-[hsl(210,40%,98%)]">
+      <main className="bg-background">
         <section className="flex min-h-[60vh] items-center justify-center py-20">
           <div className="mx-auto max-w-lg px-4 text-center">
             <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-3xl bg-primary/10">

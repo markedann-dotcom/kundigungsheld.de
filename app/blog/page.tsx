@@ -34,7 +34,7 @@ export default function BlogPage() {
   return (
     <div className="min-h-screen">
       <Navbar />
-      <main className="bg-[hsl(210,40%,98%)]">
+      <main className="bg-background">
         <section className="py-16 lg:py-20">
           <div className="mx-auto max-w-7xl px-4 lg:px-8">
             <div className="mb-4">
@@ -65,7 +65,7 @@ export default function BlogPage() {
                 <Link
                   key={article.slug}
                   href={`/blog/${article.slug}`}
-                  className="group flex flex-col overflow-hidden rounded-2xl border border-border/60 bg-white transition-all hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5"
+                  className="group flex flex-col overflow-hidden rounded-2xl border border-border/60 bg-card transition-all hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5"
                 >
                   <div className={`flex items-center gap-2 bg-gradient-to-r ${CATEGORY_COLORS[article.category] || "from-primary to-primary/80"} px-4 py-3`}>
                     {(() => {

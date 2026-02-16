@@ -9,12 +9,13 @@ import { BlogPreviewSection } from "@/components/blog-preview-section"
 import { FaqSection } from "@/components/faq-section"
 import { CtaSection } from "@/components/cta-section"
 import { Footer } from "@/components/footer"
+import { CompanyTicker } from "@/components/company-ticker"
 
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "WebApplication",
   name: "KundigungsHeld",
-  description: "Erstellen Sie in wenigen Minuten rechtssichere Kundigungsschreiben fur uber 120 deutsche Unternehmen.",
+  description: "Erstellen Sie in wenigen Minuten rechtssichere Kundigungsschreiben fur uber 150 deutsche Unternehmen.",
   url: "https://kundigungsheld.de",
   applicationCategory: "UtilityApplication",
   operatingSystem: "Web",
@@ -40,6 +41,7 @@ export default function Home() {
       <Navbar />
       <main>
         <HeroSection />
+        <CompanyTicker />
         <StatsSection />
         <FeaturesSection />
         <HowItWorksSection />

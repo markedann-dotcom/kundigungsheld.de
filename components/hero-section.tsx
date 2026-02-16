@@ -24,7 +24,7 @@ export function HeroSection() {
           <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5">
             <span className="flex h-2 w-2 rounded-full bg-primary" />
             <span className="text-xs font-medium text-primary">
-              Über 120 Unternehmen verfügbar
+              Über 150 Unternehmen verfügbar
             </span>
           </div>
           </AnimateIn>
@@ -44,7 +44,7 @@ export function HeroSection() {
           <AnimateIn delay={300}>
           <p className="mx-auto mt-6 max-w-2xl text-pretty text-lg leading-relaxed text-muted-foreground">
             Erstellen Sie in wenigen Minuten rechtssichere Kündigungsschreiben
-            für über 120 deutsche Unternehmen. Wählen Sie Ihren Anbieter,
+            für über 150 deutsche Unternehmen. Wählen Sie Ihren Anbieter,
             füllen Sie das Formular aus, fertig.
           </p>
           </AnimateIn>
@@ -82,7 +82,7 @@ export function HeroSection() {
 
         <AnimateIn delay={600} duration={800}>
         <div className="relative mx-auto mt-16 max-w-4xl">
-          <div className="overflow-hidden rounded-2xl border border-border/80 bg-white shadow-xl shadow-primary/5">
+          <div className="overflow-hidden rounded-2xl border border-border/80 bg-card shadow-xl shadow-primary/5">
             <div className="flex items-center gap-2 border-b border-border/60 bg-muted/30 px-4 py-3">
               <div className="h-3 w-3 rounded-full bg-red-400/60" />
               <div className="h-3 w-3 rounded-full bg-yellow-400/60" />
