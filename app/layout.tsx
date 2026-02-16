@@ -1,27 +1,35 @@
 import type { Metadata, Viewport } from 'next'
-import { DM_Sans, Space_Grotesk } from 'next/font/google'
-import { ThemeProvider } from '@/components/theme-provider'
+import { Inter, Space_Grotesk } from 'next/font/google'
 
 import './globals.css'
+import { CookieBanner } from '@/components/cookie-banner'
 
-const dmSans = DM_Sans({ subsets: ['latin'], variable: '--font-dm-sans', weight: ['400', '500', '600', '700'] })
-const spaceGrotesk = Space_Grotesk({ subsets: ['latin'], variable: '--font-space-grotesk', weight: ['400', '500', '600', '700'] })
+const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
+const spaceGrotesk = Space_Grotesk({ subsets: ['latin'], variable: '--font-space-grotesk' })
 
 export const metadata: Metadata = {
-  title: 'AmtlyPhoto - Professionelle Passfotos mit KI',
+  title: 'KündigungsHeld - Verträge einfach kündigen | 100% kostenlos',
   description:
-    'Erstellen Sie professionelle Passfotos, Bewerbungsfotos und Dokumentenfotos kostenlos mit KI. Einfach Selfie hochladen und sofort ein biometrisches Foto erhalten.',
+    'Erstellen Sie in wenigen Minuten rechtssichere Kündigungsschreiben für über 120 deutsche Unternehmen. 100% kostenlos, schnell und zuverlässig.',
+  keywords: 'Kündigung, Kündigungsschreiben, Vertrag kündigen, Deutschland, Vorlage, kostenlos',
+  openGraph: {
+    title: 'KündigungsHeld - Verträge einfach kündigen',
+    description: 'Rechtssichere Kündigungsschreiben in 2 Minuten erstellen. Über 120 Unternehmen, 100% kostenlos.',
+    type: 'website',
+    locale: 'de_DE',
+    siteName: 'KündigungsHeld',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'KündigungsHeld - Verträge einfach kündigen',
+    description: 'Rechtssichere Kündigungsschreiben in 2 Minuten erstellen. 100% kostenlos.',
+  },
 }
 
 export const viewport: Viewport = {
+  themeColor: '#1a9a82',
   width: 'device-width',
   initialScale: 1,
-  maximumScale: 5,
-  userScalable: true,
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#fcfcfc' },
-    { media: '(prefers-color-scheme: dark)', color: '#0f1318' },
-  ],
 }
 
 export default function RootLayout({
@@ -30,11 +38,10 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="de" suppressHydrationWarning>
-      <body className={`${dmSans.variable} ${spaceGrotesk.variable} font-sans antialiased`}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          {children}
-        </ThemeProvider>
+    <html lang="de" className={`${inter.variable} ${spaceGrotesk.variable}`}>
+      <body className="font-sans antialiased">
+        {children}
+        <CookieBanner />
       </body>
     </html>
   )

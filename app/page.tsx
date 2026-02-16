@@ -1,38 +1,55 @@
-"use client";
+import { Navbar } from "@/components/navbar"
+import { HeroSection } from "@/components/hero-section"
+import { StatsSection } from "@/components/stats-section"
+import { FeaturesSection } from "@/components/features-section"
+import { HowItWorksSection } from "@/components/how-it-works-section"
+import { KundigungGenerator } from "@/components/kundigung-generator"
+import { TestimonialsSection } from "@/components/testimonials-section"
+import { BlogPreviewSection } from "@/components/blog-preview-section"
+import { FaqSection } from "@/components/faq-section"
+import { CtaSection } from "@/components/cta-section"
+import { Footer } from "@/components/footer"
 
-import { useCallback, useRef } from "react";
-import { Header } from "@/components/header";
-import { Hero } from "@/components/hero";
-import { BeforeAfter } from "@/components/before-after";
-import { Features } from "@/components/features";
-import { HowItWorks } from "@/components/how-it-works";
-import { SelfieGuide } from "@/components/selfie-guide";
-import { PhotoUpload } from "@/components/photo-upload";
-import { FAQ } from "@/components/faq";
-import { Footer } from "@/components/footer";
-import { ScrollToTop } from "@/components/scroll-to-top";
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  name: "KundigungsHeld",
+  description: "Erstellen Sie in wenigen Minuten rechtssichere Kundigungsschreiben fur uber 120 deutsche Unternehmen.",
+  url: "https://kundigungsheld.de",
+  applicationCategory: "UtilityApplication",
+  operatingSystem: "Web",
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "EUR",
+  },
+  author: {
+    "@type": "Person",
+    name: "Marko Volchkov",
+  },
+  inLanguage: "de",
+}
 
-export default function Page() {
-  const uploadRef = useRef<HTMLDivElement>(null);
-
-  const scrollToUpload = useCallback(() => {
-    uploadRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, []);
-
+export default function Home() {
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <Header onScrollToUpload={scrollToUpload} />
+    <div className="min-h-screen">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <Navbar />
       <main>
-        <Hero onScrollToUpload={scrollToUpload} />
-        <BeforeAfter />
-        <Features />
-        <HowItWorks />
-        <SelfieGuide />
-        <PhotoUpload ref={uploadRef} />
-        <FAQ />
+        <HeroSection />
+        <StatsSection />
+        <FeaturesSection />
+        <HowItWorksSection />
+        <KundigungGenerator />
+        <TestimonialsSection />
+        <BlogPreviewSection />
+        <FaqSection />
+        <CtaSection />
       </main>
       <Footer />
-      <ScrollToTop />
     </div>
-  );
+  )
 }

@@ -6,54 +6,46 @@
   .text-balance {
     text-wrap: balance;
   }
+  .text-pretty {
+    text-wrap: pretty;
+  }
 }
 
 @layer base {
   :root {
-    --background: 0 0% 99%;
-    --foreground: 210 18% 11%;
-    --card: 210 14% 96%;
-    --card-foreground: 210 18% 11%;
-    --popover: 0 0% 99%;
-    --popover-foreground: 210 18% 11%;
-    --primary: 172 50% 28%;
+    --background: 210 40% 98%;
+    --foreground: 222 47% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+    --primary: 173 58% 39%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 210 10% 92%;
-    --secondary-foreground: 210 12% 30%;
-    --muted: 210 8% 94%;
-    --muted-foreground: 210 6% 44%;
-    --accent: 24 85% 52%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222 47% 11%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
+    --accent: 15 90% 58%;
     --accent-foreground: 0 0% 100%;
-    --destructive: 0 72% 50%;
+    --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
-    --border: 210 10% 90%;
-    --input: 210 10% 90%;
-    --ring: 172 50% 28%;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 173 58% 39%;
+    --chart-1: 173 58% 39%;
+    --chart-2: 15 90% 58%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
     --radius: 0.75rem;
-    --surface-elevated: 0 0% 100%;
-  }
-
-  .dark {
-    --background: 210 20% 6%;
-    --foreground: 210 8% 92%;
-    --card: 210 16% 9%;
-    --card-foreground: 210 8% 92%;
-    --popover: 210 16% 9%;
-    --popover-foreground: 210 8% 92%;
-    --primary: 172 45% 42%;
-    --primary-foreground: 210 20% 6%;
-    --secondary: 210 14% 14%;
-    --secondary-foreground: 210 8% 72%;
-    --muted: 210 12% 12%;
-    --muted-foreground: 210 6% 50%;
-    --accent: 24 85% 55%;
-    --accent-foreground: 210 20% 6%;
-    --destructive: 0 72% 50%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 210 12% 16%;
-    --input: 210 12% 16%;
-    --ring: 172 45% 42%;
-    --surface-elevated: 210 14% 11%;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 173 58% 39%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 210 40% 96%;
+    --sidebar-accent-foreground: 222 47% 11%;
+    --sidebar-border: 214 32% 91%;
+    --sidebar-ring: 173 58% 39%;
   }
 }
 
@@ -61,180 +53,76 @@
   * {
     @apply border-border;
   }
-
   html {
     scroll-behavior: smooth;
   }
-
   body {
     @apply bg-background text-foreground;
   }
 }
 
-/* Selection color */
-::selection {
-  background: hsl(var(--primary) / 0.2);
-  color: hsl(var(--foreground));
+/* Page fade-in animation */
+@keyframes page-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-/* Scrollbar styling */
-::-webkit-scrollbar {
-  width: 5px;
-}
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-::-webkit-scrollbar-thumb {
-  background: hsl(var(--border));
-  border-radius: 999px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--muted-foreground) / 0.5);
+main {
+  animation: page-fade-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-/* ── Scroll-triggered reveal animations ─────────────────────── */
-
-.scroll-reveal {
-  opacity: 0;
-  transform: translateY(28px);
-  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+/* Smooth transitions for interactive elements */
+a, button {
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.scroll-reveal.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
+/* Print styles for Kündigungsschreiben */
+@media print {
+  header, footer, nav,
+  .cookie-banner,
+  .scroll-to-top,
+  [data-no-print] {
+    display: none !important;
+  }
 
-/* Staggered children */
-.scroll-reveal-stagger > * {
-  opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-}
+  body {
+    background: white !important;
+    color: black !important;
+    font-size: 12pt;
+    line-height: 1.5;
+  }
 
-.scroll-reveal-stagger.visible > *:nth-child(1) { transition-delay: 0ms; }
-.scroll-reveal-stagger.visible > *:nth-child(2) { transition-delay: 100ms; }
-.scroll-reveal-stagger.visible > *:nth-child(3) { transition-delay: 200ms; }
-.scroll-reveal-stagger.visible > *:nth-child(4) { transition-delay: 300ms; }
-.scroll-reveal-stagger.visible > *:nth-child(5) { transition-delay: 400ms; }
-.scroll-reveal-stagger.visible > *:nth-child(6) { transition-delay: 500ms; }
+  main {
+    animation: none !important;
+  }
 
-.scroll-reveal-stagger.visible > * {
-  opacity: 1;
-  transform: translateY(0);
-}
+  a {
+    text-decoration: none !important;
+    color: black !important;
+  }
 
-/* ── Keyframe animations ────────────────────────────────────── */
+  pre {
+    white-space: pre-wrap;
+    font-family: "Times New Roman", serif;
+    font-size: 12pt;
+    line-height: 1.6;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+  }
 
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-8px); }
-}
+  .rounded-2xl, .rounded-xl, .rounded-lg, .rounded-full {
+    border-radius: 0 !important;
+  }
 
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-
-@keyframes pulse-ring {
-  0% { transform: scale(0.95); opacity: 0.7; }
-  50% { transform: scale(1.05); opacity: 0.3; }
-  100% { transform: scale(0.95); opacity: 0.7; }
-}
-
-@keyframes progress-glow {
-  0%, 100% { box-shadow: 0 0 8px hsl(var(--primary) / 0.3); }
-  50% { box-shadow: 0 0 24px hsl(var(--primary) / 0.5); }
-}
-
-@keyframes fade-in-up {
-  0% { opacity: 0; transform: translateY(16px); }
-  100% { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes glow-pulse {
-  0%, 100% { opacity: 0.4; }
-  50% { opacity: 0.8; }
-}
-
-@keyframes hero-enter {
-  0% { opacity: 0; transform: translateY(32px) scale(0.97); }
-  100% { opacity: 1; transform: translateY(0) scale(1); }
-}
-
-@keyframes grain {
-  0%, 100% { transform: translate(0, 0); }
-  10% { transform: translate(-5%, -10%); }
-  20% { transform: translate(-15%, 5%); }
-  30% { transform: translate(7%, -25%); }
-  40% { transform: translate(-5%, 25%); }
-  50% { transform: translate(-15%, 10%); }
-  60% { transform: translate(15%, 0%); }
-  70% { transform: translate(0%, 15%); }
-  80% { transform: translate(3%, 35%); }
-  90% { transform: translate(-10%, 10%); }
-}
-
-.animate-float {
-  animation: float 5s ease-in-out infinite;
-}
-
-.animate-shimmer {
-  animation: shimmer 2s linear infinite;
-  background-size: 200% 100%;
-}
-
-.animate-pulse-ring {
-  animation: pulse-ring 2s ease-in-out infinite;
-}
-
-.animate-progress-glow {
-  animation: progress-glow 2s ease-in-out infinite;
-}
-
-.animate-fade-in-up {
-  animation: fade-in-up 0.6s ease-out both;
-}
-
-.animate-glow-pulse {
-  animation: glow-pulse 3s ease-in-out infinite;
-}
-
-.animate-hero-enter {
-  animation: hero-enter 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-
-.animate-hero-enter-delay-1 {
-  animation: hero-enter 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.12s both;
-}
-
-.animate-hero-enter-delay-2 {
-  animation: hero-enter 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.24s both;
-}
-
-.animate-hero-enter-delay-3 {
-  animation: hero-enter 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.36s both;
-}
-
-.animate-hero-enter-delay-4 {
-  animation: hero-enter 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.48s both;
-}
-
-/* Subtle noise overlay */
-.noise-overlay::before {
-  content: '';
-  position: absolute;
-  inset: -50%;
-  width: 200%;
-  height: 200%;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-  opacity: 0.03;
-  pointer-events: none;
-  animation: grain 8s steps(10) infinite;
-}
-
-.dark .noise-overlay::before {
-  opacity: 0.04;
+  @page {
+    margin: 2cm;
+    size: A4;
+  }
 }
