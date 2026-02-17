@@ -13,6 +13,7 @@ const badges = [
 export function HeroSection() {
   return (
     <section className="relative overflow-hidden bg-gradient-to-b from-[hsl(173,58%,39%,0.06)] via-background to-background">
+      {/* Фоновые декоративные пятна */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -right-32 -top-32 h-96 w-96 rounded-full bg-primary/5 blur-3xl" />
         <div className="absolute -bottom-16 -left-16 h-72 w-72 rounded-full bg-accent/5 blur-3xl" />
@@ -20,6 +21,7 @@ export function HeroSection() {
 
       <div className="relative mx-auto max-w-7xl px-4 pb-20 pt-16 lg:px-8 lg:pb-28 lg:pt-24">
         <div className="mx-auto max-w-3xl text-center">
+          
           <AnimateIn delay={100}>
             <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5">
               <span className="flex h-2 w-2 rounded-full bg-primary" />
@@ -80,23 +82,21 @@ export function HeroSection() {
           </AnimateIn>
         </div>
 
+        {/* Секция с Видео */}
         <AnimateIn delay={600} duration={800}>
           <div className="relative mx-auto mt-16 max-w-4xl">
-            {/* БЛОК ВИДЕО */}
-            <div className="overflow-hidden rounded-2xl border border-border/80 bg-card shadow-xl shadow-primary/5">
+            {/* Я убрал классы border, shadow и bg-card, чтобы не было рамки */}
+            <div className="overflow-hidden rounded-2xl"> 
               <video
-                src="/hero.mp4"      // Имя файла в папке public
-                autoPlay             // Автозапуск
-                loop                 // Зациклить
-                muted                // Без звука (обязательно для автозапуска!)
-                playsInline          // Для iPhone (чтобы не открывалось на весь экран)
-                className="w-full h-auto object-cover"
+                src="/hero.mp4"       // Убедись, что файл называется hero.mp4 и лежит в public
+                autoPlay
+                loop
+                muted                 // Обязательно для автозапуска
+                playsInline           // Обязательно для iPhone
+                className="w-full h-auto object-cover mix-blend-multiply" // <--- ЭТО УБИРАЕТ БЕЛЫЙ ФОН
                 width="100%"
                 height="100%"
-              >
-                {/* Текст, если браузер совсем старый */}
-                Ihr Browser unterstützt dieses Video nicht.
-              </video>
+              />
             </div>
           </div>
         </AnimateIn>
