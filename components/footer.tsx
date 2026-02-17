@@ -51,6 +51,21 @@ function incrementVisitor(): number {
   }
 }
 
+// TikTok SVG иконка (официальный логотип)
+function TikTokIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+    >
+      <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.32 6.32 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.74a4.85 4.85 0 0 1-1.01-.05z" />
+    </svg>
+  )
+}
+
 export function Footer() {
   const [visitorCount, setVisitorCount] = useState(0)
   const [showScrollTop, setShowScrollTop] = useState(false)
@@ -111,8 +126,22 @@ export function Footer() {
                 kundigungsheld@gmail.com
               </a>
 
+              {/* TikTok Link */}
+              <div className="mt-4">
+                <a
+                  href="https://www.tiktok.com/@kundigungs.held"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group inline-flex items-center gap-2.5 rounded-lg border border-border/60 bg-secondary/50 px-3 py-2 text-sm text-muted-foreground transition-all duration-200 hover:border-primary/30 hover:bg-primary/5 hover:text-foreground"
+                  aria-label="KündigungsHeld auf TikTok"
+                >
+                  <TikTokIcon className="h-4 w-4 text-muted-foreground transition-colors group-hover:text-primary" />
+                  <span className="font-medium">@kundigungs.held</span>
+                </a>
+              </div>
+
               {/* Visitor counter */}
-              <div className="mt-5 flex items-center gap-2 rounded-lg border border-border/60 bg-secondary/50 px-3 py-2">
+              <div className="mt-3 flex items-center gap-2 rounded-lg border border-border/60 bg-secondary/50 px-3 py-2">
                 <Eye className="h-4 w-4 text-primary" />
                 <span className="text-xs font-medium text-muted-foreground">
                   <span className="tabular-nums font-semibold text-foreground">
@@ -153,6 +182,15 @@ export function Footer() {
               {new Date().getFullYear()} KündigungsHeld. Alle Rechte vorbehalten.
             </p>
             <div className="flex items-center gap-4">
+              <a
+                href="https://www.tiktok.com/@kundigungs.held"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="TikTok"
+                className="text-muted-foreground/60 transition-colors duration-200 hover:text-foreground"
+              >
+                <TikTokIcon className="h-4 w-4" />
+              </a>
               <Link href="/impressum" className="text-xs text-muted-foreground/60 transition-colors duration-200 hover:text-muted-foreground">
                 Impressum
               </Link>
