@@ -1,6 +1,6 @@
 "use client"
 
-import { ArrowRight, CheckCircle2, Shield, Zap, FileText, Download, Printer } from "lucide-react"
+import { ArrowRight, CheckCircle2, Shield, Zap, FileText, Download } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { AnimateIn } from "@/components/animate-in"
 
@@ -14,12 +14,12 @@ export function HeroSection() {
   return (
     <section className="relative overflow-hidden bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/10 via-background to-background">
       
-      {/* Глобальный фон (Градиентные пятна) */}
+      {/* Фон (пятна) */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-[20%] left-[50%] h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-primary/20 blur-[120px] opacity-40" />
       </div>
 
-      <div className="relative mx-auto max-w-7xl px-4 pb-20 pt-16 lg:px-8 lg:pb-28 lg:pt-24">
+      <div className="relative mx-auto max-w-7xl px-4 pb-16 pt-16 lg:px-8 lg:pb-20 lg:pt-24">
         <div className="mx-auto max-w-3xl text-center z-10 relative">
           
           <AnimateIn delay={100}>
@@ -46,14 +46,14 @@ export function HeroSection() {
           </AnimateIn>
 
           <AnimateIn delay={300}>
-            <p className="mx-auto mt-8 max-w-2xl text-lg leading-relaxed text-muted-foreground font-medium">
+            <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground font-medium">
               Erstellen Sie in wenigen Minuten rechtssichere Kündigungsschreiben. 
               Kein Anwalt nötig, keine Kosten, sofortiger Download.
             </p>
           </AnimateIn>
 
           <AnimateIn delay={400}>
-            <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+            <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
               <Button size="lg" className="h-12 rounded-full px-8 text-base shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all duration-300" asChild>
                 <a href="#generator">
                   Kündigung erstellen
@@ -70,138 +70,82 @@ export function HeroSection() {
               </Button>
             </div>
           </AnimateIn>
+        </div>
 
-          <AnimateIn delay={500}>
-            <div className="mt-12 flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
+        {/* --- COMPACT MOCKUP (Компактный вариант) --- */}
+        <AnimateIn delay={500} duration={1000}>
+          <div className="relative mx-auto mt-16 max-w-2xl perspective-1000 group">
+            
+            {/* Свечение за документом */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60%] h-[60%] bg-primary/40 blur-[60px] rounded-full opacity-60 pointer-events-none group-hover:opacity-80 transition-opacity duration-700" />
+
+            {/* Левитирующий документ */}
+            <div className="relative mx-auto w-[280px] sm:w-[320px] aspect-[1/1.4] bg-white rounded-xl shadow-2xl shadow-primary/20 border border-white/40 ring-1 ring-black/5 transform rotate-x-12 rotate-y-6 rotate-z-[-2deg] transition-all duration-700 hover:rotate-0 hover:scale-105 hover:shadow-primary/40">
+                
+                {/* Содержимое "Листа бумаги" */}
+                <div className="p-6 flex flex-col h-full bg-gradient-to-b from-white to-gray-50/50 rounded-xl">
+                    {/* Шапка письма */}
+                    <div className="flex justify-between items-start mb-6 opacity-80">
+                         <div className="space-y-1.5">
+                            <div className="h-2 w-16 bg-slate-800 rounded-full" />
+                            <div className="h-1.5 w-24 bg-slate-300 rounded-full" />
+                         </div>
+                         <Shield className="h-6 w-6 text-primary/80" />
+                    </div>
+                    
+                    {/* Полоски текста */}
+                    <div className="space-y-3 mb-auto opacity-60">
+                         <div className="h-1.5 w-full bg-slate-200 rounded-full" />
+                         <div className="h-1.5 w-full bg-slate-200 rounded-full" />
+                         <div className="h-1.5 w-3/4 bg-slate-200 rounded-full" />
+                         <div className="h-1.5 w-full bg-slate-200 rounded-full" />
+                    </div>
+
+                    {/* Печать / Подпись */}
+                    <div className="mt-6 flex items-center justify-between border-t border-slate-100 pt-4">
+                        <div className="flex items-center gap-2">
+                             <div className="h-8 w-8 rounded-full bg-green-100 flex items-center justify-center text-green-600">
+                                <CheckCircle2 className="h-4 w-4" />
+                             </div>
+                             <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                                Geprüft
+                             </div>
+                        </div>
+                        <div className="font-handwriting text-slate-400 text-lg rotate-[-5deg]">
+                           Muster Max
+                        </div>
+                    </div>
+                </div>
+
+                {/* Плавающие бейджики (Floating Elements) */}
+                <div className="absolute -right-12 top-10 animate-bounce delay-100 duration-[4000ms] hidden sm:flex">
+                     <div className="flex items-center gap-2 rounded-lg bg-white/90 backdrop-blur px-3 py-2 shadow-lg border border-white/50">
+                        <FileText className="h-4 w-4 text-red-500" />
+                        <span className="text-xs font-bold text-slate-700">PDF</span>
+                     </div>
+                </div>
+
+                <div className="absolute -left-10 bottom-20 animate-bounce delay-700 duration-[5000ms] hidden sm:flex">
+                     <div className="flex items-center gap-2 rounded-lg bg-white/90 backdrop-blur px-3 py-2 shadow-lg border border-white/50">
+                        <Download className="h-4 w-4 text-blue-500" />
+                        <span className="text-xs font-bold text-slate-700">Download</span>
+                     </div>
+                </div>
+
+            </div>
+          </div>
+        </AnimateIn>
+
+        {/* Иконки внизу, чтобы заполнить пустоту */}
+        <AnimateIn delay={600}>
+            <div className="mt-16 flex flex-wrap items-center justify-center gap-x-8 gap-y-4 border-t border-border/40 pt-8 max-w-2xl mx-auto">
               {badges.map((badge) => (
-                <div key={badge.label} className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
-                  <div className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/10 text-primary">
-                    <badge.icon className="h-3.5 w-3.5" />
-                  </div>
+                <div key={badge.label} className="flex items-center gap-2 text-sm font-medium text-muted-foreground/80">
+                  <badge.icon className="h-4 w-4 text-primary" />
                   <span>{badge.label}</span>
                 </div>
               ))}
             </div>
-          </AnimateIn>
-        </div>
-
-        {/* --- PREMIUM MOCKUP SECTION --- */}
-        <AnimateIn delay={600} duration={1000}>
-          <div className="relative mx-auto mt-20 max-w-5xl perspective-1000">
-            
-            {/* Декоративное свечение за карточкой */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] h-[90%] bg-gradient-to-r from-teal-500/30 to-emerald-500/30 blur-[80px] rounded-full opacity-50 pointer-events-none" />
-
-            {/* Главная карточка (Стекло) */}
-            <div className="relative overflow-hidden rounded-2xl border border-white/20 bg-white/70 shadow-2xl backdrop-blur-xl dark:bg-black/40 dark:border-white/10 ring-1 ring-black/5">
-              
-              {/* Шапка интерфейса */}
-              <div className="flex items-center justify-between border-b border-black/5 bg-white/50 px-6 py-4 backdrop-blur-md">
-                <div className="flex gap-2">
-                  <div className="h-3 w-3 rounded-full bg-red-400/90 shadow-sm" />
-                  <div className="h-3 w-3 rounded-full bg-amber-400/90 shadow-sm" />
-                  <div className="h-3 w-3 rounded-full bg-green-400/90 shadow-sm" />
-                </div>
-                <div className="flex items-center gap-2 rounded-lg bg-black/5 px-3 py-1 text-[10px] font-medium text-muted-foreground uppercase tracking-wider">
-                  <Shield className="h-3 w-3" />
-                  Secure Document
-                </div>
-              </div>
-
-              {/* Тело мокапа */}
-              <div className="relative flex flex-col md:flex-row min-h-[400px]">
-                
-                {/* Левая часть: Форма (Имитация) */}
-                <div className="flex-1 p-8 md:p-12 space-y-6">
-                  <div className="space-y-2">
-                    <div className="h-2 w-20 rounded-full bg-primary/20" />
-                    <h3 className="text-2xl font-bold text-foreground">Kündigungsvorlage</h3>
-                    <p className="text-sm text-muted-foreground">Wählen Sie Ihren Anbieter aus.</p>
-                  </div>
-
-                  {/* Имитация полей ввода */}
-                  <div className="space-y-4 pt-4">
-                     <div className="flex items-center gap-4 rounded-xl border border-black/5 bg-white p-4 shadow-sm">
-                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-50 text-blue-600">
-                           <span className="font-bold">V</span>
-                        </div>
-                        <div className="flex-1">
-                           <div className="text-sm font-semibold">Vodafone GmbH</div>
-                           <div className="text-xs text-muted-foreground">Kundenservice</div>
-                        </div>
-                        <CheckCircle2 className="h-5 w-5 text-primary" />
-                     </div>
-                     
-                     <div className="h-12 w-full rounded-xl bg-black/5 animate-pulse" />
-                     <div className="h-12 w-3/4 rounded-xl bg-black/5 animate-pulse delay-75" />
-                  </div>
-
-                  {/* Кнопка в интерфейсе */}
-                  <div className="pt-4">
-                    <div className="flex w-full items-center justify-center gap-2 rounded-xl bg-foreground py-3 text-sm font-medium text-background shadow-lg">
-                      Kündigung jetzt erstellen
-                    </div>
-                  </div>
-                </div>
-
-                {/* Правая часть: Результат (Превью документа) */}
-                <div className="relative w-full md:w-[45%] bg-muted/30 border-l border-black/5 p-8 flex items-center justify-center overflow-hidden">
-                   
-                   {/* Лист бумаги (Документ) */}
-                   <div className="relative w-[240px] bg-white shadow-xl shadow-black/10 rounded-lg p-6 rotate-[-2deg] transition-transform hover:rotate-0 duration-500 border border-black/5">
-                      {/* Шапка документа */}
-                      <div className="flex justify-between items-start mb-6">
-                         <div className="space-y-1">
-                            <div className="h-2 w-12 bg-black/80 rounded-full" />
-                            <div className="h-1.5 w-20 bg-black/20 rounded-full" />
-                         </div>
-                         <div className="h-8 w-8 rounded-md bg-primary/10 flex items-center justify-center">
-                            <Shield className="h-4 w-4 text-primary" />
-                         </div>
-                      </div>
-                      
-                      {/* Текст документа (полоски) */}
-                      <div className="space-y-2.5 mb-8">
-                         <div className="h-1.5 w-full bg-black/10 rounded-full" />
-                         <div className="h-1.5 w-full bg-black/10 rounded-full" />
-                         <div className="h-1.5 w-2/3 bg-black/10 rounded-full" />
-                         <div className="h-1.5 w-full bg-black/10 rounded-full" />
-                         <div className="h-1.5 w-1/2 bg-black/10 rounded-full" />
-                      </div>
-
-                      {/* Плашка действия (Скачать) */}
-                      <div className="absolute bottom-6 left-6 right-6">
-                         <div className="flex items-center gap-3 rounded-lg bg-green-50 px-3 py-2 border border-green-100">
-                            <div className="h-6 w-6 rounded-full bg-green-500 flex items-center justify-center text-white">
-                               <CheckCircle2 className="h-3 w-3" />
-                            </div>
-                            <div className="text-[10px] font-semibold text-green-700">
-                               Rechtssicher geprüft
-                            </div>
-                         </div>
-                      </div>
-                   </div>
-
-                   {/* Всплывающие элементы (Floating Cards) */}
-                   <div className="absolute top-10 right-6 animate-bounce delay-700 duration-[3000ms]">
-                      <div className="flex items-center gap-2 rounded-lg bg-white px-3 py-2 shadow-lg border border-black/5">
-                         <FileText className="h-3.5 w-3.5 text-blue-500" />
-                         <span className="text-[10px] font-bold text-foreground">PDF</span>
-                      </div>
-                   </div>
-
-                   <div className="absolute bottom-10 left-6 animate-bounce delay-100 duration-[3000ms]">
-                      <div className="flex items-center gap-2 rounded-lg bg-white px-3 py-2 shadow-lg border border-black/5">
-                         <Printer className="h-3.5 w-3.5 text-orange-500" />
-                         <span className="text-[10px] font-bold text-foreground">Druckfertig</span>
-                      </div>
-                   </div>
-
-                </div>
-              </div>
-
-            </div>
-          </div>
         </AnimateIn>
 
       </div>
