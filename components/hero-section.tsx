@@ -82,18 +82,21 @@ export function HeroSection() {
 
         <AnimateIn delay={600} duration={800}>
           <div className="relative mx-auto mt-16 max-w-4xl">
-            {/* ВИДЕО БЛОК
-               Замени '/hero.mp4' на имя своего файла в папке public
-            */}
+            {/* БЛОК ВИДЕО */}
             <div className="overflow-hidden rounded-2xl border border-border/80 bg-card shadow-xl shadow-primary/5">
-              <video 
-                src="/hero.mp4" 
-                autoPlay 
-                loop 
-                muted 
-                playsInline 
+              <video
+                src="/hero.mp4"      // Имя файла в папке public
+                autoPlay             // Автозапуск
+                loop                 // Зациклить
+                muted                // Без звука (обязательно для автозапуска!)
+                playsInline          // Для iPhone (чтобы не открывалось на весь экран)
                 className="w-full h-auto object-cover"
-              />
+                width="100%"
+                height="100%"
+              >
+                {/* Текст, если браузер совсем старый */}
+                Ihr Browser unterstützt dieses Video nicht.
+              </video>
             </div>
           </div>
         </AnimateIn>
