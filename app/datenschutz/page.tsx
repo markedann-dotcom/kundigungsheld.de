@@ -766,7 +766,7 @@ export default function DatenschutzPage() {
 
               <section>
                 <p className="mt-8 text-sm text-muted-foreground italic">
-                  Diese Datenschutzerklärung wurde zuletzt am 17. Februar 2025
+                  Diese Datenschutzerklärung wurde zuletzt am 17. Februar 2026
                   aktualisiert und gilt für alle Nutzer der Website
                   kuendigungsheld.de
                 </p>
