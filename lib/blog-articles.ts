@@ -16,8 +16,8 @@ export const blogArticles: BlogArticle[] = [
     title: "Kündigungsfristen richtig berechnen: So vermeiden Sie teure Fehler",
     excerpt:
       "Erfahren Sie, wie Sie Kündigungsfristen korrekt berechnen und welche gesetzlichen Regelungen in Deutschland gelten. Ein Leitfaden von Rechtsanwalt Dr. Müller.",
-    author: "Dr. Thomas Müller",
-    authorRole: "Rechtsanwalt, Fachanwalt für Vertragsrecht",
+    author: "KündigungsHeld Redaktion",
+    authorRole: "Geprüfte Rechtsinformationen",
     date: "2025-12-10",
     readTime: "7 Min.",
     category: "Vertragsrecht",
@@ -45,21 +45,24 @@ Die Fristberechnung folgt klaren Regeln:
 
 ## Praxisbeispiel
 
-Ihr Mobilfunkvertrag hat eine Kündigungsfrist von einem Monat zum Vertragsende. Das Vertragsende ist der 31. März. Die Kündigung muss also spätestens am 28. Februar beim Anbieter eingehen. Da der Zugangsweg (Post) einige Tage dauern kann, empfehle ich, die Kündigung spätestens eine Woche vorher abzusenden.
+Ihr Mobilfunkvertrag hat eine Kündigungsfrist von einem Monat zum Vertragsende. Das Vertragsende ist der 31. März. Die Kündigung muss also spätestens am 28. Februar beim Anbieter eingehen. Da der Zugangsweg (Post) einige Tage dauern kann, empfehlen wir, die Kündigung spätestens eine Woche vorher abzusenden.
 
-## Mein Tipp
+## Unser Tipp
 
 Senden Sie Kündigungen immer per **Einschreiben mit Rückschein**. Nur so haben Sie einen rechtssicheren Nachweis über den Zugang. E-Mail-Kündigungen sind zwar oft möglich, aber der Beweis des Zugangs ist schwieriger.
 
-Nutzen Sie den KündigungsHeld-Generator, um fristgerechte Kündigungsschreiben zu erstellen, die alle rechtlichen Anforderungen erfüllen.`,
+Nutzen Sie den KündigungsHeld-Generator, um fristgerechte Kündigungsschreiben zu erstellen, die alle rechtlichen Anforderungen erfüllen.
+
+---
+⚠️ *Diese Informationen stellen keine Rechtsberatung dar. Bei rechtlichen Fragen wenden Sie sich an einen zugelassenen Rechtsanwalt.*`,
   },
   {
     slug: "sonderkuendigungsrecht-wann-greift-es",
     title: "Sonderkündigungsrecht: Wann Sie Verträge sofort beenden können",
     excerpt:
       "Das Sonderkündigungsrecht erlaubt es Verbrauchern, Verträge vorzeitig zu beenden. Rechtsanwältin Weber erklärt, in welchen Fällen es greift.",
-    author: "Anna Weber",
-    authorRole: "Rechtsanwältin, Kanzlei Weber & Partner",
+    author: "KündigungsHeld Redaktion",
+    authorRole: "Geprüfte Rechtsinformationen",
     date: "2025-11-28",
     readTime: "6 Min.",
     category: "Verbraucherrecht",
@@ -102,15 +105,18 @@ Auch bei einer Sonderkündigung müssen Sie die Schriftform beachten. Ein formge
 
 ## Praxistipp
 
-Dokumentieren Sie den Grund für die Sonderkündigung sorgfältig. Bewahren Sie Preiserhöhungsschreiben, Störungsprotokolle oder Umzugsnachweise auf. Im Streitfall müssen Sie den Sonderkündigungsgrund nachweisen können.`,
+Dokumentieren Sie den Grund für die Sonderkündigung sorgfältig. Bewahren Sie Preiserhöhungsschreiben, Störungsprotokolle oder Umzugsnachweise auf. Im Streitfall müssen Sie den Sonderkündigungsgrund nachweisen können.
+
+---
+⚠️ *Diese Informationen stellen keine Rechtsberatung dar. Bei rechtlichen Fragen wenden Sie sich an einen zugelassenen Rechtsanwalt.*`,
   },
   {
     slug: "widerrufsrecht-14-tage-frist",
     title: "Widerrufsrecht: So nutzen Sie die 14-Tage-Frist richtig",
     excerpt:
       "Das 14-tägige Widerrufsrecht schützt Verbraucher bei Online-Käufen und Fernabsatzverträgen. Dr. Schulz erklärt die wichtigsten Regeln.",
-    author: "Dr. Michael Schulz",
-    authorRole: "Fachanwalt für IT-Recht",
+    author: "KündigungsHeld Redaktion",
+    authorRole: "Geprüfte Rechtsinformationen",
     date: "2025-11-15",
     readTime: "5 Min.",
     category: "Verbraucherrecht",
@@ -141,7 +147,7 @@ Der Widerruf muss **eindeutig erklärt** werden. Er kann erfolgen durch:
 - Nutzung des Muster-Widerrufsformulars
 - Jede andere eindeutige Erklärung
 
-Ein Widerruf per Telefon ist ebenfalls möglich, aber schwer zu beweisen. Ich empfehle daher immer die Schriftform.
+Ein Widerruf per Telefon ist ebenfalls möglich, aber schwer zu beweisen. Daher empfehlen wir immer die Schriftform.
 
 ## Ausnahmen vom Widerrufsrecht
 
@@ -156,15 +162,18 @@ Kein Widerrufsrecht besteht bei:
 Nach einem wirksamen Widerruf muss der Händler:
 1. Den Kaufpreis innerhalb von 14 Tagen erstatten
 2. Auch die ursprünglichen Versandkosten übernehmen
-3. Die Rücksendekosten muss der Verbraucher nur tragen, wenn der Händler dies vorher vereinbart hat`,
+3. Die Rücksendekosten muss der Verbraucher nur tragen, wenn der Händler dies vorher vereinbart hat
+
+---
+⚠️ *Diese Informationen stellen keine Rechtsberatung dar. Bei rechtlichen Fragen wenden Sie sich an einen zugelassenen Rechtsanwalt.*`,
   },
   {
     slug: "fitnessstudio-kundigen-tipps",
-    title: "Fitnessstudio kündigen: Die besten Tipps vom Anwalt",
+    title: "Fitnessstudio kündigen: Die besten Tipps",
     excerpt:
-      "Fitnessstudio-Verträge zu kündigen kann kompliziert sein. Rechtsanwalt Fischer gibt praktische Tipps für eine erfolgreiche Kündigung.",
-    author: "Jan Fischer",
-    authorRole: "Rechtsanwalt, Verbraucherschutz",
+      "Fitnessstudio-Verträge zu kündigen kann kompliziert sein. Wir geben praktische Tipps für eine erfolgreiche Kündigung.",
+    author: "KündigungsHeld Redaktion",
+    authorRole: "Geprüfte Rechtsinformationen",
     date: "2025-11-03",
     readTime: "6 Min.",
     category: "Praxistipps",
@@ -208,19 +217,22 @@ Eine wirksame Kündigung muss mindestens enthalten:
 2. Ihren vollständigen Namen und Anschrift
 3. Die eindeutige Erklärung, dass Sie den Vertrag kündigen
 4. Das gewünschte Beendigungsdatum
-5. Ihre Unterschrift (bei schriftlicher Kündigung)`,
+5. Ihre Unterschrift (bei schriftlicher Kündigung)
+
+---
+⚠️ *Diese Informationen stellen keine Rechtsberatung dar. Bei rechtlichen Fragen wenden Sie sich an einen zugelassenen Rechtsanwalt.*`,
   },
   {
     slug: "versicherung-kuendigen-worauf-achten",
     title: "Versicherung kündigen: Worauf Sie unbedingt achten müssen",
     excerpt:
-      "Versicherungsverträge kündigen ist nicht trivial. Fachanwältin Dr. Hoffmann erklärt die Besonderheiten bei verschiedenen Versicherungsarten.",
-    author: "Dr. Claudia Hoffmann",
-    authorRole: "Fachanwältin für Versicherungsrecht",
+      "Versicherungsverträge kündigen ist nicht trivial. Wir erklären die Besonderheiten bei verschiedenen Versicherungsarten.",
+    author: "KündigungsHeld Redaktion",
+    authorRole: "Geprüfte Rechtsinformationen",
     date: "2025-10-20",
     readTime: "8 Min.",
     category: "Versicherungsrecht",
-    content: `Versicherungsverträge unterliegen besonderen Kündigungsregeln, die sich von normalen Verbraucherverträgen unterscheiden. Als Fachanwältin für Versicherungsrecht möchte ich Ihnen die wichtigsten Besonderheiten erklären.
+    content: `Versicherungsverträge unterliegen besonderen Kündigungsregeln, die sich von normalen Verbraucherverträgen unterscheiden. Hier erklären wir Ihnen die wichtigsten Besonderheiten.
 
 ## Grundsätzliche Kündigungsfrist
 
@@ -258,19 +270,22 @@ Ein Sonderkündigungsrecht besteht bei:
 - Prüfen Sie vor der Kündigung, ob Sie nahtlos einen neuen Vertrag abschließen können
 - Bei der Kfz-Versicherung: Ohne gültigen Versicherungsschutz wird die Zulassung gelöscht
 - Bewahren Sie die Kündigungsbestätigung sorgfältig auf
-- Kündigen Sie nie eine Krankenversicherung, ohne zuvor den Anschlussschutz gesichert zu haben`,
+- Kündigen Sie nie eine Krankenversicherung, ohne zuvor den Anschlussschutz gesichert zu haben
+
+---
+⚠️ *Diese Informationen stellen keine Rechtsberatung dar. Bei rechtlichen Fragen wenden Sie sich an einen zugelassenen Rechtsanwalt.*`,
   },
   {
     slug: "mietvertrag-kuendigung-mieter",
     title: "Mietvertrag kündigen als Mieter: Rechte und Pflichten",
     excerpt:
-      "Was Mieter bei der Kündigung ihres Mietvertrags beachten müssen. Rechtsanwalt Dr. Braun erklärt die gesetzlichen Regelungen und häufige Fallstricke.",
-    author: "Dr. Stefan Braun",
-    authorRole: "Rechtsanwalt, Fachanwalt für Mietrecht",
+      "Was Mieter bei der Kündigung ihres Mietvertrags beachten müssen. Wir erklären die gesetzlichen Regelungen und häufige Fallstricke.",
+    author: "KündigungsHeld Redaktion",
+    authorRole: "Geprüfte Rechtsinformationen",
     date: "2025-10-05",
     readTime: "9 Min.",
     category: "Mietrecht",
-    content: `Als Fachanwalt für Mietrecht erlebe ich täglich, dass Mieter bei der Kündigung ihres Mietvertrags Fehler machen. Hier erfahren Sie, wie Sie es richtig machen.
+    content: `Bei der Kündigung eines Mietvertrags machen Mieter häufig vermeidbare Fehler. Hier erfahren Sie, wie Sie es richtig machen.
 
 ## Gesetzliche Kündigungsfrist für Mieter
 
@@ -313,17 +328,20 @@ Möglich bei:
 3. **Falsche Fristberechnung**: Kündigung wirkt erst zum nächsten möglichen Termin
 4. **Kündigung per E-Mail**: Erfüllt nicht das Schriftformerfordernis
 
-## Mein Rat
+## Unser Rat
 
-Senden Sie die Kündigung immer per Einschreiben und behalten Sie eine Kopie. Berechnen Sie die Frist sorgfältig und planen Sie Pufferzeit ein. Bei Unsicherheiten holen Sie sich anwaltlichen Rat.`,
+Senden Sie die Kündigung immer per Einschreiben und behalten Sie eine Kopie. Berechnen Sie die Frist sorgfältig und planen Sie Pufferzeit ein. Bei Unsicherheiten holen Sie sich anwaltlichen Rat.
+
+---
+⚠️ *Diese Informationen stellen keine Rechtsberatung dar. Bei rechtlichen Fragen wenden Sie sich an einen zugelassenen Rechtsanwalt.*`,
   },
   {
     slug: "bgb-reform-2022-verbrauchervertrage",
     title: "BGB-Reform 2022: Neue Regeln für Verbraucherverträge",
     excerpt:
-      "Die BGB-Reform hat die Kündigungsrechte von Verbrauchern deutlich gestärkt. Rechtsanwältin Schneider fasst die wichtigsten Änderungen zusammen.",
-    author: "Katrin Schneider",
-    authorRole: "Rechtsanwältin, Verbraucherrecht",
+      "Die BGB-Reform hat die Kündigungsrechte von Verbrauchern deutlich gestärkt. Wir fassen die wichtigsten Änderungen zusammen.",
+    author: "KündigungsHeld Redaktion",
+    authorRole: "Geprüfte Rechtsinformationen",
     date: "2025-09-18",
     readTime: "7 Min.",
     category: "Vertragsrecht",
@@ -368,19 +386,22 @@ Die neuen Regeln gelten für:
 
 ## Fazit
 
-Die BGB-Reform 2022 ist ein großer Fortschritt für den Verbraucherschutz in Deutschland. Verträge loszuwerden ist deutlich einfacher geworden. Nutzen Sie Ihre neuen Rechte!`,
+Die BGB-Reform 2022 ist ein großer Fortschritt für den Verbraucherschutz in Deutschland. Verträge loszuwerden ist deutlich einfacher geworden. Nutzen Sie Ihre neuen Rechte!
+
+---
+⚠️ *Diese Informationen stellen keine Rechtsberatung dar. Bei rechtlichen Fragen wenden Sie sich an einen zugelassenen Rechtsanwalt.*`,
   },
   {
     slug: "handyvertrag-kuendigen-schritt-fuer-schritt",
     title: "Handyvertrag kündigen: Schritt-für-Schritt-Anleitung",
     excerpt:
       "Die vollständige Anleitung zum Kündigen Ihres Handyvertrags. Von der Fristberechnung bis zum neuen Vertrag - alles was Sie wissen müssen.",
-    author: "Martin Koch",
-    authorRole: "Rechtsanwalt, Telekommunikationsrecht",
+    author: "KündigungsHeld Redaktion",
+    authorRole: "Geprüfte Rechtsinformationen",
     date: "2025-09-02",
     readTime: "6 Min.",
     category: "Praxistipps",
-    content: `Der Handyvertrag gehört zu den am häufigsten gekündigten Verträgen in Deutschland. Jedes Jahr wechseln Millionen Deutsche ihren Mobilfunkanbieter. Hier erkläre ich Ihnen Schritt für Schritt, wie Sie vorgehen.
+    content: `Der Handyvertrag gehört zu den am häufigsten gekündigten Verträgen in Deutschland. Jedes Jahr wechseln Millionen Deutsche ihren Mobilfunkanbieter. Hier erklären wir Schritt für Schritt, wie Sie vorgehen.
 
 ## Schritt 1: Vertragsdaten zusammentragen
 
@@ -432,15 +453,18 @@ Ja, aber die Kündigung wird erst zum Ende der Mindestlaufzeit wirksam.
 Der Vertrag verlängert sich um maximal einen Monat und Sie können erneut mit 1 Monat Frist kündigen.
 
 **Muss der Anbieter die Kündigung bestätigen?**
-Ja, der Anbieter muss die Kündigung auf einem dauerhaften Datenträger bestätigen.`,
+Ja, der Anbieter muss die Kündigung auf einem dauerhaften Datenträger bestätigen.
+
+---
+⚠️ *Diese Informationen stellen keine Rechtsberatung dar. Bei rechtlichen Fragen wenden Sie sich an einen zugelassenen Rechtsanwalt.*`,
   },
   {
     slug: "energieversorger-wechseln-kundigen",
     title: "Strom- und Gasvertrag kündigen: Sparpotenzial nutzen",
     excerpt:
-      "Beim Energieversorger-Wechsel können Sie mehrere hundert Euro pro Jahr sparen. Fachanwalt Richter erklärt die rechtlichen Rahmenbedingungen.",
-    author: "Dr. Klaus Richter",
-    authorRole: "Fachanwalt für Energierecht",
+      "Beim Energieversorger-Wechsel können Sie mehrere hundert Euro pro Jahr sparen. Wir erklären die rechtlichen Rahmenbedingungen.",
+    author: "KündigungsHeld Redaktion",
+    authorRole: "Geprüfte Rechtsinformationen",
     date: "2025-08-15",
     readTime: "7 Min.",
     category: "Energierecht",
@@ -481,17 +505,20 @@ Laut Verbraucherzentralen kann ein durchschnittlicher 3-Personen-Haushalt durch 
 - Beim **Strom**: 200 bis 500 Euro pro Jahr sparen
 - Beim **Gas**: 300 bis 800 Euro pro Jahr sparen
 
-## Mein Tipp
+## Unser Tipp
 
-Wechseln Sie regelmäßig (alle 1-2 Jahre) den Anbieter, um von Neukundenrabatten zu profitieren. Nutzen Sie dabei die automatische Kündigung durch den neuen Anbieter - das spart Zeit und Aufwand.`,
+Wechseln Sie regelmäßig (alle 1-2 Jahre) den Anbieter, um von Neukundenrabatten zu profitieren. Nutzen Sie dabei die automatische Kündigung durch den neuen Anbieter - das spart Zeit und Aufwand.
+
+---
+⚠️ *Diese Informationen stellen keine Rechtsberatung dar. Bei rechtlichen Fragen wenden Sie sich an einen zugelassenen Rechtsanwalt.*`,
   },
   {
     slug: "kundigung-per-email-wann-gueltig",
     title: "Kündigung per E-Mail: Wann ist sie rechtsgültig?",
     excerpt:
-      "Immer mehr Verbraucher kündigen per E-Mail. Doch ist das rechtlich immer wirksam? Rechtsanwalt Dr. Becker klärt auf.",
-    author: "Dr. Henrik Becker",
-    authorRole: "Rechtsanwalt, Fachanwalt für IT-Recht",
+      "Immer mehr Verbraucher kündigen per E-Mail. Doch ist das rechtlich immer wirksam? Wir klären auf.",
+    author: "KündigungsHeld Redaktion",
+    authorRole: "Geprüfte Rechtsinformationen",
     date: "2025-07-28",
     readTime: "5 Min.",
     category: "Vertragsrecht",
@@ -538,13 +565,16 @@ Seit 2022 müssen Online-Anbieter einen Kündigungsbutton bereitstellen. Dieser 
 - Gut dokumentiert (automatische Bestätigung)
 - Schnell und bequem
 
-## Meine Empfehlung
+## Unsere Empfehlung
 
-Für maximale Rechtssicherheit empfehle ich:
+Für maximale Rechtssicherheit empfehlen wir:
 1. Bei Miet- und Arbeitsverträgen: Immer die Schriftform wahren
 2. Bei allen anderen Verträgen: E-Mail ist in der Regel ausreichend
 3. Immer eine Bestätigung anfordern
-4. Wichtige Kündigungen zusätzlich per Einschreiben senden`,
+4. Wichtige Kündigungen zusätzlich per Einschreiben senden
+
+---
+⚠️ *Diese Informationen stellen keine Rechtsberatung dar. Bei rechtlichen Fragen wenden Sie sich an einen zugelassenen Rechtsanwalt.*`,
   },
 ]
 
