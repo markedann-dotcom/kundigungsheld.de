@@ -130,7 +130,7 @@ export function FeaturesSection() {
           <div className="mx-auto mt-16 flex max-w-3xl flex-wrap items-center justify-center gap-8 rounded-2xl border border-border/40 bg-muted/30 px-8 py-6 sm:gap-12">
             {[
               { value: "150+", label: "Unternehmen" },
-              { value: "50k+", label: "Kündigungen" },
+              { value: "75k+", label: "Kündigungen" },
               { value: "4.9★", label: "Bewertung" },
               { value: "100%", label: "Kostenlos" },
             ].map((stat) => (
