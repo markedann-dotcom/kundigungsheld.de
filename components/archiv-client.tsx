@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useCallback } from "react"
+import { useState, useEffect, useCallback, useMemo } from "react"
 import Link from "next/link"
 import {
   ArrowLeft,
@@ -10,7 +10,6 @@ import {
   Send,
   Clock,
   ChevronDown,
-  ChevronUp,
   Copy,
   Download,
   StickyNote,
@@ -33,23 +32,160 @@ import {
 } from "@/lib/archive"
 import { generatePdf, openMailto, printKundigung } from "@/lib/pdf-generator"
 
-const STATUS_CONFIG = {
+/* ─── Constants ─── */
+
+type Status = "erstellt" | "gesendet" | "bestaetigt"
+type FilterStatus = Status | "alle"
+
+const STATUS_CONFIG: Record<
+  Status,
+  { label: string; icon: typeof Clock; color: string }
+> = {
   erstellt: {
     label: "Erstellt",
     icon: Clock,
-    color: "bg-yellow-100 text-yellow-800",
+    color: "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400",
   },
   gesendet: {
     label: "Gesendet",
     icon: Send,
-    color: "bg-blue-100 text-blue-800",
+    color: "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400",
   },
   bestaetigt: {
     label: "Bestätigt",
     icon: Check,
-    color: "bg-green-100 text-green-800",
+    color: "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400",
   },
 } as const
+
+const FILTER_OPTIONS: { value: FilterStatus; label: string }[] = [
+  { value: "alle", label: "Alle" },
+  { value: "erstellt", label: "Erstellt" },
+  { value: "gesendet", label: "Gesendet" },
+  { value: "bestaetigt", label: "Bestätigt" },
+]
+
+const STAT_ITEMS: {
+  key: "total" | Status
+  label: string
+  colorClass: string
+}[] = [
+  { key: "total", label: "Gesamt", colorClass: "text-foreground" },
+  { key: "erstellt", label: "Erstellt", colorClass: "text-yellow-600 dark:text-yellow-400" },
+  { key: "gesendet", label: "Gesendet", colorClass: "text-blue-600 dark:text-blue-400" },
+  { key: "bestaetigt", label: "Bestätigt", colorClass: "text-green-600 dark:text-green-400" },
+]
+
+const STATUSES: Status[] = ["erstellt", "gesendet", "bestaetigt"]
+
+/* ─── Helpers ─── */
+
+function downloadBlob(content: string, filename: string, type: string) {
+  const blob = new Blob([content], { type })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement("a")
+  a.href = url
+  a.download = filename
+  document.body.appendChild(a)
+  a.click()
+  document.body.removeChild(a)
+  URL.revokeObjectURL(url)
+}
+
+function sanitizeFilename(name: string) {
+  return name.replace(/[^a-zA-Z0-9äöüÄÖÜß]/g, "_")
+}
+
+function formatDate(iso: string) {
+  return new Date(iso).toLocaleDateString("de-DE", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  })
+}
+
+/* ─── Sub-components ─── */
+
+function ToggleButton({
+  active,
+  onClick,
+  children,
+  className = "",
+}: {
+  active: boolean
+  onClick: () => void
+  children: React.ReactNode
+  className?: string
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`rounded-lg px-3 py-2 text-sm font-medium transition-all ${
+        active
+          ? "bg-primary text-white shadow-sm"
+          : "bg-card text-muted-foreground hover:bg-muted"
+      } ${className}`}
+    >
+      {children}
+    </button>
+  )
+}
+
+function EmptyState({
+  icon: Icon,
+  title,
+  description,
+  action,
+}: {
+  icon: typeof FileText
+  title: string
+  description: string
+  action?: React.ReactNode
+}) {
+  return (
+    <div className="flex flex-col items-center rounded-2xl border border-border/60 bg-card py-20 text-center">
+      <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-muted">
+        <Icon className="h-8 w-8 text-muted-foreground/50" aria-hidden="true" />
+      </div>
+      <h2 className="mt-5 font-display text-xl font-semibold text-foreground">
+        {title}
+      </h2>
+      <p className="mt-2 max-w-sm text-sm text-muted-foreground">
+        {description}
+      </p>
+      {action && <div className="mt-6">{action}</div>}
+    </div>
+  )
+}
+
+function ActionButton({
+  icon: Icon,
+  label,
+  onClick,
+  variant = "outline",
+  className = "",
+}: {
+  icon: typeof Copy
+  label: string
+  onClick: () => void
+  variant?: "outline" | "default"
+  className?: string
+}) {
+  return (
+    <Button
+      size="sm"
+      variant={variant}
+      className={`gap-1.5 text-xs ${className}`}
+      onClick={onClick}
+    >
+      <Icon className="h-3.5 w-3.5" aria-hidden="true" />
+      {label}
+    </Button>
+  )
+}
+
+/* ─── Main Component ─── */
 
 export function ArchivClient() {
   const [items, setItems] = useState<ArchivedKundigung[]>([])
@@ -57,10 +193,10 @@ export function ArchivClient() {
   const [editingNotiz, setEditingNotiz] = useState<string | null>(null)
   const [notizText, setNotizText] = useState("")
   const [searchQuery, setSearchQuery] = useState("")
-  const [filterStatus, setFilterStatus] = useState<
-    "alle" | "erstellt" | "gesendet" | "bestaetigt"
-  >("alle")
-  const [copied, setCopied] = useState<string | null>(null)
+  const [filterStatus, setFilterStatus] = useState<FilterStatus>("alle")
+  const [copiedId, setCopiedId] = useState<string | null>(null)
+
+  /* ─── Data loading ─── */
 
   const loadItems = useCallback(() => {
     setItems(getArchiv())
@@ -70,69 +206,114 @@ export function ArchivClient() {
     loadItems()
   }, [loadItems])
 
-  const handleStatusChange = (
-    id: string,
-    status: "erstellt" | "gesendet" | "bestaetigt"
-  ) => {
-    updateArchivItem(id, { status })
-    loadItems()
-  }
+  /* ─── Derived state ─── */
 
-  const handleDelete = (id: string) => {
-    deleteArchivItem(id)
-    loadItems()
-    if (expandedId === id) setExpandedId(null)
-  }
+  const filteredItems = useMemo(() => {
+    const q = searchQuery.toLowerCase()
+    return items.filter((item) => {
+      const matchesSearch =
+        !q ||
+        item.companyName.toLowerCase().includes(q) ||
+        item.nachname.toLowerCase().includes(q) ||
+        item.grundLabel.toLowerCase().includes(q)
+      const matchesStatus =
+        filterStatus === "alle" || item.status === filterStatus
+      return matchesSearch && matchesStatus
+    })
+  }, [items, searchQuery, filterStatus])
 
-  const handleNotizSave = (id: string) => {
-    updateArchivItem(id, { notiz: notizText })
-    loadItems()
-    setEditingNotiz(null)
-  }
+  const stats = useMemo(() => {
+    const counts: Record<string, number> = { total: items.length }
+    for (const s of STATUSES) {
+      counts[s] = items.filter((i) => i.status === s).length
+    }
+    return counts
+  }, [items])
 
-  const handleCopy = async (text: string, id: string) => {
+  const hasItems = items.length > 0
+
+  /* ─── Handlers ─── */
+
+  const handleStatusChange = useCallback(
+    (id: string, status: Status) => {
+      updateArchivItem(id, { status })
+      loadItems()
+    },
+    [loadItems]
+  )
+
+  const handleDelete = useCallback(
+    (id: string) => {
+      if (!window.confirm("Möchten Sie diese Kündigung wirklich löschen?")) return
+      deleteArchivItem(id)
+      loadItems()
+      setExpandedId((prev) => (prev === id ? null : prev))
+    },
+    [loadItems]
+  )
+
+  const handleNotizSave = useCallback(
+    (id: string) => {
+      updateArchivItem(id, { notiz: notizText })
+      loadItems()
+      setEditingNotiz(null)
+    },
+    [notizText, loadItems]
+  )
+
+  const startEditingNotiz = useCallback((item: ArchivedKundigung) => {
+    setEditingNotiz(item.id)
+    setNotizText(item.notiz || "")
+  }, [])
+
+  const handleCopy = useCallback(async (text: string, id: string) => {
     try {
       await navigator.clipboard.writeText(text)
-      setCopied(id)
-      setTimeout(() => setCopied(null), 2000)
+      setCopiedId(id)
+      setTimeout(() => setCopiedId(null), 2000)
     } catch {
-      /* ignore */
+      /* clipboard not available */
     }
-  }
+  }, [])
 
-  const handleDownload = (item: ArchivedKundigung) => {
-    const blob = new Blob([item.text], { type: "text/plain;charset=utf-8" })
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement("a")
-    a.href = url
-    a.download = `Kuendigung_${item.companyName.replace(/[^a-zA-Z0-9]/g, "_")}_${item.datum.slice(0, 10)}.txt`
-    document.body.appendChild(a)
-    a.click()
-    document.body.removeChild(a)
-    URL.revokeObjectURL(url)
-  }
+  const handleDownloadTxt = useCallback((item: ArchivedKundigung) => {
+    downloadBlob(
+      item.text,
+      `Kuendigung_${sanitizeFilename(item.companyName)}_${item.datum.slice(0, 10)}.txt`,
+      "text/plain;charset=utf-8"
+    )
+  }, [])
 
-  const filteredItems = items.filter((item) => {
-    const matchesSearch =
-      searchQuery === "" ||
-      item.companyName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.nachname.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.grundLabel.toLowerCase().includes(searchQuery.toLowerCase())
-    const matchesStatus =
-      filterStatus === "alle" || item.status === filterStatus
-    return matchesSearch && matchesStatus
-  })
+  const handleExportCsv = useCallback(() => {
+    const header = "Unternehmen;Grund;Status;Datum;Kündigung zum;Name;Notiz"
+    const rows = items.map((item) =>
+      [
+        item.companyName,
+        item.grundLabel,
+        STATUS_CONFIG[item.status].label,
+        formatDate(item.datum),
+        item.kuendigungZum,
+        `${item.vorname} ${item.nachname}`,
+        (item.notiz || "").replace(/\n/g, " "),
+      ].join(";")
+    )
+    downloadBlob(
+      "\uFEFF" + [header, ...rows].join("\n"),
+      `KuendigungsHeld_Archiv_${new Date().toISOString().slice(0, 10)}.csv`,
+      "text/csv;charset=utf-8"
+    )
+  }, [items])
 
-  const stats = {
-    total: items.length,
-    erstellt: items.filter((i) => i.status === "erstellt").length,
-    gesendet: items.filter((i) => i.status === "gesendet").length,
-    bestaetigt: items.filter((i) => i.status === "bestaetigt").length,
-  }
+  const toggleExpand = useCallback((id: string) => {
+    setExpandedId((prev) => (prev === id ? null : id))
+  }, [])
+
+  /* ─── Render ─── */
 
   return (
     <section className="py-12 lg:py-16">
       <div className="mx-auto max-w-5xl px-4 lg:px-8">
+        {/* Back link */}
         <div className="mb-4">
           <Button
             variant="ghost"
@@ -141,16 +322,17 @@ export function ArchivClient() {
             asChild
           >
             <Link href="/">
-              <ArrowLeft className="h-4 w-4" />
+              <ArrowLeft className="h-4 w-4" aria-hidden="true" />
               Zur Startseite
             </Link>
           </Button>
         </div>
 
+        {/* Page header */}
         <div className="mb-10">
           <div className="flex items-center gap-3">
             <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary text-primary-foreground">
-              <Archive className="h-6 w-6" />
+              <Archive className="h-6 w-6" aria-hidden="true" />
             </div>
             <div>
               <h1 className="font-display text-3xl font-bold tracking-tight text-foreground">
@@ -163,158 +345,109 @@ export function ArchivClient() {
           </div>
         </div>
 
-        {/* Export & Stats */}
-        {items.length > 0 && (
+        {/* CSV export */}
+        {hasItems && (
           <div className="mb-4 flex justify-end">
-            <Button
-              variant="outline"
-              size="sm"
-              className="gap-1.5 text-xs"
-              onClick={() => {
-                const header = "Unternehmen;Grund;Status;Datum;Kündigung zum;Name;Notiz"
-                const rows = items.map((item) =>
-                  [
-                    item.companyName,
-                    item.grundLabel,
-                    item.status,
-                    new Date(item.datum).toLocaleDateString("de-DE"),
-                    item.kuendigungZum,
-                    `${item.vorname} ${item.nachname}`,
-                    (item.notiz || "").replace(/\n/g, " "),
-                  ].join(";")
-                )
-                const csv = [header, ...rows].join("\n")
-                const blob = new Blob(["\uFEFF" + csv], { type: "text/csv;charset=utf-8" })
-                const url = URL.createObjectURL(blob)
-                const a = document.createElement("a")
-                a.href = url
-                a.download = `KuendigungsHeld_Archiv_${new Date().toISOString().slice(0, 10)}.csv`
-                document.body.appendChild(a)
-                a.click()
-                document.body.removeChild(a)
-                URL.revokeObjectURL(url)
-              }}
-            >
-              <FileSpreadsheet className="h-3.5 w-3.5" />
-              Archiv als CSV exportieren
-            </Button>
+            <ActionButton
+              icon={FileSpreadsheet}
+              label="Archiv als CSV exportieren"
+              onClick={handleExportCsv}
+            />
           </div>
         )}
 
+        {/* Stats grid */}
         <div className="mb-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
-          <div className="rounded-xl border border-border/60 bg-card p-4">
-            <p className="text-2xl font-bold text-foreground">{stats.total}</p>
-            <p className="text-sm text-muted-foreground">Gesamt</p>
-          </div>
-          <div className="rounded-xl border border-border/60 bg-card p-4">
-            <p className="text-2xl font-bold text-yellow-600">
-              {stats.erstellt}
-            </p>
-            <p className="text-sm text-muted-foreground">Erstellt</p>
-          </div>
-          <div className="rounded-xl border border-border/60 bg-card p-4">
-            <p className="text-2xl font-bold text-blue-600">
-              {stats.gesendet}
-            </p>
-            <p className="text-sm text-muted-foreground">Gesendet</p>
-          </div>
-          <div className="rounded-xl border border-border/60 bg-card p-4">
-            <p className="text-2xl font-bold text-green-600">
-              {stats.bestaetigt}
-            </p>
-            <p className="text-sm text-muted-foreground">Bestätigt</p>
-          </div>
+          {STAT_ITEMS.map(({ key, label, colorClass }) => (
+            <div
+              key={key}
+              className="rounded-xl border border-border/60 bg-card p-4"
+            >
+              <p className={`text-2xl font-bold ${colorClass}`}>
+                {stats[key] ?? 0}
+              </p>
+              <p className="text-sm text-muted-foreground">{label}</p>
+            </div>
+          ))}
         </div>
 
-        {/* Search and Filter */}
-        {items.length > 0 && (
+        {/* Search & filter */}
+        {hasItems && (
           <div className="mb-6 flex flex-col gap-3 sm:flex-row">
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              <Search
+                className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
+                aria-hidden="true"
+              />
               <Input
+                type="search"
                 placeholder="Suchen nach Unternehmen, Name oder Grund..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10"
               />
             </div>
-            <div className="flex gap-2">
-              {(
-                ["alle", "erstellt", "gesendet", "bestaetigt"] as const
-              ).map((status) => (
-                <button
-                  key={status}
-                  onClick={() => setFilterStatus(status)}
-                  className={`rounded-lg px-3 py-2 text-sm font-medium transition-all ${
-                    filterStatus === status
-                      ? "bg-primary text-white shadow-sm"
-                      : "bg-card text-muted-foreground hover:bg-muted"
-                  }`}
+            <div className="flex gap-2" role="tablist" aria-label="Status-Filter">
+              {FILTER_OPTIONS.map(({ value, label }) => (
+                <ToggleButton
+                  key={value}
+                  active={filterStatus === value}
+                  onClick={() => setFilterStatus(value)}
                 >
-                  {status === "alle"
-                    ? "Alle"
-                    : status === "erstellt"
-                      ? "Erstellt"
-                      : status === "gesendet"
-                        ? "Gesendet"
-                        : "Bestätigt"}
-                </button>
+                  {label}
+                </ToggleButton>
               ))}
             </div>
           </div>
         )}
 
-        {/* Empty State */}
-        {items.length === 0 && (
-          <div className="flex flex-col items-center rounded-2xl border border-border/60 bg-card py-20 text-center">
-            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-muted">
-              <FileText className="h-8 w-8 text-muted-foreground/50" />
-            </div>
-            <h2 className="mt-5 font-display text-xl font-semibold text-foreground">
-              Noch keine Kündigungen
-            </h2>
-            <p className="mt-2 max-w-sm text-sm text-muted-foreground">
-              Erstellen Sie Ihre erste Kündigung mit unserem Generator. Sie
-              können sie anschließend hier im Archiv speichern und verwalten.
-            </p>
-            <Button className="mt-6 rounded-full px-6" asChild>
-              <Link href="/#generator">Kündigung erstellen</Link>
-            </Button>
-          </div>
+        {/* Empty state: no items at all */}
+        {!hasItems && (
+          <EmptyState
+            icon={FileText}
+            title="Noch keine Kündigungen"
+            description="Erstellen Sie Ihre erste Kündigung mit unserem Generator. Sie können sie anschließend hier im Archiv speichern und verwalten."
+            action={
+              <Button className="rounded-full px-6" asChild>
+                <Link href="/#generator">Kündigung erstellen</Link>
+              </Button>
+            }
+          />
         )}
 
-        {/* Items */}
-        {filteredItems.length === 0 && items.length > 0 && (
-          <div className="flex flex-col items-center rounded-2xl border border-border/60 bg-card py-16 text-center">
-            <Search className="h-10 w-10 text-muted-foreground/40" />
-            <p className="mt-3 font-medium text-muted-foreground">
-              Keine Ergebnisse
-            </p>
-            <p className="mt-1 text-sm text-muted-foreground/70">
-              Versuchen Sie einen anderen Suchbegriff oder Filter.
-            </p>
-          </div>
+        {/* Empty state: no search results */}
+        {hasItems && filteredItems.length === 0 && (
+          <EmptyState
+            icon={Search}
+            title="Keine Ergebnisse"
+            description="Versuchen Sie einen anderen Suchbegriff oder Filter."
+          />
         )}
 
-        <div className="space-y-3">
+        {/* Item list */}
+        <div className="space-y-3" role="list">
           {filteredItems.map((item) => {
             const isExpanded = expandedId === item.id
-            const statusConfig = STATUS_CONFIG[item.status]
-            const StatusIcon = statusConfig.icon
+            const statusCfg = STATUS_CONFIG[item.status]
+            const StatusIcon = statusCfg.icon
+            const isCopied = copiedId === item.id
 
             return (
               <div
                 key={item.id}
+                role="listitem"
                 className="overflow-hidden rounded-xl border border-border/60 bg-card transition-all hover:shadow-sm"
               >
+                {/* Collapsed header */}
                 <button
-                  onClick={() =>
-                    setExpandedId(isExpanded ? null : item.id)
-                  }
-                  className="flex w-full items-center gap-4 p-4 text-left sm:p-5"
+                  type="button"
+                  aria-expanded={isExpanded}
+                  aria-controls={`archiv-panel-${item.id}`}
+                  onClick={() => toggleExpand(item.id)}
+                  className="flex w-full items-center gap-4 p-4 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 sm:p-5"
                 >
                   <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10">
-                    <FileText className="h-5 w-5 text-primary" />
+                    <FileText className="h-5 w-5 text-primary" aria-hidden="true" />
                   </div>
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2">
@@ -322,61 +455,51 @@ export function ArchivClient() {
                         {item.companyName}
                       </h3>
                       <Badge
-                        className={`shrink-0 text-xs ${statusConfig.color} border-0`}
+                        className={`shrink-0 border-0 text-xs ${statusCfg.color}`}
                       >
-                        <StatusIcon className="mr-1 h-3 w-3" />
-                        {statusConfig.label}
+                        <StatusIcon className="mr-1 h-3 w-3" aria-hidden="true" />
+                        {statusCfg.label}
                       </Badge>
                     </div>
                     <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
                       <span>{item.grundLabel}</span>
-                      <span>
-                        {new Date(item.datum).toLocaleDateString("de-DE", {
-                          day: "numeric",
-                          month: "long",
-                          year: "numeric",
-                        })}
-                      </span>
-                      <span>
-                        Kündigung zum: {item.kuendigungZum}
-                      </span>
+                      <time dateTime={item.datum}>{formatDate(item.datum)}</time>
+                      <span>Kündigung zum: {item.kuendigungZum}</span>
                     </div>
                   </div>
-                  {isExpanded ? (
-                    <ChevronUp className="h-5 w-5 shrink-0 text-muted-foreground" />
-                  ) : (
-                    <ChevronDown className="h-5 w-5 shrink-0 text-muted-foreground" />
-                  )}
+                  <ChevronDown
+                    className={`h-5 w-5 shrink-0 text-muted-foreground transition-transform duration-200 ${
+                      isExpanded ? "rotate-180" : ""
+                    }`}
+                    aria-hidden="true"
+                  />
                 </button>
 
+                {/* Expanded panel */}
                 {isExpanded && (
-                  <div className="border-t border-border/40 px-4 pb-5 pt-4 sm:px-5">
-                    {/* Status Actions */}
+                  <div
+                    id={`archiv-panel-${item.id}`}
+                    className="border-t border-border/40 px-4 pb-5 pt-4 sm:px-5"
+                  >
+                    {/* Status change */}
                     <div className="mb-4">
                       <p className="mb-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
                         Status ändern
                       </p>
                       <div className="flex gap-2">
-                        {(
-                          ["erstellt", "gesendet", "bestaetigt"] as const
-                        ).map((status) => {
-                          const config = STATUS_CONFIG[status]
-                          const Icon = config.icon
+                        {STATUSES.map((status) => {
+                          const cfg = STATUS_CONFIG[status]
+                          const Icon = cfg.icon
                           return (
-                            <button
+                            <ToggleButton
                               key={status}
-                              onClick={() =>
-                                handleStatusChange(item.id, status)
-                              }
-                              className={`flex items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-medium transition-all ${
-                                item.status === status
-                                  ? "bg-primary text-white shadow-sm"
-                                  : "bg-muted text-muted-foreground hover:bg-muted/80"
-                              }`}
+                              active={item.status === status}
+                              onClick={() => handleStatusChange(item.id, status)}
+                              className="flex items-center gap-1.5 text-xs"
                             >
-                              <Icon className="h-3.5 w-3.5" />
-                              {config.label}
-                            </button>
+                              <Icon className="h-3.5 w-3.5" aria-hidden="true" />
+                              {cfg.label}
+                            </ToggleButton>
                           )
                         })}
                       </div>
@@ -385,7 +508,7 @@ export function ArchivClient() {
                     {/* Notes */}
                     <div className="mb-4">
                       <p className="mb-2 flex items-center gap-1.5 text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                        <StickyNote className="h-3.5 w-3.5" />
+                        <StickyNote className="h-3.5 w-3.5" aria-hidden="true" />
                         Notiz
                       </p>
                       {editingNotiz === item.id ? (
@@ -396,6 +519,7 @@ export function ArchivClient() {
                             placeholder="Notiz hinzufügen (z.B. Versanddatum, Tracking-Nummer...)"
                             rows={3}
                             className="resize-none text-sm"
+                            autoFocus
                           />
                           <div className="flex gap-2">
                             <Button
@@ -417,10 +541,8 @@ export function ArchivClient() {
                         </div>
                       ) : (
                         <button
-                          onClick={() => {
-                            setEditingNotiz(item.id)
-                            setNotizText(item.notiz || "")
-                          }}
+                          type="button"
+                          onClick={() => startEditingNotiz(item)}
                           className="w-full rounded-lg border border-dashed border-border/60 p-3 text-left text-sm text-muted-foreground transition-colors hover:border-primary/30 hover:bg-primary/5"
                         >
                           {item.notiz || "Klicken, um eine Notiz hinzuzufügen..."}
@@ -428,7 +550,7 @@ export function ArchivClient() {
                       )}
                     </div>
 
-                    {/* Preview */}
+                    {/* Letter preview */}
                     <div className="mb-4">
                       <p className="mb-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
                         Kündigungsschreiben
@@ -438,66 +560,39 @@ export function ArchivClient() {
                       </pre>
                     </div>
 
-                    {/* Actions */}
+                    {/* Action buttons */}
                     <div className="flex flex-wrap gap-2">
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        className="gap-1.5 text-xs"
+                      <ActionButton
+                        icon={isCopied ? Check : Copy}
+                        label={isCopied ? "Kopiert!" : "Kopieren"}
                         onClick={() => handleCopy(item.text, item.id)}
-                      >
-                        {copied === item.id ? (
-                          <Check className="h-3.5 w-3.5" />
-                        ) : (
-                          <Copy className="h-3.5 w-3.5" />
-                        )}
-                        {copied === item.id ? "Kopiert!" : "Kopieren"}
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        className="gap-1.5 text-xs"
-                        onClick={() => handleDownload(item)}
-                      >
-                        <Download className="h-3.5 w-3.5" />
-                        TXT
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        className="gap-1.5 text-xs"
+                      />
+                      <ActionButton
+                        icon={Download}
+                        label="TXT"
+                        onClick={() => handleDownloadTxt(item)}
+                      />
+                      <ActionButton
+                        icon={FileDown}
+                        label="PDF"
                         onClick={() => generatePdf(item.text, item.companyName)}
-                      >
-                        <FileDown className="h-3.5 w-3.5" />
-                        PDF
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        className="gap-1.5 text-xs"
+                      />
+                      <ActionButton
+                        icon={Printer}
+                        label="Drucken"
                         onClick={() => printKundigung(item.text)}
-                      >
-                        <Printer className="h-3.5 w-3.5" />
-                        Drucken
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        className="gap-1.5 text-xs"
+                      />
+                      <ActionButton
+                        icon={Mail}
+                        label="E-Mail"
                         onClick={() => openMailto(item.text, item.companyName)}
-                      >
-                        <Mail className="h-3.5 w-3.5" />
-                        E-Mail
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        className="gap-1.5 text-xs text-destructive hover:bg-destructive/10 hover:text-destructive"
+                      />
+                      <ActionButton
+                        icon={Trash2}
+                        label="Löschen"
                         onClick={() => handleDelete(item.id)}
-                      >
-                        <Trash2 className="h-3.5 w-3.5" />
-                        Löschen
-                      </Button>
+                        className="text-destructive hover:bg-destructive/10 hover:text-destructive"
+                      />
                     </div>
                   </div>
                 )}
@@ -506,7 +601,8 @@ export function ArchivClient() {
           })}
         </div>
 
-        {items.length > 0 && (
+        {/* Privacy notice */}
+        {hasItems && (
           <div className="mt-8 rounded-xl border border-primary/20 bg-primary/5 p-5 text-center">
             <p className="text-sm text-muted-foreground">
               Alle Daten werden lokal in Ihrem Browser gespeichert. Es werden
