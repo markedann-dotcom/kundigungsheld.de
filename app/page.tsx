@@ -4,12 +4,14 @@ import { StatsSection } from "@/components/stats-section"
 import { FeaturesSection } from "@/components/features-section"
 import { HowItWorksSection } from "@/components/how-it-works-section"
 import { KundigungGenerator } from "@/components/kundigung-generator"
+import { Fristenrechner } from "@/components/fristenrechner"
 import { TestimonialsSection } from "@/components/testimonials-section"
 import { BlogPreviewSection } from "@/components/blog-preview-section"
 import { FaqSection } from "@/components/faq-section"
 import { CtaSection } from "@/components/cta-section"
 import { Footer } from "@/components/footer"
 import { CompanyTicker } from "@/components/company-ticker"
+import { AiChat } from "@/components/ai-chat"
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -46,12 +48,14 @@ export default function Home() {
         <FeaturesSection />
         <HowItWorksSection />
         <KundigungGenerator />
+        <Fristenrechner />
         <TestimonialsSection />
         <BlogPreviewSection />
         <FaqSection />
         <CtaSection />
       </main>
       <Footer />
+      <AiChat />
     </div>
   )
 }

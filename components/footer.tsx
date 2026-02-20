@@ -1,57 +1,83 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { FileText, ArrowUp, Eye, MessageCircle } from "lucide-react"
 import Link from "next/link"
-import { FileText, ArrowUp, Eye } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { useI18n } from "@/contexts/i18n-context"
 
-const links = {
-  produkt: [
-    { label: "Generator", href: "/#generator" },
-    { label: "Funktionen", href: "/#funktionen" },
-    { label: "Mein Archiv", href: "/archiv" },
-    { label: "FAQ", href: "/#faq" },
-  ],
-  unternehmen: [
-    { label: "Blog", href: "/blog" },
-    { label: "Kontakt", href: "mailto:kundigungsheld@gmail.com" },
-  ],
-  rechtliches: [
-    { label: "Impressum", href: "/impressum" },
-    { label: "Datenschutz", href: "/datenschutz" },
-  ],
-}
-
-const VISITOR_KEY = "kh_visitor_count"
+const VISITOR_KEY = "kh_visitor_count_reset" // Снова сменили ключ для чистого старта
 const VISITOR_SESSION_KEY = "kh_visitor_session"
+const INITIAL_COUNT = 0
+const SERVER_OFFSET = 98547 // Это число мы будем вычитать из ответа сервера
 
 function getVisitorCount(): number {
-  if (typeof window === "undefined") return 0
+  if (typeof window === "undefined") return INITIAL_COUNT
   try {
     const stored = localStorage.getItem(VISITOR_KEY)
-    return stored ? parseInt(stored, 10) : 0
+    return stored ? parseInt(stored, 10) : INITIAL_COUNT
   } catch {
-    return 0
+    return INITIAL_COUNT
   }
 }
 
 function incrementVisitor(): number {
-  if (typeof window === "undefined") return 0
+  if (typeof window === "undefined") return INITIAL_COUNT
   try {
     const alreadyCounted = sessionStorage.getItem(VISITOR_SESSION_KEY)
     let count = getVisitorCount()
+    
     if (!alreadyCounted) {
       count = count + 1
       localStorage.setItem(VISITOR_KEY, count.toString())
       sessionStorage.setItem(VISITOR_SESSION_KEY, "1")
+      
+      if (navigator.sendBeacon) {
+        navigator.sendBeacon('/api/track-visitor', JSON.stringify({ 
+          timestamp: Date.now(),
+          path: window.location.pathname 
+        }))
+      } else {
+        fetch('/api/track-visitor', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ 
+            timestamp: Date.now(),
+            path: window.location.pathname 
+          })
+        }).catch(() => {})
+      }
     }
+    
     return count
   } catch {
-    return 0
+    return INITIAL_COUNT
   }
 }
 
-// TikTok SVG иконка (официальный логотип)
+async function syncWithServer(setCount: (n: number) => void) {
+  try {
+    const response = await fetch('/api/visitor-count', {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    })
+    
+    if (response.ok) {
+      const data = await response.json()
+      
+      if (typeof data.count === 'number') {
+        const adjustedCount = Math.max(0, data.count - SERVER_OFFSET)
+        
+        if (adjustedCount > getVisitorCount()) {
+          localStorage.setItem(VISITOR_KEY, adjustedCount.toString())
+          setCount(adjustedCount)
+        }
+      }
+    }
+  } catch (e) {
+    // Ignore API errors
+  }
+}
+
 function TikTokIcon({ className }: { className?: string }) {
   return (
     <svg
@@ -67,149 +93,254 @@ function TikTokIcon({ className }: { className?: string }) {
 }
 
 export function Footer() {
-  const [visitorCount, setVisitorCount] = useState(0)
+  const { t } = useI18n()
+  const [visitorCount, setVisitorCount] = useState(INITIAL_COUNT)
   const [showScrollTop, setShowScrollTop] = useState(false)
+  const [scrollProgress, setScrollProgress] = useState(0)
+
+  const links = {
+    produkt: [
+      { label: t.nav.features, href: "/#funktionen" },
+      { label: t.nav.archive, href: "/archiv" },
+      { label: t.nav.faq, href: "/#faq" },
+    ],
+    unternehmen: [
+      { label: t.nav.blog, href: "/blog" },
+      { label: "Kontakt", href: "mailto:kundigungsheld@gmail.com" },
+    ],
+    rechtliches: [
+      { label: t.footer.impressum, href: "/impressum" },
+      { label: t.footer.privacy, href: "/datenschutz" },
+    ],
+  }
 
   useEffect(() => {
     const count = incrementVisitor()
     setVisitorCount(count)
-  }, [])
+    
+    const timer = setTimeout(() => {
+      syncWithServer(setVisitorCount)
+    }, 1000)
 
-  useEffect(() => {
-    function handleScroll() {
-      setShowScrollTop(window.scrollY > 400)
+    const onScroll = () => {
+      setShowScrollTop(window.scrollY > 100)
+
+      const scrollPx = document.documentElement.scrollTop
+      const winHeightPx = document.documentElement.scrollHeight - document.documentElement.clientHeight
+      
+      if (winHeightPx > 0) {
+        setScrollProgress((scrollPx / winHeightPx) * 100)
+      } else {
+        setScrollProgress(0)
+      }
     }
-    window.addEventListener("scroll", handleScroll, { passive: true })
-    return () => window.removeEventListener("scroll", handleScroll)
+    window.addEventListener("scroll", onScroll, { passive: true })
+    onScroll()
+
+    return () => {
+      clearTimeout(timer)
+      window.removeEventListener("scroll", onScroll)
+    }
   }, [])
 
-  function scrollToTop() {
+  const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" })
   }
 
+  const formatNumber = (num: number) => {
+    return num.toLocaleString("de-DE")
+  }
+
+  const openChat = () => {
+    // Dispatches a custom event that AiChat listens to
+    window.dispatchEvent(new CustomEvent("open-ai-chat"))
+  }
+
+  const radius = 22
+  const circumference = 2 * Math.PI * radius
+  const strokeDashoffset = circumference - (scrollProgress / 100) * circumference
+
   return (
-    <>
-      {/* Floating scroll-to-top button */}
-      <button
-        onClick={scrollToTop}
-        aria-label="Nach oben scrollen"
-        data-no-print
-        className={`scroll-to-top fixed bottom-6 right-6 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-primary text-white shadow-lg transition-all duration-300 hover:bg-primary/90 hover:shadow-xl hover:scale-105 ${
-          showScrollTop
-            ? "translate-y-0 opacity-100"
-            : "pointer-events-none translate-y-4 opacity-0"
-        }`}
-      >
-        <ArrowUp className="h-5 w-5" />
-      </button>
+    <footer className="relative overflow-hidden border-t border-border/40 bg-muted/30">
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute left-1/4 top-1/2 h-96 w-96 -translate-y-1/2 rounded-full bg-primary/3 blur-3xl" />
+      </div>
 
-      <footer className="border-t border-border/50 bg-card">
-        <div className="mx-auto max-w-7xl px-4 py-14 lg:px-8">
-          <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
-            <div>
-              <Link href="/" className="flex items-center gap-2.5" aria-label="KündigungsHeld Startseite">
-                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-primary-foreground">
-                  <FileText className="h-5 w-5" />
-                </div>
-                <span className="font-display text-lg font-bold tracking-tight text-foreground">
-                  KündigungsHeld
-                </span>
-              </Link>
-              <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted-foreground">
-                Deutschlands beliebtester Kündigungsgenerator. Erstellen Sie
-                rechtssichere Kündigungsschreiben in Minuten. 100% kostenlos.
-              </p>
-              <a
-                href="mailto:kundigungsheld@gmail.com"
-                className="mt-3 inline-flex text-sm text-primary transition-colors hover:text-primary/80"
-              >
-                kundigungsheld@gmail.com
-              </a>
-
-              {/* TikTok Link */}
-              <div className="mt-4">
-                <a
-                  href="https://www.tiktok.com/@kundigungs.held"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group inline-flex items-center gap-2.5 rounded-lg border border-border/60 bg-secondary/50 px-3 py-2 text-sm text-muted-foreground transition-all duration-200 hover:border-primary/30 hover:bg-primary/5 hover:text-foreground"
-                  aria-label="KündigungsHeld auf TikTok"
-                >
-                  <TikTokIcon className="h-4 w-4 text-muted-foreground transition-colors group-hover:text-primary" />
-                  <span className="font-medium">@kundigungs.held</span>
-                </a>
+      <div className="relative mx-auto max-w-7xl px-4 py-16 lg:px-8 lg:py-20">
+        <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
+          <div className="lg:col-span-4">
+            <Link href="/" className="group inline-flex items-center gap-2.5 transition-opacity duration-200 hover:opacity-80">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-foreground text-background transition-transform duration-300 group-hover:scale-105">
+                <FileText className="h-5 w-5" />
               </div>
+              <span className="font-display text-xl font-bold tracking-tight text-foreground">
+                KündigungsHeld
+              </span>
+            </Link>
+            <p className="mt-5 max-w-md text-sm leading-relaxed text-muted-foreground">
+              {t.footer.aboutText}
+            </p>
 
-              {/* Visitor counter */}
-              <div className="mt-3 flex items-center gap-2 rounded-lg border border-border/60 bg-secondary/50 px-3 py-2">
-                <Eye className="h-4 w-4 text-primary" />
-                <span className="text-xs font-medium text-muted-foreground">
-                  <span className="tabular-nums font-semibold text-foreground">
-                    {visitorCount.toLocaleString("de-DE")}
-                  </span>{" "}
-                  Besucher
-                </span>
+            {/* Visitor Counter */}
+            <div className="mt-6 inline-flex items-center gap-3 rounded-xl border border-border/50 bg-background/60 px-4 py-3 backdrop-blur-sm">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-muted">
+                <Eye className="h-5 w-5 text-foreground" />
+              </div>
+              <div>
+                <div className="text-xs font-medium text-muted-foreground">
+                  {t.footer.visitorCount}
+                </div>
+                <div className="text-lg font-bold text-foreground">
+                  {formatNumber(visitorCount)}
+                </div>
               </div>
             </div>
 
-            {Object.entries(links).map(([title, items]) => (
-              <div key={title}>
-                <h3 className="font-display text-sm font-semibold uppercase tracking-wider text-foreground">
-                  {title === "produkt"
-                    ? "Produkt"
-                    : title === "unternehmen"
-                      ? "Unternehmen"
-                      : "Rechtliches"}
-                </h3>
-                <ul className="mt-4 space-y-2.5">
-                  {items.map((link) => (
-                    <li key={link.label}>
-                      <Link
-                        href={link.href}
-                        className="text-sm text-muted-foreground transition-colors duration-200 hover:text-foreground"
-                      >
-                        {link.label}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
+            {/* Social Links */}
+            <div className="mt-6 flex items-center gap-3">
+              {[
+                { icon: TikTokIcon, href: "https://tiktok.com", label: "TikTok" },
+              ].map((social) => (
+                <a
+                  key={social.label}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex h-9 w-9 items-center justify-center rounded-lg border border-border/50 bg-background text-muted-foreground transition-all duration-200 hover:border-border hover:bg-foreground hover:text-background"
+                  aria-label={social.label}
+                >
+                  <social.icon className="h-4 w-4" />
+                </a>
+              ))}
+            </div>
           </div>
 
-          <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-border/50 pt-8 sm:flex-row">
-            <p className="text-sm text-muted-foreground">
-              {new Date().getFullYear()} KündigungsHeld. Alle Rechte vorbehalten.
-            </p>
-            <div className="flex items-center gap-4">
-              <a
-                href="https://www.tiktok.com/@kundigungs.held"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="TikTok"
-                className="text-muted-foreground/60 transition-colors duration-200 hover:text-foreground"
-              >
-                <TikTokIcon className="h-4 w-4" />
-              </a>
-              <Link href="/impressum" className="text-xs text-muted-foreground/60 transition-colors duration-200 hover:text-muted-foreground">
-                Impressum
-              </Link>
-              <Link href="/datenschutz" className="text-xs text-muted-foreground/60 transition-colors duration-200 hover:text-muted-foreground">
-                Datenschutz
-              </Link>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={scrollToTop}
-                className="gap-1.5 text-xs text-muted-foreground/60 hover:text-muted-foreground"
-              >
-                <ArrowUp className="h-3 w-3" />
-                Nach oben
-              </Button>
+          <div className="grid gap-8 sm:grid-cols-3 lg:col-span-8">
+            <div>
+              <h3 className="text-sm font-semibold uppercase tracking-wider text-foreground">
+                {t.footer.resources}
+              </h3>
+              <ul className="mt-4 space-y-2.5">
+                {links.produkt.map((link) => (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      className="text-sm text-muted-foreground transition-colors duration-200 hover:text-foreground"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+                {/* KI-Assistent — opens chat modal */}
+                <li>
+                  <button
+                    onClick={openChat}
+                    className="flex items-center gap-1.5 text-sm text-muted-foreground transition-colors duration-200 hover:text-foreground"
+                  >
+                    <MessageCircle className="h-3.5 w-3.5" />
+                    KI-Assistent
+                  </button>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="text-sm font-semibold uppercase tracking-wider text-foreground">
+                {t.footer.about}
+              </h3>
+              <ul className="mt-4 space-y-2.5">
+                {links.unternehmen.map((link) => (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      className="text-sm text-muted-foreground transition-colors duration-200 hover:text-foreground"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="text-sm font-semibold uppercase tracking-wider text-foreground">
+                {t.footer.legal}
+              </h3>
+              <ul className="mt-4 space-y-2.5">
+                {links.rechtliches.map((link) => (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      className="text-sm text-muted-foreground transition-colors duration-200 hover:text-foreground"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
         </div>
-      </footer>
-    </>
+
+        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-border/40 pt-8 sm:flex-row">
+          <p className="text-center text-sm text-muted-foreground sm:text-left">
+            © {new Date().getFullYear()} KündigungsHeld. {t.footer.rights}.
+          </p>
+          <div className="text-sm text-muted-foreground">
+            Made by{" "}
+            <a
+              href="https://github.com/markovolchkov"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-foreground transition-colors hover:text-primary"
+            >
+              Marko Volchkov
+            </a>
+          </div>
+        </div>
+      </div>
+
+      {/* Scroll to top button */}
+      <button
+        onClick={scrollToTop}
+        aria-label="Nach oben scrollen"
+        className={`fixed bottom-6 right-6 z-50 flex items-center justify-center transition-all duration-300 ${
+          showScrollTop
+            ? "opacity-100 translate-y-0"
+            : "opacity-0 translate-y-4 pointer-events-none"
+        }`}
+      >
+        <svg
+          className="absolute w-14 h-14 -rotate-90 drop-shadow-sm"
+          viewBox="0 0 52 52"
+        >
+          <circle
+            cx="26"
+            cy="26"
+            r={radius}
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="3"
+            className="text-muted border-border"
+          />
+          <circle
+            cx="26"
+            cy="26"
+            r={radius}
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="3"
+            strokeDasharray={circumference}
+            strokeDashoffset={strokeDashoffset}
+            strokeLinecap="round"
+            className="text-primary transition-all duration-150 ease-out"
+          />
+        </svg>
+
+        <div className="flex h-[42px] w-[42px] items-center justify-center rounded-full bg-background/90 shadow-sm backdrop-blur-md transition-colors hover:bg-muted">
+          <ArrowUp className="h-5 w-5 text-foreground" />
+        </div>
+      </button>
+    </footer>
   )
 }

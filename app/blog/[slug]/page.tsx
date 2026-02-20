@@ -7,6 +7,8 @@ import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { blogArticles, getArticleBySlug } from "@/lib/blog-articles"
 
+const BASE_URL = "https://kuendigungsheld.de"
+
 interface Props {
   params: Promise<{ slug: string }>
 }
@@ -19,6 +21,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
   const article = getArticleBySlug(slug)
   if (!article) return { title: "Artikel nicht gefunden" }
+
+  const ogImageUrl = `${BASE_URL}/blog/${slug}/opengraph-image`
+
   return {
     title: `${article.title} - KündigungsHeld Blog`,
     description: article.excerpt,
@@ -26,9 +31,25 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: article.title,
       description: article.excerpt,
       type: "article",
+      url: `${BASE_URL}/blog/${slug}`,
       locale: "de_DE",
+      siteName: "KündigungsHeld",
       publishedTime: article.date,
       authors: [article.author],
+      images: [
+        {
+          url: ogImageUrl,
+          width: 1200,
+          height: 630,
+          alt: article.title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: article.title,
+      description: article.excerpt,
+      images: [ogImageUrl],
     },
   }
 }
@@ -40,16 +61,17 @@ function getArticleJsonLd(article: { title: string; excerpt: string; author: str
     headline: article.title,
     description: article.excerpt,
     author: {
-      "@type": "Person",
+      "@type": "Organization",
       name: article.author,
-      jobTitle: article.authorRole,
     },
     datePublished: article.date,
     publisher: {
       "@type": "Organization",
-      name: "KundigungsHeld",
+      name: "KündigungsHeld",
+      url: BASE_URL,
     },
     inLanguage: "de",
+    url: `${BASE_URL}/blog/${article.slug}`,
   }
 }
 
@@ -143,8 +165,7 @@ function renderContent(content: string) {
     } else if (line.trim() === "") {
       elements.push(<div key={key} className="h-2" />)
     } else {
-      const formatted = line
-        .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+      const formatted = line.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
       elements.push(
         <p
           key={key}
@@ -212,7 +233,6 @@ export default async function BlogArticlePage({ params }: Props) {
             </div>
 
             <header className="mb-10">
-
               <div className="mt-6 flex flex-wrap items-center gap-6 border-t border-border/40 pt-6">
                 <div className="flex items-center gap-2">
                   <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10">
@@ -248,11 +268,11 @@ export default async function BlogArticlePage({ params }: Props) {
 
             <div className="mt-10 rounded-2xl border border-primary/20 bg-primary/5 p-6 text-center sm:p-8">
               <h3 className="font-display text-xl font-bold text-foreground">
-                Kundigung erstellen?
+                Kündigung erstellen?
               </h3>
               <p className="mt-2 text-sm text-muted-foreground">
-                Nutzen Sie unseren kostenlosen Generator fur rechtssichere
-                Kundigungsschreiben.
+                Nutzen Sie unseren kostenlosen Generator für rechtssichere
+                Kündigungsschreiben.
               </p>
               <Button className="mt-4 rounded-full px-6" asChild>
                 <Link href="/#generator">Zum Generator</Link>

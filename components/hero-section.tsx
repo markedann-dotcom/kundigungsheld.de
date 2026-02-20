@@ -1,150 +1,197 @@
 "use client"
 
-import { ArrowRight, CheckCircle2, Shield, Zap, FileText, Download } from "lucide-react"
+import { ArrowRight, CheckCircle2, Shield, Zap, FileText } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { AnimateIn } from "@/components/animate-in"
-
-const badges = [
-  { icon: Shield, label: "Rechtssicher" },
-  { icon: Zap, label: "In 2 Minuten fertig" },
-  { icon: CheckCircle2, label: "100% kostenlos" },
-]
+import { useI18n } from "@/contexts/i18n-context"
 
 export function HeroSection() {
-  return (
-    <section className="relative overflow-hidden bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/10 via-background to-background">
-      
-      {/* Фон (пятна) */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-[20%] left-[50%] h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-primary/20 blur-[120px] opacity-40" />
-      </div>
+  const { t } = useI18n()
 
-      <div className="relative mx-auto max-w-7xl px-4 pb-16 pt-16 lg:px-8 lg:pb-20 lg:pt-24">
-        <div className="mx-auto max-w-3xl text-center z-10 relative">
+  return (
+    <section className="relative overflow-hidden bg-background">
+      
+      {/* Minimal Background Pattern */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#00000008_1px,transparent_1px),linear-gradient(to_bottom,#00000008_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:48px_48px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_60%,transparent_100%)]" />
+      
+      {/* Subtle gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-muted/30" />
+
+      <div className="relative mx-auto max-w-7xl px-4 pb-24 pt-24 lg:px-8 lg:pb-32 lg:pt-32">
+        <div className="mx-auto max-w-5xl text-center">
           
+          {/* Badge */}
           <AnimateIn delay={100}>
-            <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-background/50 px-4 py-1.5 backdrop-blur-md shadow-sm">
-              <span className="flex h-2 w-2 relative">
-                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                 <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-              </span>
-              <span className="text-xs font-semibold text-primary tracking-wide uppercase">
-                Über 150 Anbieter verfügbar
+            <div className="mb-12 inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/80 px-4 py-1.5 backdrop-blur-sm shadow-sm">
+              <div className="h-1.5 w-1.5 rounded-full bg-foreground animate-pulse" />
+              <span className="text-xs font-medium text-muted-foreground tracking-wide uppercase">
+                {t.hero.badge}
               </span>
             </div>
           </AnimateIn>
 
+          {/* Heading */}
           <AnimateIn delay={200}>
-            <h1 className="font-display text-4xl font-extrabold leading-tight tracking-tight text-foreground sm:text-5xl lg:text-7xl">
-              <span className="block text-balance drop-shadow-sm">
-                Verträge kündigen
-              </span>
-              <span className="mt-2 block bg-gradient-to-r from-primary via-teal-500 to-emerald-400 bg-clip-text text-transparent">
-                einfach wie nie.
-              </span>
+            <h1 className="font-display text-6xl font-black leading-[1.05] tracking-tight text-foreground sm:text-7xl lg:text-8xl mb-6">
+              {t.hero.title}
             </h1>
           </AnimateIn>
 
+          {/* Description */}
           <AnimateIn delay={300}>
-            <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground font-medium">
-              Erstellen Sie in wenigen Minuten rechtssichere Kündigungsschreiben. 
-              Kein Anwalt nötig, keine Kosten, sofortiger Download.
+            <p className="mx-auto mt-8 max-w-2xl text-xl leading-relaxed text-muted-foreground font-normal">
+              {t.hero.subtitle}
             </p>
           </AnimateIn>
 
+          {/* CTA Buttons */}
           <AnimateIn delay={400}>
-            <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-              <Button size="lg" className="h-12 rounded-full px-8 text-base shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all duration-300" asChild>
+            <div className="mt-12 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+              <Button 
+                size="lg" 
+                className="group h-14 rounded-full px-10 text-base font-semibold shadow-md hover:shadow-lg hover:scale-[1.02] transition-all duration-300 bg-foreground text-background hover:bg-foreground/90" 
+                asChild
+              >
                 <a href="#generator">
-                  Kündigung erstellen
-                  <ArrowRight className="ml-2 h-4 w-4" />
+                  {t.hero.cta}
+                  <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
                 </a>
               </Button>
               <Button
                 variant="outline"
                 size="lg"
-                className="h-12 rounded-full px-8 text-base bg-background/60 backdrop-blur-sm border-border/60 hover:bg-background/80"
+                className="h-14 rounded-full px-10 text-base font-semibold border-border/60 hover:bg-muted/50 hover:border-border transition-all duration-300"
                 asChild
               >
-                <a href="#so-gehts">So funktioniert{"'"}s</a>
+                <a href="#howItWorks">
+                  <FileText className="mr-2 h-4 w-4" />
+                  {t.hero.howItWorksCTA}
+                </a>
               </Button>
+            </div>
+          </AnimateIn>
+
+          {/* Stats */}
+          <AnimateIn delay={450}>
+            <div className="mt-16 flex flex-wrap items-center justify-center gap-x-16 gap-y-6 text-center">
+              <div className="group">
+                <div className="text-4xl font-black text-foreground group-hover:scale-105 transition-transform duration-300">100K+</div>
+                <div className="text-sm text-muted-foreground mt-1.5 font-medium">{t.hero.stats?.terminations}</div>
+              </div>
+              <div className="group">
+                <div className="text-4xl font-black text-foreground group-hover:scale-105 transition-transform duration-300">300+</div>
+                <div className="text-sm text-muted-foreground mt-1.5 font-medium">{t.hero.stats?.companies}</div>
+              </div>
+              <div className="group">
+                <div className="text-4xl font-black text-foreground group-hover:scale-105 transition-transform duration-300">4.9</div>
+                <div className="text-sm text-muted-foreground mt-1.5 font-medium">★ {t.hero.stats?.rating}</div>
+              </div>
             </div>
           </AnimateIn>
         </div>
 
-        {/* --- COMPACT MOCKUP (Компактный вариант) --- */}
-        <AnimateIn delay={500} duration={1000}>
-          <div className="relative mx-auto mt-16 max-w-2xl perspective-1000 group">
+        {/* Mockup */}
+        <AnimateIn delay={500}>
+          <div className="relative mx-auto mt-24 max-w-4xl">
             
-            {/* Свечение за документом */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60%] h-[60%] bg-primary/40 blur-[60px] rounded-full opacity-60 pointer-events-none group-hover:opacity-80 transition-opacity duration-700" />
-
-            {/* Левитирующий документ */}
-            <div className="relative mx-auto w-[280px] sm:w-[320px] aspect-[1/1.4] bg-white rounded-xl shadow-2xl shadow-primary/20 border border-white/40 ring-1 ring-black/5 transform rotate-x-12 rotate-y-6 rotate-z-[-2deg] transition-all duration-700 hover:rotate-0 hover:scale-105 hover:shadow-primary/40">
+            {/* Document Card */}
+            <div className="relative mx-auto w-full max-w-2xl aspect-[1/1.35] bg-card rounded-2xl shadow-xl border border-border/50 overflow-hidden">
                 
-                {/* Содержимое "Листа бумаги" */}
-                <div className="p-6 flex flex-col h-full bg-gradient-to-b from-white to-gray-50/50 rounded-xl">
-                    {/* Шапка письма */}
-                    <div className="flex justify-between items-start mb-6 opacity-80">
-                         <div className="space-y-1.5">
-                            <div className="h-2 w-16 bg-slate-800 rounded-full" />
-                            <div className="h-1.5 w-24 bg-slate-300 rounded-full" />
+                <div className="p-12 flex flex-col h-full">
+                    
+                    {/* Document Header */}
+                    <div className="flex justify-between items-start mb-10">
+                         <div className="space-y-3">
+                            <div className="h-3 w-28 bg-foreground rounded-full" />
+                            <div className="h-2 w-36 bg-muted-foreground/30 rounded-full" />
+                            <div className="h-2 w-32 bg-muted-foreground/20 rounded-full" />
                          </div>
-                         <Shield className="h-6 w-6 text-primary/80" />
+                         <div className="h-12 w-12 rounded-xl bg-foreground flex items-center justify-center">
+                           <Shield className="h-6 w-6 text-background" />
+                         </div>
                     </div>
                     
-                    {/* Полоски текста */}
-                    <div className="space-y-3 mb-auto opacity-60">
-                         <div className="h-1.5 w-full bg-slate-200 rounded-full" />
-                         <div className="h-1.5 w-full bg-slate-200 rounded-full" />
-                         <div className="h-1.5 w-3/4 bg-slate-200 rounded-full" />
-                         <div className="h-1.5 w-full bg-slate-200 rounded-full" />
+                    {/* Content Lines */}
+                    <div className="space-y-4 mb-auto opacity-50">
+                         <div className="h-2 w-full bg-foreground/20 rounded-full" />
+                         <div className="h-2 w-full bg-foreground/20 rounded-full" />
+                         <div className="h-2 w-[85%] bg-foreground/20 rounded-full" />
+                         <div className="h-2 w-full bg-foreground/20 rounded-full" />
+                         <div className="h-2 w-[75%] bg-foreground/20 rounded-full" />
+                         <div className="h-2 w-full bg-foreground/20 rounded-full" />
+                         <div className="h-2 w-[90%] bg-foreground/20 rounded-full" />
                     </div>
 
-                    {/* Печать / Подпись */}
-                    <div className="mt-6 flex items-center justify-between border-t border-slate-100 pt-4">
-                        <div className="flex items-center gap-2">
-                             <div className="h-8 w-8 rounded-full bg-green-100 flex items-center justify-center text-green-600">
-                                <CheckCircle2 className="h-4 w-4" />
+                    {/* Footer Badge */}
+                    <div className="mt-10 flex items-center justify-between border-t border-border/50 pt-8">
+                        <div className="flex items-center gap-3">
+                             <div className="h-11 w-11 rounded-xl bg-foreground flex items-center justify-center">
+                                <CheckCircle2 className="h-5 w-5 text-background" />
                              </div>
-                             <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">
-                                Geprüft
+                             <div>
+                               <div className="text-xs font-bold text-foreground uppercase tracking-wide mb-0.5">
+                                 {t.hero.mockup?.secure}
+                               </div>
+                               <div className="text-[10px] text-muted-foreground font-medium">{t.hero.mockup?.id}: #KH2026XYZ</div>
                              </div>
                         </div>
-                        <div className="font-handwriting text-slate-400 text-lg rotate-[-5deg]">
-                           Muster Max
+                        <div className="font-serif italic text-2xl text-foreground/70">
+                           Max M.
                         </div>
                     </div>
-                </div>
-
-                {/* Плавающие бейджики (Floating Elements) */}
-                <div className="absolute -right-12 top-10 animate-bounce delay-100 duration-[4000ms] hidden sm:flex">
-                     <div className="flex items-center gap-2 rounded-lg bg-white/90 backdrop-blur px-3 py-2 shadow-lg border border-white/50">
-                        <FileText className="h-4 w-4 text-red-500" />
-                        <span className="text-xs font-bold text-slate-700">PDF</span>
-                     </div>
-                </div>
-
-                <div className="absolute -left-10 bottom-20 animate-bounce delay-700 duration-[5000ms] hidden sm:flex">
-                     <div className="flex items-center gap-2 rounded-lg bg-white/90 backdrop-blur px-3 py-2 shadow-lg border border-white/50">
-                        <Download className="h-4 w-4 text-blue-500" />
-                        <span className="text-xs font-bold text-slate-700">Download</span>
-                     </div>
                 </div>
 
             </div>
+
+            {/* Floating Cards */}
+            <div className="absolute -right-12 top-20 hidden lg:block hover:-translate-y-1 transition-transform duration-300">
+                 <div className="flex items-center gap-3 rounded-xl bg-card border border-border/50 px-4 py-3 shadow-lg backdrop-blur-sm">
+                    <div className="h-10 w-10 rounded-lg bg-foreground flex items-center justify-center">
+                      <FileText className="h-5 w-5 text-background" />
+                    </div>
+                    <div>
+                      <div className="text-sm font-semibold text-foreground">{t.hero.mockup?.pdfReady}</div>
+                      <div className="text-xs text-muted-foreground">{t.hero.mockup?.instantDownload}</div>
+                    </div>
+                 </div>
+            </div>
+
+            <div className="absolute -left-12 bottom-32 hidden lg:block hover:-translate-y-1 transition-transform duration-300">
+                 <div className="flex items-center gap-3 rounded-xl bg-card border border-border/50 px-4 py-3 shadow-lg backdrop-blur-sm">
+                    <div className="h-10 w-10 rounded-lg bg-foreground flex items-center justify-center">
+                      <CheckCircle2 className="h-5 w-5 text-background" />
+                    </div>
+                    <div>
+                      <div className="text-sm font-semibold text-foreground">{t.hero.mockup?.validated}</div>
+                      <div className="text-xs text-muted-foreground">{t.hero.mockup?.legal}</div>
+                    </div>
+                 </div>
+            </div>
+
           </div>
         </AnimateIn>
 
-        {/* Иконки внизу, чтобы заполнить пустоту */}
+        {/* Feature Badges */}
         <AnimateIn delay={600}>
-            <div className="mt-16 flex flex-wrap items-center justify-center gap-x-8 gap-y-4 border-t border-border/40 pt-8 max-w-2xl mx-auto">
-              {badges.map((badge) => (
-                <div key={badge.label} className="flex items-center gap-2 text-sm font-medium text-muted-foreground/80">
-                  <badge.icon className="h-4 w-4 text-primary" />
-                  <span>{badge.label}</span>
+            <div className="mt-24 flex flex-wrap items-center justify-center gap-x-12 gap-y-6 border-t border-border/40 pt-12 max-w-4xl mx-auto">
+              <div className="flex items-center gap-3.5 text-base font-medium group">
+                <div className="h-11 w-11 rounded-xl bg-foreground flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
+                  <Shield className="h-5 w-5 text-background" />
                 </div>
-              ))}
+                <span className="text-foreground/80 group-hover:text-foreground transition-colors">{t.hero.features?.secure}</span>
+              </div>
+              <div className="flex items-center gap-3.5 text-base font-medium group">
+                <div className="h-11 w-11 rounded-xl bg-foreground flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
+                  <Zap className="h-5 w-5 text-background" />
+                </div>
+                <span className="text-foreground/80 group-hover:text-foreground transition-colors">{t.hero.features?.fast}</span>
+              </div>
+              <div className="flex items-center gap-3.5 text-base font-medium group">
+                <div className="h-11 w-11 rounded-xl bg-foreground flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
+                  <CheckCircle2 className="h-5 w-5 text-background" />
+                </div>
+                <span className="text-foreground/80 group-hover:text-foreground transition-colors">{t.hero.features?.free}</span>
+              </div>
             </div>
         </AnimateIn>
 

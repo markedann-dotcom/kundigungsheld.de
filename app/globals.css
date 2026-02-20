@@ -1,86 +1,56 @@
+/* Font families - must be first */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Caveat:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
-  .text-pretty {
-    text-wrap: pretty;
-  }
-}
-
 @layer base {
   :root {
-    --background: 210 40% 98%;
-    --foreground: 222 47% 11%;
+    /* Minimalist Monochrome Theme - Inspired by Apple/Linear */
+    --background: 0 0% 100%;
+    --foreground: 0 0% 9%;
     --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
+    --card-foreground: 0 0% 9%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
-    --primary: 173 58% 39%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 210 40% 96%;
-    --secondary-foreground: 222 47% 11%;
-    --muted: 210 40% 96%;
-    --muted-foreground: 215 16% 47%;
-    --accent: 15 90% 58%;
-    --accent-foreground: 0 0% 100%;
+    --popover-foreground: 0 0% 9%;
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 96%;
+    --secondary-foreground: 0 0% 9%;
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 45%;
+    --accent: 0 0% 96%;
+    --accent-foreground: 0 0% 9%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
-    --border: 214 32% 91%;
-    --input: 214 32% 91%;
-    --ring: 173 58% 39%;
-    --chart-1: 173 58% 39%;
-    --chart-2: 15 90% 58%;
-    --chart-3: 197 37% 24%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
-    --radius: 0.75rem;
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 173 58% 39%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 210 40% 96%;
-    --sidebar-accent-foreground: 222 47% 11%;
-    --sidebar-border: 214 32% 91%;
-    --sidebar-ring: 173 58% 39%;
+    --border: 0 0% 90%;
+    --input: 0 0% 90%;
+    --ring: 0 0% 9%;
+    --radius: 0.5rem;
   }
 
   .dark {
-    --background: 222 47% 6%;
-    --foreground: 210 40% 96%;
-    --card: 222 47% 9%;
-    --card-foreground: 210 40% 96%;
-    --popover: 222 47% 9%;
-    --popover-foreground: 210 40% 96%;
-    --primary: 173 58% 45%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 222 30% 14%;
-    --secondary-foreground: 210 40% 96%;
-    --muted: 222 30% 14%;
-    --muted-foreground: 215 16% 57%;
-    --accent: 15 90% 58%;
-    --accent-foreground: 0 0% 100%;
-    --destructive: 0 84% 60%;
+    /* Dark Minimalist Theme */
+    --background: 0 0% 9%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 11%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 11%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 9%;
+    --secondary: 0 0% 15%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 63%;
+    --accent: 0 0% 15%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 70% 50%;
     --destructive-foreground: 0 0% 98%;
-    --border: 222 30% 18%;
-    --input: 222 30% 18%;
-    --ring: 173 58% 45%;
-    --chart-1: 173 58% 45%;
-    --chart-2: 15 90% 58%;
-    --chart-3: 197 37% 50%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
-    --sidebar-background: 222 47% 6%;
-    --sidebar-foreground: 210 40% 96%;
-    --sidebar-primary: 173 58% 45%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 222 30% 14%;
-    --sidebar-accent-foreground: 210 40% 96%;
-    --sidebar-border: 222 30% 18%;
-    --sidebar-ring: 173 58% 45%;
+    --border: 0 0% 20%;
+    --input: 0 0% 20%;
+    --ring: 0 0% 98%;
   }
 }
 
@@ -88,76 +58,355 @@
   * {
     @apply border-border;
   }
+  
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1, "ss01" 1;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+  
+  .font-display {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+  }
+
+  .font-handwriting {
+    font-family: 'Caveat', cursive;
+    font-weight: 600;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  /* Minimalist Animations - Subtle and elegant */
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fade-in-scale {
+    from {
+      opacity: 0;
+      transform: scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
+  @keyframes slide-up {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slide-down {
+    from {
+      opacity: 0;
+      transform: translateY(-12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes scale-in {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: -1000px 0;
+    }
+    100% {
+      background-position: 1000px 0;
+    }
+  }
+
+  .animate-fade-in {
+    animation: fade-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .animate-fade-in-scale {
+    animation: fade-in-scale 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  
+  .animate-slide-up {
+    animation: slide-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .animate-slide-down {
+    animation: slide-down 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .animate-scale-in {
+    animation: scale-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  
+  .animate-shimmer {
+    animation: shimmer 2s infinite linear;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(0, 0, 0, 0.03),
+      transparent
+    );
+    background-size: 1000px 100%;
+  }
+
+  .dark .animate-shimmer {
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.03),
+      transparent
+    );
+    background-size: 1000px 100%;
+  }
+  
+  /* Minimalist borders */
+  .border-elegant {
+    @apply border border-border/50;
+  }
+
+  .border-elegant-hover {
+    @apply border border-border/50 hover:border-border transition-colors duration-300;
+  }
+  
+  /* Minimalist Shadows - Very subtle */
+  .shadow-minimal {
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  }
+
+  .shadow-elegant {
+    box-shadow: 
+      0 1px 3px 0 rgba(0, 0, 0, 0.05),
+      0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  }
+
+  .shadow-premium {
+    box-shadow: 
+      0 4px 6px -1px rgba(0, 0, 0, 0.05),
+      0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  }
+
+  .shadow-card {
+    box-shadow: 
+      0 0 0 1px rgba(0, 0, 0, 0.05),
+      0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  }
+
+  .dark .shadow-card {
+    box-shadow: 
+      0 0 0 1px rgba(255, 255, 255, 0.05),
+      0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  }
+
+  /* Glass effects - minimal */
+  .glass-minimal {
+    @apply bg-background/80 backdrop-blur-sm border border-border/50;
+  }
+  
+  .glass-elegant {
+    @apply bg-background/90 backdrop-blur-md border border-border/60;
+  }
+  
+  /* Smooth scrolling */
+  .smooth-scroll {
+    scroll-behavior: smooth;
+  }
+  
+  /* Hide scrollbar but keep functionality */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Minimal custom scrollbar */
+  .scrollbar-minimal::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  .scrollbar-minimal::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  .scrollbar-minimal::-webkit-scrollbar-thumb {
+    @apply bg-border rounded-full hover:bg-muted-foreground/30 transition-colors;
+  }
+  
+  /* Selection - minimal */
+  ::selection {
+    @apply bg-foreground/10 text-foreground;
+  }
+  
+  /* Focus - minimal ring */
+  .focus-ring {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/20 focus-visible:ring-offset-2 focus-visible:ring-offset-background;
+  }
+}
+
+/* Smooth transitions for everything */
+* {
+  @apply transition-colors duration-200;
+}
+
+/* Loading states */
+.skeleton {
+  @apply animate-pulse bg-muted rounded-md;
+}
+
+/* Minimal focus states */
+*:focus-visible {
+  @apply outline-none ring-2 ring-foreground/20 ring-offset-2 ring-offset-background;
+}
+
+/* Dark mode tweaks */
+.dark {
+  color-scheme: dark;
+}
+
+.dark img {
+  opacity: 0.95;
+}
+
+/* Smooth page transitions */
+@media (prefers-reduced-motion: no-preference) {
   html {
     scroll-behavior: smooth;
   }
-  body {
-    @apply bg-background text-foreground;
-  }
 }
 
-/* Page fade-in animation */
-@keyframes page-fade-in {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-main {
-  animation: page-fade-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-/* Smooth transitions for interactive elements */
-a, button {
-  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-/* Print styles for Kündigungsschreiben */
+/* Print styles */
 @media print {
-  header, footer, nav,
-  .cookie-banner,
-  .scroll-to-top,
-  [data-no-print] {
+  .no-print {
     display: none !important;
   }
-
+  
   body {
-    background: white !important;
-    color: black !important;
-    font-size: 12pt;
-    line-height: 1.5;
+    @apply text-black bg-white;
+  }
+}
+
+/* Staggered animation delays */
+.delay-75 {
+  animation-delay: 75ms;
+}
+
+.delay-100 {
+  animation-delay: 100ms;
+}
+
+.delay-150 {
+  animation-delay: 150ms;
+}
+
+.delay-200 {
+  animation-delay: 200ms;
+}
+
+.delay-300 {
+  animation-delay: 300ms;
+}
+
+.delay-400 {
+  animation-delay: 400ms;
+}
+
+.delay-500 {
+  animation-delay: 500ms;
+}
+
+/* Mobile optimizations */
+@media (max-width: 640px) {
+  .font-display {
+    letter-spacing: -0.03em;
+  }
+  
+  h1 {
+    font-size: clamp(2.25rem, 8vw, 3rem);
   }
 
-  main {
-    animation: none !important;
+  h2 {
+    font-size: clamp(1.75rem, 6vw, 2.25rem);
   }
+}
 
-  a {
-    text-decoration: none !important;
-    color: black !important;
+/* Touch improvements for mobile */
+@media (hover: none) and (pointer: coarse) {
+  button, a {
+    min-height: 44px;
+    min-width: 44px;
   }
+}
 
-  pre {
-    white-space: pre-wrap;
-    font-family: "Times New Roman", serif;
-    font-size: 12pt;
-    line-height: 1.6;
-    border: none !important;
-    box-shadow: none !important;
-    padding: 0 !important;
-  }
+/* Minimal gradient for subtle accents */
+.gradient-subtle {
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.02) 100%
+  );
+}
 
-  .rounded-2xl, .rounded-xl, .rounded-lg, .rounded-full {
-    border-radius: 0 !important;
-  }
+.dark .gradient-subtle {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.02) 100%
+  );
+}
 
-  @page {
-    margin: 2cm;
-    size: A4;
+/* Elegant hover effects */
+.hover-lift {
+  @apply transition-all duration-300 ease-out;
+}
+
+.hover-lift:hover {
+  transform: translateY(-2px);
+}
+
+/* Typography improvements */
+.text-pretty {
+  text-wrap: pretty;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }

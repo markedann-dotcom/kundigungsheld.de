@@ -31,7 +31,7 @@ export default function DatenschutzPage() {
               Datenschutzerklärung
             </h1>
             <p className="mt-2 text-sm text-muted-foreground">
-              Stand: Februar 2025
+              Stand: Februar 2026
             </p>
 
             <div className="mt-10 space-y-8 text-foreground/80">
@@ -125,7 +125,7 @@ export default function DatenschutzPage() {
                 <h2 className="mb-3 font-display text-xl font-semibold text-foreground">
                   2. Hosting und technische Dienstleister
                 </h2>
-                
+
                 <h3 className="mb-2 mt-4 font-display text-lg font-medium text-foreground">
                   Vercel (Website-Hosting)
                 </h3>
@@ -167,9 +167,6 @@ export default function DatenschutzPage() {
                   Die Verwendung von Vercel erfolgt auf Grundlage von Art. 6
                   Abs. 1 lit. f DSGVO. Wir haben ein berechtigtes Interesse an
                   einer möglichst zuverlässigen Darstellung unserer Website.
-                  Sofern eine entsprechende Einwilligung abgefragt wurde,
-                  erfolgt die Verarbeitung ausschließlich auf Grundlage von
-                  Art. 6 Abs. 1 lit. a DSGVO und § 25 Abs. 1 TDDDG.
                 </p>
 
                 <h3 className="mb-2 mt-6 font-display text-lg font-medium text-foreground">
@@ -190,12 +187,6 @@ export default function DatenschutzPage() {
                   <li>Keine Tracking-Cookies</li>
                 </ul>
                 <p className="mt-3 leading-relaxed">
-                  Der Besucherzähler dient ausschließlich statistischen Zwecken
-                  und erlaubt keine Rückschlüsse auf einzelne Besucher. Es
-                  werden lediglich anonyme Gesamtzahlen erfasst, um einen
-                  Überblick über die Nutzung der Website zu erhalten.
-                </p>
-                <p className="mt-3 leading-relaxed">
                   Details entnehmen Sie der Datenschutzerklärung von Upstash:{" "}
                   <a
                     href="https://upstash.com/docs/common/help/privacy"
@@ -207,26 +198,117 @@ export default function DatenschutzPage() {
                   </a>
                 </p>
                 <p className="mt-3 leading-relaxed">
-                  Die Verwendung von Upstash erfolgt auf Grundlage von Art. 6
-                  Abs. 1 lit. f DSGVO. Wir haben ein berechtigtes Interesse an
-                  der anonymen Analyse des Nutzerverhaltens, um unsere Website
-                  und unsere Angebote zu optimieren.
-                </p>
-                <p className="mt-3 leading-relaxed">
                   <strong className="font-semibold text-foreground">
                     Datenübermittlung in die USA:
                   </strong>{" "}
                   Sowohl Vercel als auch Upstash haben ihren Sitz in den USA.
                   Die Datenübermittlung erfolgt auf Grundlage von
-                  Standardvertragsklauseln gemäß Art. 46 DSGVO. Diese
-                  gewährleisten ein angemessenes Datenschutzniveau, das dem
-                  europäischen Standard entspricht.
+                  Standardvertragsklauseln gemäß Art. 46 DSGVO.
+                </p>
+              </section>
+
+              {/* ── НОВЫЙ РАЗДЕЛ: KI-Assistent ── */}
+              <section>
+                <h2 className="mb-3 font-display text-xl font-semibold text-foreground">
+                  3. KI-Assistent (fal.ai)
+                </h2>
+
+                <p className="leading-relaxed">
+                  Auf unserer Website bieten wir einen KI-gestützten Assistenten an,
+                  der Ihre Fragen rund um das Thema Kündigung beantwortet. Dieser
+                  Assistent wird über die KI-Plattform{" "}
+                  <strong className="font-semibold text-foreground">fal.ai</strong>{" "}
+                  (Fal, Inc., USA) betrieben.
+                </p>
+
+                <h3 className="mb-2 mt-4 font-display text-lg font-medium text-foreground">
+                  Welche Daten werden verarbeitet?
+                </h3>
+                <p className="leading-relaxed">
+                  Wenn Sie den KI-Assistenten nutzen, werden folgende Daten
+                  an fal.ai übertragen:
+                </p>
+                <ul className="mt-3 ml-6 list-disc space-y-1">
+                  <li>Der Text Ihrer Chatnachricht (Ihre Frage)</li>
+                  <li>Ihre IP-Adresse (zur Verarbeitung der Anfrage)</li>
+                </ul>
+                <p className="mt-3 leading-relaxed">
+                  Wir übertragen{" "}
+                  <strong className="font-semibold text-foreground">keine</strong>{" "}
+                  persönlichen Daten aus Ihrem Kündigungsschreiben oder Ihrem
+                  Profil an den KI-Assistenten. Die Chatverläufe werden
+                  ausschließlich lokal in Ihrem Browser gespeichert und nach dem
+                  Schließen des Chats gelöscht.
+                </p>
+
+                <h3 className="mb-2 mt-4 font-display text-lg font-medium text-foreground">
+                  Nutzungslimit
+                </h3>
+                <p className="leading-relaxed">
+                  Zur Missbrauchsprävention und Kostenkontrolle speichern wir
+                  Ihre IP-Adresse temporär im Arbeitsspeicher unseres Servers,
+                  um die Anzahl der Anfragen pro Tag zu begrenzen (maximal 20
+                  Anfragen pro IP-Adresse pro Tag). Diese Daten werden
+                  ausschließlich im RAM gehalten und{" "}
+                  <strong className="font-semibold text-foreground">
+                    nicht dauerhaft gespeichert
+                  </strong>
+                  . Sie werden spätestens beim Neustart des Servers gelöscht.
+                </p>
+
+                <h3 className="mb-2 mt-4 font-display text-lg font-medium text-foreground">
+                  Verwendetes KI-Modell
+                </h3>
+                <p className="leading-relaxed">
+                  Wir verwenden das Sprachmodell{" "}
+                  <strong className="font-semibold text-foreground">
+                    Google Gemini Flash 1.5
+                  </strong>
+                  , das über die fal.ai-Plattform bereitgestellt wird. Die
+                  Verarbeitung Ihrer Anfragen erfolgt auf Servern von fal.ai
+                  in den USA.
+                </p>
+
+                <h3 className="mb-2 mt-4 font-display text-lg font-medium text-foreground">
+                  Kein Ersatz für Rechtsberatung
+                </h3>
+                <p className="leading-relaxed">
+                  Der KI-Assistent dient ausschließlich zur allgemeinen
+                  Information und ist{" "}
+                  <strong className="font-semibold text-foreground">
+                    kein Ersatz für eine professionelle Rechtsberatung
+                  </strong>
+                  . Für rechtlich verbindliche Auskünfte wenden Sie sich bitte
+                  an einen zugelassenen Rechtsanwalt.
+                </p>
+
+                <h3 className="mb-2 mt-4 font-display text-lg font-medium text-foreground">
+                  Rechtsgrundlage
+                </h3>
+                <p className="leading-relaxed">
+                  Die Verarbeitung erfolgt auf Grundlage von Art. 6 Abs. 1
+                  lit. f DSGVO (berechtigtes Interesse an der Bereitstellung
+                  eines hilfreichen KI-Assistenten) sowie Art. 6 Abs. 1 lit. a
+                  DSGVO (Einwilligung durch aktive Nutzung des Chats).
+                </p>
+
+                <p className="mt-3 leading-relaxed">
+                  Details zur Datenverarbeitung durch fal.ai entnehmen Sie
+                  deren Datenschutzerklärung:{" "}
+                  <a
+                    href="https://fal.ai/privacy"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary underline underline-offset-2 hover:text-primary/80"
+                  >
+                    https://fal.ai/privacy
+                  </a>
                 </p>
               </section>
 
               <section>
                 <h2 className="mb-3 font-display text-xl font-semibold text-foreground">
-                  3. Allgemeine Hinweise und Pflichtinformationen
+                  4. Allgemeine Hinweise und Pflichtinformationen
                 </h2>
 
                 <h3 className="mb-2 mt-4 font-display text-lg font-medium text-foreground">
@@ -273,12 +355,6 @@ export default function DatenschutzPage() {
                     kundigungsheld@gmail.com
                   </a>
                 </p>
-                <p className="mt-3 leading-relaxed">
-                  Verantwortliche Stelle ist die natürliche oder juristische
-                  Person, die allein oder gemeinsam mit anderen über die Zwecke
-                  und Mittel der Verarbeitung von personenbezogenen Daten (z.B.
-                  Namen, E-Mail-Adressen o. Ä.) entscheidet.
-                </p>
 
                 <h3 className="mb-2 mt-6 font-display text-lg font-medium text-foreground">
                   Speicherdauer
@@ -291,10 +367,7 @@ export default function DatenschutzPage() {
                   Löschverlangen geltend machen oder eine Einwilligung zur
                   Datenverarbeitung widerrufen, werden Ihre Daten gelöscht,
                   sofern wir keine anderen rechtlich zulässigen Gründe für die
-                  Speicherung Ihrer personenbezogenen Daten haben (z.B. steuer-
-                  oder handelsrechtliche Aufbewahrungsfristen); im
-                  letztgenannten Fall erfolgt die Löschung nach Fortfall dieser
-                  Gründe.
+                  Speicherung Ihrer personenbezogenen Daten haben.
                 </p>
 
                 <h3 className="mb-2 mt-6 font-display text-lg font-medium text-foreground">
@@ -308,22 +381,7 @@ export default function DatenschutzPage() {
                   DSGVO verarbeitet werden. Im Falle einer ausdrücklichen
                   Einwilligung in die Übertragung personenbezogener Daten in
                   Drittstaaten erfolgt die Datenverarbeitung außerdem auf
-                  Grundlage von Art. 49 Abs. 1 lit. a DSGVO. Sofern Sie in die
-                  Speicherung von Cookies oder in den Zugriff auf Informationen
-                  in Ihr Endgerät (z.B. via Device-Fingerprinting) eingewilligt
-                  haben, erfolgt die Datenverarbeitung zusätzlich auf Grundlage
-                  von § 25 Abs. 1 TDDDG. Die Einwilligung ist jederzeit
-                  widerrufbar. Sind Ihre Daten zur Vertragserfüllung oder zur
-                  Durchführung vorvertraglicher Maßnahmen erforderlich,
-                  verarbeiten wir Ihre Daten auf Grundlage des Art. 6 Abs. 1
-                  lit. b DSGVO. Des Weiteren verarbeiten wir Ihre Daten, sofern
-                  diese zur Erfüllung einer rechtlichen Verpflichtung
-                  erforderlich sind auf Grundlage von Art. 6 Abs. 1 lit. c
-                  DSGVO. Die Datenverarbeitung kann ferner auf Grundlage
-                  unseres berechtigten Interesses nach Art. 6 Abs. 1 lit. f
-                  DSGVO erfolgen. Über die jeweils im Einzelfall einschlägigen
-                  Rechtsgrundlagen wird in den folgenden Absätzen dieser
-                  Datenschutzerklärung informiert.
+                  Grundlage von Art. 49 Abs. 1 lit. a DSGVO.
                 </p>
 
                 <h3 className="mb-2 mt-6 font-display text-lg font-medium text-foreground">
@@ -347,42 +405,13 @@ export default function DatenschutzPage() {
                   AUS GRÜNDEN, DIE SICH AUS IHRER BESONDEREN SITUATION ERGEBEN,
                   GEGEN DIE VERARBEITUNG IHRER PERSONENBEZOGENEN DATEN
                   WIDERSPRUCH EINZULEGEN; DIES GILT AUCH FÜR EIN AUF DIESE
-                  BESTIMMUNGEN GESTÜTZTES PROFILING. DIE JEWEILIGE
-                  RECHTSGRUNDLAGE, AUF DENEN EINE VERARBEITUNG BERUHT,
-                  ENTNEHMEN SIE DIESER DATENSCHUTZERKLÄRUNG. WENN SIE
-                  WIDERSPRUCH EINLEGEN, WERDEN WIR IHRE BETROFFENEN
-                  PERSONENBEZOGENEN DATEN NICHT MEHR VERARBEITEN, ES SEI DENN,
-                  WIR KÖNNEN ZWINGENDE SCHUTZWÜRDIGE GRÜNDE FÜR DIE
-                  VERARBEITUNG NACHWEISEN, DIE IHRE INTERESSEN, RECHTE UND
-                  FREIHEITEN ÜBERWIEGEN ODER DIE VERARBEITUNG DIENT DER
-                  GELTENDMACHUNG, AUSÜBUNG ODER VERTEIDIGUNG VON
-                  RECHTSANSPRÜCHEN (WIDERSPRUCH NACH ART. 21 ABS. 1 DSGVO).
-                </p>
-                <p className="mt-3 leading-relaxed">
-                  WERDEN IHRE PERSONENBEZOGENEN DATEN VERARBEITET, UM
-                  DIREKTWERBUNG ZU BETREIBEN, SO HABEN SIE DAS RECHT, JEDERZEIT
-                  WIDERSPRUCH GEGEN DIE VERARBEITUNG SIE BETREFFENDER
-                  PERSONENBEZOGENER DATEN ZUM ZWECKE DERARTIGER WERBUNG
-                  EINZULEGEN; DIES GILT AUCH FÜR DAS PROFILING, SOWEIT ES MIT
-                  SOLCHER DIREKTWERBUNG IN VERBINDUNG STEHT. WENN SIE
-                  WIDERSPRECHEN, WERDEN IHRE PERSONENBEZOGENEN DATEN
-                  ANSCHLIESSEND NICHT MEHR ZUM ZWECKE DER DIREKTWERBUNG
-                  VERWENDET (WIDERSPRUCH NACH ART. 21 ABS. 2 DSGVO).
+                  BESTIMMUNGEN GESTÜTZTES PROFILING.
                 </p>
 
                 <h3 className="mb-2 mt-6 font-display text-lg font-medium text-foreground">
                   Beschwerderecht bei der zuständigen Aufsichtsbehörde
                 </h3>
                 <p className="leading-relaxed">
-                  Im Falle von Verstößen gegen die DSGVO steht den Betroffenen
-                  ein Beschwerderecht bei einer Aufsichtsbehörde zu,
-                  insbesondere in dem Mitgliedstaat ihres gewöhnlichen
-                  Aufenthalts, ihres Arbeitsplatzes oder des Orts des
-                  mutmaßlichen Verstoßes. Das Beschwerderecht besteht
-                  unbeschadet anderweitiger verwaltungsrechtlicher oder
-                  gerichtlicher Rechtsbehelfe.
-                </p>
-                <p className="mt-3 leading-relaxed">
                   Zuständige Aufsichtsbehörde für Baden-Württemberg:<br />
                   Der Landesbeauftragte für den Datenschutz und die
                   Informationsfreiheit Baden-Württemberg<br />
@@ -390,8 +419,8 @@ export default function DatenschutzPage() {
                   70173 Stuttgart<br />
                   Telefon: 0711/615541-0<br />
                   E-Mail:{" "}
-                  <a 
-                    href="mailto:poststelle@lfdi.bwl.de" 
+                  <a
+                    href="mailto:poststelle@lfdi.bwl.de"
                     className="text-primary underline underline-offset-2 hover:text-primary/80"
                   >
                     poststelle@lfdi.bwl.de
@@ -399,102 +428,18 @@ export default function DatenschutzPage() {
                 </p>
 
                 <h3 className="mb-2 mt-6 font-display text-lg font-medium text-foreground">
-                  Recht auf Datenübertragbarkeit
-                </h3>
-                <p className="leading-relaxed">
-                  Sie haben das Recht, Daten, die wir auf Grundlage Ihrer
-                  Einwilligung oder in Erfüllung eines Vertrags automatisiert
-                  verarbeiten, an sich oder an einen Dritten in einem gängigen,
-                  maschinenlesbaren Format aushändigen zu lassen. Sofern Sie
-                  die direkte Übertragung der Daten an einen anderen
-                  Verantwortlichen verlangen, erfolgt dies nur, soweit es
-                  technisch machbar ist.
-                </p>
-
-                <h3 className="mb-2 mt-6 font-display text-lg font-medium text-foreground">
-                  Recht auf Auskunft, Berichtigung und Löschung
-                </h3>
-                <p className="leading-relaxed">
-                  Sie haben im Rahmen der geltenden gesetzlichen Bestimmungen
-                  jederzeit das Recht auf unentgeltliche Auskunft über Ihre
-                  gespeicherten personenbezogenen Daten, deren Herkunft und
-                  Empfänger und den Zweck der Datenverarbeitung und ggf. ein
-                  Recht auf Berichtigung oder Löschung dieser Daten. Hierzu
-                  sowie zu weiteren Fragen zum Thema personenbezogene Daten
-                  können Sie sich jederzeit an uns wenden.
-                </p>
-
-                <h3 className="mb-2 mt-6 font-display text-lg font-medium text-foreground">
-                  Recht auf Einschränkung der Verarbeitung
-                </h3>
-                <p className="leading-relaxed">
-                  Sie haben das Recht, die Einschränkung der Verarbeitung Ihrer
-                  personenbezogenen Daten zu verlangen. Hierzu können Sie sich
-                  jederzeit an uns wenden. Das Recht auf Einschränkung der
-                  Verarbeitung besteht in folgenden Fällen:
-                </p>
-                <ul className="mt-3 ml-6 list-disc space-y-2">
-                  <li>
-                    Wenn Sie die Richtigkeit Ihrer bei uns gespeicherten
-                    personenbezogenen Daten bestreiten, benötigen wir in der
-                    Regel Zeit, um dies zu überprüfen. Für die Dauer der
-                    Prüfung haben Sie das Recht, die Einschränkung der
-                    Verarbeitung Ihrer personenbezogenen Daten zu verlangen.
-                  </li>
-                  <li>
-                    Wenn die Verarbeitung Ihrer personenbezogenen Daten
-                    unrechtmäßig geschah/geschieht, können Sie statt der
-                    Löschung die Einschränkung der Datenverarbeitung verlangen.
-                  </li>
-                  <li>
-                    Wenn wir Ihre personenbezogenen Daten nicht mehr benötigen,
-                    Sie sie jedoch zur Ausübung, Verteidigung oder
-                    Geltendmachung von Rechtsansprüchen benötigen, haben Sie
-                    das Recht, statt der Löschung die Einschränkung der
-                    Verarbeitung Ihrer personenbezogenen Daten zu verlangen.
-                  </li>
-                  <li>
-                    Wenn Sie einen Widerspruch nach Art. 21 Abs. 1 DSGVO
-                    eingelegt haben, muss eine Abwägung zwischen Ihren und
-                    unseren Interessen vorgenommen werden. Solange noch nicht
-                    feststeht, wessen Interessen überwiegen, haben Sie das
-                    Recht, die Einschränkung der Verarbeitung Ihrer
-                    personenbezogenen Daten zu verlangen.
-                  </li>
-                </ul>
-                <p className="mt-3 leading-relaxed">
-                  Wenn Sie die Verarbeitung Ihrer personenbezogenen Daten
-                  eingeschränkt haben, dürfen diese Daten – von ihrer
-                  Speicherung abgesehen – nur mit Ihrer Einwilligung oder zur
-                  Geltendmachung, Ausübung oder Verteidigung von
-                  Rechtsansprüchen oder zum Schutz der Rechte einer anderen
-                  natürlichen oder juristischen Person oder aus Gründen eines
-                  wichtigen öffentlichen Interesses der Europäischen Union oder
-                  eines Mitgliedstaats verarbeitet werden.
-                </p>
-
-                <h3 className="mb-2 mt-6 font-display text-lg font-medium text-foreground">
                   SSL- bzw. TLS-Verschlüsselung
                 </h3>
                 <p className="leading-relaxed">
                   Diese Seite nutzt aus Sicherheitsgründen und zum Schutz der
-                  Übertragung vertraulicher Inhalte, wie zum Beispiel
-                  Bestellungen oder Anfragen, die Sie an uns als Seitenbetreiber
-                  senden, eine SSL- bzw. TLS-Verschlüsselung. Eine
-                  verschlüsselte Verbindung erkennen Sie daran, dass die
-                  Adresszeile des Browsers von &quot;http://&quot; auf &quot;https://&quot;
-                  wechselt und an dem Schloss-Symbol in Ihrer Browserzeile.
-                </p>
-                <p className="mt-3 leading-relaxed">
-                  Wenn die SSL- bzw. TLS-Verschlüsselung aktiviert ist, können
-                  die Daten, die Sie an uns übermitteln, nicht von Dritten
-                  mitgelesen werden.
+                  Übertragung vertraulicher Inhalte eine SSL- bzw.
+                  TLS-Verschlüsselung.
                 </p>
               </section>
 
               <section>
                 <h2 className="mb-3 font-display text-xl font-semibold text-foreground">
-                  4. Datenerfassung auf dieser Website
+                  5. Datenerfassung auf dieser Website
                 </h2>
 
                 <h3 className="mb-2 mt-4 font-display text-lg font-medium text-foreground">
@@ -513,14 +458,6 @@ export default function DatenschutzPage() {
                   <li>Uhrzeit der Serveranfrage</li>
                   <li>IP-Adresse (anonymisiert)</li>
                 </ul>
-                <p className="mt-3 leading-relaxed">
-                  Eine Zusammenführung dieser Daten mit anderen Datenquellen
-                  wird nicht vorgenommen. Die Erfassung dieser Daten erfolgt auf
-                  Grundlage von Art. 6 Abs. 1 lit. f DSGVO. Der Websitebetreiber
-                  hat ein berechtigtes Interesse an der technisch fehlerfreien
-                  Darstellung und der Optimierung seiner Website – hierzu müssen
-                  die Server-Log-Files erfasst werden.
-                </p>
 
                 <h3 className="mb-2 mt-6 font-display text-lg font-medium text-foreground">
                   Lokale Speicherung (localStorage)
@@ -533,11 +470,7 @@ export default function DatenschutzPage() {
                     ausschließlich lokal gespeichert und niemals an unsere
                     Server oder Dritte übertragen
                   </strong>
-                  . Sie verbleiben zu 100% auf Ihrem Endgerät und können
-                  jederzeit von Ihnen gelöscht werden.
-                </p>
-                <p className="mt-3 leading-relaxed">
-                  In der localStorage werden folgende Daten gespeichert:
+                  .
                 </p>
                 <ul className="mt-3 ml-6 list-disc space-y-1">
                   <li>Name des gekündigten Unternehmens</li>
@@ -548,61 +481,15 @@ export default function DatenschutzPage() {
                   <li>Status der Kündigung (erstellt/gesendet/bestätigt)</li>
                   <li>Persönliche Notizen und Erinnerungen</li>
                 </ul>
-                <p className="mt-3 leading-relaxed">
-                  <strong className="font-semibold text-foreground">
-                    So löschen Sie Ihre lokal gespeicherten Daten:
-                  </strong>
-                </p>
-                <ul className="mt-3 ml-6 list-disc space-y-1">
-                  <li>In der App: Nutzen Sie die &quot;Alle Daten löschen&quot;-Funktion</li>
-                  <li>Im Browser: Löschen Sie den localStorage über die Browser-Einstellungen</li>
-                  <li>Cookies löschen: Wählen Sie &quot;Alle Daten löschen&quot; in Ihrem Browser</li>
-                </ul>
-                <p className="mt-3 leading-relaxed">
-                  Rechtsgrundlage: Die Speicherung erfolgt auf Grundlage Ihrer
-                  Einwilligung durch aktive Nutzung der Kündigungsgenerator-Funktion
-                  (Art. 6 Abs. 1 lit. a DSGVO).
-                </p>
 
                 <h3 className="mb-2 mt-6 font-display text-lg font-medium text-foreground">
                   Besucherzähler (Upstash)
                 </h3>
                 <p className="leading-relaxed">
-                  Wir verwenden einen anonymen Besucherzähler über Upstash, um
-                  eine ungefähre Statistik über die Nutzung unserer Website zu
-                  erhalten. Dieser Zähler erfasst:
-                </p>
-                <ul className="mt-3 ml-6 list-disc space-y-1">
-                  <li>
-                    <strong className="font-semibold text-foreground">Nur</strong> die
-                    Gesamtzahl der Seitenaufrufe (aggregiert)
-                  </li>
-                  <li>
-                    <strong className="font-semibold text-foreground">Keine</strong>{" "}
-                    IP-Adressen
-                  </li>
-                  <li>
-                    <strong className="font-semibold text-foreground">Keine</strong>{" "}
-                    personenbezogenen Daten
-                  </li>
-                  <li>
-                    <strong className="font-semibold text-foreground">Keine</strong>{" "}
-                    Cookies oder Tracking-IDs
-                  </li>
-                  <li>
-                    <strong className="font-semibold text-foreground">Keine</strong>{" "}
-                    Möglichkeit zur Identifizierung einzelner Besucher
-                  </li>
-                </ul>
-                <p className="mt-3 leading-relaxed">
-                  Der Besucherzähler ist vollständig anonym und dient
-                  ausschließlich statistischen Zwecken. Es findet kein Tracking,
-                  keine Profilbildung und keine Weitergabe von Daten an Dritte
-                  statt.
-                </p>
-                <p className="mt-3 leading-relaxed">
-                  Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO (berechtigtes
-                  Interesse an anonymer Statistik zur Verbesserung des Angebots).
+                  Wir verwenden einen anonymen Besucherzähler über Upstash.
+                  Dieser Zähler erfasst ausschließlich die Gesamtzahl der
+                  Seitenaufrufe — keine IP-Adressen, keine personenbezogenen
+                  Daten, keine Cookies oder Tracking-IDs.
                 </p>
 
                 <h3 className="mb-2 mt-6 font-display text-lg font-medium text-foreground">
@@ -611,34 +498,14 @@ export default function DatenschutzPage() {
                 <p className="leading-relaxed">
                   Wenn Sie uns per E-Mail kontaktieren, werden Ihre Angaben
                   inklusive der von Ihnen dort angegebenen Kontaktdaten zwecks
-                  Bearbeitung der Anfrage und für den Fall von Anschlussfragen
-                  bei uns gespeichert. Diese Daten geben wir nicht ohne Ihre
-                  Einwilligung weiter.
-                </p>
-                <p className="mt-3 leading-relaxed">
-                  Die Verarbeitung dieser Daten erfolgt auf Grundlage von Art. 6
-                  Abs. 1 lit. b DSGVO, sofern Ihre Anfrage mit der Erfüllung
-                  eines Vertrags zusammenhängt oder zur Durchführung
-                  vorvertraglicher Maßnahmen erforderlich ist. In allen übrigen
-                  Fällen beruht die Verarbeitung auf unserem berechtigten
-                  Interesse an der effektiven Bearbeitung der an uns gerichteten
-                  Anfragen (Art. 6 Abs. 1 lit. f DSGVO) oder auf Ihrer
-                  Einwilligung (Art. 6 Abs. 1 lit. a DSGVO) sofern diese
-                  abgefragt wurde.
-                </p>
-                <p className="mt-3 leading-relaxed">
-                  Die von Ihnen im Kontaktformular bzw. per E-Mail eingegebenen
-                  Daten verbleiben bei uns, bis Sie uns zur Löschung auffordern,
-                  Ihre Einwilligung zur Speicherung widerrufen oder der Zweck
-                  für die Datenspeicherung entfällt (z.B. nach abgeschlossener
-                  Bearbeitung Ihrer Anfrage). Zwingende gesetzliche Bestimmungen
-                  – insbesondere Aufbewahrungsfristen – bleiben unberührt.
+                  Bearbeitung der Anfrage bei uns gespeichert. Diese Daten geben
+                  wir nicht ohne Ihre Einwilligung weiter.
                 </p>
               </section>
 
               <section>
                 <h2 className="mb-3 font-display text-xl font-semibold text-foreground">
-                  5. Keine Analyse-Tools und Werbung
+                  6. Keine Analyse-Tools und Werbung
                 </h2>
                 <p className="leading-relaxed">
                   Wir verwenden bewusst{" "}
@@ -655,64 +522,39 @@ export default function DatenschutzPage() {
                   <li>Keine Verhaltensanalyse oder Profiling</li>
                   <li>Keine Weitergabe von Daten an Werbepartner</li>
                 </ul>
-                <p className="mt-3 leading-relaxed">
-                  Ihre Privatsphäre ist uns wichtig. Wir beschränken uns auf die
-                  absolut notwendige Datenverarbeitung für den Betrieb der
-                  Website.
-                </p>
               </section>
 
               <section>
                 <h2 className="mb-3 font-display text-xl font-semibold text-foreground">
-                  6. Ihre Datenschutzrechte im Überblick
+                  7. Ihre Datenschutzrechte im Überblick
                 </h2>
-                <p className="leading-relaxed">
-                  Sie haben folgende Rechte bezüglich Ihrer personenbezogenen
-                  Daten:
-                </p>
                 <ul className="mt-3 ml-6 space-y-2">
                   <li>
-                    <strong className="font-semibold text-foreground">
-                      Recht auf Auskunft:
-                    </strong>{" "}
-                    Sie können jederzeit Auskunft über Ihre gespeicherten Daten
-                    verlangen.
+                    <strong className="font-semibold text-foreground">Recht auf Auskunft:</strong>{" "}
+                    Sie können jederzeit Auskunft über Ihre gespeicherten Daten verlangen.
                   </li>
                   <li>
-                    <strong className="font-semibold text-foreground">
-                      Recht auf Berichtigung:
-                    </strong>{" "}
+                    <strong className="font-semibold text-foreground">Recht auf Berichtigung:</strong>{" "}
                     Sie können die Korrektur falscher Daten verlangen.
                   </li>
                   <li>
-                    <strong className="font-semibold text-foreground">
-                      Recht auf Löschung:
-                    </strong>{" "}
+                    <strong className="font-semibold text-foreground">Recht auf Löschung:</strong>{" "}
                     Sie können die Löschung Ihrer Daten verlangen.
                   </li>
                   <li>
-                    <strong className="font-semibold text-foreground">
-                      Recht auf Einschränkung:
-                    </strong>{" "}
+                    <strong className="font-semibold text-foreground">Recht auf Einschränkung:</strong>{" "}
                     Sie können die Einschränkung der Verarbeitung verlangen.
                   </li>
                   <li>
-                    <strong className="font-semibold text-foreground">
-                      Recht auf Datenübertragbarkeit:
-                    </strong>{" "}
-                    Sie können Ihre Daten in einem strukturierten Format
-                    erhalten.
+                    <strong className="font-semibold text-foreground">Recht auf Datenübertragbarkeit:</strong>{" "}
+                    Sie können Ihre Daten in einem strukturierten Format erhalten.
                   </li>
                   <li>
-                    <strong className="font-semibold text-foreground">
-                      Widerspruchsrecht:
-                    </strong>{" "}
+                    <strong className="font-semibold text-foreground">Widerspruchsrecht:</strong>{" "}
                     Sie können der Verarbeitung Ihrer Daten widersprechen.
                   </li>
                   <li>
-                    <strong className="font-semibold text-foreground">
-                      Beschwerderecht:
-                    </strong>{" "}
+                    <strong className="font-semibold text-foreground">Beschwerderecht:</strong>{" "}
                     Sie können sich bei der Datenschutzbehörde beschweren.
                   </li>
                 </ul>
@@ -729,16 +571,14 @@ export default function DatenschutzPage() {
 
               <section>
                 <h2 className="mb-3 font-display text-xl font-semibold text-foreground">
-                  7. Kontakt und Fragen
+                  8. Kontakt und Fragen
                 </h2>
                 <p className="leading-relaxed">
                   Bei Fragen zum Datenschutz oder zur Ausübung Ihrer Rechte
                   erreichen Sie uns unter:
                 </p>
                 <p className="mt-3 leading-relaxed">
-                  <strong className="font-semibold text-foreground">
-                    Verantwortlicher:
-                  </strong>
+                  <strong className="font-semibold text-foreground">Verantwortlicher:</strong>
                   <br />
                   Marko Volchkov<br />
                   Eugen-Adolf-Straße 30<br />
@@ -746,10 +586,6 @@ export default function DatenschutzPage() {
                   Deutschland
                 </p>
                 <p className="mt-3 leading-relaxed">
-                  <strong className="font-semibold text-foreground">
-                    Kontakt:
-                  </strong>
-                  <br />
                   E-Mail:{" "}
                   <a
                     href="mailto:kundigungsheld@gmail.com"
@@ -759,14 +595,13 @@ export default function DatenschutzPage() {
                   </a>
                 </p>
                 <p className="mt-4 leading-relaxed">
-                  Wir bemühen uns, Ihre Anfragen innerhalb von 30 Tagen zu
-                  beantworten.
+                  Wir bemühen uns, Ihre Anfragen innerhalb von 30 Tagen zu beantworten.
                 </p>
               </section>
 
               <section>
                 <p className="mt-8 text-sm text-muted-foreground italic">
-                  Diese Datenschutzerklärung wurde zuletzt am 17. Februar 2026
+                  Diese Datenschutzerklärung wurde zuletzt am 20. Februar 2026
                   aktualisiert und gilt für alle Nutzer der Website
                   kuendigungsheld.de
                 </p>

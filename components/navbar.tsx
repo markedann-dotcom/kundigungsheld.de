@@ -5,23 +5,26 @@ import Link from "next/link"
 import { FileText, Menu, X, Archive } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { ThemeToggle } from "@/components/theme-toggle"
-
-const navLinks = [
-  { label: "Funktionen", href: "/#funktionen" },
-  { label: "So geht's", href: "/#so-gehts" },
-  { label: "Generator", href: "/#generator" },
-  { label: "Blog", href: "/blog" },
-  { label: "Archiv", href: "/archiv" },
-]
+import { LanguageToggle } from "@/components/language-toggle"
+import { useI18n } from "@/contexts/i18n-context"
 
 export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
+  const { t } = useI18n()
+
+  const navLinks = [
+    { label: "Funktionen", href: "/#funktionen" },
+    { label: "So geht's", href: "/#so-gehts" },
+    { label: "Generator", href: "/#generator" },
+    { label: t.nav.blog, href: "/blog" },
+    { label: t.nav.archive, href: "/archiv" },
+  ]
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/50 bg-background/80 backdrop-blur-lg">
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 lg:px-8">
         <Link href="/" className="flex items-center gap-2.5" aria-label="KündigungsHeld Startseite">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-primary-foreground">
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-foreground text-background">
             <FileText className="h-5 w-5" />
           </div>
           <span className="font-display text-xl font-bold tracking-tight text-foreground">
@@ -42,12 +45,13 @@ export function Navbar() {
           ))}
         </ul>
 
-        <div className="hidden items-center gap-3 lg:flex">
+        <div className="hidden items-center gap-2 lg:flex">
+          <LanguageToggle />
           <ThemeToggle />
-          <Button size="sm" className="gap-2 rounded-full px-5" asChild>
+          <Button size="sm" className="gap-2 rounded-full px-5 bg-foreground text-background hover:bg-foreground/90" asChild>
             <Link href="/archiv">
               <Archive className="h-4 w-4" />
-              Mein Archiv
+              Archiv
             </Link>
           </Button>
         </div>
@@ -77,12 +81,13 @@ export function Navbar() {
               </li>
             ))}
           </ul>
-          <div className="mt-3 flex items-center gap-3">
+          <div className="mt-3 flex items-center gap-2">
+            <LanguageToggle />
             <ThemeToggle />
-            <Button size="sm" className="flex-1 gap-2 rounded-full" asChild>
+            <Button size="sm" className="flex-1 gap-2 rounded-full bg-foreground text-background hover:bg-foreground/90" asChild>
               <Link href="/archiv">
                 <Archive className="h-4 w-4" />
-                Mein Archiv
+                Archiv
               </Link>
             </Button>
           </div>

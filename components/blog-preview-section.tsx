@@ -1,3 +1,5 @@
+"use client"
+
 import Link from "next/link"
 import {
   ArrowRight,
@@ -13,6 +15,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { blogArticles } from "@/lib/blog-articles"
 import { AnimateIn } from "@/components/animate-in"
+import { useI18n } from "@/contexts/i18n-context"
 import type { ElementType } from "react"
 
 const CATEGORY_ICONS: Record<string, ElementType> = {
@@ -50,6 +53,7 @@ function CategoryBadge({ category }: { category: string }) {
 }
 
 export function BlogPreviewSection() {
+  const { t } = useI18n()
   const featured = blogArticles.slice(0, FEATURED_COUNT)
 
   if (featured.length === 0) return null
@@ -61,14 +65,13 @@ export function BlogPreviewSection() {
         <AnimateIn>
           <div className="mx-auto max-w-2xl text-center">
             <span className="text-sm font-semibold uppercase tracking-wider text-primary">
-              Blog
+              {t.blog.sectionLabel}
             </span>
             <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-              <span className="text-balance">Rechtstipps von Experten</span>
+              <span className="text-balance">{t.blog.title}</span>
             </h2>
             <p className="mt-4 text-pretty text-lg leading-relaxed text-muted-foreground">
-              Aktuelle Artikel von deutschen Rechtsanwälten und Fachanwälten rund
-              um das Thema Kündigung und Verbraucherschutz.
+              {t.blog.subtitle}
             </p>
           </div>
         </AnimateIn>
@@ -117,7 +120,7 @@ export function BlogPreviewSection() {
               asChild
             >
               <Link href="/blog">
-                Alle Artikel lesen
+                {t.blog.readAll}
                 <ArrowRight
                   className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1"
                   aria-hidden="true"

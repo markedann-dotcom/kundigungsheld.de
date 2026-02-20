@@ -4,6 +4,7 @@ import { Inter, Space_Grotesk } from 'next/font/google'
 import './globals.css'
 import { CookieBanner } from '@/components/cookie-banner'
 import { ThemeProvider } from '@/components/theme-provider'
+import { I18nProvider } from '@/contexts/i18n-context'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 const spaceGrotesk = Space_Grotesk({ subsets: ['latin'], variable: '--font-space-grotesk' })
@@ -42,8 +43,10 @@ export default function RootLayout({
     <html lang="de" className={`${inter.variable} ${spaceGrotesk.variable}`} suppressHydrationWarning>
       <body className="font-sans antialiased">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          {children}
-          <CookieBanner />
+          <I18nProvider>
+            {children}
+            <CookieBanner />
+          </I18nProvider>
         </ThemeProvider>
       </body>
     </html>

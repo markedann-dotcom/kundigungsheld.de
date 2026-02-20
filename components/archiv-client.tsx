@@ -286,17 +286,18 @@ export function ArchivClient() {
 
   const handleExportCsv = useCallback(() => {
     const header = "Unternehmen;Grund;Status;Datum;Kündigung zum;Name;Notiz"
-    const rows = items.map((item) =>
-      [
+    const rows = items.map((item) => {
+      const validStatus = (item.status && STATUS_CONFIG[item.status]) ? item.status : 'erstellt'
+      return [
         item.companyName,
         item.grundLabel,
-        STATUS_CONFIG[item.status].label,
+        STATUS_CONFIG[validStatus].label,
         formatDate(item.datum),
         item.kuendigungZum,
         `${item.vorname} ${item.nachname}`,
         (item.notiz || "").replace(/\n/g, " "),
       ].join(";")
-    )
+    })
     downloadBlob(
       "\uFEFF" + [header, ...rows].join("\n"),
       `KuendigungsHeld_Archiv_${new Date().toISOString().slice(0, 10)}.csv`,
@@ -426,15 +427,17 @@ export function ArchivClient() {
 
         {/* Item list */}
         <div className="space-y-3" role="list">
-          {filteredItems.map((item) => {
+          {filteredItems.map((item, index) => {
             const isExpanded = expandedId === item.id
-            const statusCfg = STATUS_CONFIG[item.status]
+            // Ensure status is valid, fallback to 'erstellt'
+            const validStatus = (item.status && STATUS_CONFIG[item.status]) ? item.status : 'erstellt'
+            const statusCfg = STATUS_CONFIG[validStatus]
             const StatusIcon = statusCfg.icon
             const isCopied = copiedId === item.id
 
             return (
               <div
-                key={item.id}
+                key={item.id || `archiv-item-${index}`}
                 role="listitem"
                 className="overflow-hidden rounded-xl border border-border/60 bg-card transition-all hover:shadow-sm"
               >
@@ -442,7 +445,7 @@ export function ArchivClient() {
                 <button
                   type="button"
                   aria-expanded={isExpanded}
-                  aria-controls={`archiv-panel-${item.id}`}
+                  aria-controls={`archiv-panel-${item.id || index}`}
                   onClick={() => toggleExpand(item.id)}
                   className="flex w-full items-center gap-4 p-4 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 sm:p-5"
                 >
@@ -478,7 +481,7 @@ export function ArchivClient() {
                 {/* Expanded panel */}
                 {isExpanded && (
                   <div
-                    id={`archiv-panel-${item.id}`}
+                    id={`archiv-panel-${item.id || index}`}
                     className="border-t border-border/40 px-4 pb-5 pt-4 sm:px-5"
                   >
                     {/* Status change */}
@@ -580,7 +583,7 @@ export function ArchivClient() {
                       <ActionButton
                         icon={Printer}
                         label="Drucken"
-                        onClick={() => printKundigung(item.text)}
+                        onClick={() => printKundigung(item.text, item.companyName)}
                       />
                       <ActionButton
                         icon={Mail}

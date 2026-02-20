@@ -15,7 +15,7 @@ export const blogArticles: BlogArticle[] = [
     slug: "kundigungsfristen-richtig-berechnen",
     title: "Kündigungsfristen richtig berechnen: So vermeiden Sie teure Fehler",
     excerpt:
-      "Erfahren Sie, wie Sie Kündigungsfristen korrekt berechnen und welche gesetzlichen Regelungen in Deutschland gelten. Ein Leitfaden von Rechtsanwalt Dr. Müller.",
+      "Erfahren Sie, wie Sie Kündigungsfristen korrekt berechnen und welche gesetzlichen Regelungen in Deutschland gelten. Ein Leitfaden von der KündigungsHeld Redaktion.",
     author: "KündigungsHeld Redaktion",
     authorRole: "Geprüfte Rechtsinformationen",
     date: "2025-12-10",
@@ -60,7 +60,7 @@ Nutzen Sie den KündigungsHeld-Generator, um fristgerechte Kündigungsschreiben 
     slug: "sonderkuendigungsrecht-wann-greift-es",
     title: "Sonderkündigungsrecht: Wann Sie Verträge sofort beenden können",
     excerpt:
-      "Das Sonderkündigungsrecht erlaubt es Verbrauchern, Verträge vorzeitig zu beenden. Rechtsanwältin Weber erklärt, in welchen Fällen es greift.",
+      "Das Sonderkündigungsrecht erlaubt es Verbrauchern, Verträge vorzeitig zu beenden. Wir erklären, in welchen Fällen es greift.",
     author: "KündigungsHeld Redaktion",
     authorRole: "Geprüfte Rechtsinformationen",
     date: "2025-11-28",
@@ -114,7 +114,7 @@ Dokumentieren Sie den Grund für die Sonderkündigung sorgfältig. Bewahren Sie 
     slug: "widerrufsrecht-14-tage-frist",
     title: "Widerrufsrecht: So nutzen Sie die 14-Tage-Frist richtig",
     excerpt:
-      "Das 14-tägige Widerrufsrecht schützt Verbraucher bei Online-Käufen und Fernabsatzverträgen. Dr. Schulz erklärt die wichtigsten Regeln.",
+      "Das 14-tägige Widerrufsrecht schützt Verbraucher bei Online-Käufen und Fernabsatzverträgen. Wir erklären die wichtigsten Regeln.",
     author: "KündigungsHeld Redaktion",
     authorRole: "Geprüfte Rechtsinformationen",
     date: "2025-11-15",
@@ -572,6 +572,571 @@ Für maximale Rechtssicherheit empfehlen wir:
 2. Bei allen anderen Verträgen: E-Mail ist in der Regel ausreichend
 3. Immer eine Bestätigung anfordern
 4. Wichtige Kündigungen zusätzlich per Einschreiben senden
+
+---
+⚠️ *Diese Informationen stellen keine Rechtsberatung dar. Bei rechtlichen Fragen wenden Sie sich an einen zugelassenen Rechtsanwalt.*`,
+  },
+
+  // ── NEUE ARTIKEL ──────────────────────────────────────────────────────────
+
+  {
+    slug: "streaming-abo-kuendigen-netflix-spotify",
+    title: "Streaming-Abos kündigen: Netflix, Spotify & Co. richtig loswerden",
+    excerpt:
+      "Streaming-Dienste kündigen ist einfach — wenn man weiß, wo man klicken muss. Wir zeigen, wie es bei den größten Anbietern funktioniert.",
+    author: "KündigungsHeld Redaktion",
+    authorRole: "Geprüfte Rechtsinformationen",
+    date: "2026-01-15",
+    readTime: "5 Min.",
+    category: "Praxistipps",
+    content: `Streaming-Dienste sind schnell abonniert und manchmal genauso schnell vergessen. Wer sein Abo kündigen möchte, sollte die Besonderheiten der jeweiligen Plattform kennen.
+
+## Allgemeine Regeln für Streaming-Abos
+
+Seit der BGB-Reform 2022 gilt für alle Streaming-Dienste mit Online-Vertragsschluss:
+- Kündigung jederzeit zum Ende des laufenden Abrechnungszeitraums möglich
+- Anbieter müssen einen Kündigungsbutton auf ihrer Website bereitstellen
+- Sofortige schriftliche Bestätigung der Kündigung ist Pflicht
+
+## Netflix kündigen
+
+Netflix bietet die einfachste Kündigung unter den großen Anbietern:
+1. Einloggen unter netflix.com
+2. Auf das Profilsymbol oben rechts klicken
+3. "Konto" auswählen
+4. "Mitgliedschaft kündigen" klicken
+
+Die Kündigung wird sofort wirksam, Sie können Netflix bis zum Ende des bezahlten Zeitraums weiter nutzen. Eine Reaktivierung ist jederzeit möglich.
+
+## Spotify kündigen
+
+Bei Spotify (Premium) läuft die Kündigung so:
+1. Anmelden auf spotify.com
+2. Auf den Profilnamen klicken → "Konto"
+3. Unter "Ihr Plan" auf "Premium kündigen" klicken
+4. Den Anweisungen folgen
+
+Nach der Kündigung wechselt das Konto automatisch zum kostenlosen Tarif mit Werbung.
+
+## Amazon Prime kündigen
+
+Amazon Prime ist etwas versteckter:
+1. amazon.de → "Konto und Listen" → "Prime-Mitgliedschaft"
+2. "Prime-Mitgliedschaft verwalten" → "Mitgliedschaft kündigen"
+3. Es werden mehrere Zwischenschritte angeboten — alle überspringen
+
+**Achtung**: Amazon versucht mit mehreren Schritten, Sie von der Kündigung abzuhalten. Bleiben Sie konsequent.
+
+## Disney+ kündigen
+
+1. Auf disneyplus.com einloggen
+2. Profilbild → "Konto" → "Abonnement kündigen"
+
+## Tipps für alle Streaming-Dienste
+
+- **Kündigen Sie kurz vor Ende des Abrechnungszeitraums**: So nutzen Sie die bezahlte Zeit voll aus
+- **Screenshot machen**: Sichern Sie die Bestätigungsseite
+- **E-Mail-Bestätigung abwarten**: Bewahren Sie sie als Nachweis auf
+- **Probemonat-Falle vermeiden**: Kündigen Sie direkt nach dem Abschluss, wenn Sie nur testen wollen
+
+---
+⚠️ *Diese Informationen stellen keine Rechtsberatung dar. Bei rechtlichen Fragen wenden Sie sich an einen zugelassenen Rechtsanwalt.*`,
+  },
+  {
+    slug: "zeitungsabo-kundigen",
+    title: "Zeitungs- und Zeitschriften-Abo kündigen: So geht's richtig",
+    excerpt:
+      "Print- und Digital-Abonnements von Zeitungen und Zeitschriften kündigen — was Sie über Fristen und Form wissen müssen.",
+    author: "KündigungsHeld Redaktion",
+    authorRole: "Geprüfte Rechtsinformationen",
+    date: "2026-01-08",
+    readTime: "4 Min.",
+    category: "Praxistipps",
+    content: `Zeitungs- und Zeitschriftenabonnements laufen oft still im Hintergrund weiter. Wir erklären, wie Sie Ihre Abos effektiv kündigen.
+
+## Kündigungsfristen bei Abonnements
+
+Seit der BGB-Reform 2022 gilt auch für Zeitungs- und Zeitschriften-Abonnements:
+- **Mindestlaufzeit**: Maximal 24 Monate
+- **Nach der Mindestlaufzeit**: Monatlich kündbar mit 1 Monat Frist
+- **Automatische Verlängerung**: Maximal um einen Monat
+
+Ältere Verträge mit langen Verlängerungsklauseln (z.B. 12 Monate) sind seit März 2022 unwirksam, soweit sie über einen Monat hinausgehen.
+
+## Welche Form ist erforderlich?
+
+Für Zeitungsabonnements gilt in der Regel die **Textform** — eine E-Mail genügt. Manche Verlage verlangen jedoch die Schriftform oder haben ein eigenes Online-Formular.
+
+Prüfen Sie Ihren Vertrag oder die AGB des Verlags, bevor Sie kündigen.
+
+## Kündigung beim Verlag
+
+### Per E-Mail
+Am einfachsten ist die Kündigung per E-Mail an den Kundenservice. Geben Sie immer an:
+- Ihre Abo-Nummer (steht auf dem Adressetikett)
+- Ihren vollständigen Namen und Anschrift
+- Das gewünschte Kündigungsdatum
+
+### Per Kündigungsbutton
+Seit 2022 müssen auch Verlage mit Online-Abschluss einen Kündigungsbutton anbieten. Schauen Sie auf der Website Ihres Verlags unter "Abo-Service" oder "Kundenkonto".
+
+## Digital-Abos kündigen
+
+Bei digitalen Abos (App oder Web) läuft die Kündigung oft über den jeweiligen Store:
+- **iOS**: Einstellungen → [Ihr Name] → Abonnements
+- **Android**: Google Play → Abonnements
+
+Wichtig: Die Kündigung im Store beendet die Zahlung, nicht unbedingt den Zugang bis Periodenende.
+
+## Was tun, wenn das Abo trotzdem weiterläuft?
+
+Falls der Verlag die Kündigung ignoriert:
+1. Schriftlich nachfassen und auf die Kündigung hinweisen
+2. Ihre Bank kontaktieren und die SEPA-Lastschrift zurückbuchen lassen
+3. Im Wiederholungsfall die Verbraucherzentrale einschalten
+
+---
+⚠️ *Diese Informationen stellen keine Rechtsberatung dar. Bei rechtlichen Fragen wenden Sie sich an einen zugelassenen Rechtsanwalt.*`,
+  },
+  {
+    slug: "internetvertrag-kundigen-dsl-kabel",
+    title: "Internetvertrag kündigen: DSL, Kabel und Glasfaser im Vergleich",
+    excerpt:
+      "Wie Sie Ihren Internetvertrag bei Telekom, Vodafone, O2 und Co. kündigen — inklusive Tipps zur Rufnummernmitnahme und Geräterückgabe.",
+    author: "KündigungsHeld Redaktion",
+    authorRole: "Geprüfte Rechtsinformationen",
+    date: "2025-12-28",
+    readTime: "6 Min.",
+    category: "Praxistipps",
+    content: `Der Wechsel des Internetanbieters spart oft 200–400 Euro pro Jahr. Wir erklären alles, was Sie für eine reibungslose Kündigung brauchen.
+
+## Fristen und Laufzeiten
+
+Für Internetverträge gelten seit der BGB-Reform 2022:
+- **Mindestlaufzeit**: Maximal 24 Monate
+- **Nach der Mindestlaufzeit**: Monatlich kündbar mit **1 Monat Frist**
+- **Bei Neuabschluss**: Oft wieder 24 Monate Mindestlaufzeit — genau prüfen!
+
+## Kündigung bei den großen Anbietern
+
+### Telekom (MagentaZuhause)
+- Online unter telekom.de im Kundencenter
+- Telefonisch: 0800 33 01000 (kostenlos)
+- Der Kündigungsbutton ist im Kundencenter zu finden
+
+### Vodafone (Kabel/DSL)
+- Online im MeinVodafone-Portal
+- Telefonisch: 0800 172 1212
+- Wichtig: Kabel- und DSL-Verträge haben unterschiedliche Adressen
+
+### O2 / Telefónica
+- Online unter mein.o2online.de
+- Telefonisch: 0800 09 52 505
+
+## Router und Hardware zurückgeben
+
+Nach der Kündigung müssen geliehene Geräte (Router, TV-Box) zurückgegeben werden:
+- Meist innerhalb von **4 Wochen** nach Vertragsende
+- Rücksendung per frankiertem Paket (Anbieter stellt oft kostenlosen Rücksendeaufkleber bereit)
+- Geräte nicht zurückzugeben kann zu **Nachforderungen von 50–150 Euro** führen
+
+## Internetanschluss bei Umzug
+
+Bei einem Umzug gilt:
+- Neuer Anschluss am neuen Wohnort: Sonderkündigungsrecht, wenn der bisherige Anbieter dort nicht verfügbar ist
+- Gleicher Anbieter am neuen Ort: Vertragsumzug möglich, kein Sonderkündigungsrecht
+
+## Nahtloser Übergang sicherstellen
+
+Um nicht ohne Internet dazustehen:
+1. Neuen Vertrag abschließen, bevor der alte endet
+2. Aktivierungstermin beim neuen Anbieter koordinieren
+3. Beim alten Anbieter bestätigen lassen, wann die Leitung abgeschaltet wird
+
+---
+⚠️ *Diese Informationen stellen keine Rechtsberatung dar. Bei rechtlichen Fragen wenden Sie sich an einen zugelassenen Rechtsanwalt.*`,
+  },
+  {
+    slug: "handyvertrag-fruehzeitig-kundigen-kosten",
+    title: "Handyvertrag vorzeitig kündigen: Was kostet das wirklich?",
+    excerpt:
+      "Manchmal muss ein Vertrag vorzeitig beendet werden. Wir erklären, welche Kosten entstehen können und wie Sie sie minimieren.",
+    author: "KündigungsHeld Redaktion",
+    authorRole: "Geprüfte Rechtsinformationen",
+    date: "2025-12-20",
+    readTime: "5 Min.",
+    category: "Praxistipps",
+    content: `Was passiert, wenn Sie Ihren Handyvertrag vor Ablauf der Mindestlaufzeit kündigen wollen? Wir klären über Kosten, Alternativen und Ihre Rechte auf.
+
+## Ordentliche Kündigung vs. vorzeitige Auflösung
+
+Eine **ordentliche Kündigung** ist zum Ende der Mindestlaufzeit immer möglich — ohne Zusatzkosten. Die Kündigung muss 1 Monat vor Vertragsende eingehen.
+
+Eine **vorzeitige Auflösung** vor Ende der Mindestlaufzeit ist nur durch:
+- Einvernehmliche Auflösung mit dem Anbieter (oft gegen Zahlung einer Ablösesumme)
+- Ausübung eines Sonderkündigungsrechts (kostenlos)
+- Außerordentliche fristlose Kündigung bei schweren Pflichtverletzungen des Anbieters
+
+## Wie viel kostet eine vorzeitige Auflösung?
+
+Viele Anbieter berechnen bei vorzeitiger Auflösung die **Restlaufzeit als Ablösesumme** — abzüglich ersparter Kosten (Materialien, Marketing). Das können je nach Verbleibdauer **mehrere hundert Euro** sein.
+
+Manche Anbieter bieten auch **Vertragspausen** (Stilllegung) an, die günstiger sind als eine Kündigung.
+
+## Sonderkündigungsrecht nutzen — kostenlos kündigen
+
+In folgenden Fällen können Sie kostenlos kündigen, auch innerhalb der Mindestlaufzeit:
+- **Preiserhöhung**: Anbieter erhöht den monatlichen Preis
+- **Netzabdeckung verschlechtert sich** erheblich am Hauptwohnort
+- **Leistungsstörungen**: Anhaltende, nicht behebbare Netzprobleme
+
+Dokumentieren Sie Netzprobleme gut (Screenshots, Datum, Uhrzeit, Ort).
+
+## Vertrag übertragen statt kündigen
+
+Eine günstige Alternative: den Vertrag auf eine andere Person übertragen (Vertragsübernahme). Viele Anbieter erlauben das gegen eine kleine Gebühr (meist 25–50 Euro). Plattformen wie Tauschticket.de vermitteln solche Übernahmen.
+
+## Tipps
+
+- Kündigen Sie immer schriftlich und fordern Sie eine Bestätigung an
+- Prüfen Sie vor der Kündigung, ob ein Sonderkündigungsrecht vorliegt
+- Bei Preiserhöhungen: Die Frist zur Ausübung des Sonderkündigungsrechts beträgt meist 4 Wochen — schnell handeln!
+
+---
+⚠️ *Diese Informationen stellen keine Rechtsberatung dar. Bei rechtlichen Fragen wenden Sie sich an einen zugelassenen Rechtsanwalt.*`,
+  },
+  {
+    slug: "mitgliedschaft-verein-kundigen",
+    title: "Vereinsmitgliedschaft kündigen: Fristen und Form richtig beachten",
+    excerpt:
+      "Ob Sportverein, ADAC oder Berufsverband — Vereinsmitgliedschaften haben besondere Kündigungsregeln. Wir erklären, was zu beachten ist.",
+    author: "KündigungsHeld Redaktion",
+    authorRole: "Geprüfte Rechtsinformationen",
+    date: "2025-12-05",
+    readTime: "5 Min.",
+    category: "Praxistipps",
+    content: `Vereinsmitgliedschaften folgen eigenen Regeln — die Satzung des Vereins ist entscheidend. Wir erklären, was Sie wissen müssen.
+
+## Grundlagen: Satzung geht vor
+
+Bei Vereinsmitgliedschaften gilt die **Satzung des Vereins** als maßgebliche Grundlage für Kündigungsfristen und -form. Das BGB (Paragraph 39) gibt nur einen groben Rahmen vor.
+
+Typische Regelungen in Vereinssatzungen:
+- Kündigungsfrist: 3 Monate zum Jahresende
+- Form: Schriftliche Kündigung (Brief)
+- Manche Vereine: Kündigung zum Quartalsende möglich
+
+## So finden Sie die richtige Kündigungsfrist
+
+1. Schauen Sie in Ihre **Mitgliedsbescheinigung** oder den Aufnahmeantrag
+2. Lesen Sie die **Vereinssatzung** (muss auf Anfrage ausgehändigt werden)
+3. Fragen Sie direkt beim **Vorstand oder Sekretariat** nach
+
+## Häufige Vereine und ihre Besonderheiten
+
+### ADAC
+- Kündigungsfrist: 1 Monat zum Jahresende (31. Dezember)
+- Form: Schriftlich per Brief oder über das Online-Serviceportal
+- Mitgliedschaft endet dann zum 31. Dezember des laufenden Jahres
+
+### Sportvereine
+- Sehr unterschiedlich — immer Satzung prüfen
+- Oft: Kündigung bis 30. September für Austritt zum Jahresende
+
+### Gewerkschaften (ver.di, IG Metall etc.)
+- Kündigungsfrist: In der Regel 3 Monate zum Quartalsende
+- Form: Schriftlich, eigenhändig unterschrieben
+
+### Berufsverbände
+- Meist 3 Monate zum Jahresende
+- Schriftform erforderlich
+
+## Was tun, wenn der Verein nicht reagiert?
+
+Falls der Verein Ihre Kündigung ignoriert:
+1. Senden Sie eine **Erinnerung per Einschreiben**
+2. Fordern Sie eine schriftliche Bestätigung des Austritts an
+3. Erteilen Sie ggf. Ihrem Konto eine **Lastschrift-Sperrung** für weitere Abbuchungen
+4. Im Streitfall: Vereinsgericht oder ordentliche Gerichte sind zuständig
+
+## Tipp: Frühzeitig kündigen
+
+Da viele Vereine nur zum Jahresende aus dem Vertrag entlassen, sollten Sie Ihre Kündigung **spätestens Ende September** abschicken, um nicht ein weiteres Jahr zahlen zu müssen.
+
+---
+⚠️ *Diese Informationen stellen keine Rechtsberatung dar. Bei rechtlichen Fragen wenden Sie sich an einen zugelassenen Rechtsanwalt.*`,
+  },
+  {
+    slug: "girokonto-kundigen-bankwechsel",
+    title: "Girokonto kündigen und wechseln: So geht der Bankwechsel reibungslos",
+    excerpt:
+      "Ein Kontowechsel kann Geld sparen. Wir erklären, wie Sie Ihr altes Konto kündigen und den Wechsel stressfrei gestalten.",
+    author: "KündigungsHeld Redaktion",
+    authorRole: "Geprüfte Rechtsinformationen",
+    date: "2025-11-20",
+    readTime: "6 Min.",
+    category: "Finanzen",
+    content: `Viele Deutsche zahlen unnötig hohe Kontoführungsgebühren. Ein Wechsel zu einem kostenlosen Girokonto ist einfacher als gedacht.
+
+## Kündigung des Girokontos
+
+Ein Girokonto kann in der Regel **jederzeit ohne Frist** gekündigt werden — sofern kein Dispo-Kredit besteht. Prüfen Sie Ihre Kontovertragsbedingungen auf etwaige Kündigungsfristen.
+
+Die Kündigung muss in der Regel **schriftlich** erfolgen:
+- Per Brief an die zuständige Bankfiliale
+- Oft auch per Online-Banking oder App möglich
+- Einige Banken ermöglichen die Kündigung per E-Mail
+
+## Schritt-für-Schritt: Der Kontowechsel
+
+### 1. Neues Konto eröffnen
+Eröffnen Sie zuerst das neue Konto. Viele Direktbanken (ING, DKB, Comdirect etc.) bieten kostenlose Girokonten an.
+
+### 2. Daueraufträge und Lastschriften ummelden
+Erstellen Sie eine Liste aller regelmäßigen Zahlungen:
+- Daueraufträge (Miete, Versicherungen, Abonnements)
+- SEPA-Lastschriften (Strom, Gas, Telefon)
+- Gehaltseingang / Rentenzahlung
+
+Informieren Sie alle Zahlungsempfänger und den Arbeitgeber über die neue IBAN.
+
+### 3. Kontowechselservice nutzen
+
+Seit 2016 sind Banken gesetzlich verpflichtet, einen **kostenlosen Kontowechselservice** anzubieten (Paragraphen 21-26 ZKG). Die neue Bank übernimmt dabei:
+- Die Ermittlung aller Zahlungspartner
+- Das Informieren der Zahlungspartner über die neue IBAN
+- Die Umleitung von Überweisungen (12 Monate lang)
+
+### 4. Altes Konto kündigen
+
+Erst nachdem alle Lastschriften und Daueraufträge umgestellt sind, kündigen Sie das alte Konto. Lassen Sie dabei mindestens 2–3 Monate Puffer.
+
+## Kosten beim Kontowechsel
+
+- Der Kontowechselservice ist **kostenlos**
+- Für die Kündigung selbst dürfen keine Gebühren berechnet werden
+- Manche Banken berechnen Gebühren für die Kontoauflösung — prüfen Sie die AGB
+
+## Häufige Fehler beim Bankwechsel
+
+- Altes Konto zu früh kündigen (noch ausstehende Lastschriften)
+- Vergessen, den Arbeitgeber über die neue IBAN zu informieren
+- Kein ausreichendes Startguthaben auf dem neuen Konto
+
+---
+⚠️ *Diese Informationen stellen keine Rechtsberatung dar. Bei rechtlichen Fragen wenden Sie sich an einen zugelassenen Rechtsanwalt.*`,
+  },
+  {
+    slug: "kuendigungsschreiben-richtig-formulieren",
+    title: "Kündigungsschreiben richtig formulieren: Worauf es wirklich ankommt",
+    excerpt:
+      "Ein gutes Kündigungsschreiben muss bestimmte Pflichtangaben enthalten. Wir zeigen, was rein muss — und was besser wegbleibt.",
+    author: "KündigungsHeld Redaktion",
+    authorRole: "Geprüfte Rechtsinformationen",
+    date: "2025-11-10",
+    readTime: "5 Min.",
+    category: "Praxistipps",
+    content: `Ein Kündigungsschreiben ist kein Roman — aber es muss die richtigen Angaben enthalten. Wir zeigen, worauf es ankommt.
+
+## Pflichtangaben in jedem Kündigungsschreiben
+
+Unabhängig davon, welchen Vertrag Sie kündigen, sollte Ihr Schreiben immer enthalten:
+
+1. **Ihre vollständigen Kontaktdaten**: Name, Anschrift, ggf. E-Mail und Telefon
+2. **Empfängerdaten**: Vollständiger Name und Adresse des Anbieters
+3. **Kundennummer / Vertragsnummer**: Unbedingt angeben — sonst kann die Kündigung nicht zugeordnet werden
+4. **Klare Kündigungserklärung**: "Ich kündige hiermit den Vertrag ..."
+5. **Kündigungszeitpunkt**: "zum nächstmöglichen Termin" oder ein konkretes Datum
+6. **Datum und Ort**
+7. **Unterschrift** (bei schriftlicher Kündigung)
+
+## Was Sie NICHT angeben müssen
+
+- Einen **Grund** für die Kündigung (außer bei Sonderkündigung)
+- Eine **Entschuldigung** oder Erklärung
+- Bewertungen des Anbieters
+
+Halten Sie das Schreiben kurz und sachlich.
+
+## Musterformulierung
+
+> Sehr geehrte Damen und Herren,
+>
+> hiermit kündige ich meinen Vertrag (Kundennummer: XXXXXX) fristgerecht zum nächstmöglichen Termin.
+>
+> Ich bitte um eine schriftliche Bestätigung der Kündigung mit dem genauen Beendigungsdatum.
+>
+> Mit freundlichen Grüßen,
+> [Vor- und Nachname]
+> [Adresse]
+> [Datum]
+
+## Typische Fehler vermeiden
+
+- **Keine Kundennummer**: Das Schreiben kann nicht zugeordnet werden
+- **Falsches Datum**: Die Frist beginnt erst mit Zugang beim Empfänger
+- **Falsche Adresse**: Manche Anbieter haben separate Adressen für Kündigungen
+- **Keine Bestätigung angefordert**: Immer um Bestätigung bitten!
+
+## Warum KündigungsHeld nutzen?
+
+Unser Generator erstellt automatisch ein korrektes Kündigungsschreiben mit allen Pflichtangaben — in weniger als 2 Minuten. Sie müssen nur Ihren Vertrag und die Daten eingeben, den Rest erledigt die Software.
+
+---
+⚠️ *Diese Informationen stellen keine Rechtsberatung dar. Bei rechtlichen Fragen wenden Sie sich an einen zugelassenen Rechtsanwalt.*`,
+  },
+  {
+    slug: "abonnement-falle-erkennen-vermeiden",
+    title: "Abo-Fallen erkennen und vermeiden: So schützen Sie sich",
+    excerpt:
+      "Versteckte Abonnements kosten Deutschen jährlich Milliarden Euro. Wir zeigen, wie Abo-Fallen funktionieren und wie Sie sich schützen.",
+    author: "KündigungsHeld Redaktion",
+    authorRole: "Geprüfte Rechtsinformationen",
+    date: "2025-10-28",
+    readTime: "6 Min.",
+    category: "Verbraucherrecht",
+    content: `Jeder vierte Deutsche zahlt mindestens ein Abo, das er nicht mehr nutzt. Abo-Fallen sind ein wachsendes Problem im digitalen Zeitalter.
+
+## Wie Abo-Fallen funktionieren
+
+Die häufigsten Maschen:
+
+### 1. Kostenlose Testphasen mit automatischer Verlängerung
+Ein kostenloses Probe-Abo wird nach 7, 14 oder 30 Tagen automatisch kostenpflichtig — wenn man nicht aktiv kündigt. Oft wird in der Anmeldung eine Kreditkartennummer verlangt.
+
+### 2. Versteckte Abonnements in Apps
+Manche Apps bieten "Premium-Funktionen" an, die sich in ein monatliches Abo umwandeln, wenn man auf einen bestimmten Button klickt — oft ohne klare Preisangabe.
+
+### 3. Pre-checked Checkboxen
+Bei Bestellungen ist ein Zusatz-Abo (z.B. Kundenkarte, Versicherung) vorausgewählt. Wer nicht aufpasst, schließt ungewollt einen Vertrag ab.
+
+### 4. Kündigungshindernisse
+Manche Anbieter gestalten die Kündigung bewusst schwer: keine klare Kündigen-Option, lange Wartezeiten im Telefon-Support, Formulare die "zufällig" nicht funktionieren.
+
+## Wie Sie sich schützen
+
+- **Kreditkarte mit Limit verwenden**: Begrenzt mögliche Abbuchungen
+- **Virtuelle Kreditkartennummern**: Viele Banken bieten Einmal-Nummern für Online-Käufe an
+- **Kontoauszüge prüfen**: Monatlich auf unbekannte Abbuchungen achten
+- **Keine Kreditkarte bei Testabos angeben**: Wenn möglich, auf Angebote ohne Zahlungsdaten verzichten
+
+## Ungewolltes Abo entdeckt — was nun?
+
+1. **Sofort kündigen**: Nutzen Sie den Kündigungsbutton oder kontaktieren Sie den Anbieter
+2. **Widerrufsrecht prüfen**: Bei Online-Verträgen gilt das 14-tägige Widerrufsrecht
+3. **Lastschrift zurückbuchen**: Ihre Bank kann SEPA-Lastschriften bis zu 8 Wochen zurückbuchen
+4. **Verbraucherzentrale einschalten**: Bei unlauteren Praktiken kostenlose Beratung holen
+
+## Ihre Rechte bei Abo-Fallen
+
+- **Button-Lösung**: Anbieter ohne Kündigungsbutton handeln rechtswidrig
+- **Transparenzpflicht**: Preise und Laufzeiten müssen klar erkennbar sein
+- **Widerrufsrecht**: Gilt auch, wenn man sich über die Konditionen geirrt hat
+- **Rückforderung**: Zu Unrecht abgebuchte Beträge können zurückgefordert werden
+
+---
+⚠️ *Diese Informationen stellen keine Rechtsberatung dar. Bei rechtlichen Fragen wenden Sie sich an einen zugelassenen Rechtsanwalt.*`,
+  },
+  {
+    slug: "kuendigung-bestaetigung-nicht-erhalten",
+    title: "Keine Kündigungsbestätigung erhalten: Was tun?",
+    excerpt:
+      "Der Anbieter reagiert nicht auf Ihre Kündigung? Wir erklären, welche Schritte Sie unternehmen können und welche Rechte Sie haben.",
+    author: "KündigungsHeld Redaktion",
+    authorRole: "Geprüfte Rechtsinformationen",
+    date: "2025-10-12",
+    readTime: "5 Min.",
+    category: "Praxistipps",
+    content: `Sie haben gekündigt, aber keine Bestätigung erhalten? Das ist ärgerlich — aber Sie haben klare Rechte.
+
+## Bestätigungspflicht seit 2022
+
+Seit der BGB-Reform vom 1. März 2022 sind Anbieter gesetzlich verpflichtet, Kündigungen zu bestätigen:
+- Die Bestätigung muss **auf einem dauerhaften Datenträger** erfolgen (E-Mail oder Brief)
+- Sie muss das **genaue Datum des Vertragsendes** nennen
+- Wer dieser Pflicht nicht nachkommt, handelt rechtswidrig
+
+## Schritt 1: Kündigung nachweisen
+
+Bevor Sie aktiv werden, stellen Sie sicher, dass Sie den Zugang Ihrer Kündigung nachweisen können:
+- **Einschreiben**: Der Einlieferungsbeleg und Rückschein sind Ihr Nachweis
+- **E-Mail**: Senden Sie die E-Mail mit Lesebestätigung oder bewahren Sie die gesendete Mail
+- **Kündigungsbutton**: Die automatisch versendete Bestätigungs-E-Mail reicht als Nachweis
+
+## Schritt 2: Erinnerung senden
+
+Falls keine Bestätigung kommt, senden Sie nach 5–7 Werktagen eine Erinnerung:
+
+> "Sehr geehrte Damen und Herren, ich beziehe mich auf meine Kündigung vom [Datum]. Bisher habe ich keine Bestätigung erhalten. Ich bitte Sie, mir diese innerhalb von 7 Tagen zukommen zu lassen."
+
+## Schritt 3: Abbuchungen stoppen
+
+Falls trotz Kündigung weiter Gebühren abgebucht werden:
+- **SEPA-Lastschrift zurückbuchen**: Bis zu 8 Wochen nach der Abbuchung über Ihre Bank möglich
+- **Dauerauftrag stornieren**: Falls Sie per Dauerauftrag zahlen, löschen Sie ihn
+- **Bank informieren**: Erteilen Sie eine Sperre für weitere Abbuchungen des Anbieters
+
+## Schritt 4: Verbraucherzentrale einschalten
+
+Die Verbraucherzentralen bieten kostenlose oder günstige Erstberatung an. Sie können auch im Namen der Verbraucher abmahnen oder klagen.
+
+## Wann ist die Kündigung trotzdem wirksam?
+
+Ihre Kündigung ist bereits wirksam, sobald sie dem Anbieter **zugegangen** ist — unabhängig davon, ob Sie eine Bestätigung erhalten haben. Keine Bestätigung bedeutet nicht, dass die Kündigung unwirksam ist.
+
+Bewahren Sie alle Nachweise sorgfältig auf. Im Streitfall sind sie Ihr wichtigstes Mittel.
+
+---
+⚠️ *Diese Informationen stellen keine Rechtsberatung dar. Bei rechtlichen Fragen wenden Sie sich an einen zugelassenen Rechtsanwalt.*`,
+  },
+  {
+    slug: "kuendigung-nach-umzug-sonderrecht",
+    title: "Kündigung nach Umzug: Welche Verträge Sie vorzeitig beenden können",
+    excerpt:
+      "Ein Umzug gibt Ihnen bei vielen Verträgen ein Sonderkündigungsrecht. Wir zeigen, welche Verträge betroffen sind und wie Sie es nutzen.",
+    author: "KündigungsHeld Redaktion",
+    authorRole: "Geprüfte Rechtsinformationen",
+    date: "2025-09-25",
+    readTime: "6 Min.",
+    category: "Verbraucherrecht",
+    content: `Ein Umzug ist einer der häufigsten Gründe für ein Sonderkündigungsrecht. Doch nicht bei jedem Vertrag und nicht unter jeder Bedingung greift das Recht automatisch.
+
+## Grundvoraussetzung: Leistung am neuen Ort nicht verfügbar
+
+Das Sonderkündigungsrecht beim Umzug greift in der Regel nur, wenn der Anbieter die vertraglich vereinbarte Leistung **am neuen Wohnort nicht oder nicht vollständig erbringen kann**.
+
+Kann der Anbieter seine Leistung am neuen Ort problemlos erbringen, besteht kein Sonderkündigungsrecht — Sie bleiben an den Vertrag gebunden.
+
+## Verträge mit Sonderkündigungsrecht beim Umzug
+
+### Kabelinternet und Kabel-TV
+Das stärkste Sonderkündigungsrecht besteht hier: Kabelanschlüsse sind regional begrenzt. Wenn Sie in ein Gebiet ohne Kabelanschluss des bisherigen Anbieters ziehen, können Sie sofort kündigen.
+
+### Regionaler Stromanbieter / Gasversorger
+Falls Ihr bisheriger Anbieter im Sondertarif am neuen Wohnort nicht aktiv ist, besteht ein Sonderkündigungsrecht. In der Grundversorgung können Sie ohnehin jederzeit mit 2 Wochen Frist kündigen.
+
+### Fitnessstudio
+Wenn das nächste Studio des Anbieters mehr als 25–30 km vom neuen Wohnort entfernt ist, wird ein Sonderkündigungsrecht allgemein anerkannt — obwohl es keine gesetzliche Grenze gibt. Legen Sie dem Kündigungsschreiben einen Ummeldungsnachweis bei.
+
+### Telekommunikation (DSL, Festnetz)
+Hier ist es komplizierter: Viele Anbieter sind bundesweit aktiv. Ein Sonderkündigungsrecht besteht nur, wenn der Anbieter am neuen Standort technisch nicht liefern kann (z.B. kein Glasfaser in ländlichen Gebieten).
+
+## Welche Verträge Sie beim Umzug NICHT kündigen können
+
+- **Mobilfunkverträge**: Das Netz ist bundesweit verfügbar — kein Sonderkündigungsrecht
+- **Streaming-Dienste**: Ortsunabhängig — kein Sonderkündigungsrecht
+- **Versicherungen**: Kein Sonderkündigungsrecht allein wegen Umzug
+
+## So üben Sie das Sonderkündigungsrecht aus
+
+1. **Kündigung schreiben**: Angabe des Kündigungsgrunds "Umzug"
+2. **Nachweis beilegen**: Ummeldebescheinigung oder Mietvertrag am neuen Ort
+3. **Frist beachten**: Die Kündigung sollte zeitnah nach dem Umzug erfolgen — am besten innerhalb von 4–6 Wochen
+4. **Bestätigung anfordern**: Immer um schriftliche Bestätigung bitten
+
+## Unser Tipp
+
+Klären Sie **vor dem Umzug**, welche Ihrer Verträge am neuen Ort verfügbar sind. So können Sie gezielt kündigen und rechtzeitig neue Verträge abschließen.
 
 ---
 ⚠️ *Diese Informationen stellen keine Rechtsberatung dar. Bei rechtlichen Fragen wenden Sie sich an einen zugelassenen Rechtsanwalt.*`,

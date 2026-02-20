@@ -1,3 +1,5 @@
+"use client"
+
 import {
   Building2,
   Clock,
@@ -7,59 +9,56 @@ import {
   ShieldCheck,
 } from "lucide-react"
 import { AnimateIn } from "@/components/animate-in"
-
-const features = [
-  {
-    icon: Building2,
-    title: "150+ Unternehmen",
-    description:
-      "Von Telekom bis Netflix, von Allianz bis Trade Republic — Adressen und Fristen aller wichtigen Anbieter.",
-    accent: "from-blue-500/20 to-cyan-500/20",
-    iconAccent: "text-blue-600 dark:text-blue-400",
-  },
-  {
-    icon: FileCheck,
-    title: "Rechtssichere Vorlagen",
-    description:
-      "Unsere Vorlagen werden von Experten erstellt und decken alle Kündigungsarten ab: ordentlich, außerordentlich, Widerruf.",
-    accent: "from-emerald-500/20 to-green-500/20",
-    iconAccent: "text-emerald-600 dark:text-emerald-400",
-  },
-  {
-    icon: Clock,
-    title: "Fertig in 2 Minuten",
-    description:
-      "Anbieter auswählen, Daten eingeben, Schreiben generieren. So einfach war Kündigen noch nie.",
-    accent: "from-amber-500/20 to-orange-500/20",
-    iconAccent: "text-amber-600 dark:text-amber-400",
-  },
-  {
-    icon: ShieldCheck,
-    title: "DSGVO-konform",
-    description:
-      "Ihre Daten werden nicht gespeichert und nicht an Dritte weitergegeben. Alles passiert direkt in Ihrem Browser.",
-    accent: "from-violet-500/20 to-purple-500/20",
-    iconAccent: "text-violet-600 dark:text-violet-400",
-  },
-  {
-    icon: ListChecks,
-    title: "Alle Kündigungsarten",
-    description:
-      "Ordentliche Kündigung, Sonderkündigung, Widerruf, fristlose Kündigung, Umzug oder Todesfall.",
-    accent: "from-rose-500/20 to-pink-500/20",
-    iconAccent: "text-rose-600 dark:text-rose-400",
-  },
-  {
-    icon: Download,
-    title: "PDF, Druck & E-Mail",
-    description:
-      "Laden Sie Ihr Schreiben als PDF herunter, drucken Sie es direkt aus, oder senden Sie es per E-Mail.",
-    accent: "from-sky-500/20 to-indigo-500/20",
-    iconAccent: "text-sky-600 dark:text-sky-400",
-  },
-]
+import { useI18n } from "@/contexts/i18n-context"
 
 export function FeaturesSection() {
+  const { t } = useI18n()
+
+  const features = [
+    {
+      icon: Building2,
+      title: t.features.feature1Title,
+      description: t.features.feature1Desc,
+      accent: "from-foreground/5 to-foreground/10",
+      iconAccent: "text-foreground",
+    },
+    {
+      icon: FileCheck,
+      title: t.features.feature2Title,
+      description: t.features.feature2Desc,
+      accent: "from-foreground/5 to-foreground/10",
+      iconAccent: "text-foreground",
+    },
+    {
+      icon: Clock,
+      title: t.features.feature3Title,
+      description: t.features.feature3Desc,
+      accent: "from-foreground/5 to-foreground/10",
+      iconAccent: "text-foreground",
+    },
+    {
+      icon: ShieldCheck,
+      title: t.features.feature4Title,
+      description: t.features.feature4Desc,
+      accent: "from-foreground/5 to-foreground/10",
+      iconAccent: "text-foreground",
+    },
+    {
+      icon: ListChecks,
+      title: t.features.feature5Title,
+      description: t.features.feature5Desc,
+      accent: "from-foreground/5 to-foreground/10",
+      iconAccent: "text-foreground",
+    },
+    {
+      icon: Download,
+      title: t.features.feature6Title,
+      description: t.features.feature6Desc,
+      accent: "from-foreground/5 to-foreground/10",
+      iconAccent: "text-foreground",
+    },
+  ]
+
   return (
     <section id="funktionen" className="relative overflow-hidden bg-card py-24 lg:py-32">
       {/* Background decoration */}
@@ -77,19 +76,13 @@ export function FeaturesSection() {
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75" />
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
               </span>
-              Funktionen
+              {t.features.sectionLabel}
             </div>
             <h2 className="mt-6 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
-              <span className="text-balance">
-                Alles was Sie brauchen,{" "}
-                <span className="bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-                  um Verträge zu kündigen
-                </span>
-              </span>
+              <span className="text-balance">{t.features.title}</span>
             </h2>
             <p className="mt-5 text-pretty text-lg leading-relaxed text-muted-foreground lg:text-xl">
-              KündigungsHeld vereinfacht den gesamten Kündigungsprozess mit
-              intelligenten Vorlagen und einer umfangreichen Unternehmensdatenbank.
+              {t.features.subtitle}
             </p>
           </div>
         </AnimateIn>
@@ -129,10 +122,10 @@ export function FeaturesSection() {
         <AnimateIn delay={700}>
           <div className="mx-auto mt-16 flex max-w-3xl flex-wrap items-center justify-center gap-8 rounded-2xl border border-border/40 bg-muted/30 px-8 py-6 sm:gap-12">
             {[
-              { value: "150+", label: "Unternehmen" },
-              { value: "75k+", label: "Kündigungen" },
-              { value: "4.9★", label: "Bewertung" },
-              { value: "100%", label: "Kostenlos" },
+              { value: "150+", label: t.features.statCompanies },
+              { value: "75k+", label: t.features.statTerminations },
+              { value: "4.9★", label: t.features.statRating },
+              { value: "100%", label: t.features.statFree },
             ].map((stat) => (
               <div key={stat.label} className="text-center">
                 <div className="text-xl font-bold text-foreground sm:text-2xl">

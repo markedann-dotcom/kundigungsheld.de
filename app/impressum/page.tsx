@@ -114,6 +114,47 @@ export default function ImpressumPage() {
 
               <section>
                 <h2 className="mb-3 font-display text-xl font-semibold text-foreground">
+                  KI-Assistent (fal.ai)
+                </h2>
+                <p className="leading-relaxed">
+                  Auf unserer Website bieten wir einen KI-gestützten Assistenten an,
+                  der allgemeine Fragen rund um das Thema Kündigung beantwortet. Dieser
+                  Assistent wird über die KI-Plattform{" "}
+                  <strong className="font-semibold text-foreground">fal.ai</strong>{" "}
+                  (Fal, Inc., USA) betrieben und verwendet das Sprachmodell{" "}
+                  <strong className="font-semibold text-foreground">Google Gemini Flash 1.5</strong>.
+                </p>
+                <p className="mt-3 leading-relaxed">
+                  Der KI-Assistent dient ausschließlich zur allgemeinen Information und ist{" "}
+                  <strong className="font-semibold text-foreground">
+                    kein Ersatz für eine professionelle Rechtsberatung
+                  </strong>
+                  . Für rechtlich verbindliche Auskünfte wenden Sie sich bitte an einen
+                  zugelassenen Rechtsanwalt.
+                </p>
+                <p className="mt-3 leading-relaxed">
+                  Weitere Informationen zur Datenverarbeitung durch den KI-Assistenten
+                  finden Sie in unserer{" "}
+                  <Link
+                    href="/datenschutz"
+                    className="text-primary underline underline-offset-2 hover:text-primary/80"
+                  >
+                    Datenschutzerklärung
+                  </Link>
+                  {" "}(Abschnitt 3) sowie in der Datenschutzerklärung von fal.ai:{" "}
+                  <a
+                    href="https://fal.ai/privacy"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary underline underline-offset-2 hover:text-primary/80"
+                  >
+                    https://fal.ai/privacy
+                  </a>
+                </p>
+              </section>
+
+              <section>
+                <h2 className="mb-3 font-display text-xl font-semibold text-foreground">
                   Urheberrecht und Markenrechte
                 </h2>
                 <p className="leading-relaxed">
@@ -324,7 +365,7 @@ export default function ImpressumPage() {
 
               <section className="border-t border-border/60 pt-6">
                 <p className="text-sm text-muted-foreground italic">
-                  Dieses Impressum wurde zuletzt am 17. Februar 2025
+                  Dieses Impressum wurde zuletzt am 20. Februar 2026
                   aktualisiert und gilt für die Website kuendigungsheld.de sowie
                   alle zugehörigen Subdomains.
                 </p>
