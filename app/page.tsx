@@ -13,6 +13,7 @@ import { Footer } from "@/components/footer"
 import { CompanyTicker } from "@/components/company-ticker"
 import { AiChat } from "@/components/ai-chat"
 import { AdBanner } from "@/components/ad-banner"
+import { SuggestCompanyButton } from "@/components/suggest-company-button"
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -49,6 +50,11 @@ export default function Home() {
         <FeaturesSection />
         <HowItWorksSection />
         <KundigungGenerator />
+
+        {/* Кнопка "Anbieter vorschlagen" */}
+        <div className="flex justify-center pb-6 bg-background">
+          <SuggestCompanyButton />
+        </div>
 
         {/* Рекламный блок 1 — между генератором и Fristenrechner */}
         <div className="py-4 bg-background">
