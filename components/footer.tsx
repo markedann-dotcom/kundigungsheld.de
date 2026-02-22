@@ -334,7 +334,7 @@ export function Footer() {
               <span className="text-red-400" aria-label="Liebe">♥</span>{" "}
               by{" "}
               <a
-                href="https://github.com/markovolchkov"
+                href="https://github.com/markovolchkoа"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="font-medium text-foreground underline-offset-4 transition-colors hover:text-primary hover:underline"
