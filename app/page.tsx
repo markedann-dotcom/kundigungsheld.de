@@ -12,6 +12,7 @@ import { CtaSection } from "@/components/cta-section"
 import { Footer } from "@/components/footer"
 import { CompanyTicker } from "@/components/company-ticker"
 import { AiChat } from "@/components/ai-chat"
+import { AiAssistantSection } from "@/components/ai-assistant-section"
 import { AdBanner } from "@/components/ad-banner"
 import { SuggestCompanyButton } from "@/components/suggest-company-button"
 
@@ -63,6 +64,10 @@ export default function Home() {
 
         <Fristenrechner />
         <TestimonialsSection />
+
+        {/* KI-Assistent Sektion */}
+        <AiAssistantSection />
+
         <BlogPreviewSection />
 
         {/* Рекламный блок 2 — между блогом и FAQ */}
