@@ -42,7 +42,6 @@ export function AiChat() {
     if (isOpen) setTimeout(() => inputRef.current?.focus(), 300)
   }, [isOpen])
 
-  // Listen for open event dispatched from Footer
   useEffect(() => {
     const handleOpen = () => {
       setIsOpen(true)
@@ -116,16 +115,20 @@ export function AiChat() {
 
   return (
     <>
-      {/* Floating Button */}
+      {/* Floating Button
+          Мобиле: круглая кнопка h-12 w-12, только иконка
+          Десктоп (sm+): полная кнопка с текстом
+      */}
       <button
         onClick={() => setIsOpen(true)}
-        className={`fixed bottom-20 right-6 z-50 flex items-center gap-2.5 rounded-full bg-foreground text-background px-5 py-3.5 shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 ${
-          isOpen ? "opacity-0 pointer-events-none" : "opacity-100"
-        }`}
+        className={`fixed bottom-20 right-4 z-50 flex items-center justify-center rounded-full bg-foreground text-background shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300
+          h-12 w-12
+          sm:h-auto sm:w-auto sm:gap-2.5 sm:px-5 sm:py-3.5
+          ${isOpen ? "opacity-0 pointer-events-none" : "opacity-100"}`}
       >
-        <MessageCircle className="h-5 w-5" />
-        <span className="text-sm font-semibold">KI-Assistent</span>
-        <span className="flex h-2 w-2 relative">
+        <MessageCircle className="h-5 w-5 shrink-0" />
+        <span className="hidden sm:inline text-sm font-semibold">KI-Assistent</span>
+        <span className="hidden sm:flex h-2 w-2 relative">
           <span className="absolute inline-flex h-2 w-2 animate-ping rounded-full bg-background opacity-60" />
           <span className="relative inline-flex h-2 w-2 rounded-full bg-background" />
         </span>
@@ -133,7 +136,7 @@ export function AiChat() {
 
       {/* Chat Window */}
       <div
-        className={`fixed bottom-20 right-6 z-50 w-[380px] max-w-[calc(100vw-24px)] flex flex-col rounded-2xl border border-border/50 bg-card shadow-2xl transition-all duration-300 ${
+        className={`fixed bottom-20 right-4 z-50 w-[380px] max-w-[calc(100vw-24px)] flex flex-col rounded-2xl border border-border/50 bg-card shadow-2xl transition-all duration-300 ${
           isOpen
             ? "opacity-100 translate-y-0 scale-100"
             : "opacity-0 translate-y-4 scale-95 pointer-events-none"
