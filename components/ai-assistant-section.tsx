@@ -32,18 +32,6 @@ export function AiAssistantSection() {
   return (
     <section id="ki-assistent" className="relative overflow-hidden py-24 lg:py-32" style={{ backgroundColor: "#0a0a0a" }}>
 
-      {/* ── Плавный переход сверху ── */}
-      <div
-        className="pointer-events-none absolute left-0 right-0 top-0 z-10 h-28"
-        style={{ background: "linear-gradient(to bottom, hsl(var(--background)), transparent)" }}
-      />
-
-      {/* ── Плавный переход снизу ── */}
-      <div
-        className="pointer-events-none absolute bottom-0 left-0 right-0 z-10 h-28"
-        style={{ background: "linear-gradient(to top, hsl(var(--background)), transparent)" }}
-      />
-
       {/* Сетка */}
       <div
         className="pointer-events-none absolute inset-0 opacity-[0.06]"
@@ -128,9 +116,7 @@ export function AiAssistantSection() {
           {/* ── Right: Chat Preview ── */}
           <AnimateIn delay={180}>
             <div className="relative">
-
               <div className="pointer-events-none absolute inset-x-6 -bottom-4 top-6 -z-10 rounded-3xl blur-2xl" style={{ backgroundColor: "rgba(255,255,255,0.04)" }} />
-
               <div className="overflow-hidden rounded-2xl shadow-2xl backdrop-blur-sm" style={{ backgroundColor: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", boxShadow: "0 25px 60px rgba(0,0,0,0.6)" }}>
 
                 {/* Header */}
@@ -158,26 +144,20 @@ export function AiAssistantSection() {
                 <div className="space-y-4 p-5">
                   {DEMO_MESSAGES.map((msg, i) => (
                     <div key={i} className={`flex gap-2.5 ${msg.role === "user" ? "flex-row-reverse" : "flex-row"}`}>
-                      <div
-                        className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full mt-0.5"
+                      <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full mt-0.5"
                         style={msg.role === "user"
                           ? { backgroundColor: "#ffffff", color: "#0a0a0a" }
-                          : { backgroundColor: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.1)", color: "white" }}
-                      >
+                          : { backgroundColor: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.1)", color: "white" }}>
                         {msg.role === "user" ? <User className="h-3.5 w-3.5" /> : <Bot className="h-3.5 w-3.5" />}
                       </div>
-                      <div
-                        className="max-w-[82%] px-4 py-2.5 text-[13.5px] leading-relaxed"
+                      <div className="max-w-[82%] px-4 py-2.5 text-[13.5px] leading-relaxed"
                         style={msg.role === "user"
                           ? { backgroundColor: "#ffffff", color: "#0a0a0a", borderRadius: "16px 4px 16px 16px" }
-                          : { backgroundColor: "rgba(255,255,255,0.09)", color: "rgba(255,255,255,0.85)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: "4px 16px 16px 16px" }}
-                      >
+                          : { backgroundColor: "rgba(255,255,255,0.09)", color: "rgba(255,255,255,0.85)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: "4px 16px 16px 16px" }}>
                         {msg.text}
                       </div>
                     </div>
                   ))}
-
-                  {/* Typing */}
                   <div className="flex gap-2.5">
                     <div className="flex h-7 w-7 items-center justify-center rounded-full shrink-0" style={{ backgroundColor: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.1)" }}>
                       <Bot className="h-3.5 w-3.5 text-white" />
@@ -192,51 +172,28 @@ export function AiAssistantSection() {
 
                 {/* Quick questions */}
                 <div className="px-5 pb-3 pt-3" style={{ borderTop: "1px solid rgba(255,255,255,0.07)" }}>
-                  <p className="mb-2.5 text-[11px] font-medium uppercase tracking-wide" style={{ color: "rgba(255,255,255,0.3)" }}>
-                    Häufige Fragen
-                  </p>
+                  <p className="mb-2.5 text-[11px] font-medium uppercase tracking-wide" style={{ color: "rgba(255,255,255,0.3)" }}>Häufige Fragen</p>
                   <div className="flex flex-wrap gap-2">
                     {QUICK_QUESTIONS.map((q) => (
-                      <button
-                        key={q}
-                        onClick={openChat}
+                      <button key={q} onClick={openChat}
                         className="rounded-full px-3 py-1.5 text-[12px] font-medium transition-all duration-200"
                         style={{ border: "1px solid rgba(255,255,255,0.12)", backgroundColor: "rgba(255,255,255,0.05)", color: "rgba(255,255,255,0.55)" }}
-                        onMouseEnter={e => {
-                          (e.currentTarget as HTMLButtonElement).style.backgroundColor = "rgba(255,255,255,0.12)"
-                          ;(e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(255,255,255,0.25)"
-                          ;(e.currentTarget as HTMLButtonElement).style.color = "white"
-                        }}
-                        onMouseLeave={e => {
-                          (e.currentTarget as HTMLButtonElement).style.backgroundColor = "rgba(255,255,255,0.05)"
-                          ;(e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(255,255,255,0.12)"
-                          ;(e.currentTarget as HTMLButtonElement).style.color = "rgba(255,255,255,0.55)"
-                        }}
-                      >
-                        {q}
-                      </button>
+                        onMouseEnter={e => { const b = e.currentTarget as HTMLButtonElement; b.style.backgroundColor = "rgba(255,255,255,0.12)"; b.style.borderColor = "rgba(255,255,255,0.25)"; b.style.color = "white" }}
+                        onMouseLeave={e => { const b = e.currentTarget as HTMLButtonElement; b.style.backgroundColor = "rgba(255,255,255,0.05)"; b.style.borderColor = "rgba(255,255,255,0.12)"; b.style.color = "rgba(255,255,255,0.55)" }}
+                      >{q}</button>
                     ))}
                   </div>
                 </div>
 
                 {/* Input */}
                 <div className="px-5 pb-5 pt-3" style={{ borderTop: "1px solid rgba(255,255,255,0.07)" }}>
-                  <button
-                    onClick={openChat}
+                  <button onClick={openChat}
                     className="group flex w-full items-center gap-3 rounded-xl px-4 py-3 transition-all duration-200"
                     style={{ border: "1px solid rgba(255,255,255,0.12)", backgroundColor: "rgba(255,255,255,0.05)" }}
-                    onMouseEnter={e => {
-                      (e.currentTarget as HTMLButtonElement).style.backgroundColor = "rgba(255,255,255,0.09)"
-                      ;(e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(255,255,255,0.22)"
-                    }}
-                    onMouseLeave={e => {
-                      (e.currentTarget as HTMLButtonElement).style.backgroundColor = "rgba(255,255,255,0.05)"
-                      ;(e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(255,255,255,0.12)"
-                    }}
+                    onMouseEnter={e => { const b = e.currentTarget as HTMLButtonElement; b.style.backgroundColor = "rgba(255,255,255,0.09)"; b.style.borderColor = "rgba(255,255,255,0.22)" }}
+                    onMouseLeave={e => { const b = e.currentTarget as HTMLButtonElement; b.style.backgroundColor = "rgba(255,255,255,0.05)"; b.style.borderColor = "rgba(255,255,255,0.12)" }}
                   >
-                    <span className="flex-1 text-left text-sm" style={{ color: "rgba(255,255,255,0.28)" }}>
-                      Ihre Frage hier eingeben...
-                    </span>
+                    <span className="flex-1 text-left text-sm" style={{ color: "rgba(255,255,255,0.28)" }}>Ihre Frage hier eingeben...</span>
                     <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white" style={{ color: "#0a0a0a" }}>
                       <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
                     </div>
@@ -244,22 +201,14 @@ export function AiAssistantSection() {
                 </div>
               </div>
 
-              {/* Badge — kostenlos */}
               <div className="absolute -bottom-4 -left-4 flex items-center gap-2.5 rounded-xl px-4 py-2.5 shadow-lg backdrop-blur-sm" style={{ backgroundColor: "rgba(20,20,20,0.95)", border: "1px solid rgba(255,255,255,0.1)" }}>
                 <div className="text-xl font-black text-white">20</div>
-                <div className="text-xs leading-tight" style={{ color: "rgba(255,255,255,0.45)" }}>
-                  Fragen täglich<br />
-                  <span className="font-semibold text-white">kostenlos</span>
-                </div>
+                <div className="text-xs leading-tight" style={{ color: "rgba(255,255,255,0.45)" }}>Fragen täglich<br /><span className="font-semibold text-white">kostenlos</span></div>
               </div>
 
-              {/* Badge — rating */}
               <div className="absolute -right-4 -top-4 flex items-center gap-2 rounded-xl px-3.5 py-2.5 shadow-lg backdrop-blur-sm" style={{ backgroundColor: "rgba(20,20,20,0.95)", border: "1px solid rgba(255,255,255,0.1)" }}>
                 <span className="text-lg">⭐</span>
-                <div className="text-xs leading-tight" style={{ color: "rgba(255,255,255,0.45)" }}>
-                  <span className="font-bold text-white">4.9/5</span><br />
-                  Nutzerbewertung
-                </div>
+                <div className="text-xs leading-tight" style={{ color: "rgba(255,255,255,0.45)" }}><span className="font-bold text-white">4.9/5</span><br />Nutzerbewertung</div>
               </div>
             </div>
           </AnimateIn>

@@ -52,12 +52,10 @@ export default function Home() {
         <HowItWorksSection />
         <KundigungGenerator />
 
-        {/* Кнопка "Anbieter vorschlagen" */}
         <div className="flex justify-center pb-6 bg-background">
           <SuggestCompanyButton />
         </div>
 
-        {/* Рекламный блок 1 — между генератором и Fristenrechner */}
         <div className="py-4 bg-background">
           <AdBanner size="leaderboard" />
         </div>
@@ -65,12 +63,16 @@ export default function Home() {
         <Fristenrechner />
         <TestimonialsSection />
 
-        {/* KI-Assistent Sektion */}
+        {/* Разделитель перед чёрной секцией */}
+        <div className="h-px bg-border/30" />
+
         <AiAssistantSection />
+
+        {/* Разделитель после чёрной секции */}
+        <div className="h-px bg-border/30" />
 
         <BlogPreviewSection />
 
-        {/* Рекламный блок 2 — между блогом и FAQ */}
         <div className="py-4 bg-background">
           <AdBanner size="leaderboard" />
         </div>
