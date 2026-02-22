@@ -11,22 +11,10 @@ const QUICK_QUESTIONS = [
 ]
 
 const DEMO_MESSAGES = [
-  {
-    role: "user",
-    text: "Wie lange ist die Kündigungsfrist bei einem Fitnessstudio?",
-  },
-  {
-    role: "assistant",
-    text: "Bei Fitnessstudios gilt in der Regel eine Kündigungsfrist von 3 Monaten zum Vertragsende. Wichtig: Die Kündigung muss schriftlich erfolgen! 📄",
-  },
-  {
-    role: "user",
-    text: "Geht auch eine außerordentliche Kündigung?",
-  },
-  {
-    role: "assistant",
-    text: "Ja! Eine Sonderkündigung ist möglich bei Umzug, dauerhafter Krankheit oder schwerwiegenden Vertragsänderungen. In diesen Fällen können Sie fristlos kündigen. 💪",
-  },
+  { role: "user", text: "Wie lange ist die Kündigungsfrist bei einem Fitnessstudio?" },
+  { role: "assistant", text: "Bei Fitnessstudios gilt in der Regel eine Kündigungsfrist von 3 Monaten zum Vertragsende. Wichtig: Die Kündigung muss schriftlich erfolgen! 📄" },
+  { role: "user", text: "Geht auch eine außerordentliche Kündigung?" },
+  { role: "assistant", text: "Ja! Eine Sonderkündigung ist möglich bei Umzug, dauerhafter Krankheit oder schwerwiegenden Vertragsänderungen. In diesen Fällen können Sie fristlos kündigen. 💪" },
 ]
 
 const FEATURES = [
@@ -42,15 +30,25 @@ export function AiAssistantSection() {
   }
 
   return (
-    // Жёстко чёрный фон — не зависит от темы
     <section id="ki-assistent" className="relative overflow-hidden py-24 lg:py-32" style={{ backgroundColor: "#0a0a0a" }}>
+
+      {/* ── Плавный переход сверху ── */}
+      <div
+        className="pointer-events-none absolute left-0 right-0 top-0 z-10 h-28"
+        style={{ background: "linear-gradient(to bottom, hsl(var(--background)), transparent)" }}
+      />
+
+      {/* ── Плавный переход снизу ── */}
+      <div
+        className="pointer-events-none absolute bottom-0 left-0 right-0 z-10 h-28"
+        style={{ background: "linear-gradient(to top, hsl(var(--background)), transparent)" }}
+      />
 
       {/* Сетка */}
       <div
         className="pointer-events-none absolute inset-0 opacity-[0.06]"
         style={{
-          backgroundImage:
-            "linear-gradient(rgba(255,255,255,0.6) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.6) 1px, transparent 1px)",
+          backgroundImage: "linear-gradient(rgba(255,255,255,0.6) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.6) 1px, transparent 1px)",
           backgroundSize: "48px 48px",
         }}
       />
@@ -68,7 +66,7 @@ export function AiAssistantSection() {
           {/* ── Left ── */}
           <div>
             <AnimateIn>
-              <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/8 px-4 py-1.5 text-sm font-medium text-white/80 backdrop-blur-sm" style={{ backgroundColor: "rgba(255,255,255,0.06)" }}>
+              <div className="inline-flex items-center gap-2 rounded-full border border-white/15 px-4 py-1.5 text-sm font-medium text-white/80 backdrop-blur-sm" style={{ backgroundColor: "rgba(255,255,255,0.06)" }}>
                 <Sparkles className="h-3.5 w-3.5 text-white/60" />
                 KI-Assistent
                 <span className="rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-white/70" style={{ backgroundColor: "rgba(255,255,255,0.1)" }}>
@@ -97,10 +95,7 @@ export function AiAssistantSection() {
               <div className="mt-8 flex flex-col gap-4">
                 {FEATURES.map((f) => (
                   <div key={f.title} className="flex items-center gap-4">
-                    <div
-                      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl"
-                      style={{ backgroundColor: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.1)" }}
-                    >
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl" style={{ backgroundColor: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.1)" }}>
                       <f.icon className="h-4 w-4" style={{ color: "rgba(255,255,255,0.65)" }} strokeWidth={1.75} />
                     </div>
                     <div>
@@ -116,7 +111,7 @@ export function AiAssistantSection() {
               <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center">
                 <button
                   onClick={openChat}
-                  className="group inline-flex items-center gap-2.5 rounded-full bg-white px-7 py-3.5 text-sm font-semibold shadow-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-xl"
+                  className="group inline-flex items-center gap-2.5 rounded-full bg-white px-7 py-3.5 text-sm font-semibold transition-all duration-300 hover:scale-[1.02] hover:bg-white/90"
                   style={{ color: "#0a0a0a", boxShadow: "0 8px 30px rgba(0,0,0,0.5)" }}
                 >
                   <MessageCircle className="h-4 w-4" />
@@ -134,32 +129,14 @@ export function AiAssistantSection() {
           <AnimateIn delay={180}>
             <div className="relative">
 
-              <div
-                className="pointer-events-none absolute inset-x-6 -bottom-4 top-6 -z-10 rounded-3xl blur-2xl"
-                style={{ backgroundColor: "rgba(255,255,255,0.04)" }}
-              />
+              <div className="pointer-events-none absolute inset-x-6 -bottom-4 top-6 -z-10 rounded-3xl blur-2xl" style={{ backgroundColor: "rgba(255,255,255,0.04)" }} />
 
-              <div
-                className="overflow-hidden rounded-2xl shadow-2xl backdrop-blur-sm"
-                style={{
-                  backgroundColor: "rgba(255,255,255,0.05)",
-                  border: "1px solid rgba(255,255,255,0.1)",
-                  boxShadow: "0 25px 60px rgba(0,0,0,0.6)",
-                }}
-              >
+              <div className="overflow-hidden rounded-2xl shadow-2xl backdrop-blur-sm" style={{ backgroundColor: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", boxShadow: "0 25px 60px rgba(0,0,0,0.6)" }}>
+
                 {/* Header */}
-                <div
-                  className="flex items-center justify-between px-5 py-4"
-                  style={{
-                    backgroundColor: "rgba(255,255,255,0.07)",
-                    borderBottom: "1px solid rgba(255,255,255,0.08)",
-                  }}
-                >
+                <div className="flex items-center justify-between px-5 py-4" style={{ backgroundColor: "rgba(255,255,255,0.07)", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
                   <div className="flex items-center gap-3">
-                    <div
-                      className="flex h-9 w-9 items-center justify-center rounded-xl"
-                      style={{ backgroundColor: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.15)" }}
-                    >
+                    <div className="flex h-9 w-9 items-center justify-center rounded-xl" style={{ backgroundColor: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.15)" }}>
                       <Sparkles className="h-4 w-4 text-white" />
                     </div>
                     <div>
@@ -183,21 +160,17 @@ export function AiAssistantSection() {
                     <div key={i} className={`flex gap-2.5 ${msg.role === "user" ? "flex-row-reverse" : "flex-row"}`}>
                       <div
                         className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full mt-0.5"
-                        style={
-                          msg.role === "user"
-                            ? { backgroundColor: "#ffffff", color: "#0a0a0a" }
-                            : { backgroundColor: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.1)", color: "white" }
-                        }
+                        style={msg.role === "user"
+                          ? { backgroundColor: "#ffffff", color: "#0a0a0a" }
+                          : { backgroundColor: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.1)", color: "white" }}
                       >
                         {msg.role === "user" ? <User className="h-3.5 w-3.5" /> : <Bot className="h-3.5 w-3.5" />}
                       </div>
                       <div
-                        className="max-w-[82%] rounded-2xl px-4 py-2.5 text-[13.5px] leading-relaxed"
-                        style={
-                          msg.role === "user"
-                            ? { backgroundColor: "#ffffff", color: "#0a0a0a", borderRadius: "16px 4px 16px 16px" }
-                            : { backgroundColor: "rgba(255,255,255,0.09)", color: "rgba(255,255,255,0.85)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: "4px 16px 16px 16px" }
-                        }
+                        className="max-w-[82%] px-4 py-2.5 text-[13.5px] leading-relaxed"
+                        style={msg.role === "user"
+                          ? { backgroundColor: "#ffffff", color: "#0a0a0a", borderRadius: "16px 4px 16px 16px" }
+                          : { backgroundColor: "rgba(255,255,255,0.09)", color: "rgba(255,255,255,0.85)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: "4px 16px 16px 16px" }}
                       >
                         {msg.text}
                       </div>
@@ -206,16 +179,10 @@ export function AiAssistantSection() {
 
                   {/* Typing */}
                   <div className="flex gap-2.5">
-                    <div
-                      className="flex h-7 w-7 items-center justify-center rounded-full shrink-0"
-                      style={{ backgroundColor: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.1)" }}
-                    >
+                    <div className="flex h-7 w-7 items-center justify-center rounded-full shrink-0" style={{ backgroundColor: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.1)" }}>
                       <Bot className="h-3.5 w-3.5 text-white" />
                     </div>
-                    <div
-                      className="flex items-center gap-1 rounded-2xl px-4 py-3"
-                      style={{ backgroundColor: "rgba(255,255,255,0.09)", border: "1px solid rgba(255,255,255,0.07)" }}
-                    >
+                    <div className="flex items-center gap-1 rounded-2xl px-4 py-3" style={{ backgroundColor: "rgba(255,255,255,0.09)", border: "1px solid rgba(255,255,255,0.07)" }}>
                       <span className="h-2 w-2 rounded-full animate-bounce" style={{ backgroundColor: "rgba(255,255,255,0.4)", animationDelay: "0ms" }} />
                       <span className="h-2 w-2 rounded-full animate-bounce" style={{ backgroundColor: "rgba(255,255,255,0.4)", animationDelay: "150ms" }} />
                       <span className="h-2 w-2 rounded-full animate-bounce" style={{ backgroundColor: "rgba(255,255,255,0.4)", animationDelay: "300ms" }} />
@@ -233,19 +200,17 @@ export function AiAssistantSection() {
                       <button
                         key={q}
                         onClick={openChat}
-                        className="rounded-full px-3 py-1.5 text-[12px] font-medium transition-all duration-200 hover:text-white"
-                        style={{
-                          border: "1px solid rgba(255,255,255,0.12)",
-                          backgroundColor: "rgba(255,255,255,0.05)",
-                          color: "rgba(255,255,255,0.55)",
-                        }}
+                        className="rounded-full px-3 py-1.5 text-[12px] font-medium transition-all duration-200"
+                        style={{ border: "1px solid rgba(255,255,255,0.12)", backgroundColor: "rgba(255,255,255,0.05)", color: "rgba(255,255,255,0.55)" }}
                         onMouseEnter={e => {
                           (e.currentTarget as HTMLButtonElement).style.backgroundColor = "rgba(255,255,255,0.12)"
                           ;(e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(255,255,255,0.25)"
+                          ;(e.currentTarget as HTMLButtonElement).style.color = "white"
                         }}
                         onMouseLeave={e => {
                           (e.currentTarget as HTMLButtonElement).style.backgroundColor = "rgba(255,255,255,0.05)"
                           ;(e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(255,255,255,0.12)"
+                          ;(e.currentTarget as HTMLButtonElement).style.color = "rgba(255,255,255,0.55)"
                         }}
                       >
                         {q}
@@ -259,10 +224,7 @@ export function AiAssistantSection() {
                   <button
                     onClick={openChat}
                     className="group flex w-full items-center gap-3 rounded-xl px-4 py-3 transition-all duration-200"
-                    style={{
-                      border: "1px solid rgba(255,255,255,0.12)",
-                      backgroundColor: "rgba(255,255,255,0.05)",
-                    }}
+                    style={{ border: "1px solid rgba(255,255,255,0.12)", backgroundColor: "rgba(255,255,255,0.05)" }}
                     onMouseEnter={e => {
                       (e.currentTarget as HTMLButtonElement).style.backgroundColor = "rgba(255,255,255,0.09)"
                       ;(e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(255,255,255,0.22)"
@@ -275,10 +237,7 @@ export function AiAssistantSection() {
                     <span className="flex-1 text-left text-sm" style={{ color: "rgba(255,255,255,0.28)" }}>
                       Ihre Frage hier eingeben...
                     </span>
-                    <div
-                      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white"
-                      style={{ color: "#0a0a0a" }}
-                    >
+                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white" style={{ color: "#0a0a0a" }}>
                       <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
                     </div>
                   </button>
@@ -286,13 +245,7 @@ export function AiAssistantSection() {
               </div>
 
               {/* Badge — kostenlos */}
-              <div
-                className="absolute -bottom-4 -left-4 flex items-center gap-2.5 rounded-xl px-4 py-2.5 shadow-lg backdrop-blur-sm"
-                style={{
-                  backgroundColor: "rgba(20,20,20,0.95)",
-                  border: "1px solid rgba(255,255,255,0.1)",
-                }}
-              >
+              <div className="absolute -bottom-4 -left-4 flex items-center gap-2.5 rounded-xl px-4 py-2.5 shadow-lg backdrop-blur-sm" style={{ backgroundColor: "rgba(20,20,20,0.95)", border: "1px solid rgba(255,255,255,0.1)" }}>
                 <div className="text-xl font-black text-white">20</div>
                 <div className="text-xs leading-tight" style={{ color: "rgba(255,255,255,0.45)" }}>
                   Fragen täglich<br />
@@ -301,13 +254,7 @@ export function AiAssistantSection() {
               </div>
 
               {/* Badge — rating */}
-              <div
-                className="absolute -right-4 -top-4 flex items-center gap-2 rounded-xl px-3.5 py-2.5 shadow-lg backdrop-blur-sm"
-                style={{
-                  backgroundColor: "rgba(20,20,20,0.95)",
-                  border: "1px solid rgba(255,255,255,0.1)",
-                }}
-              >
+              <div className="absolute -right-4 -top-4 flex items-center gap-2 rounded-xl px-3.5 py-2.5 shadow-lg backdrop-blur-sm" style={{ backgroundColor: "rgba(20,20,20,0.95)", border: "1px solid rgba(255,255,255,0.1)" }}>
                 <span className="text-lg">⭐</span>
                 <div className="text-xs leading-tight" style={{ color: "rgba(255,255,255,0.45)" }}>
                   <span className="font-bold text-white">4.9/5</span><br />
