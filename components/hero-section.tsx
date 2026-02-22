@@ -1,6 +1,6 @@
 "use client"
 
-import { ArrowRight, CheckCircle2, Shield, Zap, FileText, Clock, Lock, BadgeCheck, ShieldCheck } from "lucide-react"
+import { ArrowRight, CheckCircle2, Shield, Zap, FileText, Clock, Lock, BadgeCheck, ShieldCheck, Sparkles, MessageCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { AnimateIn } from "@/components/animate-in"
 import { useI18n } from "@/contexts/i18n-context"
@@ -160,6 +160,85 @@ function TrustBadges() {
   )
 }
 
+/* ─── AI Chat Floating Card ─── */
+
+function AiFloatingCard() {
+  const [pulse, setPulse] = useState(false)
+
+  // Subtle attention pulse every 4s
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setPulse(true)
+      setTimeout(() => setPulse(false), 600)
+    }, 4000)
+    return () => clearInterval(interval)
+  }, [])
+
+  const openChat = () => {
+    window.dispatchEvent(new Event("open-ai-chat"))
+  }
+
+  return (
+    <button
+      onClick={openChat}
+      className="group absolute -right-12 bottom-72 hidden lg:flex items-center gap-3 rounded-2xl border border-violet-300/50 dark:border-violet-700/50 bg-card px-4 py-3.5 shadow-lg shadow-violet-500/10 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-violet-500/15 hover:border-violet-400/70 dark:hover:border-violet-500/70"
+    >
+      {/* Icon with glow */}
+      <div className="relative h-11 w-11 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shadow-md shadow-violet-500/30 group-hover:scale-105 transition-transform duration-300">
+        <Sparkles className="h-5 w-5 text-white" />
+        {/* Live dot */}
+        <span className="absolute -right-1 -top-1 flex h-3 w-3">
+          <span className={`absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75 ${pulse ? "animate-ping" : ""}`} />
+          <span className="relative inline-flex h-3 w-3 rounded-full bg-green-400 border-2 border-card" />
+        </span>
+      </div>
+
+      {/* Text */}
+      <div className="text-left">
+        <div className="text-sm font-semibold text-foreground leading-tight flex items-center gap-1.5">
+          KI-Assistent
+          <span className="text-[10px] font-medium text-violet-600 dark:text-violet-400 bg-violet-100 dark:bg-violet-900/40 px-1.5 py-0.5 rounded-full">NEU</span>
+        </div>
+        <div className="text-xs text-muted-foreground mt-0.5">Kündigungsfragen sofort beantwortet</div>
+      </div>
+
+      {/* Arrow */}
+      <ArrowRight className="h-4 w-4 text-muted-foreground/40 group-hover:text-violet-500 group-hover:translate-x-0.5 transition-all duration-200 ml-1" />
+    </button>
+  )
+}
+
+/* ─── Mobile AI Banner ─── */
+
+function AiMobileBanner() {
+  const openChat = () => {
+    window.dispatchEvent(new Event("open-ai-chat"))
+  }
+
+  return (
+    <button
+      onClick={openChat}
+      className="group lg:hidden w-full mt-6 flex items-center gap-3 rounded-2xl border border-violet-300/50 dark:border-violet-700/50 bg-card px-4 py-3.5 shadow-sm hover:shadow-md transition-all duration-300 hover:border-violet-400/70"
+    >
+      <div className="relative h-10 w-10 shrink-0 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shadow-sm">
+        <Sparkles className="h-5 w-5 text-white" />
+        <span className="absolute -right-1 -top-1 flex h-2.5 w-2.5">
+          <span className="absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75 animate-ping" />
+          <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-green-400 border-2 border-card" />
+        </span>
+      </div>
+      <div className="flex-1 text-left">
+        <div className="text-sm font-semibold text-foreground flex items-center gap-1.5">
+          KI-Assistent
+          <span className="text-[10px] font-medium text-violet-600 dark:text-violet-400 bg-violet-100 dark:bg-violet-900/40 px-1.5 py-0.5 rounded-full">NEU</span>
+        </div>
+        <div className="text-xs text-muted-foreground">Kündigungsfragen sofort beantwortet</div>
+      </div>
+      <ArrowRight className="h-4 w-4 text-muted-foreground/40 group-hover:text-violet-500 transition-colors" />
+    </button>
+  )
+}
+
 /* ─── Main Component ─── */
 
 export function HeroSection() {
@@ -168,14 +247,16 @@ export function HeroSection() {
   return (
     <section className="relative overflow-hidden bg-background">
 
-      {/* Background — улучшенный градиент с мягким свечением */}
+      {/* Background */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#00000008_1px,transparent_1px),linear-gradient(to_bottom,#00000008_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:48px_48px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_60%,transparent_100%)]" />
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-muted/30" />
 
-      {/* Декоративные орбы */}
+      {/* Орбы */}
       <div className="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 h-[600px] w-[600px] rounded-full bg-emerald-500/5 dark:bg-emerald-400/5 blur-[120px]" />
       <div className="pointer-events-none absolute top-1/3 -right-40 h-[400px] w-[400px] rounded-full bg-blue-500/5 dark:bg-blue-400/5 blur-[100px]" />
       <div className="pointer-events-none absolute top-1/3 -left-40 h-[400px] w-[400px] rounded-full bg-violet-500/5 dark:bg-violet-400/5 blur-[100px]" />
+      {/* AI glow — subtle violet bloom behind document */}
+      <div className="pointer-events-none absolute bottom-1/3 right-1/4 h-[300px] w-[300px] rounded-full bg-violet-500/4 dark:bg-violet-400/6 blur-[100px]" />
 
       <div className="relative mx-auto max-w-7xl px-4 pb-24 pt-24 lg:px-8 lg:pb-32 lg:pt-32">
         <div className="mx-auto max-w-5xl text-center">
@@ -231,6 +312,13 @@ export function HeroSection() {
             </div>
           </AnimateIn>
 
+          {/* AI Mobile Banner — показывается только на мобиле */}
+          <AnimateIn delay={420}>
+            <div className="mx-auto max-w-sm">
+              <AiMobileBanner />
+            </div>
+          </AnimateIn>
+
           {/* Social Proof */}
           <AnimateIn delay={440}>
             <div className="mt-6 flex justify-center">
@@ -238,7 +326,7 @@ export function HeroSection() {
             </div>
           </AnimateIn>
 
-          {/* Trust Badges — НОВОЕ */}
+          {/* Trust Badges */}
           <AnimateIn delay={460}>
             <TrustBadges />
           </AnimateIn>
@@ -271,7 +359,7 @@ export function HeroSection() {
               <div className="h-64 w-64 rounded-full bg-foreground/5 blur-[60px]" />
             </div>
 
-            {/* Document Card — реальный PDF */}
+            {/* Document Card */}
             <div className="relative mx-auto w-full max-w-2xl aspect-[1/1.35] rounded-2xl shadow-xl border border-border/50 overflow-hidden ring-1 ring-foreground/5">
               <PdfPreview url="/preview/kuendigung-muster.pdf" />
             </div>
@@ -289,7 +377,7 @@ export function HeroSection() {
               </div>
             </div>
 
-            {/* Floating Card — Validated — теперь с зелёным акцентом */}
+            {/* Floating Card — Validated */}
             <div className="absolute -left-12 bottom-44 hidden lg:block hover:-translate-y-1 transition-transform duration-300">
               <div className="flex items-center gap-3 rounded-xl bg-card border border-emerald-200/60 dark:border-emerald-800/40 px-4 py-3 shadow-lg backdrop-blur-sm">
                 <div className="h-10 w-10 rounded-lg bg-emerald-500 flex items-center justify-center">
@@ -302,7 +390,7 @@ export function HeroSection() {
               </div>
             </div>
 
-            {/* Floating Card — SSL — НОВОЕ */}
+            {/* Floating Card — SSL */}
             <div className="absolute -left-12 top-20 hidden lg:block hover:-translate-y-1 transition-transform duration-300">
               <div className="flex items-center gap-3 rounded-xl bg-card border border-blue-200/60 dark:border-blue-800/40 px-4 py-3 shadow-lg backdrop-blur-sm">
                 <div className="h-10 w-10 rounded-lg bg-blue-500 flex items-center justify-center">
@@ -330,6 +418,9 @@ export function HeroSection() {
                 </div>
               </a>
             </div>
+
+            {/* ✨ Floating Card — KI-Assistent (НОВОЕ) */}
+            <AiFloatingCard />
 
           </div>
         </AnimateIn>
