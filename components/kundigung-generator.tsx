@@ -2004,16 +2004,6 @@ export function KundigungGenerator() {
         <div className="absolute bottom-[10%] left-[10%] h-[500px] w-[500px] rounded-full bg-muted/20 blur-[120px]" />
       </div>
 
-      {/* Offline/Online status bar */}
-      <div className={`fixed top-0 left-0 right-0 z-[60] flex items-center justify-center gap-2 py-1.5 text-xs font-semibold transition-all duration-500 ${
-        isOnline
-          ? "opacity-0 pointer-events-none -translate-y-full"
-          : "opacity-100 translate-y-0 bg-amber-500 text-white"
-      }`}>
-        <WifiOff className="h-3.5 w-3.5" />
-        Kein Internet — eingeschränkter Modus
-      </div>
-
       <div className="relative mx-auto max-w-7xl px-4 lg:px-8">
         <div className="mb-12 flex items-center justify-center">
           <div className="flex items-center gap-2 bg-background/80 backdrop-blur-xl rounded-full border-2 border-border p-2 shadow-xl">
