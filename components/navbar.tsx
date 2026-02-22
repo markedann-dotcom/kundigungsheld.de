@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { FileText, Menu, X, Archive } from "lucide-react"
+import { FileText, Menu, X, Archive, Clock } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { LanguageToggle } from "@/components/language-toggle"
@@ -16,6 +16,7 @@ export function Navbar() {
     { label: "Funktionen", href: "/#funktionen" },
     { label: "So geht's", href: "/#so-gehts" },
     { label: "Generator", href: "/#generator" },
+    { label: "Fristenrechner", href: "/#fristenrechner", highlight: true },
     { label: t.nav.blog, href: "/blog" },
     { label: t.nav.archive, href: "/archiv" },
   ]
@@ -37,7 +38,11 @@ export function Navbar() {
             <li key={link.href}>
               <Link
                 href={link.href}
-                className="rounded-lg px-3.5 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+                className={`rounded-lg px-3.5 py-2 text-sm font-medium transition-colors hover:bg-secondary hover:text-foreground ${
+                  link.highlight
+                    ? "text-foreground font-semibold"
+                    : "text-muted-foreground"
+                }`}
               >
                 {link.label}
               </Link>
@@ -73,9 +78,12 @@ export function Navbar() {
               <li key={link.href}>
                 <Link
                   href={link.href}
-                  className="block rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+                  className={`flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors hover:bg-secondary hover:text-foreground ${
+                    link.highlight ? "text-foreground font-semibold" : "text-muted-foreground"
+                  }`}
                   onClick={() => setMobileOpen(false)}
                 >
+                  {link.highlight && <Clock className="h-3.5 w-3.5 text-amber-500" />}
                   {link.label}
                 </Link>
               </li>

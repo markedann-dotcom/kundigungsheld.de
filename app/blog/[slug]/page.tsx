@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { blogArticles, getArticleBySlug } from "@/lib/blog-articles"
+import { ShareButtons } from "@/components/share-buttons"
 
 const BASE_URL = "https://kuendigungsheld.de"
 
@@ -54,7 +55,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 }
 
-function getArticleJsonLd(article: { title: string; excerpt: string; author: string; authorRole: string; date: string; slug: string }) {
+function getArticleJsonLd(article: {
+  title: string
+  excerpt: string
+  author: string
+  authorRole: string
+  date: string
+  slug: string
+}) {
   return {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -216,13 +224,19 @@ export default async function BlogArticlePage({ params }: Props) {
             </div>
 
             {/* Category hero banner */}
-            <div className={`-mx-4 mb-10 rounded-2xl bg-gradient-to-br ${CATEGORY_COLORS[article.category] || "from-primary/90 to-primary"} p-8 text-white sm:-mx-8 sm:p-10 lg:-mx-10 lg:p-12`}>
+            <div
+              className={`-mx-4 mb-10 rounded-2xl bg-gradient-to-br ${
+                CATEGORY_COLORS[article.category] || "from-primary/90 to-primary"
+              } p-8 text-white sm:-mx-8 sm:p-10 lg:-mx-10 lg:p-12`}
+            >
               <div className="flex items-center gap-3">
                 {(() => {
                   const Icon = CATEGORY_ICONS[article.category] || FileText
                   return <Icon className="h-6 w-6 text-white/80" />
                 })()}
-                <span className="text-sm font-medium text-white/80">{article.category}</span>
+                <span className="text-sm font-medium text-white/80">
+                  {article.category}
+                </span>
               </div>
               <h1 className="mt-4 font-display text-2xl font-bold leading-tight tracking-tight sm:text-3xl lg:text-4xl">
                 <span className="text-balance">{article.title}</span>
@@ -262,10 +276,19 @@ export default async function BlogArticlePage({ params }: Props) {
               </div>
             </header>
 
+            {/* Article content */}
             <div className="rounded-2xl border border-border/60 bg-card p-6 shadow-sm sm:p-8 lg:p-10">
               {renderContent(article.content)}
             </div>
 
+            {/* ── Share buttons ── */}
+            <ShareButtons
+              title={article.title}
+              slug={article.slug}
+              excerpt={article.excerpt}
+            />
+
+            {/* CTA */}
             <div className="mt-10 rounded-2xl border border-primary/20 bg-primary/5 p-6 text-center sm:p-8">
               <h3 className="font-display text-xl font-bold text-foreground">
                 Kündigung erstellen?

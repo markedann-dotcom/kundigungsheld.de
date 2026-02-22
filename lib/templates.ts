@@ -5,6 +5,12 @@ export type KuendigungsGrund =
   | "fristlos"
   | "umzug"
   | "todesfall"
+  | "insolvenz"
+  | "mangelhafteLeistung"
+  | "gegenseitigesEinvernehmen"
+  | "renteneintritt"
+  | "elternzeit"
+  | "geschaeftsaufgabe"
 
 export interface TemplateData {
   anrede: "Herr" | "Frau" | "Divers"
@@ -19,16 +25,51 @@ export interface TemplateData {
   kuendigungZum: "naechstmoeglich" | "datum"
   kuendigungsDatum: string
   zusatztext: string
+  /** Optional: for Todesfall – name of the deceased */
+  verstorbenerName?: string
+  /** Optional: Einzugsermächtigung / SEPA mandate reference */
+  sepaMandat?: string
 }
 
 export const GRUND_LABELS: Record<KuendigungsGrund, string> = {
   ordentlich: "Ordentliche Kündigung",
   sonderkuendigung: "Sonderkündigung (z.B. Preiserhöhung)",
   widerruf: "Widerruf (innerhalb 14 Tage)",
-  fristlos: "Fristlose Kündigung",
+  fristlos: "Fristlose Kündigung (aus wichtigem Grund)",
   umzug: "Kündigung wegen Umzug",
   todesfall: "Kündigung wegen Todesfall",
+  insolvenz: "Kündigung wegen Insolvenz",
+  mangelhafteLeistung: "Kündigung wegen mangelhafter Leistung",
+  gegenseitigesEinvernehmen: "Aufhebungsvereinbarung (gegenseitiges Einvernehmen)",
+  renteneintritt: "Kündigung wegen Renteneintritt",
+  elternzeit: "Kündigung wegen Elternzeit",
+  geschaeftsaufgabe: "Kündigung wegen Geschäftsaufgabe",
 }
+
+// ---------------------------------------------------------------------------
+// Helper
+// ---------------------------------------------------------------------------
+
+function buildBetreff(
+  label: string,
+  vertragsnummer: string,
+  kundennummer: string
+): string {
+  const parts = [label]
+  if (vertragsnummer) parts.push(`Vertragsnummer: ${vertragsnummer}`)
+  if (kundennummer) parts.push(`Kundennummer: ${kundennummer}`)
+  return parts.join(" – ")
+}
+
+function sepaLine(sepaMandat?: string): string {
+  return sepaMandat
+    ? `Ich widerrufe hiermit außerdem das erteilte SEPA-Lastschriftmandat (Mandatsreferenz: ${sepaMandat}) mit Wirkung zum Vertragsende.`
+    : "Ich widerrufe hiermit außerdem alle erteilten Einzugsermächtigungen und SEPA-Lastschriftmandate mit Wirkung zum Vertragsende."
+}
+
+// ---------------------------------------------------------------------------
+// Main generator
+// ---------------------------------------------------------------------------
 
 export function generateKuendigungsschreiben(
   data: TemplateData,
@@ -42,79 +83,203 @@ export function generateKuendigungsschreiben(
     year: "numeric",
   })
 
-  const anredeText = data.anrede === "Herr" ? "Herrn" : data.anrede === "Frau" ? "Frau" : ""
   const fullName = `${data.vorname} ${data.nachname}`
   const kuendigungZumText =
     data.kuendigungZum === "naechstmoeglich"
-      ? "zum nächstmöglichen Zeitpunkt"
+      ? "zum nächstmöglichen Termin unter Einhaltung der vertraglich bzw. gesetzlich vorgesehenen Kündigungsfrist"
       : `zum ${data.kuendigungsDatum}`
 
   let betreffText = ""
   let bodyText = ""
 
   switch (data.grund) {
+    // -----------------------------------------------------------------------
     case "ordentlich":
-      betreffText = `Ordentliche Kündigung${data.vertragsnummer ? ` - Vertragsnummer: ${data.vertragsnummer}` : ""}${data.kundennummer ? ` - Kundennummer: ${data.kundennummer}` : ""}`
-      bodyText = `hiermit kündige ich meinen bestehenden Vertrag ${kuendigungZumText} ordentlich und fristgerecht.
+      betreffText = buildBetreff("Ordentliche Kündigung", data.vertragsnummer, data.kundennummer)
+      bodyText = `hiermit kündige ich den oben bezeichneten Vertrag ordentlich und fristgerecht ${kuendigungZumText}.
 
-Bitte senden Sie mir eine schriftliche Bestätigung der Kündigung unter Angabe des Beendigungszeitpunktes zu.
+Ich bitte Sie, mir den Zugang dieser Kündigung sowie den genauen Beendigungstermin schriftlich zu bestätigen.
 
-Ich bitte Sie, alle erteilten Einzugsermächtigungen / SEPA-Lastschriftmandate mit Wirkung zum Vertragsende zu löschen.
+${sepaLine(data.sepaMandat)}
 
-Einer Kontaktaufnahme zu Werbezwecken oder zur Rückgewinnung widerspreche ich hiermit ausdrücklich.`
+Einer Kontaktaufnahme zu Werbezwecken oder zur Kundenrückgewinnung widerspreche ich gemäß § 7 UWG ausdrücklich.${data.zusatztext ? `\n\n${data.zusatztext}` : ""}`
       break
 
+    // -----------------------------------------------------------------------
     case "sonderkuendigung":
-      betreffText = `Sonderkündigung${data.vertragsnummer ? ` - Vertragsnummer: ${data.vertragsnummer}` : ""}${data.kundennummer ? ` - Kundennummer: ${data.kundennummer}` : ""}`
-      bodyText = `hiermit mache ich von meinem Sonderkündigungsrecht Gebrauch und kündige meinen Vertrag ${kuendigungZumText}.
+      betreffText = buildBetreff("Sonderkündigung", data.vertragsnummer, data.kundennummer)
+      bodyText = `hiermit mache ich von meinem außerordentlichen Sonderkündigungsrecht Gebrauch und kündige den oben bezeichneten Vertrag ${kuendigungZumText}.
 
-Grund für die Sonderkündigung:
-${data.zusatztext || "Preiserhöhung / Vertragsänderung zum Nachteil des Kunden."}
+Grund der Sonderkündigung:
+${data.zusatztext || "Preiserhöhung bzw. einseitige Vertragsänderung zu meinen Ungunsten."}
 
-Gemäß § 314 BGB bzw. den geltenden Vertragsbedingungen steht mir bei wesentlichen Vertragsänderungen ein Sonderkündigungsrecht zu.
+Gemäß § 314 BGB sowie den einschlägigen Verbraucherschutzvorschriften (u. a. § 41 Abs. 3 TKG, § 41a EnWG) steht mir bei einer wesentlichen Änderung der Vertragsbedingungen ein Sonderkündigungsrecht zu. Ich übe dieses Recht fristgerecht innerhalb der gesetzlichen bzw. vertraglich vereinbarten Frist aus.
 
-Bitte bestätigen Sie mir die Kündigung und den Beendigungszeitpunkt schriftlich.`
+${sepaLine(data.sepaMandat)}
+
+Ich bitte um schriftliche Bestätigung der Kündigung sowie des Beendigungstermins.`
       break
 
+    // -----------------------------------------------------------------------
     case "widerruf":
-      betreffText = `Widerruf meines Vertrages${data.vertragsnummer ? ` - Vertragsnummer: ${data.vertragsnummer}` : ""}${data.kundennummer ? ` - Kundennummer: ${data.kundennummer}` : ""}`
-      bodyText = `hiermit widerrufe ich den mit Ihnen geschlossenen Vertrag innerhalb der gesetzlichen Widerrufsfrist von 14 Tagen.
+      betreffText = buildBetreff("Widerruf des Vertrages", data.vertragsnummer, data.kundennummer)
+      bodyText = `hiermit erkläre ich den Widerruf des oben bezeichneten Vertrages gemäß § 355 BGB in Verbindung mit § 356 BGB.
 
-Gemäß § 355 BGB steht mir als Verbraucher das Recht zu, diesen Vertrag innerhalb von 14 Tagen ohne Angabe von Gründen zu widerrufen.
+Der Vertrag wurde am ${data.kuendigungsDatum || "(Abschlussdatum einsetzen)"} geschlossen. Die gesetzliche Widerrufsfrist von 14 Tagen ist noch nicht abgelaufen; der Widerruf erfolgt daher fristgerecht.
 
-Bitte bestätigen Sie den Widerruf und erstatten Sie bereits geleistete Zahlungen unverzüglich zurück.`
+Ich fordere Sie auf, bereits geleistete Zahlungen unverzüglich, spätestens jedoch innerhalb von 14 Tagen nach Zugang dieses Widerrufs, gemäß § 357 BGB zurückzuerstatten.
+
+${sepaLine(data.sepaMandat)}${data.zusatztext ? `\n\n${data.zusatztext}` : ""}`
       break
 
+    // -----------------------------------------------------------------------
     case "fristlos":
-      betreffText = `Fristlose Kündigung${data.vertragsnummer ? ` - Vertragsnummer: ${data.vertragsnummer}` : ""}${data.kundennummer ? ` - Kundennummer: ${data.kundennummer}` : ""}`
-      bodyText = `hiermit kündige ich meinen Vertrag aus wichtigem Grund fristlos mit sofortiger Wirkung.
+      betreffText = buildBetreff(
+        "Außerordentliche fristlose Kündigung aus wichtigem Grund",
+        data.vertragsnummer,
+        data.kundennummer
+      )
+      bodyText = `hiermit kündige ich den oben bezeichneten Vertrag außerordentlich und fristlos mit sofortiger Wirkung aus wichtigem Grund gemäß § 314 BGB.
 
-Grund für die fristlose Kündigung:
-${data.zusatztext || "(Bitte Grund angeben)"}
+Wichtiger Grund:
+${data.zusatztext || "(Bitte konkreten Kündigungsgrund eintragen, z. B. schwerwiegende Vertragsverletzung, unzumutbare Beeinträchtigung etc.)"}
 
-Gemäß § 314 BGB ist eine fristlose Kündigung aus wichtigem Grund zulässig, wenn dem Kündigenden unter Berücksichtigung aller Umstände die Fortsetzung des Vertragsverhältnisses nicht zugemutet werden kann.
+Die Voraussetzungen des § 314 BGB sind erfüllt: Unter Berücksichtigung aller Umstände des Einzelfalls und nach Abwägung der beiderseitigen Interessen ist mir die Fortsetzung des Vertragsverhältnisses bis zu einem ordentlichen Kündigungstermin nicht zuzumuten.
 
-Bitte bestätigen Sie die Kündigung und die sofortige Vertragsbeendigung schriftlich.`
+Ich behalte mir ausdrücklich vor, Schadensersatzansprüche geltend zu machen.
+
+${sepaLine(data.sepaMandat)}
+
+Ich bitte um sofortige schriftliche Bestätigung der Vertragsbeendigung.`
       break
 
+    // -----------------------------------------------------------------------
     case "umzug":
-      betreffText = `Kündigung wegen Umzug${data.vertragsnummer ? ` - Vertragsnummer: ${data.vertragsnummer}` : ""}${data.kundennummer ? ` - Kundennummer: ${data.kundennummer}` : ""}`
-      bodyText = `hiermit kündige ich meinen Vertrag ${kuendigungZumText} aufgrund eines Umzugs.
+      betreffText = buildBetreff("Sonderkündigung wegen Umzug", data.vertragsnummer, data.kundennummer)
+      bodyText = `hiermit kündige ich den oben bezeichneten Vertrag ${kuendigungZumText} aufgrund meines bevorstehenden Wohnsitzwechsels.
 
-${data.zusatztext ? `Neue Adresse: ${data.zusatztext}` : "Meine neue Adresse teile ich Ihnen bei Bedarf gesondert mit."}
+${
+  data.zusatztext
+    ? `Meine neue Anschrift lautet:\n${data.zusatztext}`
+    : "Meine neue Anschrift werde ich Ihnen auf Anfrage mitteilen."
+}
 
-Da die vertraglich vereinbarte Leistung an meinem neuen Wohnort nicht erbracht werden kann, mache ich von meinem Sonderkündigungsrecht Gebrauch.
+Da die vertraglich vereinbarte Leistung an meinem neuen Wohnort nachweislich nicht oder nicht in gleichwertiger Weise erbracht werden kann, steht mir ein Sonderkündigungsrecht zu (vgl. u. a. § 60 TKG für Telekommunikationsverträge sowie allgemein § 313 BGB).
 
-Bitte bestätigen Sie die Kündigung schriftlich und erstatten Sie eventuell bereits im Voraus gezahlte Beträge anteilig.`
+Ich bitte um schriftliche Bestätigung der Kündigung sowie um anteilige Erstattung bereits im Voraus geleisteter Zahlungen.
+
+${sepaLine(data.sepaMandat)}`
       break
 
+    // -----------------------------------------------------------------------
     case "todesfall":
-      betreffText = `Kündigung wegen Todesfall${data.vertragsnummer ? ` - Vertragsnummer: ${data.vertragsnummer}` : ""}${data.kundennummer ? ` - Kundennummer: ${data.kundennummer}` : ""}`
-      bodyText = `hiermit kündige ich den Vertrag der/des Verstorbenen ${data.zusatztext || "(Name des Verstorbenen)"} mit sofortiger Wirkung aufgrund des Todesfalls.
+      betreffText = buildBetreff("Kündigung wegen Todesfall", data.vertragsnummer, data.kundennummer)
+      bodyText = `als Erbe / bevollmächtigte Person kündige ich hiermit den Vertrag von
 
-Eine Kopie der Sterbeurkunde liegt diesem Schreiben bei / wird nachgereicht.
+${data.verstorbenerName || data.zusatztext || "(Name der verstorbenen Person)"}
 
-Bitte bestätigen Sie die Vertragsbeendigung und stellen Sie sicher, dass keine weiteren Abbuchungen erfolgen. Eventuell zu viel gezahlte Beträge erstatten Sie bitte an folgendes Konto zurück.`
+mit sofortiger Wirkung aufgrund des eingetretenen Todesfalls.
+
+Eine beglaubigte Kopie der Sterbeurkunde ${
+        data.zusatztext?.toLowerCase().includes("liegt")
+          ? data.zusatztext
+          : "füge ich diesem Schreiben bei. Sollten weitere Nachweise erforderlich sein, teilen Sie mir dies bitte umgehend mit."
+      }
+
+Ich bitte Sie sicherzustellen, dass ab sofort keine weiteren Abbuchungen vom Konto der verstorbenen Person erfolgen. Zu viel gezahlte Beträge sind an die Erbenmasse bzw. das nachfolgend genannte Konto zu erstatten.
+
+${sepaLine(data.sepaMandat)}`
+      break
+
+    // -----------------------------------------------------------------------
+    case "insolvenz":
+      betreffText = buildBetreff("Kündigung wegen Insolvenz", data.vertragsnummer, data.kundennummer)
+      bodyText = `hiermit kündige ich den oben bezeichneten Vertrag ${kuendigungZumText} aufgrund der eröffneten Insolvenz.
+
+${data.zusatztext ? `Aktenzeichen des Insolvenzverfahrens: ${data.zusatztext}` : "Das Aktenzeichen des Insolvenzverfahrens teile ich Ihnen auf Anfrage mit."}
+
+Gemäß §§ 103 ff. InsO hat der Insolvenzverwalter das Recht, laufende Schuldverhältnisse zu kündigen. Ich bitte Sie, alle weiteren Forderungen ausschließlich zur Insolvenztabelle anzumelden.
+
+${sepaLine(data.sepaMandat)}
+
+Ich bitte um schriftliche Bestätigung der Vertragsbeendigung.`
+      break
+
+    // -----------------------------------------------------------------------
+    case "mangelhafteLeistung":
+      betreffText = buildBetreff(
+        "Kündigung wegen dauerhafter Schlechtleistung",
+        data.vertragsnummer,
+        data.kundennummer
+      )
+      bodyText = `hiermit kündige ich den oben bezeichneten Vertrag ${kuendigungZumText} wegen anhaltender Schlechterfüllung der vertraglich geschuldeten Leistungen.
+
+Mangelbeschreibung:
+${data.zusatztext || "(Bitte konkrete Mängel und bisherige Beanstandungen beschreiben, inkl. Datum der Mängelanzeigen.)"}
+
+Trotz wiederholter Mängelanzeige und Fristsetzung zur Nacherfüllung wurden die Mängel nicht behoben. Ich stütze die Kündigung auf §§ 314, 280 Abs. 1 BGB sowie auf die einschlägigen Gewährleistungsvorschriften.
+
+Ich behalte mir vor, Schadensersatzansprüche wegen der bislang erbrachten mangelhaften Leistungen geltend zu machen.
+
+${sepaLine(data.sepaMandat)}
+
+Ich bitte um schriftliche Bestätigung der Kündigung.`
+      break
+
+    // -----------------------------------------------------------------------
+    case "gegenseitigesEinvernehmen":
+      betreffText = buildBetreff(
+        "Aufhebungsvereinbarung – Bitte um Vertragsbeendigung im gegenseitigen Einvernehmen",
+        data.vertragsnummer,
+        data.kundennummer
+      )
+      bodyText = `ich möchte den oben bezeichneten Vertrag ${kuendigungZumText} im gegenseitigen Einvernehmen beenden und bitte Sie, einer vorzeitigen Aufhebung zuzustimmen.
+
+${data.zusatztext ? `Hintergrund meiner Bitte:\n${data.zusatztext}\n` : ""}
+Ich schlage vor, dass mit dem vereinbarten Beendigungstermin alle gegenseitigen Ansprüche aus diesem Vertrag als vollständig erfüllt gelten, sofern nicht ausdrücklich anderes vereinbart wird.
+
+Bitte teilen Sie mir Ihre Zustimmung schriftlich mit, damit eine entsprechende Aufhebungsvereinbarung erstellt werden kann.
+
+${sepaLine(data.sepaMandat)}`
+      break
+
+    // -----------------------------------------------------------------------
+    case "renteneintritt":
+      betreffText = buildBetreff("Kündigung wegen Eintritt in den Ruhestand", data.vertragsnummer, data.kundennummer)
+      bodyText = `hiermit kündige ich den oben bezeichneten Vertrag ${kuendigungZumText}, da ich zum genannten Zeitpunkt in den gesetzlichen Ruhestand eintrete.
+
+${data.zusatztext ? `${data.zusatztext}\n` : ""}
+Da die vertragsgegenständliche Leistung aufgrund meines Renteneintritts für mich nicht mehr erforderlich ist, bitte ich Sie, einer vorzeitigen Vertragsbeendigung zuzustimmen bzw. das Sonderkündigungsrecht anzuerkennen.
+
+${sepaLine(data.sepaMandat)}
+
+Ich bitte um schriftliche Bestätigung der Kündigung und des Beendigungstermins.`
+      break
+
+    // -----------------------------------------------------------------------
+    case "elternzeit":
+      betreffText = buildBetreff("Kündigung wegen Elternzeit", data.vertragsnummer, data.kundennummer)
+      bodyText = `hiermit kündige ich den oben bezeichneten Vertrag ${kuendigungZumText} im Zusammenhang mit meiner bevorstehenden Elternzeit.
+
+${data.zusatztext ? `${data.zusatztext}\n` : ""}
+Aufgrund der Elternzeit und der damit verbundenen veränderten Lebensumstände ist die weitere Inanspruchnahme der vertragsgegenständlichen Leistung für mich nicht möglich bzw. zumutbar.
+
+${sepaLine(data.sepaMandat)}
+
+Ich bitte um schriftliche Bestätigung der Kündigung sowie um Bestätigung des Beendigungstermins.`
+      break
+
+    // -----------------------------------------------------------------------
+    case "geschaeftsaufgabe":
+      betreffText = buildBetreff("Kündigung wegen Geschäftsaufgabe", data.vertragsnummer, data.kundennummer)
+      bodyText = `hiermit kündige ich den oben bezeichneten Vertrag ${kuendigungZumText} aufgrund der Aufgabe meines Geschäftsbetriebes.
+
+${data.zusatztext ? `${data.zusatztext}\n` : ""}
+Da der Betrieb zum genannten Datum vollständig eingestellt wird, besteht kein weiterer Bedarf an der vertragsgegenständlichen Leistung. Ich bitte Sie, einem Sonderkündigungsrecht zuzustimmen, sofern die ordentliche Kündigungsfrist über das Datum der Geschäftsaufgabe hinausgeht.
+
+${sepaLine(data.sepaMandat)}
+
+Bitte bestätigen Sie die Kündigung und den Beendigungstermin schriftlich. Ausstehende Guthaben sind auf das Geschäftskonto bzw. an den Insolvenzverwalter zu erstatten (Details auf Anfrage).`
       break
   }
 
@@ -135,5 +300,7 @@ ${bodyText}
 
 Mit freundlichen Grüßen
 
+
+___________________________
 ${fullName}`
 }

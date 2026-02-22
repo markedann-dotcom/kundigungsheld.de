@@ -36,23 +36,18 @@ export function showLoading() {
   `
 
   const style = document.createElement("style")
-  style.innerHTML = `
-    @keyframes spin { 
-      0% { transform: rotate(0deg); } 
-      100% { transform: rotate(360deg); } 
-    }
-  `
+  style.innerHTML = `@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }`
   document.head.appendChild(style)
 
   overlay.appendChild(spinner)
   overlay.appendChild(text)
   document.body.appendChild(overlay)
 
-  if (document.documentElement.classList.contains('dark')) {
-    overlay.style.background = 'rgba(15, 23, 42, 0.98)'
-    spinner.style.borderColor = '#1e293b'
-    spinner.style.borderTopColor = '#f8fafc'
-    text.style.color = '#f8fafc'
+  if (document.documentElement.classList.contains("dark")) {
+    overlay.style.background = "rgba(15, 23, 42, 0.98)"
+    spinner.style.borderColor = "#1e293b"
+    spinner.style.borderTopColor = "#f8fafc"
+    text.style.color = "#f8fafc"
   }
 
   requestAnimationFrame(() => {
@@ -77,21 +72,73 @@ export function hideLoading() {
   }
 }
 
-/* ── Perfect PDF Template ── */
+/* ── Helpers ── */
+
+/**
+ * Escape HTML entities so that raw letter text is safe inside innerHTML.
+ */
+function escapeHtml(text: string): string {
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+}
+
+/**
+ * Convert plain-text letter (with \n line breaks) into HTML paragraphs.
+ *
+ * Rules:
+ *  - Empty lines become paragraph separators (margin between blocks).
+ *  - Non-empty lines within the same block are joined with <br>.
+ *
+ * This replaces `white-space: pre-wrap` which causes every line to be rendered
+ * at full line-height — even short lines still consume a full row, making it
+ * impossible to keep the letter on one page without extreme font-size reduction.
+ *
+ * With proper <p> blocks we can use compact paragraph spacing instead.
+ */
+function letterTextToHtml(text: string): string {
+  const lines = text.split("\n")
+  const blocks: string[][] = []
+  let current: string[] = []
+
+  for (const line of lines) {
+    if (line.trim() === "") {
+      if (current.length > 0) {
+        blocks.push(current)
+        current = []
+      }
+    } else {
+      current.push(escapeHtml(line))
+    }
+  }
+  if (current.length > 0) blocks.push(current)
+
+  return blocks
+    .map((block) => `<p>${block.join("<br>")}</p>`)
+    .join("")
+}
+
+/* ── PDF Template ── */
 
 function getPerfectPDFTemplate(letterText: string, companyName: string): string {
-  const docId = `KH-${Date.now().toString(36).toUpperCase().substring(0, 6)}-${Math.floor(Math.random() * 999).toString().padStart(3, '0')}`
-  const today = new Date().toLocaleDateString('de-DE', { 
-    day: '2-digit', 
-    month: '2-digit', 
-    year: 'numeric' 
+  const docId = `KH-${Date.now().toString(36).toUpperCase().substring(0, 6)}-${Math.floor(Math.random() * 999)
+    .toString()
+    .padStart(3, "0")}`
+  const today = new Date().toLocaleDateString("de-DE", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
   })
-  
+
+  const bodyHtml = letterTextToHtml(letterText)
+
   return `
     <div style="
       width: 210mm;
       min-height: 297mm;
-      padding: 25mm;
+      padding: 18mm 22mm 18mm 22mm;
       font-family: Arial, Helvetica, sans-serif;
       color: #000000;
       background: #ffffff;
@@ -100,95 +147,101 @@ function getPerfectPDFTemplate(letterText: string, companyName: string): string 
       flex-direction: column;
       position: relative;
     ">
-      
+
       <!-- Header -->
       <div style="
         display: flex;
         justify-content: space-between;
         align-items: flex-start;
-        padding-bottom: 24px;
+        padding-bottom: 16px;
         border-bottom: 2px solid #0f172a;
-        margin-bottom: 40px;
+        margin-bottom: 28px;
       ">
         <div>
           <h1 style="
-            margin: 0 0 4px 0;
-            font-size: 28px;
+            margin: 0 0 3px 0;
+            font-size: 26px;
             font-weight: 900;
             color: #0f172a;
             letter-spacing: -0.5px;
           ">KündigungsHeld</h1>
           <div style="
-            font-size: 10px;
+            font-size: 9px;
             font-weight: 700;
             color: #64748b;
             letter-spacing: 1.5px;
             text-transform: uppercase;
           ">Rechtssicheres Dokument</div>
         </div>
-        
+
         <div style="text-align: right;">
-          <div style="font-size: 9px; color: #64748b; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 3px;">Dokument-ID</div>
+          <div style="font-size: 8px; color: #64748b; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px;">Dokument-ID</div>
           <div style="
-            font-size: 13px;
+            font-size: 12px;
             font-family: 'Courier New', Courier, monospace;
             font-weight: bold;
             color: #0f172a;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
           ">${docId}</div>
-          
-          <div style="font-size: 9px; color: #64748b; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 3px;">Erstellt am</div>
-          <div style="
-            font-size: 13px;
-            font-weight: bold;
-            color: #0f172a;
-          ">${today}</div>
+          <div style="font-size: 8px; color: #64748b; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px;">Erstellt am</div>
+          <div style="font-size: 12px; font-weight: bold; color: #0f172a;">${today}</div>
         </div>
       </div>
 
-      <!-- Letter Content -->
+      <!-- Letter Body -->
       <div style="
         flex-grow: 1;
-        font-size: 11pt;
-        line-height: 1.6;
+        font-size: 10.5pt;
+        line-height: 1.45;
         color: #1e293b;
-        white-space: pre-wrap;
+        margin-bottom: 24px;
         word-wrap: break-word;
-        margin-bottom: 40px;
-      ">${letterText}</div>
+        overflow-wrap: break-word;
+      ">
+        <!--
+          p  = Absatz  → margin-bottom schafft Luft zwischen Abschnitten
+          br = Zeilenumbruch innerhalb eines Absatzes (Adressblock, Betreff etc.)
+        -->
+        <style>
+          .letter-body p {
+            margin: 0 0 8px 0;
+            padding: 0;
+          }
+          .letter-body p:last-child {
+            margin-bottom: 0;
+          }
+        </style>
+        <div class="letter-body">${bodyHtml}</div>
+      </div>
 
       <!-- Footer -->
       <div style="
         margin-top: auto;
-        padding-top: 20px;
+        padding-top: 14px;
         border-top: 1px solid #e2e8f0;
         display: flex;
         justify-content: space-between;
         align-items: center;
       ">
-        <div style="display: flex; align-items: center; gap: 8px;">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <div style="display: flex; align-items: center; gap: 7px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
             <polyline points="22 4 12 14.01 9 11.01"></polyline>
           </svg>
-          <div style="
-            font-size: 9px;
-            color: #64748b;
-            font-weight: 500;
-          ">
+          <div style="font-size: 8.5px; color: #64748b; font-weight: 500;">
             Erstellt mit KündigungsHeld.de — Gültig auch ohne Unterschrift (abhängig vom Anbieter)
           </div>
         </div>
-        
-        <div style="display: flex; align-items: center; gap: 10px;">
+
+        <div style="display: flex; align-items: center; gap: 8px;">
           <div style="text-align: right;">
             <div style="font-size: 7px; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px;">Dokument prüfen</div>
-            <div style="font-size: 9px; color: #0f172a; font-weight: 600;">kuendigungsheld.de</div>
+            <div style="font-size: 8.5px; color: #0f172a; font-weight: 600;">kuendigungsheld.de</div>
           </div>
-          <img 
-            src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://kuendigungsheld.de" 
-            crossorigin="anonymous" 
-            style="width: 34px; height: 34px; border-radius: 4px; border: 1px solid #e2e8f0; padding: 2px; background: white;" 
+          <img
+            src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://kuendigungsheld.de"
+            crossorigin="anonymous"
+            style="width: 32px; height: 32px; border-radius: 3px; border: 1px solid #e2e8f0; padding: 2px; background: white;"
             alt="QR Code"
           />
         </div>
@@ -206,7 +259,6 @@ export async function generatePdf(
   fileName: string = "Kuendigung.pdf"
 ): Promise<void> {
   showLoading()
-
   try {
     const blob = await generatePdfBlob(letterText, companyName)
     const url = URL.createObjectURL(blob)
@@ -244,7 +296,8 @@ export async function generatePdfBlob(
   container.innerHTML = getPerfectPDFTemplate(letterText, companyName)
   document.body.appendChild(container)
 
-  await new Promise(resolve => setTimeout(resolve, 800))
+  // Wait for QR image + layout
+  await new Promise((resolve) => setTimeout(resolve, 800))
 
   const canvas = await html2canvas(container, {
     scale: 3,
@@ -281,11 +334,10 @@ export async function generatePdfBlob(
   }
 
   document.body.removeChild(container)
-
   return pdf.output("blob")
 }
 
-/* ── Print Function ── */
+/* ── Print ── */
 
 export function printKundigung(letterText: string, companyName: string): void {
   const printWindow = window.open("", "_blank")
@@ -303,42 +355,24 @@ export function printKundigung(letterText: string, companyName: string): void {
       <meta charset="UTF-8">
       <title>Kündigung - ${companyName}</title>
       <style>
-        @page {
-          size: A4;
-          margin: 0;
-        }
-        body {
-          margin: 0;
-          padding: 0;
-          -webkit-print-color-adjust: exact !important;
-          print-color-adjust: exact !important;
-          background: white;
-        }
-        * {
-          box-sizing: border-box;
-        }
+        @page { size: A4; margin: 0; }
+        body { margin: 0; padding: 0; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; background: white; }
+        * { box-sizing: border-box; }
       </style>
     </head>
     <body>
       ${content}
       <script>
-        window.onload = function() {
-          setTimeout(function() {
-            window.print();
-          }, 250);
-        };
-        window.onafterprint = function() {
-          window.close();
-        };
+        window.onload = function() { setTimeout(function() { window.print(); }, 250); };
+        window.onafterprint = function() { window.close(); };
       </script>
     </body>
     </html>
   `)
-
   printWindow.document.close()
 }
 
-/* ── Email Function ── */
+/* ── Email ── */
 
 export function openMailto(
   letterText: string,
@@ -347,11 +381,9 @@ export function openMailto(
 ): void {
   const subject = encodeURIComponent(`Kündigung - ${companyName}`)
   const body = encodeURIComponent(letterText)
-  
   const mailtoLink = companyEmail
     ? `mailto:${companyEmail}?subject=${subject}&body=${body}`
     : `mailto:?subject=${subject}&body=${body}`
-  
   window.location.href = mailtoLink
 }
 
@@ -362,13 +394,12 @@ export function addCalendarReminder(
   terminationDate: string | undefined | null
 ): void {
   let date = new Date(terminationDate || "")
-  
+
   if (isNaN(date.getTime())) {
-    let parts = null;
+    let parts = null
     if (typeof terminationDate === "string") {
       parts = terminationDate.match(/(\d{1,2})\.(\d{1,2})\.(\d{4})/)
     }
-    
     if (parts) {
       date = new Date(Number(parts[3]), Number(parts[2]) - 1, Number(parts[1]))
     } else {
@@ -382,24 +413,15 @@ export function addCalendarReminder(
     date.setDate(date.getDate() + 14)
   }
 
-  const year = date.getFullYear()
-  const month = String(date.getMonth() + 1).padStart(2, '0')
-  const day = String(date.getDate()).padStart(2, '0')
-  const formattedDate = `${year}${month}${day}`
-  
+  const fmt = (d: Date) =>
+    `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, "0")}${String(d.getDate()).padStart(2, "0")}`
+
   const nextDay = new Date(date)
   nextDay.setDate(nextDay.getDate() + 1)
-  const nextYear = nextDay.getFullYear()
-  const nextMonth = String(nextDay.getMonth() + 1).padStart(2, '0')
-  const nextDayStr = String(nextDay.getDate()).padStart(2, '0')
-  const formattedEndDate = `${nextYear}${nextMonth}${nextDayStr}`
-  
+
   const title = encodeURIComponent(`Kündigung bestätigt: ${companyName}`)
-  const details = encodeURIComponent(
-    `Bestätigung der Kündigung bei ${companyName} einholen`
-  )
-  
-  const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&details=${details}&dates=${formattedDate}/${formattedEndDate}`
-  
-  window.open(googleCalendarUrl, "_blank")
+  const details = encodeURIComponent(`Bestätigung der Kündigung bei ${companyName} einholen`)
+  const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&details=${details}&dates=${fmt(date)}/${fmt(nextDay)}`
+
+  window.open(url, "_blank")
 }

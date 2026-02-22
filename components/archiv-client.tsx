@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, useMemo } from "react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import {
   ArrowLeft,
   FileText,
@@ -19,11 +20,23 @@ import {
   Mail,
   FileDown,
   FileSpreadsheet,
+  AlertTriangle,
+  RefreshCw,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Badge } from "@/components/ui/badge"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
 import {
   type ArchivedKundigung,
   getArchiv,
@@ -185,9 +198,62 @@ function ActionButton({
   )
 }
 
+/* ─── Delete Confirmation Dialog ─── */
+
+function DeleteDialog({
+  open,
+  companyName,
+  onConfirm,
+  onCancel,
+}: {
+  open: boolean
+  companyName: string
+  onConfirm: () => void
+  onCancel: () => void
+}) {
+  return (
+    <AlertDialog open={open}>
+      <AlertDialogContent className="max-w-md">
+        <AlertDialogHeader>
+          <div className="flex items-center gap-3 mb-1">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-destructive/10">
+              <AlertTriangle className="h-5 w-5 text-destructive" aria-hidden="true" />
+            </div>
+            <AlertDialogTitle className="text-lg">
+              Kündigung löschen?
+            </AlertDialogTitle>
+          </div>
+          <AlertDialogDescription className="text-sm text-muted-foreground pl-[52px]">
+            Die Kündigung für{" "}
+            <span className="font-semibold text-foreground">{companyName}</span>{" "}
+            wird unwiderruflich aus Ihrem Archiv entfernt. Diese Aktion kann
+            nicht rückgängig gemacht werden.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter className="gap-2 sm:gap-2">
+          <AlertDialogCancel
+            onClick={onCancel}
+            className="flex-1 sm:flex-none"
+          >
+            Abbrechen
+          </AlertDialogCancel>
+          <AlertDialogAction
+            onClick={onConfirm}
+            className="flex-1 sm:flex-none bg-destructive text-destructive-foreground hover:bg-destructive/90"
+          >
+            <Trash2 className="mr-1.5 h-3.5 w-3.5" aria-hidden="true" />
+            Endgültig löschen
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  )
+}
+
 /* ─── Main Component ─── */
 
 export function ArchivClient() {
+  const router = useRouter()
   const [items, setItems] = useState<ArchivedKundigung[]>([])
   const [expandedId, setExpandedId] = useState<string | null>(null)
   const [editingNotiz, setEditingNotiz] = useState<string | null>(null)
@@ -195,6 +261,9 @@ export function ArchivClient() {
   const [searchQuery, setSearchQuery] = useState("")
   const [filterStatus, setFilterStatus] = useState<FilterStatus>("alle")
   const [copiedId, setCopiedId] = useState<string | null>(null)
+  const [deleteTarget, setDeleteTarget] = useState<ArchivedKundigung | null>(null)
+  // ── NEW: track which item is being "re-created" for button feedback ──
+  const [reCreatingId, setReCreatingId] = useState<string | null>(null)
 
   /* ─── Data loading ─── */
 
@@ -242,15 +311,21 @@ export function ArchivClient() {
     [loadItems]
   )
 
-  const handleDelete = useCallback(
-    (id: string) => {
-      if (!window.confirm("Möchten Sie diese Kündigung wirklich löschen?")) return
-      deleteArchivItem(id)
-      loadItems()
-      setExpandedId((prev) => (prev === id ? null : prev))
-    },
-    [loadItems]
-  )
+  const handleDeleteRequest = useCallback((item: ArchivedKundigung) => {
+    setDeleteTarget(item)
+  }, [])
+
+  const handleDeleteConfirm = useCallback(() => {
+    if (!deleteTarget) return
+    deleteArchivItem(deleteTarget.id)
+    loadItems()
+    setExpandedId((prev) => (prev === deleteTarget.id ? null : prev))
+    setDeleteTarget(null)
+  }, [deleteTarget, loadItems])
+
+  const handleDeleteCancel = useCallback(() => {
+    setDeleteTarget(null)
+  }, [])
 
   const handleNotizSave = useCallback(
     (id: string) => {
@@ -309,11 +384,52 @@ export function ArchivClient() {
     setExpandedId((prev) => (prev === id ? null : id))
   }, [])
 
+  // ── NEW: "Erneut erstellen" handler ──
+  // Writes the archived item's data into a well-known localStorage key,
+  // then navigates to the generator which reads & clears that key on mount.
+  const handleErneut = useCallback(
+    (item: ArchivedKundigung) => {
+      setReCreatingId(item.id)
+      try {
+        localStorage.setItem(
+          "kundigung-prefill",
+          JSON.stringify({
+            companyName: item.companyName,
+            formData: {
+              vorname: item.vorname,
+              nachname: item.nachname,
+              grund: item.grund,
+              kuendigungZum: item.kuendigungZum,
+              // reset optional fields so user can fill fresh
+              kundennummer: "",
+              vertragsnummer: "",
+              kuendigungsDatum: "",
+              zusatztext: "",
+            },
+          })
+        )
+        router.push("/#generator")
+      } catch {
+        // if storage fails, just navigate without prefill
+        router.push("/#generator")
+      }
+    },
+    [router]
+  )
+
   /* ─── Render ─── */
 
   return (
     <section className="py-12 lg:py-16">
       <div className="mx-auto max-w-5xl px-4 lg:px-8">
+        {/* Delete confirmation dialog */}
+        <DeleteDialog
+          open={!!deleteTarget}
+          companyName={deleteTarget?.companyName ?? ""}
+          onConfirm={handleDeleteConfirm}
+          onCancel={handleDeleteCancel}
+        />
+
         {/* Back link */}
         <div className="mb-4">
           <Button
@@ -429,11 +545,11 @@ export function ArchivClient() {
         <div className="space-y-3" role="list">
           {filteredItems.map((item, index) => {
             const isExpanded = expandedId === item.id
-            // Ensure status is valid, fallback to 'erstellt'
             const validStatus = (item.status && STATUS_CONFIG[item.status]) ? item.status : 'erstellt'
             const statusCfg = STATUS_CONFIG[validStatus]
             const StatusIcon = statusCfg.icon
             const isCopied = copiedId === item.id
+            const isReCreating = reCreatingId === item.id
 
             return (
               <div
@@ -590,10 +706,19 @@ export function ArchivClient() {
                         label="E-Mail"
                         onClick={() => openMailto(item.text, item.companyName)}
                       />
+
+                      {/* ── NEW: Erneut erstellen ── */}
+                      <ActionButton
+                        icon={isReCreating ? Check : RefreshCw}
+                        label={isReCreating ? "Wird geladen..." : "Erneut erstellen"}
+                        onClick={() => handleErneut(item)}
+                        className="text-primary hover:bg-primary/10 hover:border-primary"
+                      />
+
                       <ActionButton
                         icon={Trash2}
                         label="Löschen"
-                        onClick={() => handleDelete(item.id)}
+                        onClick={() => handleDeleteRequest(item)}
                         className="text-destructive hover:bg-destructive/10 hover:text-destructive"
                       />
                     </div>

@@ -9,6 +9,7 @@ export type CompanyCategory =
   | "mobilfunk"
   | "verlag"
   | "mitgliedschaft"
+  | "arbeit"
   | "sonstiges"
 
 export interface Company {
@@ -33,6 +34,7 @@ export const CATEGORY_LABELS: Record<CompanyCategory, string> = {
   mobilfunk: "Mobilfunk",
   verlag: "Verlag & Zeitschriften",
   mitgliedschaft: "Mitgliedschaft & Verein",
+  arbeit: "Job & Karriere",
   sonstiges: "Sonstiges",
 }
 
@@ -1562,7 +1564,7 @@ export const companies: Company[] = [
   
   // ========== ZUSÄTZLICHE TELEKOMMUNIKATION ==========
   {
-    id: "pyur",
+    id: "pyur2",
     name: "PŸUR",
     category: "internet",
     address: "Tele Columbus AG\nKaiserin-Augusta-Allee 108\n10553 Berlin",
@@ -1582,7 +1584,7 @@ export const companies: Company[] = [
     hinweise: "Regional in Norddeutschland verfügbar.",
   },
   {
-    id: "netcologne",
+    id: "netcologne2",
     name: "NetCologne",
     category: "internet",
     address: "NetCologne Gesellschaft für Telekommunikation mbH\nAm Coloneum 9\n50829 Köln",
@@ -1614,7 +1616,7 @@ export const companies: Company[] = [
   
   // ========== ZUSÄTZLICHES STREAMING & MEDIEN ==========
   {
-    id: "joyn",
+    id: "joyn2",
     name: "Joyn PLUS+",
     category: "streaming",
     address: "Joyn GmbH\nPickhuben 2\n20457 Hamburg",
@@ -1624,7 +1626,7 @@ export const companies: Company[] = [
     hinweise: "Kündigung im Konto unter Einstellungen.",
   },
   {
-    id: "rtlplus",
+    id: "rtlplus2",
     name: "RTL+",
     category: "streaming",
     address: "RTL+ Deutschland GmbH\nPickhuben 4\n20457 Hamburg",
@@ -1674,7 +1676,7 @@ export const companies: Company[] = [
     hinweise: "Arthouse-Cinema Streaming.",
   },
   {
-    id: "crunchyroll",
+    id: "crunchyroll2",
     name: "Crunchyroll",
     category: "streaming",
     address: "Crunchyroll LLC\nAttn: Customer Service\nSan Francisco, CA 94102, USA",
@@ -1716,7 +1718,7 @@ export const companies: Company[] = [
     hinweise: "Firmenfitness-Programm.",
   },
   {
-    id: "mrs-sporty",
+    id: "mrs-sporty2",
     name: "mrs.sporty",
     category: "fitness",
     address: "mrs.sporty GmbH\nWarthestr. 60\n14513 Teltow",
@@ -1748,7 +1750,7 @@ export const companies: Company[] = [
   
   // ========== ZUSÄTZLICHE VERSICHERUNGEN ==========
   {
-    id: "debeka",
+    id: "debeka2",
     name: "Debeka",
     category: "versicherung",
     address: "Debeka Versicherungen\nFerdinand-Sauerbruch-Str. 18\n56073 Koblenz",
@@ -1758,7 +1760,7 @@ export const companies: Company[] = [
     hinweise: "Private Kranken- und Sachversicherung.",
   },
   {
-    id: "devk",
+    id: "devk2",
     name: "DEVK",
     category: "versicherung",
     address: "DEVK Versicherungen\nRiehler Str. 190\n50735 Köln",
@@ -1810,7 +1812,7 @@ export const companies: Company[] = [
   
   // ========== ZUSÄTZLICHE ENERGIE ==========
   {
-    id: "mainova",
+    id: "mainova2",
     name: "Mainova",
     category: "energie",
     address: "Mainova AG\nSolmsstr. 38\n60486 Frankfurt am Main",
@@ -1860,7 +1862,7 @@ export const companies: Company[] = [
     hinweise: "Grundversorger für Hannover.",
   },
   {
-    id: "naturstrom",
+    id: "naturstrom2",
     name: "Naturstrom",
     category: "energie",
     address: "NATURSTROM AG\nAchenbachstr. 43\n40237 Düsseldorf",
@@ -1882,7 +1884,7 @@ export const companies: Company[] = [
   
   // ========== ZUSÄTZLICHE BANKING ==========
   {
-    id: "targobank",
+    id: "targobank2",
     name: "Targobank",
     category: "bank",
     address: "TARGOBANK AG\nKasernenstr. 10\n40213 Düsseldorf",
@@ -1892,7 +1894,7 @@ export const companies: Company[] = [
     hinweise: "Konto vorher ausgleichen und neue Bankverbindung für Daueraufträge hinterlegen.",
   },
   {
-    id: "santander",
+    id: "santander2",
     name: "Santander Consumer Bank",
     category: "bank",
     address: "Santander Consumer Bank AG\nSantander-Platz 1\n41061 Mönchengladbach",
@@ -1944,7 +1946,7 @@ export const companies: Company[] = [
     hinweise: "Discounter im Telefónica-Netz.",
   },
   {
-    id: "klarmobil",
+    id: "klarmobil2",
     name: "klarmobil",
     category: "mobilfunk",
     address: "freenet DLS GmbH\nHollerstr. 126\n24782 Büdelsdorf",
@@ -1996,7 +1998,7 @@ export const companies: Company[] = [
   
   // ========== ZUSÄTZLICHE VERLAGE & ZEITSCHRIFTEN ==========
   {
-    id: "spiegel",
+    id: "spiegel2",
     name: "DER SPIEGEL",
     category: "verlag",
     address: "SPIEGEL-Verlag Rudolf Augstein GmbH & Co. KG\nEricusspitze 1\n20457 Hamburg",
@@ -2006,7 +2008,7 @@ export const companies: Company[] = [
     hinweise: "Print oder Digital-Abo.",
   },
   {
-    id: "focus",
+    id: "focus2",
     name: "FOCUS",
     category: "verlag",
     address: "BurdaNews GmbH\nArabellastr. 23\n81925 München",
@@ -2016,7 +2018,7 @@ export const companies: Company[] = [
     hinweise: "Nachrichten-Magazin.",
   },
   {
-    id: "sueddeutsche",
+    id: "sueddeutsche2",
     name: "Süddeutsche Zeitung",
     category: "verlag",
     address: "Süddeutsche Zeitung GmbH\nHultschiner Str. 8\n81677 München",
@@ -2026,7 +2028,7 @@ export const companies: Company[] = [
     hinweise: "Tageszeitung.",
   },
   {
-    id: "faz",
+    id: "faz2",
     name: "Frankfurter Allgemeine Zeitung",
     category: "verlag",
     address: "Frankfurter Allgemeine Zeitung GmbH\nHellerhofstr. 2-4\n60327 Frankfurt am Main",
@@ -2036,7 +2038,7 @@ export const companies: Company[] = [
     hinweise: "Tageszeitung.",
   },
   {
-    id: "handelsblatt",
+    id: "handelsblatt2",
     name: "Handelsblatt",
     category: "verlag",
     address: "Handelsblatt Media Group GmbH & Co. KG\nKasernenstr. 67\n40213 Düsseldorf",
@@ -2110,7 +2112,7 @@ export const companies: Company[] = [
   
   // ========== ZUSÄTZLICHES SONSTIGES ==========
   {
-    id: "mydays",
+    id: "mydays2",
     name: "mydays",
     category: "sonstiges",
     address: "mydays GmbH\nAm Münchner Tor 6\n85609 Aschheim",
@@ -2160,7 +2162,7 @@ export const companies: Company[] = [
     hinweise: "Kundenkonto kündigen.",
   },
   {
-    id: "aldi-talk",
+    id: "aldi-talk2",
     name: "ALDI TALK",
     category: "mobilfunk",
     address: "ALDI TALK\nMedionstr. 1\n45307 Essen",
@@ -2210,7 +2212,7 @@ export const companies: Company[] = [
     hinweise: "Penny Mobilfunk-Marke.",
   },
   {
-    id: "lidl-connect",
+    id: "lidl-connect2",
     name: "Lidl Connect",
     category: "mobilfunk",
     address: "Lidl Connect\nc/o Vodafone\n40476 Düsseldorf",
@@ -2262,7 +2264,7 @@ export const companies: Company[] = [
     hinweise: "Regionale Sparkasse Hamburg.",
   },
   {
-    id: "n26",
+    id: "n26-bank",
     name: "N26 Bank",
     category: "bank",
     address: "N26 Bank GmbH\nKlosterstraße 62\n10179 Berlin",
@@ -2334,7 +2336,7 @@ export const companies: Company[] = [
     hinweise: "Schweizer Versicherungskonzern.",
   },
   {
-    id: "wuerttembergische",
+    id: "wuerttembergische2",
     name: "Württembergische Versicherung",
     category: "versicherung",
     address: "Württembergische Versicherung AG\nGutenbergstraße 30\n70176 Stuttgart",
@@ -2344,7 +2346,7 @@ export const companies: Company[] = [
     hinweise: "Traditionsversicherer aus Baden-Württemberg.",
   },
   {
-    id: "signal-iduna",
+    id: "signal-iduna2",
     name: "SIGNAL IDUNA",
     category: "versicherung",
     address: "SIGNAL IDUNA Gruppe\nJoseph-Scherer-Straße 3\n44139 Dortmund",
@@ -2386,7 +2388,7 @@ export const companies: Company[] = [
     hinweise: "Streaming von RTL-Inhalten.",
   },
   {
-    id: "paramount-plus",
+    id: "paramount-plus2",
     name: "Paramount+",
     category: "streaming",
     address: "Paramount Global\n1515 Broadway\nNew York, NY 10036, USA",
@@ -2396,7 +2398,7 @@ export const companies: Company[] = [
     hinweise: "US-Streaming mit Star Trek etc.",
   },
   {
-    id: "mubi",
+    id: "mubi2",
     name: "MUBI",
     category: "streaming",
     address: "MUBI Inc.\n200 Aldersgate\nLondon EC1A 4HD, UK",
@@ -2406,7 +2408,7 @@ export const companies: Company[] = [
     hinweise: "Arthouse & Independent Filme.",
   },
   {
-    id: "crunchyroll",
+    id: "crunchyroll3",
     name: "Crunchyroll",
     category: "streaming",
     address: "Crunchyroll LLC\n835 Market St\nSan Francisco, CA 94103, USA",
@@ -2418,7 +2420,7 @@ export const companies: Company[] = [
 
   // ========== ZUSÄTZLICHE FITNESS ==========
   {
-    id: "fitness-first",
+    id: "fitness-first2",
     name: "Fitness First",
     category: "fitness",
     address: "Fitness First Germany GmbH\nHanauer Landstraße 155-161\n60314 Frankfurt",
@@ -2428,7 +2430,7 @@ export const companies: Company[] = [
     hinweise: "Premium-Fitnesskette.",
   },
   {
-    id: "clever-fit",
+    id: "clever-fit2",
     name: "clever fit",
     category: "fitness",
     address: "(Adresse Ihres Studios eintragen)",
@@ -2438,7 +2440,7 @@ export const companies: Company[] = [
     hinweise: "Budget-Fitnesskette. Studio-Adresse variiert.",
   },
   {
-    id: "kieser-training",
+    id: "kieser-training2",
     name: "Kieser Training",
     category: "fitness",
     address: "(Adresse Ihres Studios eintragen)",
@@ -2458,7 +2460,7 @@ export const companies: Company[] = [
     hinweise: "Discounter-Fitnesskette.",
   },
   {
-    id: "mrs-sporty",
+    id: "mrs-sporty3",
     name: "Mrs.Sporty",
     category: "fitness",
     address: "(Adresse Ihres Studios eintragen)",
@@ -2470,7 +2472,7 @@ export const companies: Company[] = [
 
   // ========== ZUSÄTZLICHE INTERNET/DSL ==========
   {
-    id: "pyur",
+    id: "pyur3",
     name: "PYUR",
     category: "internet",
     address: "Tele Columbus AG\nKaiserin-Augusta-Allee 108\n10553 Berlin",
@@ -2480,7 +2482,7 @@ export const companies: Company[] = [
     hinweise: "Kabel-Internet.",
   },
   {
-    id: "easybell",
+    id: "easybell2",
     name: "easybell",
     category: "internet",
     address: "easybell GmbH\nReinhardtstraße 58\n10117 Berlin",
@@ -2490,7 +2492,7 @@ export const companies: Company[] = [
     hinweise: "Flexibler DSL-Anbieter.",
   },
   {
-    id: "m-net",
+    id: "m-net2",
     name: "M-net",
     category: "internet",
     address: "M-net Telekommunikations GmbH\nEmmystraße 10\n85622 Feldkirchen",
@@ -2500,7 +2502,7 @@ export const companies: Company[] = [
     hinweise: "Regionaler Glasfaseranbieter (Bayern).",
   },
   {
-    id: "netcologne",
+    id: "netcologne3",
     name: "NetCologne",
     category: "internet",
     address: "NetCologne Gesellschaft für Telekommunikation mbH\nAm Coloneum 9\n50829 Köln",
@@ -2512,7 +2514,7 @@ export const companies: Company[] = [
 
   // ========== ZUSÄTZLICHE ENERGIE ==========
   {
-    id: "naturstrom",
+    id: "naturstrom3",
     name: "Naturstrom",
     category: "energie",
     address: "NATURSTROM AG\nAchenbachstraße 43\n40238 Düsseldorf",
@@ -2532,7 +2534,7 @@ export const companies: Company[] = [
     hinweise: "Nachhaltiger Energieversorger.",
   },
   {
-    id: "lichtblick",
+    id: "lichtblick2",
     name: "LichtBlick",
     category: "energie",
     address: "LichtBlick SE\nKlostertor 1\n20097 Hamburg",
@@ -2542,7 +2544,7 @@ export const companies: Company[] = [
     hinweise: "Größter unabhängiger Ökostromanbieter.",
   },
   {
-    id: "enercity",
+    id: "enercity2",
     name: "enercity",
     category: "energie",
     address: "enercity AG\nIhmeplatz 2\n30449 Hannover",
@@ -2574,7 +2576,7 @@ export const companies: Company[] = [
     hinweise: "Nachrichtenmagazin.",
   },
   {
-    id: "focus",
+    id: "focus3",
     name: "Focus (Abo)",
     category: "verlag",
     address: "FOCUS Magazin Verlag GmbH\nArabellastraße 23\n81925 München",
@@ -2584,7 +2586,7 @@ export const companies: Company[] = [
     hinweise: "Nachrichtenmagazin.",
   },
   {
-    id: "stern",
+    id: "stern2",
     name: "Stern (Abo)",
     category: "verlag",
     address: "Gruner + Jahr GmbH\nAm Baumwall 11\n20459 Hamburg",
@@ -2616,7 +2618,7 @@ export const companies: Company[] = [
 
   // ========== ZUSÄTZLICHE SONSTIGE ==========
   {
-    id: "adac",
+    id: "adac2",
     name: "ADAC (Mitgliedschaft)",
     category: "mitgliedschaft",
     address: "ADAC e.V.\nHansastraße 19\n80686 München",
@@ -2646,7 +2648,7 @@ export const companies: Company[] = [
     hinweise: "Traditionsreicher Automobilclub.",
   },
   {
-    id: "nabu",
+    id: "nabu2",
     name: "NABU (Naturschutzbund)",
     category: "mitgliedschaft",
     address: "NABU-Bundesverband\nCharitéstraße 3\n10117 Berlin",
@@ -2726,7 +2728,7 @@ export const companies: Company[] = [
     hinweise: "Kündigung über iTunes/Apple-ID-Einstellungen.",
   },
   {
-    id: "youtube-premium",
+    id: "youtube-premium2",
     name: "YouTube Premium",
     category: "streaming",
     address: "Google Ireland Limited\nGordon House, Barrow Street\nDublin 4, Irland",
@@ -2736,7 +2738,7 @@ export const companies: Company[] = [
     hinweise: "Kündigung über Google-Konto.",
   },
   {
-    id: "audible",
+    id: "audible2",
     name: "Audible",
     category: "streaming",
     address: "Audible GmbH\nAuer-Welsbach-Straße 47\n81379 München",
@@ -2755,5 +2757,86 @@ export const companies: Company[] = [
     kuendigungsart: ["Online"],
     hinweise: "Buchzusammenfassungen-App.",
   },
-]
 
+  // ========== JOB & KARRIERE ==========
+  {
+    id: "stepstone",
+    name: "StepStone",
+    category: "arbeit",
+    address: "StepStone Deutschland GmbH\nBonnstrasse 430\n40589 Duesseldorf",
+    kuendigungsfrist: "Jederzeit zum Monatsende",
+    mindestlaufzeit: "Keine",
+    kuendigungsart: ["Online"],
+    hinweise: "Premium-Stellenanzeigen und Abonnements online kuendbar unter stepstone.de/account.",
+  },
+  {
+    id: "indeed",
+    name: "Indeed",
+    category: "arbeit",
+    address: "Indeed Ireland Operations Ltd.\n124 St. Stephen's Green\nDublin 2, Irland",
+    kuendigungsfrist: "Jederzeit",
+    mindestlaufzeit: "Keine",
+    kuendigungsart: ["Online"],
+    hinweise: "Kuendigung ueber Konto-Einstellungen auf indeed.com.",
+  },
+  {
+    id: "linkedin-jobs",
+    name: "LinkedIn Jobs / Recruiter",
+    category: "arbeit",
+    address: "LinkedIn Ireland Unlimited Company\nWilton Plaza\nDublin 2, Irland",
+    kuendigungsfrist: "Jederzeit zum Ende des Abrechnungszeitraums",
+    mindestlaufzeit: "Keine (Monatsabo)",
+    kuendigungsart: ["Online"],
+    hinweise: "Job-Postings und Recruiter-Pakete ueber linkedin.com Kontoeinstellungen kuendbar.",
+  },
+  {
+    id: "xing-jobs",
+    name: "XING Jobs / TalentManager",
+    category: "arbeit",
+    address: "New Work SE\nDammtorstrasse 30\n20354 Hamburg",
+    kuendigungsfrist: "Jederzeit zum Monatsende",
+    mindestlaufzeit: "Keine",
+    kuendigungsart: ["Online"],
+    hinweise: "Kuendigung ueber xing.com Kontoeinstellungen.",
+  },
+  {
+    id: "monster",
+    name: "Monster",
+    category: "arbeit",
+    address: "Monster Worldwide Deutschland GmbH\nNymphenburger Str. 3\n80335 Muenchen",
+    kuendigungsfrist: "Jederzeit",
+    mindestlaufzeit: "Keine",
+    kuendigungsart: ["Online", "E-Mail"],
+    hinweise: "Konto und Abonnements ueber monster.de kuendbar.",
+  },
+  {
+    id: "arbeitsagentur",
+    name: "Bundesagentur fuer Arbeit (Jobprofil)",
+    category: "arbeit",
+    address: "Bundesagentur fuer Arbeit\nRegensburger Strasse 104\n90478 Nuernberg",
+    kuendigungsfrist: "Keine",
+    mindestlaufzeit: "Keine",
+    kuendigungsart: ["Online"],
+    hinweise: "Kostenloses Jobportal. Bewerberprofil jederzeit loeschbar unter arbeitsagentur.de.",
+  },
+  {
+    id: "hokify",
+    name: "hokify",
+    category: "arbeit",
+    address: "hokify GmbH\nMariahilfer Strasse 50\n1070 Wien, Oesterreich",
+    kuendigungsfrist: "Jederzeit",
+    mindestlaufzeit: "Keine",
+    kuendigungsart: ["Online"],
+    hinweise: "Mobile Job-Plattform. Konto ueber App-Einstellungen loeschbar.",
+  },
+  {
+    id: "jobware",
+    name: "Jobware",
+    category: "arbeit",
+    address: "Jobware Online-Service GmbH\nAm Stadtholz 24\n33104 Paderborn",
+    kuendigungsfrist: "Jederzeit",
+    mindestlaufzeit: "Keine",
+    kuendigungsart: ["Online", "E-Mail"],
+    hinweise: "Stellenanzeigen-Portal fuer Fach- und Fuehrungskraefte.",
+  },
+]

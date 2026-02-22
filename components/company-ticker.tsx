@@ -1,9 +1,21 @@
 "use client"
 
-import { useMemo } from "react"
+import { useMemo, useState } from "react"
 import { companies, CATEGORY_LABELS, type CompanyCategory } from "@/lib/companies"
+import { getLogoUrl } from "@/lib/company-domains"
 
-function CompanyCard({ name, category }: { name: string; category: CompanyCategory }) {
+function CompanyLogo({
+  companyId,
+  name,
+  hue,
+}: {
+  companyId: string
+  name: string
+  hue: number
+}) {
+  const [imgError, setImgError] = useState(false)
+  const logoUrl = getLogoUrl(companyId)
+
   const initials = name
     .split(/\s+/)
     .slice(0, 2)
@@ -11,6 +23,36 @@ function CompanyCard({ name, category }: { name: string; category: CompanyCatego
     .join("")
     .toUpperCase()
 
+  // Show logo if available and not errored
+  if (logoUrl && !imgError) {
+    return (
+      <div
+        className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-white shadow-md transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3 overflow-hidden border border-border/20"
+      >
+        <img
+          src={logoUrl}
+          alt={`${name} Logo`}
+          className="h-7 w-7 object-contain"
+          onError={() => setImgError(true)}
+        />
+      </div>
+    )
+  }
+
+  // Fallback: colored initials
+  return (
+    <div
+      className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-white text-xs font-black shadow-md transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3"
+      style={{
+        background: `linear-gradient(135deg, hsl(${hue}, 65%, 45%), hsl(${(hue + 40) % 360}, 70%, 35%))`,
+      }}
+    >
+      {initials}
+    </div>
+  )
+}
+
+function CompanyCard({ id, name, category }: { id: string; name: string; category: CompanyCategory }) {
   const hue = name.split("").reduce((acc, c) => acc + c.charCodeAt(0), 0) % 360
 
   return (
@@ -24,17 +66,8 @@ function CompanyCard({ name, category }: { name: string; category: CompanyCatego
       {/* Hover shimmer */}
       <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-white/5 to-transparent" />
 
-      {/* Аватар с инициалами */}
-      <div
-        className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-white text-xs font-black shadow-md transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3"
-        style={{
-          background: `linear-gradient(135deg, hsl(${hue}, 65%, 45%), hsl(${(hue + 40) % 360}, 70%, 35%))`,
-        }}
-      >
-        {initials}
-      </div>
+      <CompanyLogo companyId={id} name={name} hue={hue} />
 
-      {/* Текст */}
       <div className="relative min-w-0">
         <p className="truncate text-sm font-semibold text-foreground leading-tight tracking-tight">
           {name}
@@ -104,10 +137,10 @@ export function CompanyTicker() {
           <div className="flex overflow-hidden">
             <div className="flex animate-ticker gap-3 motion-reduce:animate-none">
               <div className="flex shrink-0 gap-3">
-                {row1.map((c) => <CompanyCard key={c.id} name={c.name} category={c.category} />)}
+                {row1.map((c) => <CompanyCard key={c.id} id={c.id} name={c.name} category={c.category} />)}
               </div>
               <div className="flex shrink-0 gap-3" aria-hidden>
-                {row1.map((c) => <CompanyCard key={`r1-${c.id}`} name={c.name} category={c.category} />)}
+                {row1.map((c) => <CompanyCard key={`r1-${c.id}`} id={c.id} name={c.name} category={c.category} />)}
               </div>
             </div>
           </div>
@@ -121,10 +154,10 @@ export function CompanyTicker() {
           <div className="flex overflow-hidden">
             <div className="flex animate-ticker-reverse gap-3 motion-reduce:animate-none">
               <div className="flex shrink-0 gap-3">
-                {row2.map((c) => <CompanyCard key={c.id} name={c.name} category={c.category} />)}
+                {row2.map((c) => <CompanyCard key={c.id} id={c.id} name={c.name} category={c.category} />)}
               </div>
               <div className="flex shrink-0 gap-3" aria-hidden>
-                {row2.map((c) => <CompanyCard key={`r2-${c.id}`} name={c.name} category={c.category} />)}
+                {row2.map((c) => <CompanyCard key={`r2-${c.id}`} id={c.id} name={c.name} category={c.category} />)}
               </div>
             </div>
           </div>
