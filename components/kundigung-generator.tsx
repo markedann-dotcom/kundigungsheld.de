@@ -31,6 +31,14 @@ import {
   AlertTriangle,
   CheckCircle2,
   ChevronDown,
+  Replace,
+  Undo2,
+  Redo2,
+  SortAsc,
+  FileType,
+  Wifi,
+  WifiOff,
+  Timer,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -67,9 +75,11 @@ import { useI18n } from "@/contexts/i18n-context"
 /* ─── Constants ─── */
 
 type Step = "company" | "details" | "preview"
+type SortMode = "default" | "az" | "za"
 
 const COMPANIES_PER_PAGE = 12
 const MAX_RECENT = 5
+const DEBOUNCE_LETTERS_MS = 400
 
 const ANREDE_OPTIONS = ["Herr", "Frau", "Divers"] as const
 
@@ -102,17 +112,65 @@ const ZUSATZ_LABELS: Record<string, string> = {
 
 const GRUENDE_MIT_ZUSATZ = ["sonderkuendigung", "fristlos", "umzug", "todesfall"]
 
+// Cancellation notice period hints by category
+const NOTICE_HINTS: Partial<Record<CompanyCategory, string>> = {
+  telekommunikation: "⚠️ Telekom-Verträge: meist 3 Monate Kündigungsfrist zum Vertragsende",
+  streaming: "ℹ️ Streaming-Dienste: meist monatlich kündbar, oft zum Monatsende",
+  strom: "ℹ️ Strom/Gas: meist 6 Wochen vor Vertragsende",
+  versicherung: "⚠️ Versicherungen: meist 3 Monate vor Jahresablauf oder nach Schadenfall",
+  fitness: "ℹ️ Fitnessstudio: meist 4–6 Wochen zum Quartals-/Monatsende",
+  zeitung: "ℹ️ Zeitungen/Magazine: meist 4–8 Wochen zum Abo-Ende",
+}
+
 // Page overflow thresholds
 const LINES_WARN = 48
 const LINES_DANGER = 56
 const CHARS_PER_LINE = 64
 
-/* ─── Page overflow utils ─── */
+// PLZ fallback regex — just validates format
+const PLZ_REGEX = /^\d{5}$/
+
+/* ─── Types ─── */
+
+interface UndoEntry {
+  text: string
+  timestamp: number
+}
+
+/* ─── Debounce hook ─── */
+
+function useDebounce<T>(value: T, delay: number): T {
+  const [debounced, setDebounced] = useState(value)
+  useEffect(() => {
+    const timer = setTimeout(() => setDebounced(value), delay)
+    return () => clearTimeout(timer)
+  }, [value, delay])
+  return debounced
+}
+
+/* ─── Online status hook ─── */
+
+function useOnlineStatus() {
+  const [online, setOnline] = useState(typeof navigator !== "undefined" ? navigator.onLine : true)
+  useEffect(() => {
+    const on = () => setOnline(true)
+    const off = () => setOnline(false)
+    window.addEventListener("online", on)
+    window.addEventListener("offline", off)
+    return () => { window.removeEventListener("online", on); window.removeEventListener("offline", off) }
+  }, [])
+  return online
+}
+
+/* ─── countLines — improved, accounts for realistic PDF line wrapping ─── */
 
 function countLines(text: string): number {
   if (!text) return 0
   return text.split("\n").reduce((acc, line) => {
-    return acc + Math.max(1, Math.ceil(line.length / CHARS_PER_LINE))
+    // Account for word-wrap: long words split at CHARS_PER_LINE
+    const trimmed = line.trimEnd()
+    if (trimmed.length === 0) return acc + 1
+    return acc + Math.max(1, Math.ceil(trimmed.length / CHARS_PER_LINE))
   }, 0)
 }
 
@@ -124,7 +182,7 @@ function FormProgressBar({ formData, needsZusatztext }: { formData: TemplateData
       { key: "vorname", filled: !!formData.vorname.trim() },
       { key: "nachname", filled: !!formData.nachname.trim() },
       { key: "strasse", filled: !!formData.strasse.trim() },
-      { key: "plz", filled: !!formData.plz.trim() && /^\d{5}$/.test(formData.plz) },
+      { key: "plz", filled: !!formData.plz.trim() && PLZ_REGEX.test(formData.plz) },
       { key: "ort", filled: !!formData.ort.trim() },
     ]
     if (formData.kuendigungZum === "datum") {
@@ -314,13 +372,22 @@ function InfoBanner({
   icon: Icon,
   children,
   onClose,
+  variant = "default",
 }: {
   icon: React.ElementType
   children: React.ReactNode
   onClose?: () => void
+  variant?: "default" | "success" | "warning"
 }) {
+  const variantClass =
+    variant === "success"
+      ? "border-green-200 bg-green-50 dark:border-green-800/40 dark:bg-green-900/10"
+      : variant === "warning"
+      ? "border-amber-200 bg-amber-50 dark:border-amber-800/40 dark:bg-amber-900/10"
+      : "border-border/50 bg-muted/30"
+
   return (
-    <div className="mb-6 flex items-center gap-3 rounded-xl border border-border/50 bg-muted/30 p-4 animate-in fade-in slide-in-from-top-2">
+    <div className={`mb-6 flex items-center gap-3 rounded-xl border p-4 animate-in fade-in slide-in-from-top-2 ${variantClass}`}>
       <Icon className="h-5 w-5 shrink-0 text-foreground" />
       <div className="min-w-0 flex-1 text-sm font-medium text-foreground/80">{children}</div>
       {onClose && (
@@ -412,6 +479,7 @@ function EditingTips() {
             <li>Fügen Sie keine zusätzlichen Leerzeilen zwischen Absätzen ein — das verschwendet Platz</li>
             <li>Kundennummer / Vertragsnummer stehen bereits im Briefkopf — nicht doppelt erwähnen</li>
             <li>Mit <kbd className="font-mono bg-muted border border-border/60 rounded px-1 py-0.5">Zurücksetzen</kbd> stellen Sie das Original jederzeit wieder her</li>
+            <li>Nutzen Sie <strong>Suchen & Ersetzen</strong> um Namen oder Daten schnell zu korrigieren</li>
           </ul>
         </div>
       )}
@@ -440,7 +508,109 @@ function LineNumbers({ text, scrollTop }: { text: string; scrollTop: number }) {
   )
 }
 
-/* ─── Letter Editor ─── */
+/* ─── Search & Replace Panel ─── */
+
+function SearchReplacePanel({
+  text,
+  onChange,
+  onClose,
+}: {
+  text: string
+  onChange: (newText: string) => void
+  onClose: () => void
+}) {
+  const [find, setFind] = useState("")
+  const [replace, setReplace] = useState("")
+  const [caseSensitive, setCaseSensitive] = useState(false)
+  const [count, setCount] = useState(0)
+  const findRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    findRef.current?.focus()
+  }, [])
+
+  useEffect(() => {
+    if (!find) { setCount(0); return }
+    try {
+      const flags = caseSensitive ? "g" : "gi"
+      const matches = text.match(new RegExp(find.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), flags))
+      setCount(matches ? matches.length : 0)
+    } catch {
+      setCount(0)
+    }
+  }, [find, text, caseSensitive])
+
+  const handleReplace = () => {
+    if (!find) return
+    try {
+      const flags = caseSensitive ? "g" : "gi"
+      const newText = text.replace(
+        new RegExp(find.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), flags),
+        replace
+      )
+      onChange(newText)
+    } catch { /* invalid regex — ignore */ }
+  }
+
+  return (
+    <div className="rounded-xl border border-foreground/20 bg-card shadow-xl p-4 space-y-3 animate-in fade-in slide-in-from-top-2 duration-200">
+      <div className="flex items-center justify-between">
+        <span className="text-sm font-bold text-foreground flex items-center gap-2">
+          <Replace className="h-4 w-4" />
+          Suchen &amp; Ersetzen
+        </span>
+        <button onClick={onClose} className="text-muted-foreground hover:text-foreground transition-colors">
+          <X className="h-4 w-4" />
+        </button>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+        <div className="relative">
+          <Input
+            ref={findRef}
+            value={find}
+            onChange={(e) => setFind(e.target.value)}
+            placeholder="Suchen..."
+            className="h-9 rounded-lg text-sm pr-16"
+          />
+          {find && (
+            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground font-mono">
+              {count}×
+            </span>
+          )}
+        </div>
+        <Input
+          value={replace}
+          onChange={(e) => setReplace(e.target.value)}
+          placeholder="Ersetzen durch..."
+          className="h-9 rounded-lg text-sm"
+        />
+      </div>
+      <div className="flex items-center gap-3">
+        <label className="flex items-center gap-1.5 text-xs text-muted-foreground cursor-pointer select-none">
+          <input
+            type="checkbox"
+            checked={caseSensitive}
+            onChange={(e) => setCaseSensitive(e.target.checked)}
+            className="rounded"
+          />
+          Groß-/Kleinschreibung
+        </label>
+        <Button
+          size="sm"
+          onClick={handleReplace}
+          disabled={!find || count === 0}
+          className="ml-auto h-8 rounded-lg text-xs"
+        >
+          {count > 0 ? `${count} Treffer ersetzen` : "Ersetzen"}
+        </Button>
+      </div>
+    </div>
+  )
+}
+
+/* ─── Letter Editor (improved: undo stack, search/replace, persist edits) ─── */
+
+const MAX_UNDO = 50
 
 function LetterEditor({
   companyId,
@@ -456,12 +626,51 @@ function LetterEditor({
   onReset: (id: string) => void
 }) {
   const [mode, setMode] = useState<"view" | "edit">("view")
+  const [showSearchReplace, setShowSearchReplace] = useState(false)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const [scrollTop, setScrollTop] = useState(0)
+
+  // Undo/redo stacks
+  const undoStack = useRef<UndoEntry[]>([])
+  const redoStack = useRef<UndoEntry[]>([])
+  const lastPushTime = useRef<number>(0)
 
   const currentText = editedText ?? originalText
   const isEdited = editedText !== undefined && editedText !== originalText
   const lineCount = countLines(currentText)
+
+  const pushUndo = useCallback((text: string) => {
+    const now = Date.now()
+    // Batch rapid keystrokes (< 500ms) into one undo entry
+    if (now - lastPushTime.current < 500 && undoStack.current.length > 0) {
+      undoStack.current[undoStack.current.length - 1].text = text
+    } else {
+      undoStack.current.push({ text, timestamp: now })
+      if (undoStack.current.length > MAX_UNDO) undoStack.current.shift()
+    }
+    lastPushTime.current = now
+    redoStack.current = []
+  }, [])
+
+  const handleUndo = useCallback(() => {
+    if (undoStack.current.length < 2) return
+    const current = undoStack.current.pop()!
+    redoStack.current.push(current)
+    const prev = undoStack.current[undoStack.current.length - 1]
+    onChange(companyId, prev.text)
+  }, [companyId, onChange])
+
+  const handleRedo = useCallback(() => {
+    if (redoStack.current.length === 0) return
+    const next = redoStack.current.pop()!
+    undoStack.current.push(next)
+    onChange(companyId, next.text)
+  }, [companyId, onChange])
+
+  const handleChange = useCallback((value: string) => {
+    pushUndo(value)
+    onChange(companyId, value)
+  }, [companyId, onChange, pushUndo])
 
   useEffect(() => {
     if (mode === "edit" && textareaRef.current) {
@@ -471,21 +680,40 @@ function LetterEditor({
     }
   }, [mode])
 
+  // Init undo stack when first entering edit mode
+  useEffect(() => {
+    if (mode === "edit" && undoStack.current.length === 0) {
+      undoStack.current.push({ text: currentText, timestamp: Date.now() })
+    }
+  }, [mode, currentText])
+
   const handleScroll = useCallback((e: React.UIEvent<HTMLTextAreaElement>) => {
     setScrollTop((e.target as HTMLTextAreaElement).scrollTop)
   }, [])
 
   const handleReset = useCallback(() => {
+    undoStack.current = []
+    redoStack.current = []
     onReset(companyId)
     setMode("view")
   }, [companyId, onReset])
+
+  // Keyboard shortcuts in edit mode
+  const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    const meta = e.ctrlKey || e.metaKey
+    if (meta && e.key === "z" && !e.shiftKey) { e.preventDefault(); handleUndo(); return }
+    if (meta && (e.key === "y" || (e.key === "z" && e.shiftKey))) { e.preventDefault(); handleRedo(); return }
+    if (meta && e.key === "h") { e.preventDefault(); setShowSearchReplace((v) => !v); return }
+  }, [handleUndo, handleRedo])
+
+  const canUndo = undoStack.current.length > 1
+  const canRedo = redoStack.current.length > 0
 
   return (
     <div className="space-y-3">
       {/* Toolbar */}
       <div className="flex items-center justify-between gap-3 flex-wrap">
         <div className="flex items-center gap-2">
-          {/* View / Edit toggle */}
           <div className="flex items-center rounded-full bg-muted p-1 gap-0.5">
             <button
               type="button"
@@ -521,17 +749,66 @@ function LetterEditor({
           )}
         </div>
 
-        {isEdited && (
-          <button
-            type="button"
-            onClick={handleReset}
-            className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground bg-muted hover:bg-muted/80 rounded-full px-3 py-2 transition-colors"
-          >
-            <RotateCcw className="h-3 w-3" />
-            Zurücksetzen
-          </button>
-        )}
+        <div className="flex items-center gap-2">
+          {mode === "edit" && (
+            <>
+              {/* Undo / Redo */}
+              <button
+                type="button"
+                onClick={handleUndo}
+                disabled={!canUndo}
+                title="Rückgängig (Strg+Z)"
+                className="flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground bg-muted hover:bg-muted/80 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+              >
+                <Undo2 className="h-3.5 w-3.5" />
+              </button>
+              <button
+                type="button"
+                onClick={handleRedo}
+                disabled={!canRedo}
+                title="Wiederholen (Strg+Y)"
+                className="flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground bg-muted hover:bg-muted/80 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+              >
+                <Redo2 className="h-3.5 w-3.5" />
+              </button>
+              {/* Search & Replace */}
+              <button
+                type="button"
+                onClick={() => setShowSearchReplace((v) => !v)}
+                title="Suchen & Ersetzen (Strg+H)"
+                className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-semibold transition-colors ${
+                  showSearchReplace
+                    ? "bg-foreground text-background"
+                    : "text-muted-foreground hover:text-foreground bg-muted hover:bg-muted/80"
+                }`}
+              >
+                <Replace className="h-3.5 w-3.5" />
+                <span className="hidden sm:inline">Suchen</span>
+              </button>
+            </>
+          )}
+
+          {isEdited && (
+            <button
+              type="button"
+              onClick={handleReset}
+              className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground bg-muted hover:bg-muted/80 rounded-full px-3 py-2 transition-colors"
+            >
+              <RotateCcw className="h-3 w-3" />
+              Zurücksetzen
+            </button>
+          )}
+        </div>
       </div>
+
+      {/* Search & Replace Panel */}
+      {showSearchReplace && mode === "edit" && (
+        <SearchReplacePanel
+          text={currentText}
+          onChange={(newText) => handleChange(newText)}
+          onClose={() => setShowSearchReplace(false)}
+        />
+      )}
 
       {/* Page overflow indicator */}
       <PageOverflowIndicator lineCount={lineCount} />
@@ -550,7 +827,6 @@ function LetterEditor({
             {currentText}
           </pre>
 
-          {/* Hover CTA overlay */}
           <button
             type="button"
             onClick={() => setMode("edit")}
@@ -569,18 +845,17 @@ function LetterEditor({
           </button>
         </div>
       ) : (
-        /* Edit mode — line-numbered textarea */
         <div className="relative rounded-xl border border-foreground/30 bg-background overflow-hidden shadow-inner focus-within:ring-2 focus-within:ring-foreground/20 transition-shadow">
           <div className="relative">
-            {/* Line number background */}
             <div className="absolute left-0 top-0 bottom-0 w-10 bg-muted/30 border-r border-border/30 z-10 pointer-events-none" />
             <LineNumbers text={currentText} scrollTop={scrollTop} />
 
             <textarea
               ref={textareaRef}
               value={currentText}
-              onChange={(e) => onChange(companyId, e.target.value)}
+              onChange={(e) => handleChange(e.target.value)}
               onScroll={handleScroll}
+              onKeyDown={handleKeyDown}
               rows={Math.max(28, currentText.split("\n").length + 2)}
               spellCheck={false}
               className={[
@@ -593,27 +868,56 @@ function LetterEditor({
             />
           </div>
 
-          {/* Bottom bar */}
           <div className="sticky bottom-0 flex items-center justify-between px-4 py-2 bg-muted/50 border-t border-border/30 backdrop-blur-sm">
             <span className="text-[11px] text-muted-foreground font-mono">
               {currentText.length} Zeichen · {currentText.split("\n").length} Absätze
             </span>
-            <button
-              type="button"
-              onClick={() => setMode("view")}
-              className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors"
-            >
-              <Eye className="h-3.5 w-3.5" />
-              Vorschau anzeigen
-            </button>
+            <div className="flex items-center gap-3">
+              <span className="text-[11px] text-muted-foreground font-mono hidden sm:block">
+                Strg+Z Rückgängig · Strg+H Suchen
+              </span>
+              <button
+                type="button"
+                onClick={() => setMode("view")}
+                className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors"
+              >
+                <Eye className="h-3.5 w-3.5" />
+                Vorschau
+              </button>
+            </div>
           </div>
         </div>
       )}
 
-      {/* Tips (only in edit mode) */}
       {mode === "edit" && <EditingTips />}
     </div>
   )
+}
+
+/* ─── Notice Period Banner ─── */
+
+function NoticePeriodBanner({ category }: { category: CompanyCategory }) {
+  const [dismissed, setDismissed] = useState(false)
+  const hint = NOTICE_HINTS[category]
+  if (!hint || dismissed) return null
+  return (
+    <div className="flex items-start gap-3 rounded-xl border border-blue-200 bg-blue-50 dark:border-blue-800/40 dark:bg-blue-900/10 p-4 animate-in fade-in slide-in-from-top-2">
+      <Timer className="h-5 w-5 shrink-0 text-blue-600 mt-0.5" />
+      <div className="flex-1 text-sm text-blue-800 dark:text-blue-300">
+        {hint}
+      </div>
+      <button onClick={() => setDismissed(true)} className="text-blue-400 hover:text-blue-600 transition-colors">
+        <X className="h-4 w-4" />
+      </button>
+    </div>
+  )
+}
+
+/* ─── Saved Contract Data per Company ─── */
+
+interface ContractData {
+  kundennummer: string
+  vertragsnummer: string
 }
 
 /* ─── Main Component ─── */
@@ -623,6 +927,7 @@ export function KundigungGenerator() {
   const [step, setStep] = useState<Step>("company")
   const [selectedCompanies, setSelectedCompanies] = useState<Company[]>([])
   const [search, setSearch] = useState("")
+  const [sortMode, setSortMode] = useState<SortMode>("default")
   const [activeCategory, setActiveCategory] = useState<CompanyCategory | "alle">("alle")
   const [formData, setFormData] = useLocalStorage<TemplateData>("kundigung-draft", INITIAL_FORM)
   const [copied, setCopied] = useState<string | null>(null)
@@ -636,13 +941,21 @@ export function KundigungGenerator() {
   const [focusedCardIndex, setFocusedCardIndex] = useState<number>(-1)
   const [keyboardNavActive, setKeyboardNavActive] = useState(false)
   const [notizen, setNotizen] = useState<Record<string, string>>({})
-  const [editedTexts, setEditedTexts] = useState<Record<string, string>>({})
-  const [plzStatus, setPlzStatus] = useState<"idle" | "loading" | "valid" | "invalid">("idle")
+  // editedTexts persisted to localStorage
+  const [editedTexts, setEditedTexts] = useLocalStorage<Record<string, string>>("kundigung-edited-texts", {})
+  const [plzStatus, setPlzStatus] = useState<"idle" | "loading" | "valid" | "invalid" | "offline">("idle")
   const [plzAutoFilledCity, setPlzAutoFilledCity] = useState<string | null>(null)
-  const plzTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  // Per-company saved contract data
+  const [savedContractData, setSavedContractData] = useLocalStorage<Record<string, ContractData>>("kundigung-contracts", {})
+  const [previewBannerDismissed, setPreviewBannerDismissed] = useState(false)
 
+  const plzTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const searchRef = useRef<HTMLDivElement>(null)
   const gridRef = useRef<HTMLDivElement>(null)
+  const isOnline = useOnlineStatus()
+
+  // Debounced formData for letter generation — avoids recalculating on every keystroke
+  const debouncedFormData = useDebounce(formData, DEBOUNCE_LETTERS_MS)
 
   const STEPS = useMemo(() => [
     { key: "company" as Step, label: "Anbieter", icon: Building2 },
@@ -672,6 +985,36 @@ export function KundigungGenerator() {
     setFocusedCardIndex(-1)
     setKeyboardNavActive(false)
   }, [companyPage, activeCategory, search])
+
+  // When a company is selected, prefill kundennummer/vertragsnummer from saved data
+  useEffect(() => {
+    if (selectedCompanies.length === 1) {
+      const saved = savedContractData[selectedCompanies[0].id]
+      if (saved) {
+        setFormData((prev) => ({
+          ...prev,
+          kundennummer: saved.kundennummer || prev.kundennummer,
+          vertragsnummer: saved.vertragsnummer || prev.vertragsnummer,
+        }))
+      }
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedCompanies])
+
+  // Save contract data per company when it changes
+  const saveContractData = useCallback(() => {
+    selectedCompanies.forEach((c) => {
+      if (formData.kundennummer || formData.vertragsnummer) {
+        setSavedContractData((prev) => ({
+          ...prev,
+          [c.id]: {
+            kundennummer: formData.kundennummer,
+            vertragsnummer: formData.vertragsnummer,
+          },
+        }))
+      }
+    })
+  }, [selectedCompanies, formData, setSavedContractData])
 
   useEffect(() => {
     try {
@@ -739,12 +1082,15 @@ export function KundigungGenerator() {
 
   const filteredCompanies = useMemo(() => {
     const q = search.toLowerCase()
-    return companies.filter((c) => {
+    let list = companies.filter((c) => {
       const matchesSearch = !q || c.name.toLowerCase().includes(q) || c.category.toLowerCase().includes(q)
       const matchesCategory = activeCategory === "alle" || c.category === activeCategory
       return matchesSearch && matchesCategory
     })
-  }, [search, activeCategory])
+    if (sortMode === "az") list = [...list].sort((a, b) => a.name.localeCompare(b.name, "de"))
+    if (sortMode === "za") list = [...list].sort((a, b) => b.name.localeCompare(a.name, "de"))
+    return list
+  }, [search, activeCategory, sortMode])
 
   const categories = useMemo(
     () => [...new Set(companies.map((c) => c.category))] as CompanyCategory[],
@@ -758,12 +1104,13 @@ export function KundigungGenerator() {
     [filteredCompanies, companyPage]
   )
 
+  // Letters use DEBOUNCED form data — no recalculation on every keystroke
   const letters = useMemo(() => {
     return selectedCompanies.map((company) => ({
       company,
-      text: generateKuendigungsschreiben(formData, company.name, company.address),
+      text: generateKuendigungsschreiben(debouncedFormData, company.name, company.address),
     }))
-  }, [formData, selectedCompanies])
+  }, [debouncedFormData, selectedCompanies])
 
   const currentLetter = letters[activePreviewIndex]
   const currentText = editedTexts[currentLetter?.company.id] ?? currentLetter?.text ?? ""
@@ -822,8 +1169,13 @@ export function KundigungGenerator() {
 
       if (field === "plz") {
         if (plzTimerRef.current) clearTimeout(plzTimerRef.current)
-        if (!/^\d{5}$/.test(value)) {
+        if (!PLZ_REGEX.test(value)) {
           setPlzStatus("idle")
+          return
+        }
+        // If offline, skip API and show appropriate status
+        if (!isOnline) {
+          setPlzStatus("offline")
           return
         }
         setPlzStatus("loading")
@@ -848,12 +1200,13 @@ export function KundigungGenerator() {
               setPlzAutoFilledCity(null)
             }
           } catch {
-            setPlzStatus("idle")
+            // Network error / offline — fallback: just mark as idle so user can proceed
+            setPlzStatus("offline")
           }
         }, 600)
       }
     },
-    [errors, setFormData, plzAutoFilledCity]
+    [errors, setFormData, plzAutoFilledCity, isOnline]
   )
 
   const validate = useCallback((): boolean => {
@@ -862,7 +1215,7 @@ export function KundigungGenerator() {
     if (!formData.nachname.trim()) e.nachname = "Nachname ist erforderlich"
     if (!formData.strasse.trim()) e.strasse = "Straße ist erforderlich"
     if (!formData.plz.trim()) e.plz = "PLZ ist erforderlich"
-    else if (!/^\d{5}$/.test(formData.plz)) e.plz = "PLZ muss 5 Ziffern haben"
+    else if (!PLZ_REGEX.test(formData.plz)) e.plz = "PLZ muss 5 Ziffern haben"
     if (!formData.ort.trim()) e.ort = "Ort ist erforderlich"
     if (formData.kuendigungZum === "datum" && !formData.kuendigungsDatum.trim()) {
       e.kuendigungsDatum = "Bitte Datum angeben"
@@ -876,10 +1229,11 @@ export function KundigungGenerator() {
 
   const goToPreview = useCallback(() => {
     if (validate()) {
+      saveContractData()
       setStep("preview")
       setActivePreviewIndex(0)
     }
-  }, [validate])
+  }, [validate, saveContractData])
 
   const navigateStep = useCallback(
     (target: Step) => {
@@ -933,6 +1287,34 @@ export function KundigungGenerator() {
     a.click()
     document.body.removeChild(a)
     URL.revokeObjectURL(url)
+  }, [])
+
+  /* ─── DOCX Export ─── */
+  const downloadDocx = useCallback(async (company: Company, text: string) => {
+    try {
+      showLoading()
+      updateLoadingText("Erstelle DOCX-Datei...")
+      // Dynamically import docx library
+      const { Document, Packer, Paragraph, TextRun } = await import("docx")
+      const paragraphs = text.split("\n").map((line) =>
+        new Paragraph({
+          children: [new TextRun({ text: line, font: "Courier New", size: 22 })],
+          spacing: { after: 0 },
+        })
+      )
+      const doc = new Document({
+        sections: [{ properties: {}, children: paragraphs }],
+      })
+      const { saveAs } = await import("file-saver")
+      const blob = await Packer.toBlob(doc)
+      const safeName = company.name.replace(/[^a-zA-Z0-9äöüÄÖÜß]/g, "_")
+      saveAs(blob, `Kuendigung_${safeName}_${new Date().toISOString().slice(0, 10)}.docx`)
+    } catch (err) {
+      console.error("DOCX error:", err)
+      alert("Fehler beim Erstellen der DOCX-Datei. Bitte stellen Sie sicher, dass die 'docx' Bibliothek installiert ist.")
+    } finally {
+      hideLoading()
+    }
   }, [])
 
   const handleSaveAllToArchiv = useCallback(() => {
@@ -1059,15 +1441,40 @@ export function KundigungGenerator() {
         </div>
       )}
 
-      <div className="flex flex-wrap items-center justify-center gap-2 max-w-4xl mx-auto">
-        <ToggleButton active={activeCategory === "alle"} onClick={() => { setActiveCategory("alle"); setCompanyPage(0) }}>
-          Alle ({companies.length})
-        </ToggleButton>
-        {categories.map((cat) => (
-          <ToggleButton key={cat} active={activeCategory === cat} onClick={() => { setActiveCategory(cat); setCompanyPage(0) }}>
-            {CATEGORY_LABELS[cat]} ({companies.filter((c) => c.category === cat).length})
+      {/* Category filters + Sort */}
+      <div className="flex flex-col gap-3 max-w-4xl mx-auto">
+        <div className="flex flex-wrap items-center justify-center gap-2">
+          <ToggleButton active={activeCategory === "alle"} onClick={() => { setActiveCategory("alle"); setCompanyPage(0) }}>
+            Alle ({companies.length})
           </ToggleButton>
-        ))}
+          {categories.map((cat) => (
+            <ToggleButton key={cat} active={activeCategory === cat} onClick={() => { setActiveCategory(cat); setCompanyPage(0) }}>
+              {CATEGORY_LABELS[cat]} ({companies.filter((c) => c.category === cat).length})
+            </ToggleButton>
+          ))}
+        </div>
+
+        {/* Sort controls */}
+        <div className="flex items-center justify-center gap-2">
+          <span className="text-xs text-muted-foreground font-semibold flex items-center gap-1.5">
+            <SortAsc className="h-3.5 w-3.5" />
+            Sortierung:
+          </span>
+          {(["default", "az", "za"] as SortMode[]).map((mode) => (
+            <button
+              key={mode}
+              type="button"
+              onClick={() => setSortMode(mode)}
+              className={`rounded-full px-3 py-1 text-xs font-semibold transition-all duration-200 ${
+                sortMode === mode
+                  ? "bg-foreground text-background"
+                  : "bg-muted text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              {mode === "default" ? "Standard" : mode === "az" ? "A → Z" : "Z → A"}
+            </button>
+          ))}
+        </div>
       </div>
 
       {filteredCompanies.length > 0 ? (
@@ -1083,6 +1490,7 @@ export function KundigungGenerator() {
             {pagedCompanies.map((company, idx) => {
               const isSelected = selectedCompanies.some((c) => c.id === company.id)
               const isFocused = focusedCardIndex === idx
+              const hasContractData = !!savedContractData[company.id]
               return (
                 <div key={company.id} role="gridcell" className="relative group" style={{ animationDelay: `${idx * 30}ms` }}>
                   <AddressTooltip address={company.address} />
@@ -1100,6 +1508,15 @@ export function KundigungGenerator() {
                     <div className={`absolute top-3 right-3 h-6 w-6 rounded-full border-2 flex items-center justify-center transition-all duration-200 ${isSelected ? "bg-foreground border-foreground" : "border-border/50 group-hover:border-foreground/30"}`}>
                       {isSelected && <Check className="h-3.5 w-3.5 text-background" />}
                     </div>
+                    {/* Badge: saved contract data */}
+                    {hasContractData && (
+                      <div className="absolute top-3 left-3">
+                        <span title="Vertragsdaten gespeichert" className="flex items-center gap-1 rounded-full bg-green-100 dark:bg-green-900/30 border border-green-300 dark:border-green-700 text-green-700 dark:text-green-400 text-[10px] font-bold px-1.5 py-0.5">
+                          <Check className="h-2.5 w-2.5" />
+                          <span className="hidden sm:inline">Daten</span>
+                        </span>
+                      </div>
+                    )}
                     <div className="relative z-10">
                       <div className="mb-2 sm:mb-4 flex items-start justify-between pr-8">
                         <CompanyCardLogo company={company} size="sm" />
@@ -1156,6 +1573,10 @@ export function KundigungGenerator() {
 
   const renderDetailsStep = () => {
     if (selectedCompanies.length === 0) return null
+
+    // Show notice hint for first selected company's category
+    const primaryCategory = selectedCompanies[0]?.category
+
     return (
       <div className="max-w-3xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
         <div className="text-center space-y-3 mb-8">
@@ -1186,6 +1607,19 @@ export function KundigungGenerator() {
             </div>
           )}
         </div>
+
+        {/* Notice period hint */}
+        {primaryCategory && <NoticePeriodBanner category={primaryCategory} />}
+
+        {/* Offline warning */}
+        {!isOnline && (
+          <div className="flex items-center gap-3 rounded-xl border border-amber-200 bg-amber-50 dark:border-amber-800/40 dark:bg-amber-900/10 p-4">
+            <WifiOff className="h-5 w-5 text-amber-600 shrink-0" />
+            <p className="text-sm text-amber-800 dark:text-amber-300">
+              Kein Internet — PLZ-Validierung und Stadtnamen-Vorschlag nicht verfügbar. Sie können trotzdem fortfahren.
+            </p>
+          </div>
+        )}
 
         <div className="bg-card rounded-2xl border border-border/50 px-6 py-4 shadow-sm">
           <FormProgressBar formData={formData} needsZusatztext={needsZusatztext} />
@@ -1252,6 +1686,7 @@ export function KundigungGenerator() {
                     {plzStatus === "loading" && <Clock className="h-4 w-4 text-muted-foreground animate-spin" />}
                     {plzStatus === "valid" && <Check className="h-4 w-4 text-green-500" />}
                     {plzStatus === "invalid" && <AlertCircle className="h-4 w-4 text-amber-500" />}
+                    {plzStatus === "offline" && <WifiOff className="h-4 w-4 text-muted-foreground" />}
                   </div>
                 </div>
                 {plzStatus === "invalid" && !errors.plz && (
@@ -1259,6 +1694,9 @@ export function KundigungGenerator() {
                 )}
                 {plzStatus === "valid" && !errors.plz && (
                   <p className="mt-1.5 text-xs text-green-600 flex items-center gap-1.5"><Check className="h-3.5 w-3.5" />PLZ gültig</p>
+                )}
+                {plzStatus === "offline" && (
+                  <p className="mt-1.5 text-xs text-muted-foreground flex items-center gap-1.5"><WifiOff className="h-3.5 w-3.5" />Offline — Validierung nicht möglich</p>
                 )}
               </FormField>
               <FormField label="Ort" htmlFor="ort" required error={errors.ort} className="sm:col-span-2">
@@ -1287,13 +1725,19 @@ export function KundigungGenerator() {
               Vertragsdaten
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <FormField label="Kundennummer" htmlFor="kundennummer" hint="Optional, falls vorhanden">
+              <FormField label="Kundennummer" htmlFor="kundennummer" hint="Optional — wird für diesen Anbieter gespeichert">
                 <Input id="kundennummer" value={formData.kundennummer} onChange={(e) => updateField("kundennummer", e.target.value)} placeholder="KD-123456" className="h-12 rounded-xl" />
               </FormField>
-              <FormField label="Vertragsnummer" htmlFor="vertragsnummer" hint="Optional, falls vorhanden">
+              <FormField label="Vertragsnummer" htmlFor="vertragsnummer" hint="Optional — wird für diesen Anbieter gespeichert">
                 <Input id="vertragsnummer" value={formData.vertragsnummer} onChange={(e) => updateField("vertragsnummer", e.target.value)} placeholder="VT-789012" className="h-12 rounded-xl" />
               </FormField>
             </div>
+            {selectedCompanies.length === 1 && savedContractData[selectedCompanies[0].id] && (
+              <p className="text-xs text-green-600 flex items-center gap-1.5">
+                <Check className="h-3.5 w-3.5" />
+                Vertragsdaten für <strong>{selectedCompanies[0].name}</strong> wurden automatisch eingetragen
+              </p>
+            )}
             <FormField label="Kündigungsgrund" htmlFor="grund" required>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 {(Object.keys(GRUND_LABELS) as KuendigungsGrund[]).map((grund) => (
@@ -1352,19 +1796,29 @@ export function KundigungGenerator() {
     return (
       <div className="max-w-5xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
         <div className="text-center space-y-3">
-          <h2 className="text-3xl font-bold text-foreground">Vorschau & Download</h2>
+          <h2 className="text-3xl font-bold text-foreground">Vorschau &amp; Download</h2>
           <p className="text-muted-foreground">
             {isMultiple ? `${letters.length} Kündigungsschreiben bereit zum Download` : "Überprüfen und bearbeiten Sie Ihr Kündigungsschreiben"}
           </p>
         </div>
 
-        <InfoBanner icon={Sparkles} onClose={() => {}}>
-          <span className="text-sm">
-            <strong>Perfekt!</strong>{" "}
-            {isMultiple ? `${letters.length} rechtssichere Kündigungsschreiben sind bereit.` : "Ihr rechtssicheres Kündigungsschreiben ist bereit."}{" "}
-            Wechseln Sie in den <strong>Bearbeiten-Modus</strong> um den Text anzupassen.
-          </span>
-        </InfoBanner>
+        {!previewBannerDismissed && (
+          <InfoBanner icon={Sparkles} onClose={() => setPreviewBannerDismissed(true)}>
+            <span className="text-sm">
+              <strong>Perfekt!</strong>{" "}
+              {isMultiple ? `${letters.length} rechtssichere Kündigungsschreiben sind bereit.` : "Ihr rechtssicheres Kündigungsschreiben ist bereit."}{" "}
+              Wechseln Sie in den <strong>Bearbeiten-Modus</strong> um den Text anzupassen. Ihre Änderungen werden automatisch gespeichert.
+            </span>
+          </InfoBanner>
+        )}
+
+        {/* Online status indicator in preview */}
+        {!isOnline && (
+          <div className="flex items-center gap-2 text-xs text-amber-600 bg-amber-50 dark:bg-amber-900/10 border border-amber-200 dark:border-amber-800/40 rounded-lg px-3 py-2">
+            <WifiOff className="h-3.5 w-3.5" />
+            Offline — PDF-Download und ZIP funktionieren möglicherweise nicht
+          </div>
+        )}
 
         {/* Company tabs for multiple letters */}
         {isMultiple && (
@@ -1449,6 +1903,13 @@ export function KundigungGenerator() {
             <FileDown className="h-5 w-5" /><span className="text-xs font-semibold">PDF Download</span>
           </Button>
           <Button
+            onClick={() => currentLetter && downloadDocx(currentLetter.company, currentText)}
+            variant="outline"
+            className="h-16 rounded-2xl flex-col gap-1 hover:bg-primary/10 hover:border-primary transition-all duration-300"
+          >
+            <FileType className="h-5 w-5" /><span className="text-xs font-semibold">DOCX Export</span>
+          </Button>
+          <Button
             onClick={() => currentLetter && copyToClipboard(currentText, currentLetter.company.id)}
             variant="outline"
             className="h-16 rounded-2xl flex-col gap-1 hover:bg-primary/10 hover:border-primary transition-all duration-300"
@@ -1506,6 +1967,7 @@ export function KundigungGenerator() {
               setErrors({})
               setNotizen({})
               setEditedTexts({})
+              setPreviewBannerDismissed(false)
             }}
             variant="outline"
             className="h-16 rounded-2xl flex-col gap-1 hover:bg-amber-500/10 hover:border-amber-500 transition-all duration-300"
@@ -1541,6 +2003,17 @@ export function KundigungGenerator() {
         <div className="absolute top-[10%] right-[10%] h-[500px] w-[500px] rounded-full bg-muted/30 blur-[120px]" />
         <div className="absolute bottom-[10%] left-[10%] h-[500px] w-[500px] rounded-full bg-muted/20 blur-[120px]" />
       </div>
+
+      {/* Offline/Online status bar */}
+      <div className={`fixed top-0 left-0 right-0 z-[60] flex items-center justify-center gap-2 py-1.5 text-xs font-semibold transition-all duration-500 ${
+        isOnline
+          ? "opacity-0 pointer-events-none -translate-y-full"
+          : "opacity-100 translate-y-0 bg-amber-500 text-white"
+      }`}>
+        <WifiOff className="h-3.5 w-3.5" />
+        Kein Internet — eingeschränkter Modus
+      </div>
+
       <div className="relative mx-auto max-w-7xl px-4 lg:px-8">
         <div className="mb-12 flex items-center justify-center">
           <div className="flex items-center gap-2 bg-background/80 backdrop-blur-xl rounded-full border-2 border-border p-2 shadow-xl">
