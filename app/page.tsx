@@ -12,6 +12,7 @@ import { CtaSection } from "@/components/cta-section"
 import { Footer } from "@/components/footer"
 import { CompanyTicker } from "@/components/company-ticker"
 import { AiChat } from "@/components/ai-chat"
+import { AdBanner } from "@/components/ad-banner"
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -48,9 +49,21 @@ export default function Home() {
         <FeaturesSection />
         <HowItWorksSection />
         <KundigungGenerator />
+
+        {/* Рекламный блок 1 — между генератором и Fristenrechner */}
+        <div className="py-4 bg-background">
+          <AdBanner size="leaderboard" />
+        </div>
+
         <Fristenrechner />
         <TestimonialsSection />
         <BlogPreviewSection />
+
+        {/* Рекламный блок 2 — между блогом и FAQ */}
+        <div className="py-4 bg-background">
+          <AdBanner size="leaderboard" />
+        </div>
+
         <FaqSection />
         <CtaSection />
       </main>
