@@ -1078,7 +1078,7 @@ export function KundigungGenerator() {
             aria-label="Anbieter auswählen"
             tabIndex={0}
             onKeyDown={handleGridKeyDown}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 max-w-7xl mx-auto outline-none"
+            className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 max-w-7xl mx-auto outline-none"
           >
             {pagedCompanies.map((company, idx) => {
               const isSelected = selectedCompanies.some((c) => c.id === company.id)
@@ -1091,7 +1091,7 @@ export function KundigungGenerator() {
                     aria-pressed={isSelected}
                     aria-label={`${company.name} ${isSelected ? "abgewählt" : "auswählen"}`}
                     className={[
-                      "relative overflow-hidden rounded-2xl border p-6 text-left w-full",
+                      "relative overflow-hidden rounded-2xl border p-3 sm:p-6 text-left w-full",
                       "transition-all duration-300 hover:shadow-card hover:scale-[1.01] animate-scale-in",
                       isSelected ? "border-foreground bg-foreground/5 shadow-elegant" : "border-border/50 bg-card hover:bg-muted/30 hover:border-foreground/20",
                       isFocused && keyboardNavActive ? "ring-2 ring-foreground ring-offset-2 ring-offset-background" : "",
@@ -1101,14 +1101,14 @@ export function KundigungGenerator() {
                       {isSelected && <Check className="h-3.5 w-3.5 text-background" />}
                     </div>
                     <div className="relative z-10">
-                      <div className="mb-4 flex items-start justify-between pr-8">
-                        <CompanyCardLogo company={company} />
+                      <div className="mb-2 sm:mb-4 flex items-start justify-between pr-8">
+                        <CompanyCardLogo company={company} size="sm" />
                       </div>
-                      <Badge variant="secondary" className="text-[10px] font-semibold uppercase bg-muted text-muted-foreground border border-border/50 mb-2">
+                      <Badge variant="secondary" className="hidden sm:inline-flex text-[10px] font-semibold uppercase bg-muted text-muted-foreground border border-border/50 mb-2">
                         {CATEGORY_LABELS[company.category]}
                       </Badge>
-                      <h3 className="font-semibold text-base text-foreground line-clamp-2 mb-2 leading-tight tracking-tight">{company.name}</h3>
-                      <p className="text-xs text-muted-foreground line-clamp-2">{company.address.split("\n")[0]}</p>
+                      <h3 className="font-semibold text-xs sm:text-base text-foreground line-clamp-2 mb-1 sm:mb-2 leading-tight tracking-tight">{company.name}</h3>
+                      <p className="hidden sm:block text-xs text-muted-foreground line-clamp-2">{company.address.split("\n")[0]}</p>
                     </div>
                   </button>
                 </div>
