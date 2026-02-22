@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
-import { Redis } from "@upstash/redis"
+import { Resend } from "resend"
 
-const redis = Redis.fromEnv()
+const resend = new Resend(process.env.RESEND_API_KEY)
 
 const rateLimitMap = new Map<string, number>()
 
@@ -12,9 +12,8 @@ export async function POST(req: NextRequest) {
       req.headers.get("x-real-ip") ||
       "unknown"
 
-    // Rate limit: max 3 suggestions per IP per day
-    const rateKey = `suggest_rl_${ip}`
-    const lastRequest = rateLimitMap.get(rateKey) ?? 0
+    // Rate limit: 1 запрос в 5 минут с одного IP
+    const lastRequest = rateLimitMap.get(ip) ?? 0
     const now = Date.now()
 
     if (now - lastRequest < 5 * 60 * 1000) {
@@ -23,7 +22,7 @@ export async function POST(req: NextRequest) {
         { status: 429 }
       )
     }
-    rateLimitMap.set(rateKey, now)
+    rateLimitMap.set(ip, now)
 
     const { companyName, category, website, comment } = await req.json()
 
@@ -41,51 +40,65 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    const suggestion = {
-      id: `sugg_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
-      companyName: companyName.trim(),
-      category: category?.trim() || "Sonstiges",
-      website: website?.trim() || "",
-      comment: comment?.trim() || "",
-      ip,
-      createdAt: new Date().toISOString(),
-      status: "pending",
-    }
+    const date = new Date().toLocaleString("de-DE", {
+      timeZone: "Europe/Berlin",
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    })
 
-    // Save to Redis list
-    await redis.lpush("company_suggestions", JSON.stringify(suggestion))
+    await resend.emails.send({
+      from: "KündigungsHeld <onboarding@resend.dev>",
+      to: "kundigungsheld@gmail.com",
+      subject: `🏢 Neuer Anbieter-Vorschlag: ${companyName.trim()}`,
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; background: #f8fafc; border-radius: 12px;">
+          <h2 style="color: #0f172a; margin: 0 0 20px 0;">Neuer Anbieter-Vorschlag</h2>
+          
+          <div style="background: white; border-radius: 8px; padding: 20px; border: 1px solid #e2e8f0;">
+            <table style="width: 100%; border-collapse: collapse;">
+              <tr>
+                <td style="padding: 8px 0; color: #64748b; font-size: 14px; width: 140px;">Firmenname</td>
+                <td style="padding: 8px 0; color: #0f172a; font-size: 14px; font-weight: bold;">${companyName.trim()}</td>
+              </tr>
+              <tr>
+                <td style="padding: 8px 0; color: #64748b; font-size: 14px;">Kategorie</td>
+                <td style="padding: 8px 0; color: #0f172a; font-size: 14px;">${category || "—"}</td>
+              </tr>
+              <tr>
+                <td style="padding: 8px 0; color: #64748b; font-size: 14px;">Website</td>
+                <td style="padding: 8px 0; color: #0f172a; font-size: 14px;">${website || "—"}</td>
+              </tr>
+              <tr>
+                <td style="padding: 8px 0; color: #64748b; font-size: 14px; vertical-align: top;">Kommentar</td>
+                <td style="padding: 8px 0; color: #0f172a; font-size: 14px;">${comment || "—"}</td>
+              </tr>
+              <tr>
+                <td style="padding: 8px 0; color: #64748b; font-size: 14px;">IP</td>
+                <td style="padding: 8px 0; color: #94a3b8; font-size: 12px; font-family: monospace;">${ip}</td>
+              </tr>
+              <tr>
+                <td style="padding: 8px 0; color: #64748b; font-size: 14px;">Datum</td>
+                <td style="padding: 8px 0; color: #94a3b8; font-size: 12px;">${date}</td>
+              </tr>
+            </table>
+          </div>
 
-    // Also save as hash for easy lookup
-    await redis.hset(`suggestion:${suggestion.id}`, suggestion)
+          <p style="color: #94a3b8; font-size: 12px; margin-top: 16px; text-align: center;">
+            KündigungsHeld.de — Automatische Benachrichtigung
+          </p>
+        </div>
+      `,
+    })
 
-    return NextResponse.json({ success: true, id: suggestion.id })
+    return NextResponse.json({ success: true })
   } catch (error) {
     console.error("Suggest company error:", error)
     return NextResponse.json(
       { success: false, error: "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut." },
       { status: 500 }
     )
-  }
-}
-
-// GET — список всех предложений (для тебя как админа)
-export async function GET(req: NextRequest) {
-  try {
-    const authHeader = req.headers.get("authorization")
-    const adminKey = process.env.ADMIN_SECRET_KEY
-
-    if (!adminKey || authHeader !== `Bearer ${adminKey}`) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-    }
-
-    const raw = await redis.lrange("company_suggestions", 0, 99)
-    const suggestions = raw.map((item) =>
-      typeof item === "string" ? JSON.parse(item) : item
-    )
-
-    return NextResponse.json({ success: true, suggestions, total: suggestions.length })
-  } catch (error) {
-    console.error("Get suggestions error:", error)
-    return NextResponse.json({ error: "Fehler" }, { status: 500 })
   }
 }
