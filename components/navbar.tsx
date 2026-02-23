@@ -13,10 +13,10 @@ export function Navbar() {
   const { t } = useI18n()
 
   const navLinks = [
-    { label: "Funktionen", href: "/#funktionen" },
-    { label: "So geht's", href: "/#so-gehts" },
-    { label: "Generator", href: "/#generator" },
-    { label: "Fristenrechner", href: "/#fristenrechner", highlight: true },
+    { label: t.nav.features, href: "/#funktionen" },
+    { label: t.nav.howItWorks, href: "/#so-gehts" },
+    { label: t.nav.generator, href: "/#generator" },
+    { label: t.nav.fristenrechner, href: "/#fristenrechner", highlight: true },
     { label: t.nav.blog, href: "/blog" },
     { label: t.nav.archive, href: "/archiv" },
   ]
@@ -56,7 +56,7 @@ export function Navbar() {
           <Button size="sm" className="gap-2 rounded-full px-5 bg-foreground text-background hover:bg-foreground/90" asChild>
             <Link href="/archiv">
               <Archive className="h-4 w-4" />
-              Archiv
+              {t.nav.archive}
             </Link>
           </Button>
         </div>
@@ -95,7 +95,7 @@ export function Navbar() {
             <Button size="sm" className="flex-1 gap-2 rounded-full bg-foreground text-background hover:bg-foreground/90" asChild>
               <Link href="/archiv">
                 <Archive className="h-4 w-4" />
-                Archiv
+                {t.nav.archive}
               </Link>
             </Button>
           </div>

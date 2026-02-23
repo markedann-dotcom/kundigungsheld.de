@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { blogArticles } from "@/lib/blog-articles"
+import { useI18n } from "@/contexts/i18n-context"
 
 const CATEGORY_ICONS: Record<string, React.ElementType> = {
   Vertragsrecht: Scale,
@@ -31,6 +32,7 @@ const CATEGORY_COLORS: Record<string, string> = {
 const ALL_CATEGORIES = Array.from(new Set(blogArticles.map((a) => a.category)))
 
 export function BlogClient() {
+  const { t } = useI18n()
   const [query, setQuery] = useState("")
   const [activeCategory, setActiveCategory] = useState<string | null>(null)
 
@@ -64,7 +66,7 @@ export function BlogClient() {
               <Button variant="ghost" size="sm" className="gap-2 text-muted-foreground" asChild>
                 <Link href="/">
                   <ArrowLeft className="h-4 w-4" />
-                  Zur Startseite
+                  {t.blog.backToHome}
                 </Link>
               </Button>
             </div>
@@ -72,13 +74,13 @@ export function BlogClient() {
             {/* Header */}
             <div className="mb-10 max-w-2xl">
               <span className="text-sm font-semibold uppercase tracking-wider text-primary">
-                Blog
+                {t.blog.sectionLabel}
               </span>
               <h1 className="mt-3 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
-                Rechtstipps &amp; Ratgeber
+                {t.blog.title}
               </h1>
               <p className="mt-4 text-pretty text-lg leading-relaxed text-muted-foreground">
-                Praxisnahe Artikel rund um Kündigungen, Vertragsrecht und Verbraucherrecht — geprüft von der KündigungsHeld Redaktion.
+                {t.blog.subtitle}
               </p>
             </div>
 
@@ -90,7 +92,7 @@ export function BlogClient() {
                   type="text"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
-                  placeholder="Artikel suchen — z.B. Kündigung, Frist, Umzug …"
+                  placeholder={t.blog.searchPlaceholder}
                   className="w-full rounded-xl border border-border/60 bg-card py-3 pl-11 pr-10 text-sm text-foreground placeholder:text-muted-foreground outline-none transition-colors focus:border-primary/40 focus:ring-2 focus:ring-primary/10"
                 />
                 {query && (
@@ -113,7 +115,7 @@ export function BlogClient() {
                       : "bg-card text-muted-foreground border-border/60 hover:border-foreground/30 hover:text-foreground"
                   }`}
                 >
-                  Alle
+                  {t.blog.allCategories}
                 </button>
                 {ALL_CATEGORIES.map((cat) => {
                   const Icon = CATEGORY_ICONS[cat] || FileText
@@ -139,8 +141,8 @@ export function BlogClient() {
               <div className="flex items-center gap-3">
                 <p className="text-sm text-muted-foreground">
                   {filtered.length === blogArticles.length
-                    ? `${blogArticles.length} Artikel`
-                    : `${filtered.length} von ${blogArticles.length} Artikeln`}
+                    ? `${blogArticles.length} ${t.blog.articlesCount}`
+                    : `${filtered.length} ${t.blog.articlesFiltered} ${blogArticles.length} ${t.blog.articlesCount}`}
                 </p>
                 {hasFilters && (
                   <button
@@ -148,7 +150,7 @@ export function BlogClient() {
                     className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors underline underline-offset-2"
                   >
                     <X className="h-3 w-3" />
-                    Filter zurücksetzen
+                    {t.blog.clearFilters}
                   </button>
                 )}
               </div>
@@ -210,16 +212,16 @@ export function BlogClient() {
                   <Search className="h-6 w-6 text-muted-foreground" />
                 </div>
                 <h3 className="mt-4 font-display text-lg font-semibold text-foreground">
-                  Keine Artikel gefunden
+                  {t.blog.noResultsTitle}
                 </h3>
                 <p className="mt-2 max-w-xs text-sm text-muted-foreground">
-                  Zu „{query}" gibt es leider keine Treffer. Versuchen Sie einen anderen Suchbegriff.
+                  {t.blog.noResultsDesc}
                 </p>
                 <button
                   onClick={clearSearch}
                   className="mt-6 rounded-xl bg-foreground px-5 py-2.5 text-sm font-medium text-background hover:bg-foreground/80 transition-colors"
                 >
-                  Alle Artikel anzeigen
+                  {t.blog.showAll}
                 </button>
               </div>
             )}
