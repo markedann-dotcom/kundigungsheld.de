@@ -108,6 +108,15 @@ export type TranslationKeys = {
     title: string
     subtitle: string
     readAll: string
+    backToHome: string
+    searchPlaceholder: string
+    allCategories: string
+    articlesCount: string
+    articlesFiltered: string
+    clearFilters: string
+    noResultsTitle: string
+    noResultsDesc: string
+    showAll: string
   }
   generator: {
     title: string
@@ -309,6 +318,15 @@ const de: TranslationKeys = {
     title: 'Rechtstipps von Experten',
     subtitle: 'Aktuelle Artikel von deutschen Rechtsanwälten rund um Kündigung, Verbraucherrechte und Vertragsrecht.',
     readAll: 'Alle Artikel lesen',
+    backToHome: 'Zur Startseite',
+    searchPlaceholder: 'Artikel suchen — z. B. Kündigung, Frist, Umzug …',
+    allCategories: 'Alle',
+    articlesCount: 'Artikel',
+    articlesFiltered: 'von',
+    clearFilters: 'Filter zurücksetzen',
+    noResultsTitle: 'Keine Artikel gefunden',
+    noResultsDesc: 'Versuchen Sie einen anderen Suchbegriff.',
+    showAll: 'Alle Artikel anzeigen',
   },
   generator: {
     title: 'Kündigung erstellen',
@@ -510,6 +528,15 @@ const uk: TranslationKeys = {
     title: 'Юридичні поради від експертів',
     subtitle: 'Актуальні статті від німецьких правників про розірвання договорів та захист прав споживачів.',
     readAll: 'Читати всі статті',
+    backToHome: 'На головну',
+    searchPlaceholder: 'Пошук статей — наприклад: розірвання, строки, переїзд …',
+    allCategories: 'Всі',
+    articlesCount: 'статей',
+    articlesFiltered: 'з',
+    clearFilters: 'Скинути фільтри',
+    noResultsTitle: 'Статей не знайдено',
+    noResultsDesc: 'Спробуйте інший пошуковий запит.',
+    showAll: 'Показати всі статті',
   },
   generator: {
     title: 'Створити лист про розірвання',
