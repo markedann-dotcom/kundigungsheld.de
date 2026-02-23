@@ -1476,6 +1476,861 @@ Fehlt eine Unterschrift eines Mitmieters → Kündigung unwirksam.
 ---
 ⚠️ *Diese Informationen stellen keine Rechtsberatung dar. Bei rechtlichen Fragen wenden Sie sich an einen zugelassenen Rechtsanwalt.*`,
   },
+
+  // ─── NEU: SEO-Wiki-Erweiterung ───────────────────────────────────────────────
+
+  {
+    slug: "strom-gas-vertrag-kuendigen",
+    title: "Strom und Gas kündigen: Fristen, Anbieter und Wechsel-Tipps 2025",
+    excerpt:
+      "Strom- oder Gasvertrag kündigen und zum günstigsten Anbieter wechseln. Fristen, richtige Adressen und der schnellste Weg zum neuen Tarif.",
+    author: "KündigungsHeld Redaktion",
+    authorRole: "Geprüfte Rechtsinformationen",
+    date: "2026-02-20",
+    readTime: "7 Min.",
+    category: "Vertragsrecht",
+    content: `Energiekosten gehören zu den größten Haushaltsausgaben. Wer regelmäßig wechselt, spart häufig mehrere Hundert Euro pro Jahr — die Kündigung des alten Vertrags ist dabei einfacher als gedacht.
+
+## Welche Vertragsarten gibt es?
+
+**Grundversorgungsvertrag**: Automatisch, wenn kein anderer Anbieter gewählt wurde. Monatlich kündbar, keine Mindestlaufzeit.
+
+**Sondervertrag (Tarif)**: Meist 12 oder 24 Monate Mindestlaufzeit, danach monatlich kündbar. Häufig günstiger als die Grundversorgung.
+
+## Kündigungsfristen im Überblick
+
+| Vertragsart | Mindestlaufzeit | Kündigungsfrist |
+|---|---|---|
+| Grundversorgung | keine | jederzeit, 2 Wochen |
+| Sondervertrag | 12–24 Monate | 4–6 Wochen zum Vertragsende |
+| Nach Ablauf | entfällt | 1 Monat (seit BGB-Reform 2022) |
+
+## Schritt-für-Schritt: Wechsel durchführen
+
+1. **Vertragsende ermitteln**: Schauen Sie auf Ihre letzte Jahresabrechnung oder in den Kundenbereich des Anbieters.
+2. **Vergleichen**: Vergleichsportale (Check24, Verivox) zeigen aktuelle Tarife. Auf Bonuskonditionen und Preisgarantien achten.
+3. **Neuen Vertrag abschließen**: Viele Anbieter übernehmen die Kündigung beim alten Anbieter — fragen Sie nach.
+4. **Selbst kündigen**: Wenn der neue Anbieter die Kündigung nicht übernimmt, schreiben Sie selbst.
+
+## Sonderkündigungsrecht bei Preiserhöhung
+
+Erhöht Ihr Energieversorger die Preise, haben Sie das Recht, **innerhalb von 4 Wochen** nach Zugang der Mitteilung zu kündigen — auch wenn die Mindestlaufzeit noch läuft. Das gilt auch für die Grundversorgung.
+
+## Wichtige Anbieter-Adressen für Kündigungen
+
+- **E.ON**: E.ON Energie Deutschland GmbH, 30457 Hannover
+- **EnBW**: EnBW Energie Baden-Württemberg AG, 76131 Karlsruhe
+- **RWE / innogy**: RWE AG, Opernplatz 1, 45128 Essen
+- **Vattenfall / E.DIS**: Individuell nach Region — prüfen Sie Ihre Vertragsunterlagen
+
+Beim Wechsel: Alte Zählerstände dokumentieren und an beide Anbieter übermitteln.
+
+## Was Sie bei einem Wechsel beachten müssen
+
+- **Keine Versorgungslücke**: Der neue Anbieter startet automatisch, wenn der alte endet. Die Grundversorgung springt sonst ein.
+- **Abschlagszahlungen**: Stellen Sie Daueraufträge erst um, wenn Sie eine Kontoverbindung des neuen Anbieters haben.
+- **Jahresabrechnung abwarten**: Der alte Anbieter schickt eine Schlussrechnung — prüfen Sie diese sorgfältig.
+
+Nutzen Sie den KündigungsHeld-Generator für ein rechtssicheres Kündigungsschreiben an Ihren Energieversorger — mit der korrekten Adresse direkt im System hinterlegt.
+
+---
+⚠️ *Diese Informationen stellen keine Rechtsberatung dar. Bei rechtlichen Fragen wenden Sie sich an einen zugelassenen Rechtsanwalt.*`,
+  },
+
+  {
+    slug: "kfz-versicherung-kuendigen-wechseln",
+    title: "Kfz-Versicherung kündigen: Stichtag 30. November — alles was Sie wissen müssen",
+    excerpt:
+      "Kfz-Versicherung jährlich zum 30. November kündigen und bis zu 40% sparen. Fristen, Sonderkündigungsrechte und die besten Wechseltipps.",
+    author: "KündigungsHeld Redaktion",
+    authorRole: "Geprüfte Rechtsinformationen",
+    date: "2026-02-21",
+    readTime: "6 Min.",
+    category: "Versicherungsrecht",
+    content: `Die Kfz-Versicherung ist Pflicht — aber nicht beim teuersten Anbieter. Wer jährlich zum richtigen Zeitpunkt wechselt, spart oft mehrere Hundert Euro.
+
+## Der wichtigste Stichtag: 30. November
+
+Die meisten Kfz-Verträge laufen zum 1. Januar. Kündigung muss spätestens am **30. November** beim Versicherer eingehen — also 6 Wochen vor Vertragsende.
+
+**Achtung**: "Eingehen" bedeutet Zugang beim Versicherer, nicht Absendedatum. Senden Sie daher spätestens am 25. November per Einschreiben.
+
+## Sonderkündigungsrechte: Außerhalb der Frist wechseln
+
+Sie müssen nicht bis November warten, wenn einer dieser Fälle eintritt:
+
+**Nach einem Schadensfall**: Innerhalb eines Monats nach Abschluss der Schadenregulierung — sowohl für Sie als auch für den Versicherer.
+
+**Beitragserhöhung**: Wenn der Versicherer den Beitrag erhöht (ohne gleichzeitige Leistungsverbesserung), dürfen Sie innerhalb von 4 Wochen nach Mitteilung kündigen.
+
+**Fahrzeugverkauf**: Bei Verkauf oder Abmeldung des Fahrzeugs endet der Vertrag automatisch, kann aber auch aktiv gekündigt werden.
+
+**Typklassenänderung**: Ändert sich die Einstufung Ihres Fahrzeugs negativ, entsteht ein Sonderkündigungsrecht.
+
+## So viel können Sie sparen
+
+Preisunterschiede zwischen Versicherern für dasselbe Fahrzeug können 30–50% betragen. Wer 10 Jahre nicht wechselt, zahlt unter Umständen doppelt so viel wie nötig.
+
+## Was beim Wechsel zu beachten ist
+
+1. **Neuen Vertrag abschließen** bevor Sie kündigen — keine Versicherungslücke riskieren.
+2. **Schadenfreiheitsklasse (SF-Klasse)** beim alten Anbieter anfordern — Sie nehmen sie mit.
+3. **Fahrzeugschein und aktuelle Police** bereithalten für den Vertragsabschluss.
+4. **Beitragszahlung klären**: Monatlich oder jährlich — Jahresbeiträge sind meist günstiger.
+
+## Pflichtangaben im Kündigungsschreiben
+
+- Vollständiger Name und Adresse
+- Fahrzeugkennzeichen und Versicherungsscheinnummer
+- Gewünschtes Kündigungsdatum (meist 31. Dezember)
+- Bitte um schriftliche Bestätigung und Schadenfreiheitsbescheinigung
+
+Erstellen Sie Ihr Kündigungsschreiben direkt mit dem KündigungsHeld-Generator — alle großen Versicherungen sind mit korrekter Adresse hinterlegt.
+
+---
+⚠️ *Diese Informationen stellen keine Rechtsberatung dar. Bei rechtlichen Fragen wenden Sie sich an einen zugelassenen Rechtsanwalt.*`,
+  },
+
+  {
+    slug: "zeitungsabo-zeitschrift-kuendigen",
+    title: "Zeitungsabo und Zeitschrift kündigen: So entkommen Sie der Abo-Falle",
+    excerpt:
+      "Zeitung, Magazin oder digitales Nachrichtenabo kündigen. Fristen, häufige Tricks der Verlage und Musterschreiben für jedes Abo.",
+    author: "KündigungsHeld Redaktion",
+    authorRole: "Geprüfte Rechtsinformationen",
+    date: "2026-02-22",
+    readTime: "5 Min.",
+    category: "Praxistipps",
+    content: `Zeitungs- und Zeitschriftenabos laufen oft jahrelang unbemerkt weiter. Dabei ist die Kündigung meist einfach — wenn man die Spielregeln kennt.
+
+## Typische Vertragsstrukturen
+
+**Klassisches Jahresabo**: Läuft 12 Monate, verlängert sich automatisch um weitere 12 Monate, wenn nicht rechtzeitig gekündigt wird. Seit der BGB-Reform 2022 darf die automatische Verlängerung maximal einen Monat betragen.
+
+**Probeabo / Kennenlern-Angebot**: Wandelt sich nach der Probezeit automatisch in ein Vollabo um, wenn nicht aktiv gekündigt wird. Kündigung oft nur schriftlich möglich — mündliche oder Telefon-Kündigungen werden häufig nicht akzeptiert.
+
+**Digitales Abo**: Gleiche Regeln wie physisches Abo. Kündigung über Kundenportal möglich, aber achten Sie auf eine Bestätigungs-E-Mail.
+
+## Kündigungsfristen: Was gilt?
+
+- Vor BGB-Reform: 3 Monate zum Vertragsende üblich
+- Seit 1. März 2022: Nach Ablauf der Mindestlaufzeit nur noch **1 Monat Frist**
+- Ältere Verträge: Prüfen Sie die AGB — ggf. gelten noch alte Fristen
+
+**Wichtig**: Viele Verlage stellen in ihren neuen AGB auf die gesetzliche Mindestfrist um, informieren bestehende Kunden aber nicht aktiv.
+
+## Beliebte Tricks der Verlage — und wie Sie sich schützen
+
+**Trick 1 – Unklare Kündigungsadressen**: Abonnenten-Service und Verlagsadresse unterscheiden sich. Kündigung muss an die richtige Stelle gehen. Schauen Sie in die AGB oder auf die Rechnung.
+
+**Trick 2 – Formvorschriften**: Manche Verlage bestehen auf schriftlicher Kündigung per Brief, auch wenn online oder per E-Mail angeboten wird. Nutzen Sie zur Sicherheit immer den Postweg per Einschreiben.
+
+**Trick 3 – Geschenkabos**: Bei Abos, die als Geschenk abgeschlossen wurden, muss der ursprüngliche Auftraggeber kündigen — nicht der Empfänger.
+
+## Wichtige Verlage und ihre Kündigungsadressen
+
+- **Axel Springer (Bild, Welt)**: Axel Springer SE, Axel-Springer-Str. 65, 10888 Berlin
+- **Burda (Focus, Bunte)**: Hubert Burda Media, Arabellastr. 23, 81925 München
+- **Spiegel-Gruppe**: Spiegel-Verlag, Ericusspitze 1, 20457 Hamburg
+- **Zeit-Verlag**: Zeitverlag Gerd Bucerius GmbH & Co. KG, Buceriusstr. 1, 20095 Hamburg
+
+Bei Unsicherheit: Schauen Sie auf Ihre letzte Rechnung — dort steht meist die korrekte Empfängeradresse.
+
+## Probeabos rechtzeitig kündigen
+
+Wenn Sie ein Probeabo abschließen, tragen Sie das Enddatum sofort in Ihren Kalender ein — mit einem Erinnerungsalarm 14 Tage vorher. So verpassen Sie keine Kündigungsfrist.
+
+---
+⚠️ *Diese Informationen stellen keine Rechtsberatung dar. Bei rechtlichen Fragen wenden Sie sich an einen zugelassenen Rechtsanwalt.*`,
+  },
+
+  {
+    slug: "arbeitsvertrag-kuendigung-arbeitnehmer",
+    title: "Kündigung als Arbeitnehmer: Fristen, Form und Ihre Rechte",
+    excerpt:
+      "Selbst kündigen oder Aufhebungsvertrag? Kündigungsfristen im Arbeitsrecht, was ins Schreiben muss und wie Sie Ihre Ansprüche sichern.",
+    author: "KündigungsHeld Redaktion",
+    authorRole: "Geprüfte Rechtsinformationen",
+    date: "2026-02-23",
+    readTime: "9 Min.",
+    category: "Arbeitsrecht",
+    content: `Die eigene Kündigung ist ein großer Schritt. Wer die rechtlichen Grundlagen kennt, schützt seine Ansprüche und vermeidet teure Fehler.
+
+## Kündigungsfristen für Arbeitnehmer
+
+Die gesetzliche Grundkündigungsfrist für Arbeitnehmer beträgt **4 Wochen zum 15. oder zum Ende eines Kalendermonats** (Paragraph 622 Abs. 1 BGB).
+
+**Achtung**: Im Arbeitsvertrag oder Tarifvertrag können längere Fristen vereinbart sein. Diese gelten dann auch für Arbeitnehmer — prüfen Sie Ihren Vertrag sorgfältig.
+
+**Kürzere Frist in der Probezeit**: Während der ersten 6 Monate (Probezeit) genügt eine Kündigungsfrist von **2 Wochen** — zu jedem beliebigen Tag.
+
+## Schriftform ist zwingend
+
+Eine mündliche Kündigung oder Kündigung per E-Mail ist **rechtlich unwirksam** (Paragraph 623 BGB). Das Schreiben muss:
+- Schriftlich auf Papier vorliegen
+- Eigenhändig unterschrieben sein
+- Dem Arbeitgeber persönlich übergeben oder per Einschreiben zugestellt werden
+
+**Tipp**: Lassen Sie sich den Empfang schriftlich bestätigen oder zeugen die Übergabe.
+
+## Was muss ins Kündigungsschreiben?
+
+Ein wirksames Kündigungsschreiben enthält:
+- Ihre vollständigen Daten (Name, Adresse)
+- Empfänger (Arbeitgeber, ggf. Personalabteilung)
+- Klare Kündigungserklärung ("Ich kündige hiermit meinen Arbeitsvertrag...")
+- Datum, zu dem die Kündigung wirksam wird
+- Datum und eigenhändige Unterschrift
+
+Keine Begründung erforderlich — als Arbeitnehmer müssen Sie den Grund nicht nennen.
+
+## Kündigung vs. Aufhebungsvertrag
+
+| | Eigenkündigung | Aufhebungsvertrag |
+|---|---|---|
+| Sperrzeit ALG I | 12 Wochen möglich | 12 Wochen möglich |
+| Abfindung | selten | häufig |
+| Fristen | gesetzlich/vertraglich | frei verhandelbar |
+| Empfehlung | bei klarem Abgang | bei Verhandlungsspielraum |
+
+**Wichtig**: Sowohl Eigenkündigung als auch Aufhebungsvertrag können eine Sperrzeit beim Arbeitslosengeld I auslösen. Lassen Sie sich vorab von der Agentur für Arbeit beraten.
+
+## Urlaubsanspruch und offene Vergütung sichern
+
+Vor der Kündigung klären:
+- **Resturlaub**: Kann ausgezahlt oder genommen werden — fordern Sie schriftlich eine Stellungnahme an.
+- **Überstunden**: Notieren Sie alle geleisteten Stunden und fordern Sie Ausgleich.
+- **Zeugnis**: Sie haben Anspruch auf ein qualifiziertes Arbeitszeugnis — beantragen Sie es schriftlich gleichzeitig mit der Kündigung.
+
+## Besondere Situationen
+
+**Schwangerschaft**: Arbeitnehmerinnen können jederzeit selbst kündigen — der besondere Kündigungsschutz schützt nur vor einer Kündigung *durch den Arbeitgeber*.
+
+**Elternzeit**: Kündigung während der Elternzeit ist möglich. Beachten Sie: Die Elternzeit endet nicht automatisch mit der Kündigung.
+
+**Befristeter Vertrag**: Ohne ausdrückliche vertragliche Vereinbarung ist eine vorzeitige Eigenkündigung bei befristeten Verträgen nicht möglich.
+
+---
+⚠️ *Diese Informationen stellen keine Rechtsberatung dar. Bei konkreten arbeitsrechtlichen Fragen empfehlen wir dringend die Beratung durch einen Fachanwalt für Arbeitsrecht oder eine Gewerkschaft.*`,
+  },
+
+  {
+    slug: "internetvertrag-dsl-kuendigen",
+    title: "Internetvertrag kündigen: DSL, Glasfaser, Kabel — so wechseln Sie richtig",
+    excerpt:
+      "DSL- oder Glasfaservertrag bei Telekom, Vodafone oder 1&1 kündigen. Fristen, Sonderkündigung bei Umzug und wie Sie zum schnellsten Tarif wechseln.",
+    author: "KündigungsHeld Redaktion",
+    authorRole: "Geprüfte Rechtsinformationen",
+    date: "2026-02-23",
+    readTime: "6 Min.",
+    category: "Vertragsrecht",
+    content: `Schnelles Internet zu einem fairen Preis — dafür lohnt es sich, regelmäßig zu wechseln. Internettarife werden von Jahr zu Jahr günstiger und schneller, während Bestandskunden oft auf alten Konditionen sitzen.
+
+## Kündigungsfristen: Was seit 2022 gilt
+
+Dank der BGB-Reform vom 1. März 2022 gelten für neue Verträge deutlich verbraucherfreundlichere Regeln:
+
+- **Mindestlaufzeit**: Maximal 24 Monate
+- **Kündigungsfrist nach Ablauf**: 1 Monat
+- **Automatische Verlängerung**: Maximal 1 Monat (früher oft 12 Monate)
+
+Für Verträge, die *vor* dem 1. März 2022 abgeschlossen wurden, können noch die alten Bedingungen gelten — schauen Sie in Ihren Vertrag.
+
+## Sonderkündigungsrecht bei Umzug
+
+Im Gegensatz zum Mobilfunk ist ein Sonderkündigungsrecht beim Umzug für Internetverträge möglich, wenn der Anbieter am neuen Wohnort keine Leistung erbringen kann.
+
+**Voraussetzungen**:
+1. Anbieter kann am neuen Wohnort tatsächlich *nicht* liefern
+2. Sie weisen den Umzug nach (Anmeldebestätigung oder Mietvertrag)
+3. Kündigung erfolgt rechtzeitig vor dem Umzugstermin
+
+Kann der Anbieter am neuen Wohnort liefern, besteht kein Sonderkündigungsrecht — aber oft können Sie den Vertrag unkompliziert "umziehen".
+
+## Sonderkündigung bei dauerhaften Störungen
+
+Ist die vertraglich zugesicherte Mindestbandbreite dauerhaft nicht erreichbar, haben Sie nach erfolgloser Fristsetzung das Recht auf außerordentliche Kündigung.
+
+**Vorgehen**:
+1. Störungen mit Datum und Uhrzeit dokumentieren
+2. Messprotokolle der Bundesnetzagentur erstellen (breitbandmessung.de)
+3. Anbieter schriftlich unter Fristsetzung zur Behebung auffordern
+4. Nach Fristablauf außerordentlich kündigen
+
+## Richtige Adressen für Kündigungen
+
+- **Deutsche Telekom**: Telekom Deutschland GmbH, Postfach 3000, 53760 Hennef
+- **Vodafone**: Vodafone GmbH, Postfach 20 02 04, 40832 Ratingen
+- **1&1**: 1&1 Telecom GmbH, Elgendorfer Str. 57, 56410 Montabaur
+- **O2 / Telefónica**: Telefónica Germany GmbH & Co. OHG, 90345 Nürnberg
+
+## Rufnummern und E-Mail-Adressen mitnehmen
+
+Anders als beim Telefonfestnetz können Sie Ihre Festnetzrufnummer beim Anbieterwechsel in den meisten Fällen mitnehmen (Portierung). Beantragen Sie die Portierung beim neuen Anbieter — dieser koordiniert den Wechsel.
+
+---
+⚠️ *Diese Informationen stellen keine Rechtsberatung dar. Bei rechtlichen Fragen wenden Sie sich an einen zugelassenen Rechtsanwalt.*`,
+  },
+
+  {
+    slug: "verein-mitgliedschaft-kuendigen",
+    title: "Vereinsmitgliedschaft kündigen: So treten Sie rechtssicher aus",
+    excerpt:
+      "Aus einem Verein austreten — ob Sportverein, ADAC oder Gewerkschaft. Fristen, Formvorschriften und was bei der Kündigung zu beachten ist.",
+    author: "KündigungsHeld Redaktion",
+    authorRole: "Geprüfte Rechtsinformationen",
+    date: "2026-02-23",
+    readTime: "5 Min.",
+    category: "Vertragsrecht",
+    content: `Ein Vereinsaustritt ist grundsätzlich jederzeit möglich — aber die Fristen und Formalitäten unterscheiden sich je nach Satzung erheblich. Was einheitlich gilt: Der Austritt muss erklärt werden, er passiert nicht automatisch.
+
+## Rechtliche Grundlage: Die Vereinssatzung entscheidet
+
+Das BGB gibt nur einen Mindestrahmen vor (Paragraph 39 BGB): Das Recht auf Austritt kann nicht vollständig ausgeschlossen werden. Die konkrete Ausgestaltung — Frist, Form, Zeitpunkt — regelt jedoch die **Vereinssatzung**.
+
+Typische Regelungen:
+- **Frist**: 3 oder 6 Monate zum Jahresende
+- **Form**: Schriftlich, manchmal per Einschreiben vorgeschrieben
+- **Termin**: Zum Ende des Kalender- oder Geschäftsjahres
+
+**Wichtig**: Lesen Sie die Satzung Ihres Vereins — diese ist maßgeblich.
+
+## ADAC: Mitgliedschaft kündigen
+
+Der ADAC ist einer der größten Vereine Deutschlands. Kündigung bis **31. Oktober** für das Folgende Jahr, Mitgliedschaft endet zum 31. Dezember.
+
+Adresse: ADAC e.V., Am Westpark 8, 81373 München (oder online über Mein ADAC).
+
+## Gewerkschaft: Mitgliedschaft beenden
+
+Jede Gewerkschaft hat eigene Regelungen. Häufig: 3 Monate zum Quartalsende oder Jahresende. Kündigung schriftlich an die zuständige Geschäftsstelle.
+
+## Sportvereinen: Typische Fallen
+
+- **Mindestmitgliedschaftsdauer**: Manche Vereine sehen in der Satzung eine Mindestdauer vor — z.B. 1 Jahr.
+- **Kein Geld zurück**: Bereits bezahlte Jahresbeiträge werden meist nicht erstattet.
+- **Ausstehende Beiträge**: Auch nach der Kündigung müssen bis zum Wirksamwerden des Austritts alle Beiträge gezahlt werden.
+
+## Was ins Austrittsschreiben gehört
+
+- Name, Adresse, Mitgliedsnummer
+- Name des Vereins
+- Klare Erklärung des Austritts
+- Gewünschtes Austrittsdatum (unter Beachtung der Satzungsfrist)
+- Bitte um schriftliche Bestätigung
+- Datum und Unterschrift
+
+## Sonderkündigungsrecht im Verein?
+
+Ein gesetzliches Sonderkündigungsrecht für Vereinsmitglieder gibt es nur in Ausnahmefällen — etwa bei schwerwiegenden Satzungsänderungen, die die Mitgliedspflichten erheblich verschlechtern. Im Alltag sind Sie an die Satzungsfristen gebunden.
+
+---
+⚠️ *Diese Informationen stellen keine Rechtsberatung dar. Bei rechtlichen Fragen wenden Sie sich an einen zugelassenen Rechtsanwalt.*`,
+  },
+
+  {
+    slug: "kreditkarte-kuendigen-bank",
+    title: "Kreditkarte kündigen: So beenden Sie Ihr Kartenkonto ohne Nachteile",
+    excerpt:
+      "Kreditkarte oder Bankkonto kündigen — was müssen Sie beachten? Fristen, Auswirkungen auf die Bonität und Schritt-für-Schritt-Anleitung.",
+    author: "KündigungsHeld Redaktion",
+    authorRole: "Geprüfte Rechtsinformationen",
+    date: "2026-02-23",
+    readTime: "6 Min.",
+    category: "Vertragsrecht",
+    content: `Kreditkarten laufen häufig viele Jahre, obwohl sie längst nicht mehr genutzt werden. Das Kündigen ist einfach — wenn Sie die richtigen Schritte kennen.
+
+## Kreditkarte kündigen: Wann und wie?
+
+Eine Kreditkarte kann in der Regel **jederzeit ohne Frist** gekündigt werden. Viele Banken bieten zudem die Kündigung per Telefon, Online-Banking oder App an — für Rechtssicherheit empfiehlt sich trotzdem die schriftliche Kündigung.
+
+**Ausnahmen**: Manche Kreditkartenverträge haben eine Mindestlaufzeit (häufig 12 Monate) oder eine Kündigungsfrist (oft 6 Wochen). Prüfen Sie Ihre Vertragsunterlagen.
+
+## Vor der Kündigung: Checkliste
+
+- [ ] Alle laufenden Abonnements und Lastschriften auf eine andere Karte umstellen
+- [ ] Ausstehende Umsätze prüfen und abwarten
+- [ ] Bonuspunkte, Meilen oder Cashback einlösen — diese verfallen bei Kündigung
+- [ ] Eventuelle Jahresgebühr beachten (anteilige Erstattung möglich)
+- [ ] Neue Karte bereit haben, bevor die alte endet
+
+## Auswirkungen auf die Schufa
+
+Eine Kreditkartenkündigung wird in der Regel in der Schufa vermerkt. Das ist grundsätzlich neutral — es schadet Ihrem Score nicht, Kreditkarten zu kündigen. Im Gegenteil: Zu viele ungenutzte Kreditlinien können sich negativ auswirken.
+
+**Vorsicht**: Kündigen Sie nicht alle Kreditkarten gleichzeitig kurz bevor Sie einen Kredit oder eine Wohnung beantragen wollen.
+
+## Bankkonto kündigen
+
+Für Girokonten gilt: Kündigung ist jederzeit ohne Frist möglich (bei Kündigung durch den Kunden). Die Bank muss das Konto dann zeitnah schließen.
+
+**Vor der Kündigung unbedingt klären**:
+1. Alle Daueraufträge und Lastschriften auf neues Konto umziehen
+2. Arbeitgeber neue Kontoverbindung mitteilen
+3. Steuerberater, Finanzamt und wichtige Vertragspartner informieren
+4. Konto auf null bringen oder Guthaben überweisen
+5. Kreditkarten und EC-Karte zurückschicken
+
+## Pflichtangaben im Kündigungsschreiben
+
+- Name und Geburtsdatum (für Identifikation)
+- IBAN / Kontonummer
+- Art des Produkts (Kreditkarte, Girokonto)
+- Kartennummer (die letzten 4 Stellen reichen)
+- Gewünschtes Kündigungsdatum
+- Bitte um Bestätigung und Guthaben-Überweisung
+
+---
+⚠️ *Diese Informationen stellen keine Rechtsberatung dar. Bei rechtlichen Fragen wenden Sie sich an einen zugelassenen Rechtsanwalt.*`,
+  },
+
+  {
+    slug: "aufhebungsvertrag-vs-kuendigung",
+    title: "Aufhebungsvertrag vs. Kündigung: Was ist besser für Arbeitnehmer?",
+    excerpt:
+      "Aufhebungsvertrag oder selbst kündigen? Wir erklären die Unterschiede, Risiken beim Arbeitslosengeld und wann sich welche Option lohnt.",
+    author: "KündigungsHeld Redaktion",
+    authorRole: "Geprüfte Rechtsinformationen",
+    date: "2026-02-23",
+    readTime: "8 Min.",
+    category: "Arbeitsrecht",
+    content: `Der Aufhebungsvertrag wird oft als elegante Alternative zur Kündigung angeboten. Doch für Arbeitnehmer birgt er erhebliche Risiken — vor allem beim Arbeitslosengeld.
+
+## Was ist ein Aufhebungsvertrag?
+
+Ein Aufhebungsvertrag ist eine einvernehmliche Beendigung des Arbeitsverhältnisses. Arbeitgeber und Arbeitnehmer einigen sich auf einen Termin, oft verbunden mit einer Abfindung. Im Gegensatz zur Kündigung entsteht kein Kündigungsschutzanspruch.
+
+## Risiko Nr. 1: Sperrzeit beim Arbeitslosengeld
+
+Die Agentur für Arbeit verhängt bei Aufhebungsverträgen oft eine **Sperrzeit von 12 Wochen**. Das bedeutet: 12 Wochen kein Arbeitslosengeld I.
+
+**Wann entfällt die Sperrzeit?**
+- Wenn der Arbeitgeber eine Kündigung angedroht hat und der Aufhebungsvertrag der Abwendung diente
+- Wenn ein wichtiger Grund für die Aufgabe des Arbeitsplatzes vorlag (z.B. schwere Erkrankung, Pflege eines Angehörigen, Umzug des Partners)
+
+## Risiko Nr. 2: Kürzung der Anspruchsdauer
+
+Bei Aufhebungsverträgen mit Abfindung kann die Anspruchsdauer auf Arbeitslosengeld I reduziert werden, wenn das Arbeitsverhältnis vor der regulären Frist endet.
+
+## Vorteile des Aufhebungsvertrags
+
+Trotz der Risiken kann ein Aufhebungsvertrag sinnvoll sein:
+- **Abfindung**: Oft verhandelbar (Faustformel: 0,5 Monatsgehälter pro Beschäftigungsjahr)
+- **Flexible Fristen**: Das Arbeitsverhältnis kann früher enden als durch Kündigung
+- **Zeugnis**: Im Aufhebungsvertrag kann ein gutes Zeugnis vereinbart werden
+- **Outplacement**: Viele Arbeitgeber bieten Karriereberatung an
+
+## Verhandlungstipps
+
+1. **Niemals sofort unterschreiben**: Nehmen Sie sich mindestens 1 Woche Bedenkzeit.
+2. **Beraten lassen**: Fachanwalt für Arbeitsrecht oder Gewerkschaft hinzuziehen — oft günstiger als der Fehler.
+3. **Abfindung verhandeln**: Der erste Vorschlag ist selten das Maximum.
+4. **Freistellung vereinbaren**: Lassen Sie sich für die Restlaufzeit freistellen — unter Fortzahlung des Gehalts.
+5. **Wettbewerbsverbote prüfen**: Keine unkompensierte Beschränkung akzeptieren.
+
+## Checkliste vor der Unterschrift
+
+- [ ] Agentur für Arbeit vorab kontaktiert (Beratung ist kostenlos)
+- [ ] Anwaltliche Prüfung erfolgt
+- [ ] Abfindungshöhe verhandelt
+- [ ] Freistellung bis Vertragsende vereinbart
+- [ ] Zeugnis (Inhalt und Note) schriftlich zugesagt
+- [ ] Keine unkompensierte Wettbewerbsklausel
+- [ ] Urlaub und Überstunden abgegolten
+
+---
+⚠️ *Diese Informationen stellen keine Rechtsberatung dar. Bei konkreten arbeitsrechtlichen Fragen empfehlen wir die Beratung durch einen Fachanwalt für Arbeitsrecht.*`,
+  },
+
+  {
+    slug: "abo-falle-erkennen-vermeiden",
+    title: "Abo-Fallen erkennen und vermeiden: So schützen Sie sich vor ungewollten Abos",
+    excerpt:
+      "Ungewollte Abos, Abo-Fallen im Internet und automatische Verlängerungen — wie Sie diese erkennen, kündigen und zukünftig vermeiden.",
+    author: "KündigungsHeld Redaktion",
+    authorRole: "Geprüfte Rechtsinformationen",
+    date: "2026-02-23",
+    readTime: "7 Min.",
+    category: "Verbraucherrecht",
+    content: `Abo-Fallen kosten Verbraucher in Deutschland jährlich Milliarden Euro. Die gute Nachricht: Mit dem richtigen Wissen können Sie sich schützen — und ungewollte Abos schnell wieder loswerden.
+
+## Typische Abo-Fallen im Überblick
+
+### Kostenloses Probeabo
+Das Lockmittel schlechthin: "30 Tage gratis, danach 9,99 €/Monat." Was viele übersehen: Das Abo startet automatisch, wenn nicht aktiv gekündigt wird. Die Kündigung muss meist *vor* Ende der Probephase erfolgen.
+
+### Dunkle Muster (Dark Patterns)
+Websites nutzen psychologische Tricks:
+- Kündigen-Button versteckt oder grau hinterlegt
+- Kündigungsprozess über viele Schritte gestreckt ("Roach Motel")
+- Vorausgefüllte Checkboxen für Zusatzleistungen
+- Irreführende Formulierungen ("Ja, ich möchte mehr zahlen")
+
+### Versteckte Abos bei Online-Käufen
+Bei manchen Online-Shops wird beim Kauf subtil ein Mitgliedschaftsprogramm eingeschlossen. Prüfen Sie Kaufbestätigungen sorgfältig.
+
+### SMS-Abos / WAP-Billing
+Durch das Anklicken eines Links auf dem Smartphone wird ein Abo abgeschlossen — ohne explizite Bestätigung. Kosten erscheinen dann auf der Handyrechnung.
+
+## Rechtliche Lage: Was gilt in Deutschland?
+
+**Button-Lösung** (seit 2012): Online-Shops müssen einen Bestell-Button verwenden, der klar auf die Zahlungspflicht hinweist ("Kaufen", "Jetzt kostenpflichtig bestellen"). Fehlt diese Kennzeichnung, ist kein wirksamer Vertrag entstanden.
+
+**Bestätigungslösung** (seit 2022): Bei Vertragsabschlüssen, die zu einer Abonnementpflicht führen, muss der Unternehmer eine Bestätigungs-E-Mail senden. Fehlt diese, sind Sie nicht gebunden.
+
+## So kündigen Sie ungewollte Abos
+
+1. **Identifizieren**: Kontoauszüge der letzten 3 Monate nach unbekannten Abbuchungen durchsuchen.
+2. **Anbieter ermitteln**: Google den Firmennamen aus dem Kontoauszug — oft handelt es sich um Marketing-Tochterunternehmen.
+3. **Widerruf prüfen**: Besteht ein Widerrufsrecht (14 Tage), nutzen Sie dieses zuerst.
+4. **Schriftlich kündigen**: Auch wenn das Abo ungewollt ist — kündigen Sie schriftlich und behalten Sie den Nachweis.
+5. **Bank einschalten**: Bei unrechtmäßigen Abbuchungen können Sie eine Lastschrift bis zu 8 Wochen zurückbuchen lassen.
+6. **Verbraucherzentrale**: Bei hartnäckigen Fällen hilft die Verbraucherzentrale — oft kostenlos.
+
+## Präventiv: So schützen Sie sich
+
+- Kredit- statt Debitkarte bei unseriösen Angeboten nutzen
+- Virtuelle Einmalkartenummern nutzen (Revolut, PayPal)
+- Alle Abos in einer Liste führen (z.B. im KündigungsHeld-Archiv)
+- Probeabos sofort nach Abschluss im Kalender mit Ablaufdatum notieren
+- E-Mail-Bestätigungen in einem eigenen Ordner archivieren
+
+---
+⚠️ *Diese Informationen stellen keine Rechtsberatung dar. Bei rechtlichen Fragen wenden Sie sich an einen zugelassenen Rechtsanwalt oder die Verbraucherzentrale.*`,
+  },
+
+  {
+    slug: "einschreiben-kuendigung-nachweisen",
+    title: "Kündigung per Einschreiben: Welche Einschreibearten wirklich Beweis liefern",
+    excerpt:
+      "Einschreiben, Einwurf-Einschreiben oder Einschreiben mit Rückschein — welche Art schützt Sie bei Kündigungen wirklich? Ein Überblick.",
+    author: "KündigungsHeld Redaktion",
+    authorRole: "Geprüfte Rechtsinformationen",
+    date: "2026-02-23",
+    readTime: "5 Min.",
+    category: "Praxistipps",
+    content: `Eine Kündigung entfaltet nur dann Wirkung, wenn sie dem Empfänger **zugegangen** ist. Den Beweis dafür zu erbringen ist entscheidend — besonders wenn der Empfänger den Erhalt bestreitet.
+
+## Die drei Einschreibearten im Überblick
+
+### 1. Einschreiben (Standard)
+- Sendungsverfolgung online
+- Unterschrift bei Übergabe
+- **Problem**: Beweist nur, dass ein Brief abgegeben wurde — nicht den Inhalt
+
+### 2. Einwurf-Einschreiben
+- Brief wird in den Briefkasten eingeworfen
+- Zusteller fotografiert den Einwurf
+- **Vorteil**: Kein Empfänger muss öffnen, kein "nicht angetroffen"
+- **Beweiswert**: Hoher Beweiswert bei Gerichten — wird häufig empfohlen
+
+### 3. Einschreiben mit Rückschein
+- Empfänger unterschreibt den Rückschein persönlich
+- Sie erhalten den unterschriebenen Schein zurück
+- **Stärkster Beweis**: Datum und Unterschrift des Empfängers unbestreitbar
+- **Empfehlung**: Für Kündigungen mit hohem Streitpotenzial (Mietrecht, Arbeitsrecht)
+
+## Was beweist der Einlieferungsbeleg?
+
+Der Einlieferungsbeleg bestätigt nur, dass Sie *irgendetwas* aufgegeben haben — nicht was drin war. Für maximale Sicherheit empfiehlt sich:
+
+1. **Kopie des Kündigungsschreibens** aufbewahren
+2. **Zeuge bei der Aufgabe** — oder Inhalt auf dem Beleg vermerken lassen
+3. **Fotografieren** Sie das Schreiben und den Umschlag vor dem Einwurf
+
+## Alternativen zum Einschreiben
+
+**Persönliche Übergabe mit Empfangsbestätigung**: Lassen Sie sich auf einer Kopie "Erhalten am [Datum]" unterschreiben.
+
+**Fax mit Sendebericht**: In der Rechtsprechung anerkannt, wenn der vollständige Sendebericht vorliegt.
+
+**E-Mail**: Nur wenn der Empfänger ausdrücklich zugestimmt hat oder die AGB es erlauben. Beweiswert ist geringer.
+
+## Fazit: Welches Einschreiben für welchen Fall?
+
+| Anlass | Empfohlene Versandart |
+|---|---|
+| Streaming-Abo | Einfaches Einschreiben |
+| Fitnessstudio | Einwurf-Einschreiben |
+| Mobilfunk | Einwurf-Einschreiben |
+| Mietvertrag | Einschreiben mit Rückschein |
+| Arbeitgeber | Einschreiben mit Rückschein + persönliche Übergabe |
+| Versicherung | Einwurf-Einschreiben |
+
+---
+⚠️ *Diese Informationen stellen keine Rechtsberatung dar. Bei rechtlichen Fragen wenden Sie sich an einen zugelassenen Rechtsanwalt.*`,
+  },
+
+  {
+    slug: "was-ist-eine-kuendigung-grundlagen",
+    title: "Was ist eine Kündigung? Grundlagen, Arten und häufige Irrtümer",
+    excerpt:
+      "Kündigung, Rücktritt, Anfechtung — was ist der Unterschied? Wir erklären die rechtlichen Grundlagen verständlich und räumen mit häufigen Irrtümern auf.",
+    author: "KündigungsHeld Redaktion",
+    authorRole: "Geprüfte Rechtsinformationen",
+    date: "2026-02-23",
+    readTime: "6 Min.",
+    category: "Vertragsrecht",
+    content: `Das Wort "Kündigung" klingt einfach — rechtlich steckt jedoch mehr dahinter, als viele vermuten. Wer die Grundbegriffe kennt, vermeidet teure Fehler.
+
+## Definition: Was ist eine Kündigung?
+
+Eine Kündigung ist eine **einseitige empfangsbedürftige Willenserklärung**, mit der ein Dauerschuldverhältnis (= ein laufender Vertrag) beendet wird. "Einseitig" bedeutet: Nur eine Partei erklärt die Kündigung — die Zustimmung der anderen Seite ist nicht erforderlich. "Empfangsbedürftig" bedeutet: Die Kündigung wird erst wirksam, wenn sie der anderen Partei **zugegangen** ist.
+
+## Die wichtigsten Arten der Kündigung
+
+### Ordentliche Kündigung
+Beendigung des Vertrags unter Einhaltung der vereinbarten oder gesetzlichen Kündigungsfrist. Die häufigste Form — möglich, wenn kein besonderer Grund vorliegt.
+
+### Außerordentliche / fristlose Kündigung
+Sofortige Beendigung aus wichtigem Grund (Paragraph 314 BGB). Voraussetzung: Ein Umstand, der dem Kündigenden die Fortsetzung des Vertrags unzumutbar macht. Typische Gründe: schwere Vertragsverletzung, dauernde Leistungsstörung.
+
+### Sonderkündigung
+Sonderfall zwischen ordentlich und außerordentlich: Kündigung zu einem bestimmten Zeitpunkt aus einem besonderen Anlass (z.B. Preiserhöhung, Umzug). Gesetzlich oder vertraglich vorgesehen.
+
+## Kündigung vs. Rücktritt vs. Anfechtung
+
+| Begriff | Anwendungsfall | Wirkung |
+|---|---|---|
+| **Kündigung** | Laufende Dauerschuldverhältnisse | Beendigung für die Zukunft |
+| **Rücktritt** | Einmalverträge, Nicht-Erfüllung | Rückabwicklung (wie nie abgeschlossen) |
+| **Anfechtung** | Irrtum, Täuschung, Drohung | Vertrag gilt als von Anfang an nichtig |
+| **Widerruf** | Fernabsatz, Haustürgeschäfte | Rückabwicklung innerhalb der Frist |
+
+## Häufige Irrtümer
+
+**Irrtum 1: "Ich habe telefonisch gekündigt, das reicht."**
+Nein. Bei den meisten Verträgen ist Schriftform vorgeschrieben oder zumindest empfohlen. Telefonische Kündigungen sind schwer zu beweisen.
+
+**Irrtum 2: "Wenn ich nicht zahle, endet der Vertrag von selbst."**
+Nein. Der Vertrag läuft weiter — und der Anbieter kann Inkasso beauftragen. Immer aktiv kündigen.
+
+**Irrtum 3: "Ich muss den Kündigungsgrund nennen."**
+In den meisten Fällen nein. Bei der ordentlichen Kündigung von Verbraucherverträgen ist keine Begründung erforderlich.
+
+**Irrtum 4: "Die Kündigung gilt ab dem Tag, an dem ich sie abschicke."**
+Nein. Entscheidend ist der **Zugang** beim Empfänger — nicht das Absendedatum. Kalkulieren Sie Postlaufzeiten ein.
+
+**Irrtum 5: "Mein Abo verlängert sich automatisch um 12 Monate."**
+Seit der BGB-Reform 2022 ist das nicht mehr erlaubt. Automatische Verlängerungen betragen maximal einen Monat.
+
+## Die Kündigung wirksam erklären
+
+Eine wirksame Kündigung muss:
+1. **Klar und eindeutig** sein — keine Formulierungen wie "Ich überlege zu kündigen"
+2. **Zugegangen** sein — beim richtigen Empfänger, an der richtigen Adresse
+3. **In der richtigen Form** sein — schriftlich, wenn vorgeschrieben
+4. **Fristgerecht** sein — nicht zu früh, nicht zu spät
+
+---
+⚠️ *Diese Informationen stellen keine Rechtsberatung dar. Bei rechtlichen Fragen wenden Sie sich an einen zugelassenen Rechtsanwalt.*`,
+  },
+
+  {
+    slug: "krankenkasse-wechseln-kundigen",
+    title: "Krankenkasse wechseln und kündigen: Fristen, Sonderkündigungsrecht und Tipps",
+    excerpt:
+      "Gesetzliche Krankenkasse kündigen und wechseln: So funktioniert es, was die Sonderkündigung bei Zusatzbeitragserhöhung bedeutet und welche Kasse empfehlenswert ist.",
+    author: "KündigungsHeld Redaktion",
+    authorRole: "Geprüfte Rechtsinformationen",
+    date: "2026-02-23",
+    readTime: "7 Min.",
+    category: "Versicherungsrecht",
+    content: `Die Wahl der Krankenkasse hat erhebliche finanzielle und gesundheitliche Auswirkungen. Wer die Regeln kennt, kann schnell und einfach wechseln.
+
+## Grundregeln: Wann können Sie wechseln?
+
+**Mindestmitgliedschaft**: Sie müssen mindestens **12 Monate** bei Ihrer aktuellen Kasse versichert gewesen sein, bevor Sie ordentlich kündigen können.
+
+**Kündigungsfrist**: 2 Monate zum Monatsende. Kündigung im Januar → Mitgliedschaft endet am 31. März.
+
+**Nahtlosigkeit**: Sie müssen sicherstellen, dass keine Versicherungslücke entsteht. Die neue Kasse muss bestätigen, dass sie Sie aufnimmt, bevor die Kündigung wirksam wird.
+
+## Sonderkündigungsrecht bei Zusatzbeitrag-Erhöhung
+
+Das wichtigste Sonderrecht: Erhöht Ihre Krankenkasse den Zusatzbeitrag, haben Sie ein **Sonderkündigungsrecht** — unabhängig von der 12-Monats-Frist.
+
+**Voraussetzungen**:
+- Die Kasse muss Sie über die Erhöhung **persönlich und in Textform** informieren
+- In der Mitteilung muss auf das Sonderkündigungsrecht hingewiesen werden
+- Kündigung muss bis zum Ende des Monats erfolgen, in dem die Erhöhung in Kraft tritt
+
+**Beispiel**: Erhöhung gilt ab 1. April → Kündigung bis 30. April → Austritt zum 30. April.
+
+## Schritt-für-Schritt: Wechsel durchführen
+
+1. **Neue Kasse auswählen**: Vergleich der Zusatzbeiträge, Zusatzleistungen und Bonusprogramme
+2. **Aufnahmebestätigung einholen**: Neue Kasse bestätigt Aufnahme schriftlich
+3. **Alte Kasse kündigen**: Schriftlich mit der Aufnahmebestätigung als Anlage
+4. **Arbeitgeber informieren**: Neue Kassennummer und IBAN für Beitragsabführung mitteilen
+5. **Neue Versichertenkarte abwarten**: Kommt automatisch vor dem Wechseldatum
+
+## Was prüfen beim Kassenvergleich?
+
+- **Zusatzbeitrag**: Unterschiede von 0,5–1,5% des Bruttogehalts möglich
+- **Zusatzleistungen**: Osteopathie, Homöopathie, Zahnreinigung, Auslands-Krankenversicherung
+- **Bonusprogramme**: Bis zu 150 €/Jahr für sportliche Aktivitäten oder Vorsorgeuntersuchungen
+- **Service**: Digitale Angebote, App, Erreichbarkeit
+
+## Pflichtangaben im Kündigungsschreiben
+
+- Vollständiger Name und Adresse
+- Versichertennummer
+- Geburtsdatum
+- Datum der Kündigung und gewünschtes Ende der Mitgliedschaft
+- Bei Sonderkündigung: Hinweis auf die Beitragserhöhung als Grund
+- Nachweis der neuen Mitgliedschaft beilegen
+
+---
+⚠️ *Diese Informationen stellen keine Rechtsberatung dar. Bei rechtlichen Fragen wenden Sie sich an einen zugelassenen Rechtsanwalt oder Ihre Krankenkasse.*`,
+  },
+
+  {
+    slug: "kuendigung-muster-vorlage-tipps",
+    title: "Das perfekte Kündigungsschreiben: Muster, Tipps und häufige Fehler",
+    excerpt:
+      "Ein rechtssicheres Kündigungsschreiben schreiben — mit Muster, Checkliste und den häufigsten Fehlern, die Sie unbedingt vermeiden sollten.",
+    author: "KündigungsHeld Redaktion",
+    authorRole: "Geprüfte Rechtsinformationen",
+    date: "2026-02-23",
+    readTime: "6 Min.",
+    category: "Praxistipps",
+    content: `Ein gut formuliertes Kündigungsschreiben schützt Ihre Rechte und verhindert Missverständnisse. Wir zeigen, worauf es ankommt.
+
+## Die Bestandteile eines Kündigungsschreibens
+
+### 1. Absender (oben links)
+Vollständiger Name, Straße, PLZ und Ort, optional Telefon und E-Mail
+
+### 2. Empfänger (darunter)
+Name des Unternehmens / der Ansprechperson, korrekte Postanschrift (nicht Filiale, sondern Kündigungspostfach!)
+
+### 3. Datum
+Das Schreibdatum — wichtig für die Nachvollziehbarkeit der Fristwahrung
+
+### 4. Betreff
+Klar und eindeutig: "Kündigung meines [Vertragstyp]-Vertrags, Kundennummer [XXX], Vertragsnummer [YYY]"
+
+### 5. Kündigungserklärung
+"Hiermit kündige ich den oben genannten Vertrag ordentlich und fristgerecht zum [Datum] bzw. zum nächstmöglichen Termin."
+
+### 6. Optionale Zusätze
+- Bitte um schriftliche Bestätigung
+- Bitte um Rückzahlung von Guthaben
+- Bei Sonderkündigung: Angabe des Sonderkündigungsgrunds
+
+### 7. Grußformel und Unterschrift
+"Mit freundlichen Grüßen" — und darunter die eigenhändige Unterschrift (bei physischem Brief)
+
+## Checkliste vor dem Absenden
+
+- [ ] Richtige Empfängeradresse (Postfach für Kündigungen, nicht Filiale)
+- [ ] Kunden- und/oder Vertragsnummer enthalten
+- [ ] Kündigungstermin angegeben (oder "zum nächstmöglichen Termin")
+- [ ] Datum und Unterschrift vorhanden
+- [ ] Kopie des Schreibens aufbewahrt
+- [ ] Versandnachweis gesichert (Einlieferungsbeleg, Tracking)
+- [ ] Kalender-Erinnerung für erwartete Bestätigung angelegt
+
+## Die häufigsten Fehler — und wie Sie diese vermeiden
+
+**Fehler 1: Falsche Adresse**
+Jedes Unternehmen hat meist eine separate Postfachadresse für Kündigungen. Die Filialadresse oder allgemeine Unternehmensadresse ist oft falsch.
+
+**Fehler 2: Kein Nachweis**
+Ohne Einlieferungsbeleg oder Sendungsverfolgung haben Sie im Streitfall keine Handhabe. Immer Nachweis aufbewahren.
+
+**Fehler 3: Ungenaue Formulierung**
+"Ich möchte eventuell kündigen" oder "Ich kündige vielleicht" sind unwirksam. Die Erklärung muss eindeutig und unbedingt sein.
+
+**Fehler 4: Falsches Datum**
+Das Kündigungsdatum muss mit den Fristen übereinstimmen. Wählen Sie im Zweifel "zum nächstmöglichen Termin" — das schützt vor Formfehlern.
+
+**Fehler 5: Fehlende Kundennummer**
+Ohne Kundennummer kann das Unternehmen den Vertrag nicht zuordnen — das verlangsamt die Bearbeitung oder führt zu Rückfragen.
+
+## Warum KündigungsHeld nutzen?
+
+Der KündigungsHeld-Generator übernimmt alle diese Punkte automatisch:
+- Korrekte Empfängeradresse aus der Datenbank
+- Alle Pflichtfelder vorausgefüllt
+- Rechtssichere Formulierung geprüft
+- PDF-Download sofort nach Eingabe
+
+---
+⚠️ *Diese Informationen stellen keine Rechtsberatung dar. Bei rechtlichen Fragen wenden Sie sich an einen zugelassenen Rechtsanwalt.*`,
+  },
+
+  {
+    slug: "kuendigung-nach-bgb-reform-2022",
+    title: "BGB-Reform 2022: Was hat sich bei Kündigungen verändert?",
+    excerpt:
+      "Seit März 2022 gelten neue Regeln für Laufzeiten und automatische Verlängerungen. Was genau geändert wurde und welche Verträge betroffen sind.",
+    author: "KündigungsHeld Redaktion",
+    authorRole: "Geprüfte Rechtsinformationen",
+    date: "2026-02-23",
+    readTime: "6 Min.",
+    category: "Vertragsrecht",
+    content: `Am 1. März 2022 trat die Reform des Vertragsrechts im BGB in Kraft — eine der wichtigsten Verbraucherschutzänderungen der letzten Jahre. Millionen bestehende Verträge waren betroffen.
+
+## Warum wurde das BGB geändert?
+
+Jahrzehntelang war es gängige Praxis: Ein Vertrag verlängert sich automatisch um 12 Monate, wenn nicht mit einer Frist von 3 Monaten gekündigt wird. Viele Verbraucher saßen so jahrelang in Verträgen fest, die sie längst kündigen wollten — weil sie die Frist knapp verpasst hatten.
+
+Der Gesetzgeber reagierte mit einer grundlegenden Änderung der Paragraphen 309 und 310 BGB.
+
+## Die wichtigsten Änderungen im Überblick
+
+### Automatische Verlängerung: Maximal 1 Monat
+
+Verlängert sich ein Verbrauchervertrag nach Ablauf der Mindestlaufzeit automatisch, darf diese Verlängerung **höchstens einen Monat** betragen. Anschließend kann der Vertrag monatlich gekündigt werden.
+
+**Vorher**: Abo läuft 24 Monate, verlängert sich automatisch um weitere 12 Monate, wenn nicht mit 3 Monaten Vorlauf gekündigt wird.
+
+**Nachher**: Nach den 24 Monaten läuft der Vertrag maximal einen Monat weiter und kann dann monatlich beendet werden.
+
+### Mindestvertragslaufzeit: Maximal 24 Monate
+
+Die maximale Mindestlaufzeit bei Verbraucherverträgen beträgt weiterhin 24 Monate — daran hat sich nichts geändert. Neu ist jedoch, dass Verträge mit einer Mindestlaufzeit von mehr als einem Jahr dem Verbraucher auch die Option einer Laufzeit von maximal einem Jahr angeboten werden muss.
+
+### Kündigungsfrist nach Ablauf: 1 Monat
+
+Nach dem Ende der Mindestlaufzeit darf die Kündigungsfrist maximal **einen Monat** betragen. Früher waren Fristen von 3 Monaten üblich.
+
+## Welche Verträge sind betroffen?
+
+Die Änderungen gelten für **Verbraucherverträge** — also Verträge zwischen einem Unternehmen und einer Privatperson. Betroffen sind insbesondere:
+
+- Mobilfunkverträge
+- Internetverträge (DSL, Glasfaser)
+- Streaming-Abonnements
+- Fitnessstudio-Mitgliedschaften
+- Zeitschriften- und Zeitungsabos
+- Energieversorger-Verträge
+
+**Nicht betroffen**: Mietverträge, Arbeitsverträge und Verträge zwischen Unternehmen (B2B).
+
+## Was gilt für Altverträge?
+
+Verträge, die *vor* dem 1. März 2022 abgeschlossen wurden, unterlagen ursprünglich einer Übergangsfrist bis zum 1. März 2024. Seit diesem Datum müssen auch Altverträge die neuen Regeln einhalten.
+
+**Praktisch bedeutet das**: Wenn Ihr altes Abo (z.B. von 2019) Sie noch an alte Verlängerungsklauseln bindet, können Sie sich auf die neue Gesetzeslage berufen.
+
+## Kündigung-Button: Neue Pflicht für Websites
+
+Seit dem 1. Juli 2022 müssen Websites, die Verträge online abschließen lassen, auch einen **einfach zugänglichen Kündigungs-Button** anbieten. Der Button muss gut sichtbar und leicht auffindbar sein — versteckte Kündigungsprozesse sind seither nicht mehr zulässig.
+
+Verstöße können von Verbraucherzentralen abgemahnt werden.
+
+## Fazit: Was ändert sich für Sie?
+
+Wenn Sie einen Vertrag haben, der sich alle 12 Monate verlängert: Prüfen Sie die aktuellen AGB Ihres Anbieters. Viele haben ihre Bedingungen inzwischen angepasst — zu Ihrem Vorteil. Falls nicht, können Sie sich auf das neue Recht berufen.
+
+Nutzen Sie den KündigungsHeld-Generator, um schnell und rechtssicher zu kündigen — ohne stundenlange Recherche nach der richtigen Adresse.
+
+---
+⚠️ *Diese Informationen stellen keine Rechtsberatung dar. Bei rechtlichen Fragen wenden Sie sich an einen zugelassenen Rechtsanwalt.*`,
+  },
 ]
 
 export function getArticleBySlug(slug: string): BlogArticle | undefined {
