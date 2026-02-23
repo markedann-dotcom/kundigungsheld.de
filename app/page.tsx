@@ -1,3 +1,4 @@
+import type { Metadata } from "next"
 import { Navbar } from "@/components/navbar"
 import { HeroSection } from "@/components/hero-section"
 import { StatsSection } from "@/components/stats-section"
@@ -16,11 +17,41 @@ import { AiAssistantSection } from "@/components/ai-assistant-section"
 import { AdBanner } from "@/components/ad-banner"
 import { SuggestCompanyButton } from "@/components/suggest-company-button"
 
+export const metadata: Metadata = {
+  title: "KündigungsHeld – Verträge kostenlos & rechtssicher kündigen",
+  description:
+    "Erstellen Sie rechtssichere Kündigungsschreiben in 2 Minuten – für Telekom, Netflix, Fitnessstudio und 300+ weitere Anbieter. Kostenlos, ohne Registrierung, DSGVO-konform.",
+  keywords: [
+    "Kündigung",
+    "Kündigungsschreiben",
+    "Vertrag kündigen",
+    "Kündigung Vorlage",
+    "Telekom kündigen",
+    "Fitnessstudio kündigen",
+    "Netflix kündigen",
+    "Sonderkündigung",
+    "kostenlos kündigen",
+  ],
+  alternates: {
+    canonical: "https://kundigungsheld.de",
+  },
+  openGraph: {
+    title: "KündigungsHeld – Verträge kostenlos & rechtssicher kündigen",
+    description:
+      "Rechtssichere Kündigungsschreiben in 2 Minuten erstellen. 300+ Anbieter, kostenlos, ohne Registrierung.",
+    url: "https://kundigungsheld.de",
+    siteName: "KündigungsHeld",
+    locale: "de_DE",
+    type: "website",
+  },
+}
+
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  name: "KundigungsHeld",
-  description: "Erstellen Sie in wenigen Minuten rechtssichere Kundigungsschreiben fur uber 150 deutsche Unternehmen.",
+  name: "KündigungsHeld",
+  description:
+    "Erstellen Sie in wenigen Minuten rechtssichere Kündigungsschreiben für über 300 deutsche Unternehmen.",
   url: "https://kundigungsheld.de",
   applicationCategory: "UtilityApplication",
   operatingSystem: "Web",
@@ -63,12 +94,10 @@ export default function Home() {
         <Fristenrechner />
         <TestimonialsSection />
 
-        {/* Разделитель перед чёрной секцией */}
         <div className="h-px bg-border/30" />
 
         <AiAssistantSection />
 
-        {/* Разделитель после чёрной секции */}
         <div className="h-px bg-border/30" />
 
         <BlogPreviewSection />
