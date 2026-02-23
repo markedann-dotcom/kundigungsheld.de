@@ -6,8 +6,19 @@ import { CookieBanner } from '@/components/cookie-banner'
 import { ThemeProvider } from '@/components/theme-provider'
 import { I18nProvider } from '@/contexts/i18n-context'
 
-const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
-const spaceGrotesk = Space_Grotesk({ subsets: ['latin'], variable: '--font-space-grotesk' })
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
+  display: 'swap',
+  preload: true,
+})
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ['latin'],
+  variable: '--font-space-grotesk',
+  display: 'swap',
+  preload: true,
+})
 
 export const metadata: Metadata = {
   title: 'KündigungsHeld - Verträge einfach kündigen | 100% kostenlos',
@@ -41,6 +52,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="de" className={`${inter.variable} ${spaceGrotesk.variable}`} suppressHydrationWarning>
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+      </head>
       <body className="font-sans antialiased">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <I18nProvider>
