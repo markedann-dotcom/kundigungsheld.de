@@ -124,16 +124,20 @@ function ToggleButton({
   onClick,
   children,
   className = "",
+  role,
 }: {
   active: boolean
   onClick: () => void
   children: React.ReactNode
   className?: string
+  role?: string
 }) {
   return (
     <button
       type="button"
       onClick={onClick}
+      role={role}
+      aria-selected={role === "tab" ? active : undefined}
       className={`rounded-lg px-3 py-2 text-sm font-medium transition-all ${
         active
           ? "bg-primary text-white shadow-sm"
@@ -510,6 +514,7 @@ export function ArchivClient() {
                   key={value}
                   active={filterStatus === value}
                   onClick={() => setFilterStatus(value)}
+                  role="tab"
                 >
                   {label}
                 </ToggleButton>
