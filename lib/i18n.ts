@@ -202,6 +202,8 @@ export type TranslationKeys = {
   nav: {
     features: string
     howItWorks: string
+    generator: string
+    fristenrechner: string
     archive: string
     blog: string
     faq: string
@@ -401,6 +403,8 @@ const de: TranslationKeys = {
   nav: {
     features: 'Funktionen',
     howItWorks: "So geht's",
+    generator: 'Generator',
+    fristenrechner: 'Fristenrechner',
     archive: 'Mein Archiv',
     blog: 'Blog',
     faq: 'FAQ',
