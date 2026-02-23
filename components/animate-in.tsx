@@ -9,6 +9,8 @@ interface AnimateInProps {
   direction?: "up" | "down" | "left" | "right" | "none"
   duration?: number
   once?: boolean
+  /** Если true — рендерится сразу без анимации (для LCP-элементов) */
+  instant?: boolean
 }
 
 export function AnimateIn({
@@ -18,11 +20,16 @@ export function AnimateIn({
   direction = "up",
   duration = 600,
   once = true,
+  instant = false,
 }: AnimateInProps) {
   const ref = useRef<HTMLDivElement>(null)
-  const [isVisible, setIsVisible] = useState(false)
+  // Если instant или delay=0 — показываем сразу, не ждём IntersectionObserver
+  const [isVisible, setIsVisible] = useState(instant || delay === 0)
 
   useEffect(() => {
+    // Если уже видим — не вешаем observer
+    if (instant) return
+
     const element = ref.current
     if (!element) return
 
@@ -40,14 +47,19 @@ export function AnimateIn({
 
     observer.observe(element)
     return () => observer.disconnect()
-  }, [once])
+  }, [once, instant])
 
   const translateMap = {
-    up: "translateY(24px)",
-    down: "translateY(-24px)",
-    left: "translateX(24px)",
-    right: "translateX(-24px)",
+    up: "translateY(20px)",
+    down: "translateY(-20px)",
+    left: "translateX(20px)",
+    right: "translateX(-20px)",
     none: "none",
+  }
+
+  // Для instant-элементов — никаких стилей анимации, чистый рендер
+  if (instant) {
+    return <div className={className}>{children}</div>
   }
 
   return (
@@ -57,13 +69,14 @@ export function AnimateIn({
       style={{
         opacity: isVisible ? 1 : 0,
         transform: isVisible ? "none" : translateMap[direction],
-        transition: `opacity ${duration}ms cubic-bezier(0.22, 1, 0.36, 1) ${delay}ms, transform ${duration}ms cubic-bezier(0.22, 1, 0.36, 1) ${delay}ms`,
-        willChange: "opacity, transform",
+        transition: isVisible
+          ? `opacity ${duration}ms cubic-bezier(0.22, 1, 0.36, 1) ${delay}ms, transform ${duration}ms cubic-bezier(0.22, 1, 0.36, 1) ${delay}ms`
+          : "none",
+        // willChange только когда анимация активна, не всегда
+        willChange: isVisible ? "auto" : "opacity, transform",
       }}
     >
       {children}
     </div>
   )
 }
-
-

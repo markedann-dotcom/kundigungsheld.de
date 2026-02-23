@@ -275,7 +275,7 @@ export function HeroSection() {
         <div className="mx-auto max-w-5xl text-center">
 
           {/* Badge */}
-          <AnimateIn delay={0}>
+          <AnimateIn instant>
             <div className="mb-12 inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/80 px-4 py-1.5 backdrop-blur-sm shadow-sm">
               <div className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
               <span className="text-xs font-medium text-muted-foreground tracking-wide uppercase">
@@ -284,10 +284,12 @@ export function HeroSection() {
             </div>
           </AnimateIn>
 
-          {/* Heading — no delay for LCP */}
-          <h1 className="font-display text-6xl font-black leading-[1.05] tracking-tight text-foreground sm:text-7xl lg:text-8xl mb-6">
-            {t.hero.title}
-          </h1>
+          {/* Heading — instant for LCP */}
+          <AnimateIn instant>
+            <h1 className="font-display text-6xl font-black leading-[1.05] tracking-tight text-foreground sm:text-7xl lg:text-8xl mb-6">
+              {t.hero.title}
+            </h1>
+          </AnimateIn>
 
           {/* Description */}
           <AnimateIn delay={300}>
