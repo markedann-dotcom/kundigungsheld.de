@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next'
-import { Inter, Space_Grotesk } from 'next/font/google'
+import { Inter, Space_Grotesk, Caveat } from 'next/font/google'
 
 import './globals.css'
 import { CookieBanner } from '@/components/cookie-banner'
@@ -18,6 +18,14 @@ const spaceGrotesk = Space_Grotesk({
   variable: '--font-space-grotesk',
   display: 'swap',
   preload: true,
+})
+
+// Caveat перенесён из globals.css в next/font — больше не блокирует рендер
+const caveat = Caveat({
+  subsets: ['latin'],
+  variable: '--font-caveat',
+  display: 'swap',
+  preload: false, // не критичный шрифт — не preload
 })
 
 export const metadata: Metadata = {
@@ -51,7 +59,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="de" className={`${inter.variable} ${spaceGrotesk.variable}`} suppressHydrationWarning>
+    <html lang="de" className={`${inter.variable} ${spaceGrotesk.variable} ${caveat.variable}`} suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
