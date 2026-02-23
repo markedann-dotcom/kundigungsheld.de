@@ -5,18 +5,27 @@ import { useEffect, useRef, useState } from "react"
 interface PdfPreviewProps {
   url: string
   className?: string
+  /** Статичный PNG/WebP скриншот первой страницы PDF для мгновенного показа */
+  previewImageUrl?: string
 }
 
-export function PdfPreview({ url, className = "" }: PdfPreviewProps) {
+export function PdfPreview({ url, className = "", previewImageUrl = "/preview/kuendigung-muster-preview.webp" }: PdfPreviewProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(false)
+  const [stage, setStage] = useState<"image" | "loading" | "pdf" | "error">("image")
 
+  // Загружаем PDF только когда элемент виден (IntersectionObserver)
+  // и только после того как страница полностью загрузилась
   useEffect(() => {
+    const container = containerRef.current
+    if (!container) return
+
     let cancelled = false
 
-    async function render() {
+    const loadPdf = async () => {
+      if (cancelled) return
+      setStage("loading")
+
       try {
         const pdfjsLib = await import("pdfjs-dist")
         pdfjsLib.GlobalWorkerOptions.workerSrc = "/pdf.worker.min.mjs"
@@ -27,12 +36,10 @@ export function PdfPreview({ url, className = "" }: PdfPreviewProps) {
         if (cancelled || !canvasRef.current || !containerRef.current) return
 
         const containerWidth = containerRef.current.clientWidth || 600
-        const pixelRatio = window.devicePixelRatio || 1
+        const pixelRatio = Math.min(window.devicePixelRatio || 1, 2) // max 2x для экономии памяти
 
-        // Масштабируем PDF под ширину контейнера
         const baseViewport = page.getViewport({ scale: 1 })
         const scale = (containerWidth / baseViewport.width) * pixelRatio
-
         const viewport = page.getViewport({ scale })
 
         const canvas = canvasRef.current
@@ -46,58 +53,76 @@ export function PdfPreview({ url, className = "" }: PdfPreviewProps) {
 
         await page.render({ canvasContext: ctx, viewport }).promise
 
-        if (!cancelled) setLoading(false)
+        if (!cancelled) setStage("pdf")
       } catch (err) {
         console.error("PDF render error:", err)
-        if (!cancelled) {
-          setError(true)
-          setLoading(false)
-        }
+        if (!cancelled) setStage("error")
       }
     }
 
-    render()
+    // Ждём load события страницы, потом IntersectionObserver
+    const onPageLoad = () => {
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            observer.disconnect()
+            loadPdf()
+          }
+        },
+        { threshold: 0.1, rootMargin: "200px" }
+      )
+      observer.observe(container)
+    }
+
+    if (document.readyState === "complete") {
+      // Небольшая задержка чтобы не конкурировать с LCP
+      setTimeout(onPageLoad, 1000)
+    } else {
+      window.addEventListener("load", () => setTimeout(onPageLoad, 1000), { once: true })
+    }
+
     return () => { cancelled = true }
   }, [url])
 
-  if (error) {
-    return (
-      <div className={`flex items-center justify-center bg-muted/20 h-full ${className}`}>
-        <p className="text-xs text-muted-foreground">Vorschau nicht verfügbar</p>
-      </div>
-    )
-  }
-
   return (
     <div ref={containerRef} className={`relative w-full h-full overflow-hidden bg-white ${className}`}>
-      {/* Спиннер */}
-      {loading && (
-        <div className="absolute inset-0 flex items-center justify-center bg-muted/10 z-10">
+
+      {/* Статичный preview — показывается мгновенно */}
+      {(stage === "image" || stage === "loading") && (
+        <img
+          src={previewImageUrl}
+          alt="Kündigungsschreiben Vorschau"
+          className="w-full h-full object-cover object-top"
+          // Это изображение на первом экране — грузим с приоритетом
+          fetchPriority="high"
+          decoding="async"
+        />
+      )}
+
+      {/* Спиннер поверх картинки пока грузится PDF */}
+      {stage === "loading" && (
+        <div className="absolute inset-0 flex items-center justify-center bg-white/60 z-10">
           <div className="h-6 w-6 animate-spin rounded-full border-2 border-foreground border-t-transparent" />
         </div>
       )}
 
-      {/* Canvas с PDF */}
+      {/* Canvas с настоящим PDF */}
       <canvas
         ref={canvasRef}
         className="w-full"
-        style={{ display: loading ? "none" : "block" }}
+        style={{ display: stage === "pdf" ? "block" : "none" }}
       />
 
-      {/* Градиент снизу — эффект "превью" */}
-      {!loading && (
-        <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-white via-white/80 to-transparent pointer-events-none" />
-      )}
+      {/* Градиент снизу */}
+      <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-white via-white/80 to-transparent pointer-events-none z-10" />
 
-      {/* Бейдж снизу по центру */}
-      {!loading && (
-        <div className="absolute bottom-6 left-0 right-0 flex justify-center pointer-events-none">
-          <div className="flex items-center gap-2 rounded-full bg-foreground/90 backdrop-blur-sm px-4 py-2 shadow-lg">
-            <div className="h-1.5 w-1.5 rounded-full bg-green-400 animate-pulse" />
-            <span className="text-xs font-semibold text-background">Rechtssicheres Dokument</span>
-          </div>
+      {/* Бейдж */}
+      <div className="absolute bottom-6 left-0 right-0 flex justify-center pointer-events-none z-20">
+        <div className="flex items-center gap-2 rounded-full bg-foreground/90 backdrop-blur-sm px-4 py-2 shadow-lg">
+          <div className="h-1.5 w-1.5 rounded-full bg-green-400 animate-pulse" />
+          <span className="text-xs font-semibold text-background">Rechtssicheres Dokument</span>
         </div>
-      )}
+      </div>
     </div>
   )
 }
