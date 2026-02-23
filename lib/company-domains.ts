@@ -281,12 +281,10 @@ const LOGO_TOKEN = "pk_f6Qap7NbT5WSQ5cSVlM8-g"
 
 /**
  * Returns the Logo.dev URL for a company, or null if not mapped.
- * Uses Next.js image proxy to get WebP conversion + long-term caching.
+ * size=64 requests a 64px logo instead of 128px — half the data.
  */
 export function getLogoUrl(companyId: string): string | null {
   const domain = COMPANY_DOMAINS[companyId]
   if (!domain) return null
-  // Проксируем через Next.js /_next/image для WebP + кеша
-  const externalUrl = `https://img.logo.dev/${domain}?token=${LOGO_TOKEN}&size=64`
-  return `/_next/image?url=${encodeURIComponent(externalUrl)}&w=64&q=80`
+  return `https://img.logo.dev/${domain}?token=${LOGO_TOKEN}&size=64`
 }
