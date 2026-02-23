@@ -1141,6 +1141,8 @@ Klären Sie **vor dem Umzug**, welche Ihrer Verträge am neuen Ort verfügbar si
 ---
 ⚠️ *Diese Informationen stellen keine Rechtsberatung dar. Bei rechtlichen Fragen wenden Sie sich an einen zugelassenen Rechtsanwalt.*`,
   },
+]
+  ,
   // ── NEUE ARTIKEL ──────────────────────────────────────────────────────────
 
   {
@@ -1195,7 +1197,7 @@ Mit dem KündigungsHeld-Generator erstellen Sie das Schreiben in unter 2 Minuten
 **Falsche Adresse**: Die Telekom hat mehrere Postfächer — für Kündigungen gilt Siegburg. **Kein Nachweis**: Immer Einschreiben nutzen oder Bestätigungs-E-Mail aufbewahren. **Zu spät kündigen**: Prüfen Sie rechtzeitig, wann Ihre Mindestlaufzeit endet.
 
 ---
-⚠️ *Diese Informationen stellen keine Rechtsberatung dar. Bei rechtlichen Fragen wenden Sie sich an einen zugelassenen Rechtsanwalt.*\`,
+⚠️ *Diese Informationen stellen keine Rechtsberatung dar. Bei rechtlichen Fragen wenden Sie sich an einen zugelassenen Rechtsanwalt.*`,
   },
   {
     slug: "fitnessstudio-kuendigen-so-gehts",
@@ -1248,7 +1250,7 @@ Seit der BGB-Reform 2022: Nach der Mindestlaufzeit verlängert sich der Vertrag 
 3. Verbraucherzentrale einschalten
 
 ---
-⚠️ *Diese Informationen stellen keine Rechtsberatung dar. Bei rechtlichen Fragen wenden Sie sich an einen zugelassenen Rechtsanwalt.*\`,
+⚠️ *Diese Informationen stellen keine Rechtsberatung dar. Bei rechtlichen Fragen wenden Sie sich an einen zugelassenen Rechtsanwalt.*`,
   },
   {
     slug: "strom-gas-kuendigen-anbieter-wechseln",
@@ -1288,7 +1290,7 @@ Reagieren Sie sofort — warten Sie nicht bis zum letzten Tag.
 - Nur bei seriösen Anbietern abschließen — der Zusammenbruch günstiger Anbieter 2021/22 hat viele geschädigt
 
 ---
-⚠️ *Diese Informationen stellen keine Rechtsberatung dar. Bei rechtlichen Fragen wenden Sie sich an einen zugelassenen Rechtsanwalt.*\`,
+⚠️ *Diese Informationen stellen keine Rechtsberatung dar. Bei rechtlichen Fragen wenden Sie sich an einen zugelassenen Rechtsanwalt.*`,
   },
   {
     slug: "versicherung-kuendigen-tipps",
@@ -1334,7 +1336,7 @@ Pflichtangaben: Name und Adresse, Policennummer, Art der Versicherung, Kündigun
 Nutzen Sie den KündigungsHeld-Generator — mit korrekten Adressen aller großen deutschen Versicherungen.
 
 ---
-⚠️ *Diese Informationen stellen keine Rechtsberatung dar. Bei rechtlichen Fragen wenden Sie sich an einen zugelassenen Rechtsanwalt.*\`,
+⚠️ *Diese Informationen stellen keine Rechtsberatung dar. Bei rechtlichen Fragen wenden Sie sich an einen zugelassenen Rechtsanwalt.*`,
   },
   {
     slug: "streaming-dienste-kuendigen-netflix-spotify",
@@ -1374,7 +1376,7 @@ Nutzen Sie den KündigungsHeld-Generator — mit korrekten Adressen aller große
 Mit dem KündigungsHeld-Archiv alle Kündigungen zentral verwalten.
 
 ---
-⚠️ *Diese Informationen stellen keine Rechtsberatung dar. Bei rechtlichen Fragen wenden Sie sich an einen zugelassenen Rechtsanwalt.*\`,
+⚠️ *Diese Informationen stellen keine Rechtsberatung dar. Bei rechtlichen Fragen wenden Sie sich an einen zugelassenen Rechtsanwalt.*`,
   },
   {
     slug: "handyvertrag-kuendigen-mobilfunk",
@@ -1423,7 +1425,7 @@ Kein Sonderkündigungsrecht beim Umzug — Mobilfunknetze sind bundesweit verfü
 **Kein Nachweis**: Ohne Einlieferungsbeleg oder digitale Bestätigung haben Sie im Streitfall keine Handhabe.
 
 ---
-⚠️ *Diese Informationen stellen keine Rechtsberatung dar. Bei rechtlichen Fragen wenden Sie sich an einen zugelassenen Rechtsanwalt.*\`,
+⚠️ *Diese Informationen stellen keine Rechtsberatung dar. Bei rechtlichen Fragen wenden Sie sich an einen zugelassenen Rechtsanwalt.*`,
   },
   {
     slug: "mietvertrag-kuendigen-mieter-rechte",
@@ -1474,7 +1476,7 @@ Fehlt eine Unterschrift eines Mitmieters → Kündigung unwirksam.
 - Zählerstände dokumentieren
 
 ---
-⚠️ *Diese Informationen stellen keine Rechtsberatung dar. Bei rechtlichen Fragen wenden Sie sich an einen zugelassenen Rechtsanwalt.*\`,
+⚠️ *Diese Informationen stellen keine Rechtsberatung dar. Bei rechtlichen Fragen wenden Sie sich an einen zugelassenen Rechtsanwalt.*`,
   },
 ]
 
