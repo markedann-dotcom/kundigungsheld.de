@@ -1,8 +1,5 @@
 /**
  * Domain mappings for Logo.dev API.
- * Usage: `https://img.logo.dev/${COMPANY_DOMAINS[company.id]}?token=pk_f6Qap7NbT5WSQ5cSVlM8-g`
- *
- * Falls back to initials avatar if domain not found or logo unavailable.
  */
 export const COMPANY_DOMAINS: Record<string, string> = {
   "1und1": "1und1.de",
@@ -280,11 +277,16 @@ export const COMPANY_DOMAINS: Record<string, string> = {
   "zurich": "zurich.de",
 }
 
+const LOGO_TOKEN = "pk_f6Qap7NbT5WSQ5cSVlM8-g"
+
 /**
  * Returns the Logo.dev URL for a company, or null if not mapped.
+ * Uses Next.js image proxy to get WebP conversion + long-term caching.
  */
 export function getLogoUrl(companyId: string): string | null {
   const domain = COMPANY_DOMAINS[companyId]
   if (!domain) return null
-  return `https://img.logo.dev/${domain}?token=pk_f6Qap7NbT5WSQ5cSVlM8-g`
+  // Проксируем через Next.js /_next/image для WebP + кеша
+  const externalUrl = `https://img.logo.dev/${domain}?token=${LOGO_TOKEN}&size=64`
+  return `/_next/image?url=${encodeURIComponent(externalUrl)}&w=64&q=80`
 }
