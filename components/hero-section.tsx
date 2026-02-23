@@ -72,6 +72,17 @@ const AVATAR_PHOTOS = [
   "https://i.pravatar.cc/64?img=56",
 ]
 
+// Preload avatars to avoid render-blocking
+if (typeof window !== "undefined") {
+  AVATAR_PHOTOS.forEach((src) => {
+    const link = document.createElement("link")
+    link.rel = "preload"
+    link.as = "image"
+    link.href = src
+    document.head.appendChild(link)
+  })
+}
+
 function SocialProof() {
   return (
     <div className="flex items-center gap-3">
@@ -85,7 +96,9 @@ function SocialProof() {
               src={src}
               alt={`Nutzer ${i + 1}`}
               className="h-full w-full object-cover"
-              loading="lazy"
+              width={32}
+              height={32}
+              loading="eager"
             />
           </div>
         ))}
@@ -262,7 +275,7 @@ export function HeroSection() {
         <div className="mx-auto max-w-5xl text-center">
 
           {/* Badge */}
-          <AnimateIn delay={100}>
+          <AnimateIn delay={0}>
             <div className="mb-12 inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/80 px-4 py-1.5 backdrop-blur-sm shadow-sm">
               <div className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
               <span className="text-xs font-medium text-muted-foreground tracking-wide uppercase">
@@ -271,12 +284,10 @@ export function HeroSection() {
             </div>
           </AnimateIn>
 
-          {/* Heading */}
-          <AnimateIn delay={200}>
-            <h1 className="font-display text-6xl font-black leading-[1.05] tracking-tight text-foreground sm:text-7xl lg:text-8xl mb-6">
-              {t.hero.title}
-            </h1>
-          </AnimateIn>
+          {/* Heading — no delay for LCP */}
+          <h1 className="font-display text-6xl font-black leading-[1.05] tracking-tight text-foreground sm:text-7xl lg:text-8xl mb-6">
+            {t.hero.title}
+          </h1>
 
           {/* Description */}
           <AnimateIn delay={300}>
