@@ -1142,6 +1142,343 @@ Klären Sie **vor dem Umzug**, welche Ihrer Verträge am neuen Ort verfügbar si
 ⚠️ *Diese Informationen stellen keine Rechtsberatung dar. Bei rechtlichen Fragen wenden Sie sich an einen zugelassenen Rechtsanwalt.*`,
   },
 ]
+  ,
+  // ── NEUE ARTIKEL ──────────────────────────────────────────────────────────
+
+  {
+    slug: "telekom-kuendigen-schritt-fuer-schritt",
+    title: "Telekom kündigen: Schritt-für-Schritt-Anleitung 2026",
+    excerpt:
+      "Telekom-Vertrag kündigen leicht gemacht. Fristen, Adressen und worauf Sie bei Mobilfunk, DSL und MagentaTV achten müssen.",
+    author: "KündigungsHeld Redaktion",
+    authorRole: "Geprüfte Rechtsinformationen",
+    date: "2026-01-20",
+    readTime: "6 Min.",
+    category: "Praxistipps",
+    content: `Die Telekom ist Deutschlands größter Telekommunikationsanbieter — und gleichzeitig einer der häufigsten Gründe, warum Menschen einen Kündigungsgenerator brauchen.
+
+## Welche Telekom-Verträge kann ich kündigen?
+
+- **MagentaMobil** (Mobilfunk): 24 Monate Mindestlaufzeit, danach monatlich kündbar
+- **MagentaZuhause** (DSL/Glasfaser): 24 Monate Mindestlaufzeit, danach monatlich kündbar
+- **MagentaTV**: Oft als Zusatzvertrag, ebenfalls monatlich nach Mindestlaufzeit
+- **Prepaid-Karten**: Keine Kündigung nötig — einfach nicht mehr aufladen
+
+## Kündigungsfristen
+
+Seit der BGB-Reform 2022 gilt: Nach Ablauf der Mindestlaufzeit kann jeder Telekom-Vertrag mit einer Frist von **einem Monat** gekündigt werden.
+
+**Wichtig**: Der Zugang der Kündigung bei der Telekom entscheidet — nicht Ihr Absendedatum. Rechnen Sie 2–3 Werktage für die Postzustellung ein.
+
+## Kündigungsadresse
+
+**Deutsche Telekom AG, Postfach 2000, 53705 Siegburg**
+
+Alternativ: Über den Kündigungsbutton im "Mein Magenta"-Portal — sofortige E-Mail-Bestätigung inklusive.
+
+## Was ins Kündigungsschreiben gehört
+
+- Vollständiger Name und Adresse
+- Kundennummer (steht auf der Rechnung)
+- Rufnummer oder Vertragsnummer
+- Gewünschter Kündigungstermin
+- Bitte um schriftliche Bestätigung
+
+Mit dem KündigungsHeld-Generator erstellen Sie das Schreiben in unter 2 Minuten — kostenlos und rechtssicher.
+
+## Sonderkündigung bei der Telekom
+
+- **Preiserhöhung**: Sonderkündigungsrecht innerhalb von 4 Wochen nach Bekanntgabe
+- **Umzug**: Wenn Telekom DSL/Glasfaser am neuen Wohnort nicht anbieten kann
+- **Störungen**: Bei dauerhaften, nicht behobenen Leistungsbeeinträchtigungen nach Fristsetzung
+
+## Häufige Fehler
+
+**Falsche Adresse**: Die Telekom hat mehrere Postfächer — für Kündigungen gilt Siegburg. **Kein Nachweis**: Immer Einschreiben nutzen oder Bestätigungs-E-Mail aufbewahren. **Zu spät kündigen**: Prüfen Sie rechtzeitig, wann Ihre Mindestlaufzeit endet.
+
+---
+⚠️ *Diese Informationen stellen keine Rechtsberatung dar. Bei rechtlichen Fragen wenden Sie sich an einen zugelassenen Rechtsanwalt.*\`,
+  },
+  {
+    slug: "fitnessstudio-kuendigen-so-gehts",
+    title: "Fitnessstudio kündigen: Was viele nicht wissen",
+    excerpt:
+      "Fitnessstudio-Vertrag kündigen ist oft komplizierter als gedacht. Sonderkündigungsrechte bei Krankheit und Umzug und welche Tricks Anbieter nutzen.",
+    author: "KündigungsHeld Redaktion",
+    authorRole: "Geprüfte Rechtsinformationen",
+    date: "2026-01-28",
+    readTime: "7 Min.",
+    category: "Verbraucherrecht",
+    content: `Fitnessstudio-Verträge gehören zu den am häufigsten gekündigten Verträgen in Deutschland — und zu denen, bei denen am häufigsten etwas schiefgeht.
+
+## Typische Laufzeiten
+
+- **12-Monats-Vertrag**: Standard, danach monatlich kündbar mit 1 Monat Frist
+- **24-Monats-Vertrag**: Günstigerer Monatsbeitrag, aber längere Bindung
+- **Flexibles Abo**: Monatlich kündbar, aber teurer
+
+Seit der BGB-Reform 2022: Nach der Mindestlaufzeit verlängert sich der Vertrag maximal um einen Monat.
+
+## So kündigen Sie richtig
+
+1. **Vertrag prüfen**: Wann endet die Mindestlaufzeit? Welche Kündigungsfrist gilt?
+2. **Kündigung schreiben**: Name, Mitgliedsnummer, Kündigungstermin, Bitte um Bestätigung
+3. **Nachweisbar übergeben**: Persönlich mit Empfangsbestätigung oder per Einschreiben mit Rückschein
+
+## Sonderkündigungsrecht
+
+**Krankheit oder Verletzung**: Dauerhafte gesundheitliche Beeinträchtigung → ärztliches Attest beilegen. Temporäre Verletzungen reichen meist nicht.
+
+**Umzug**: Nächstes Studio mehr als 25–30 km entfernt → Ummeldebescheinigung beilegen.
+
+**Schwangerschaft**: Viele Studios akzeptieren das — gesetzlich nicht überall vorgeschrieben, aber es lohnt sich anzufragen.
+
+**Studiostilllegung**: Schließt das Studio oder ändert wesentlich seine Leistungen → sofortiges Sonderkündigungsrecht.
+
+## Typische Tricks der Studios
+
+**"Kündigung nicht erhalten"**: Immer Einschreiben — ohne Nachweis steht man schlecht da.
+
+**Automatische Verlängerung um 12 Monate**: Seit 2022 illegal — solche Klauseln sind unwirksam.
+
+**Vertragsübertragung statt Kündigung**: Sie bleiben weiter haftbar, wenn der neue Nutzer nicht zahlt.
+
+## Studio lehnt Kündigung ab — was tun?
+
+1. Schriftlich widersprechen
+2. SEPA-Lastschrift über die Bank zurückbuchen
+3. Verbraucherzentrale einschalten
+
+---
+⚠️ *Diese Informationen stellen keine Rechtsberatung dar. Bei rechtlichen Fragen wenden Sie sich an einen zugelassenen Rechtsanwalt.*\`,
+  },
+  {
+    slug: "strom-gas-kuendigen-anbieter-wechseln",
+    title: "Strom & Gas kündigen: Anbieter wechseln und bis zu 800 € sparen",
+    excerpt:
+      "Kündigen und Anbieter wechseln ist einfacher als gedacht. Wir erklären Fristen, Ablauf und worauf Sie beim neuen Vertrag achten sollten.",
+    author: "KündigungsHeld Redaktion",
+    authorRole: "Geprüfte Rechtsinformationen",
+    date: "2026-02-02",
+    readTime: "8 Min.",
+    category: "Energierecht",
+    content: `Ein Anbieterwechsel bei Strom oder Gas kann je nach Verbrauch mehrere Hundert Euro im Jahr sparen — der Prozess ist einfacher als viele denken.
+
+## Grundversorgung vs. Sondertarif
+
+**Grundversorgung**: Standardtarif des regionalen Versorgers, oft teurer. Kündigung mit 2 Wochen Frist jederzeit möglich.
+
+**Sondertarif**: Individuell abgeschlossen, meist günstiger. Mindestlaufzeiten von 12 oder 24 Monaten üblich, danach monatliche Kündbarkeit mit 1 Monat Frist.
+
+## Sonderkündigung bei Preiserhöhung
+
+Erhöht Ihr Versorger die Preise, haben Sie ein **Sonderkündigungsrecht** — innerhalb von **4 Wochen** nach Zugang der Mitteilung. Die Kündigung wird zum Zeitpunkt des Inkrafttretens der Erhöhung wirksam.
+
+Reagieren Sie sofort — warten Sie nicht bis zum letzten Tag.
+
+## So läuft der Wechsel ab
+
+1. **Neuen Anbieter wählen**: Vergleichsportale (Verivox, Check24) nutzen. Auf Preisgarantie und Anbieterbonität achten.
+2. **Alten Vertrag kündigen**: Viele neue Anbieter übernehmen das für Sie — oder Sie nutzen den KündigungsHeld-Generator.
+3. **Zählerstand notieren**: Am Tag des Wechsels, um Abrechnungsfehler zu vermeiden.
+4. **Keine Versorgungslücke**: Die Grundversorgung springt automatisch ein — Sie sitzen nie im Dunkeln.
+
+## Worauf beim neuen Vertrag achten
+
+- Preisgarantie mindestens 12 Monate verlangen
+- Keine großen Vorauszahlungen leisten
+- Nur bei seriösen Anbietern abschließen — der Zusammenbruch günstiger Anbieter 2021/22 hat viele geschädigt
+
+---
+⚠️ *Diese Informationen stellen keine Rechtsberatung dar. Bei rechtlichen Fragen wenden Sie sich an einen zugelassenen Rechtsanwalt.*\`,
+  },
+  {
+    slug: "versicherung-kuendigen-tipps",
+    title: "Versicherung kündigen: Wann und wie Sie richtig vorgehen",
+    excerpt:
+      "Versicherungen kündigen ist oft einfacher als gedacht — wenn man die Fristen kennt. Ordentliche und außerordentliche Kündigung erklärt.",
+    author: "KündigungsHeld Redaktion",
+    authorRole: "Geprüfte Rechtsinformationen",
+    date: "2026-02-05",
+    readTime: "7 Min.",
+    category: "Versicherungsrecht",
+    content: `Nicht jede Police passt dauerhaft zur eigenen Lebenssituation. Ob zu teuer, doppelt versichert oder nicht mehr benötigt — es gibt viele Gründe, eine Versicherung zu kündigen.
+
+## Ordentliche Kündigung: Fristen
+
+**Standardregel**: Kündigung muss spätestens **3 Monate vor Vertragsablauf** beim Versicherer eingehen.
+
+Beispiel: Vertrag läuft bis 31. Dezember → Kündigung muss bis 30. September eingehen.
+
+Ausnahmen:
+- **GKV**: 2 Monate Frist nach mindestens 12 Monaten Mitgliedschaft
+- **PKV**: 3 Monate zum Jahresende, frühestens nach 3 Jahren
+- **Lebensversicherung**: Monatlich kündbar, aber mit erheblichen Nachteilen (Rückkaufswert)
+
+## Außerordentliche Kündigung
+
+**Nach Schadensfall**: Innerhalb eines Monats nach Abschluss der Regulierung — für beide Seiten.
+
+**Prämienerhöhung**: Innerhalb von **4 Wochen** nach Erhalt der Mitteilung kündigen.
+
+**Versicherer kündigt**: Sie können ebenfalls mit sofortiger Wirkung kündigen.
+
+## Sonderfall: Kfz-Versicherung
+
+Stichtag: **30. November** — Kündigung muss bis dahin zugehen, Wechsel zum 1. Januar.
+
+Sonderkündigungsrecht zusätzlich bei: Schadensfall, Fahrzeugverkauf, Beitragserhöhung.
+
+## Kündigungsschreiben
+
+Pflichtangaben: Name und Adresse, Policennummer, Art der Versicherung, Kündigungstermin, Bitte um Bestätigung.
+
+Nutzen Sie den KündigungsHeld-Generator — mit korrekten Adressen aller großen deutschen Versicherungen.
+
+---
+⚠️ *Diese Informationen stellen keine Rechtsberatung dar. Bei rechtlichen Fragen wenden Sie sich an einen zugelassenen Rechtsanwalt.*\`,
+  },
+  {
+    slug: "streaming-dienste-kuendigen-netflix-spotify",
+    title: "Streaming-Dienste kündigen: Netflix, Spotify & Co. richtig beenden",
+    excerpt:
+      "Netflix, Spotify, Disney+ oder Amazon Prime kündigen? Einfachste Wege, Fristen und was Sie bei Jahresabonnements beachten müssen.",
+    author: "KündigungsHeld Redaktion",
+    authorRole: "Geprüfte Rechtsinformationen",
+    date: "2026-02-10",
+    readTime: "5 Min.",
+    category: "Praxistipps",
+    content: `Streaming-Dienste sind bequem — und genau das macht sie zu echten Kostenfallen. Kündigen ist bei den meisten Anbietern aber unkompliziert.
+
+## Grundregeln
+
+- **Monatsabo**: Jederzeit kündbar, Zugang bis Ende des bezahlten Monats
+- **Jahresabo**: Kündigung zum Jahresende, oft auch vorzeitig mit anteiliger Erstattung
+- Seit BGB-Reform 2022: Verlängerung maximal um einen Monat
+
+## Die wichtigsten Anbieter
+
+**Netflix**: Profil → "Konto" → "Mitgliedschaft kündigen". Sofort wirksam, Zugang bis Periodenende.
+
+**Spotify**: spotify.com → Konto → "Premium kündigen". Danach automatisch Wechsel zum kostenlosen Tarif.
+
+**Amazon Prime**: "Konto und Listen" → "Prime Mitgliedschaft verwalten" → "Mitgliedschaft beenden". Amazon bietet Rabatte an — nicht eingehen, wenn Sie wirklich kündigen wollen.
+
+**Disney+**: disneyplus.com → Profil → "Konto" → "Abonnement kündigen". Bei Buchung über Drittanbieter dort kündigen.
+
+## Welche Abos habe ich überhaupt?
+
+- Kontoauszüge der letzten 3 Monate durchsehen
+- Kreditkartenabrechnung prüfen
+- Apple: Einstellungen → [Name] → Abonnements
+- Google Play: Abonnements
+
+Mit dem KündigungsHeld-Archiv alle Kündigungen zentral verwalten.
+
+---
+⚠️ *Diese Informationen stellen keine Rechtsberatung dar. Bei rechtlichen Fragen wenden Sie sich an einen zugelassenen Rechtsanwalt.*\`,
+  },
+  {
+    slug: "handyvertrag-kuendigen-mobilfunk",
+    title: "Handyvertrag kündigen: Fristen, Adressen und häufige Fehler",
+    excerpt:
+      "Mobilfunkvertrag bei Telekom, Vodafone, O2 oder 1&1 kündigen? Genaue Fristen, richtige Adressen und die häufigsten Fehler vermeiden.",
+    author: "KündigungsHeld Redaktion",
+    authorRole: "Geprüfte Rechtsinformationen",
+    date: "2026-02-15",
+    readTime: "6 Min.",
+    category: "Vertragsrecht",
+    content: `Jedes Jahr wechseln Millionen Deutsche ihren Mobilfunkanbieter. Wer die Regeln kennt, spart Zeit und Ärger.
+
+## Kündigungsfristen
+
+- **Mindestlaufzeit**: Maximal 24 Monate
+- **Kündigungsfrist nach Ablauf**: 1 Monat
+- **Automatische Verlängerung**: Maximal 1 Monat (seit BGB-Reform 2022)
+
+## Kündigungsadressen
+
+- **Telekom**: Deutsche Telekom AG, Postfach 2000, 53705 Siegburg
+- **Vodafone**: Vodafone GmbH, Postfach 20 02 04, 40832 Ratingen
+- **O2**: Telefónica Germany GmbH & Co. OHG, 90345 Nürnberg
+- **1&1**: 1&1 Telecom GmbH, Elgendorfer Str. 57, 56410 Montabaur
+- **congstar**: congstar GmbH, 50664 Köln
+
+## Rufnummermitnahme (Portierung)
+
+1. Neuen Vertrag abschließen und Portierung beantragen
+2. Neuer Anbieter kümmert sich um die Portierung
+3. Alten Vertrag **trotzdem separat kündigen** — Portierung kündigt nicht automatisch
+
+## Sonderkündigung
+
+- **Preiserhöhung**: Innerhalb von 4 Wochen
+- **Netzstörungen**: Bei dauerhaften Einschränkungen nach Fristsetzung
+- **AGB-Änderung**: Bei wesentlichen Vertragsänderungen
+
+Kein Sonderkündigungsrecht beim Umzug — Mobilfunknetze sind bundesweit verfügbar.
+
+## Häufige Fehler
+
+**Falsche Adresse**: Jeder Anbieter hat eine spezifische Postfachadresse für Kündigungen — nicht die Filialadresse nutzen.
+
+**Kein Nachweis**: Ohne Einlieferungsbeleg oder digitale Bestätigung haben Sie im Streitfall keine Handhabe.
+
+---
+⚠️ *Diese Informationen stellen keine Rechtsberatung dar. Bei rechtlichen Fragen wenden Sie sich an einen zugelassenen Rechtsanwalt.*\`,
+  },
+  {
+    slug: "mietvertrag-kuendigen-mieter-rechte",
+    title: "Mietvertrag kündigen als Mieter: Fristen, Rechte und wichtige Hinweise",
+    excerpt:
+      "Als Mieter können Sie Ihren Mietvertrag mit 3 Monaten Frist kündigen. Was ins Schreiben muss und welche Fallstricke es gibt.",
+    author: "KündigungsHeld Redaktion",
+    authorRole: "Geprüfte Rechtsinformationen",
+    date: "2026-02-18",
+    readTime: "8 Min.",
+    category: "Mietrecht",
+    content: `Die Kündigung eines Mietverhältnisses ist rechtlich streng geregelt. Wer die Formvorschriften nicht einhält, riskiert eine unwirksame Kündigung.
+
+## Kündigungsfrist
+
+Mieter können einen unbefristeten Mietvertrag mit **3 Monaten Frist** kündigen (Paragraph 573c BGB). Die Kündigung muss spätestens am **dritten Werktag** eines Monats beim Vermieter eingehen.
+
+**Beispiel**: Kündigung geht am 3. Januar ein → Mietverhältnis endet am 31. März. Geht sie am 4. Januar ein → erst zum 30. April.
+
+## Schriftform ist Pflicht
+
+- Handschriftliche Unterschrift erforderlich — E-Mail reicht nicht
+- Bei WGs und Paaren: **alle** Mieter müssen unterschreiben
+- An alle Vermieter adressiert sein
+
+Fehlt eine Unterschrift eines Mitmieters → Kündigung unwirksam.
+
+## Pflichtangaben im Kündigungsschreiben
+
+- Name und Adresse des Mieters
+- Name und Adresse des Vermieters
+- Genaue Wohnungsbezeichnung (Adresse, Etage)
+- Gewünschtes Enddatum
+- Unterschrift aller Mieter
+
+## Sonderkündigungsrecht
+
+**Mieterhöhung**: Bis Ende des zweiten Monats nach Zugang der Mieterhöhungserklärung.
+
+**Erhebliche Mängel**: Bei schwerwiegenden, nicht behobenen Mängeln nach Fristsetzung.
+
+**Modernisierung**: Bei Ankündigung einer Modernisierung mit erheblicher Mieterhöhung.
+
+## Übergabe der Wohnung
+
+- Übergabeprotokoll anfertigen und Fotos machen
+- Alle Schlüssel zurückgeben und Bestätigung verlangen
+- Zählerstände dokumentieren
+
+---
+⚠️ *Diese Informationen stellen keine Rechtsberatung dar. Bei rechtlichen Fragen wenden Sie sich an einen zugelassenen Rechtsanwalt.*\`,
+  },
+]
 
 export function getArticleBySlug(slug: string): BlogArticle | undefined {
   return blogArticles.find((a) => a.slug === slug)
