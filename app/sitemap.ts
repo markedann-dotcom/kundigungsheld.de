@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next"
 import { blogArticles } from "@/lib/blog-articles"
 
-const BASE_URL = "https://kuendigungsheld.de"
+const BASE_URL = "https://kundigungsheld.de"
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes: MetadataRoute.Sitemap = [
