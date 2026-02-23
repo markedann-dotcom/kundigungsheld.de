@@ -1141,8 +1141,6 @@ Klären Sie **vor dem Umzug**, welche Ihrer Verträge am neuen Ort verfügbar si
 ---
 ⚠️ *Diese Informationen stellen keine Rechtsberatung dar. Bei rechtlichen Fragen wenden Sie sich an einen zugelassenen Rechtsanwalt.*`,
   },
-]
-  ,
   // ── NEUE ARTIKEL ──────────────────────────────────────────────────────────
 
   {
