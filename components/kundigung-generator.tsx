@@ -39,6 +39,7 @@ import {
   Wifi,
   WifiOff,
   Timer,
+  ExternalLink,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -74,19 +75,19 @@ import { useI18n } from "@/contexts/i18n-context"
 
 /* ─── Category accent colors ─── */
 
-const CATEGORY_COLORS: Record<string, { bg: string; text: string; dot: string }> = {
-  telekommunikation: { bg: "bg-pink-500/10", text: "text-pink-600 dark:text-pink-400", dot: "bg-pink-500" },
-  mobilfunk:         { bg: "bg-violet-500/10", text: "text-violet-600 dark:text-violet-400", dot: "bg-violet-500" },
-  internet:          { bg: "bg-blue-500/10", text: "text-blue-600 dark:text-blue-400", dot: "bg-blue-500" },
-  streaming:         { bg: "bg-red-500/10", text: "text-red-600 dark:text-red-400", dot: "bg-red-500" },
-  fitness:           { bg: "bg-orange-500/10", text: "text-orange-600 dark:text-orange-400", dot: "bg-orange-500" },
-  versicherung:      { bg: "bg-emerald-500/10", text: "text-emerald-600 dark:text-emerald-400", dot: "bg-emerald-500" },
-  energie:           { bg: "bg-yellow-500/10", text: "text-yellow-600 dark:text-yellow-500", dot: "bg-yellow-500" },
-  bank:              { bg: "bg-teal-500/10", text: "text-teal-600 dark:text-teal-400", dot: "bg-teal-500" },
-  verlag:            { bg: "bg-indigo-500/10", text: "text-indigo-600 dark:text-indigo-400", dot: "bg-indigo-500" },
-  mitgliedschaft:    { bg: "bg-cyan-500/10", text: "text-cyan-600 dark:text-cyan-400", dot: "bg-cyan-500" },
-  arbeit:            { bg: "bg-sky-500/10", text: "text-sky-600 dark:text-sky-400", dot: "bg-sky-500" },
-  sonstiges:         { bg: "bg-muted", text: "text-muted-foreground", dot: "bg-muted-foreground" },
+const CATEGORY_COLORS: Record<string, { bg: string; text: string; dot: string; bar: string }> = {
+  telekommunikation: { bg: "bg-pink-500/10", text: "text-pink-600 dark:text-pink-400", dot: "bg-pink-500", bar: "bg-gradient-to-r from-pink-500 to-rose-400" },
+  mobilfunk:         { bg: "bg-violet-500/10", text: "text-violet-600 dark:text-violet-400", dot: "bg-violet-500", bar: "bg-gradient-to-r from-violet-500 to-purple-400" },
+  internet:          { bg: "bg-blue-500/10", text: "text-blue-600 dark:text-blue-400", dot: "bg-blue-500", bar: "bg-gradient-to-r from-blue-500 to-sky-400" },
+  streaming:         { bg: "bg-red-500/10", text: "text-red-600 dark:text-red-400", dot: "bg-red-500", bar: "bg-gradient-to-r from-red-500 to-orange-400" },
+  fitness:           { bg: "bg-orange-500/10", text: "text-orange-600 dark:text-orange-400", dot: "bg-orange-500", bar: "bg-gradient-to-r from-orange-500 to-amber-400" },
+  versicherung:      { bg: "bg-emerald-500/10", text: "text-emerald-600 dark:text-emerald-400", dot: "bg-emerald-500", bar: "bg-gradient-to-r from-emerald-500 to-teal-400" },
+  energie:           { bg: "bg-yellow-500/10", text: "text-yellow-600 dark:text-yellow-500", dot: "bg-yellow-500", bar: "bg-gradient-to-r from-yellow-500 to-amber-400" },
+  bank:              { bg: "bg-teal-500/10", text: "text-teal-600 dark:text-teal-400", dot: "bg-teal-500", bar: "bg-gradient-to-r from-teal-500 to-cyan-400" },
+  verlag:            { bg: "bg-indigo-500/10", text: "text-indigo-600 dark:text-indigo-400", dot: "bg-indigo-500", bar: "bg-gradient-to-r from-indigo-500 to-blue-400" },
+  mitgliedschaft:    { bg: "bg-cyan-500/10", text: "text-cyan-600 dark:text-cyan-400", dot: "bg-cyan-500", bar: "bg-gradient-to-r from-cyan-500 to-sky-400" },
+  arbeit:            { bg: "bg-sky-500/10", text: "text-sky-600 dark:text-sky-400", dot: "bg-sky-500", bar: "bg-gradient-to-r from-sky-500 to-blue-400" },
+  sonstiges:         { bg: "bg-muted", text: "text-muted-foreground", dot: "bg-muted-foreground", bar: "bg-gradient-to-r from-muted-foreground/60 to-muted-foreground/40" },
 }
 
 /* ─── Slug helper (must match app/[provider]/page.tsx) ─── */
@@ -1535,16 +1536,16 @@ export function KundigungGenerator() {
                       isFocused && keyboardNavActive ? "ring-2 ring-foreground ring-offset-2 ring-offset-background" : "",
                     ].join(" ")}
                   >
-                    {/* Цветная полоска сверху по категории */}
-                    <div className={`h-1 w-full ${accent.dot} ${isSelected ? "opacity-100" : "opacity-40 group-hover:opacity-70"} transition-opacity duration-300`} />
+                    {/* ── Category color bar (top stripe) ── */}
+                    <div className={`h-[3px] w-full ${accent.bar} ${isSelected ? "opacity-100" : "opacity-50 group-hover:opacity-80"} transition-opacity duration-300`} />
 
-                    <div className="p-3 sm:p-5">
-                      {/* Чекбокс */}
+                    <div className="p-3 sm:p-5 pb-4">
+                      {/* ── Checkbox (top-right) ── */}
                       <div className={`absolute top-4 right-4 h-6 w-6 rounded-full border-2 flex items-center justify-center transition-all duration-200 ${isSelected ? "bg-foreground border-foreground" : "border-border/50 group-hover:border-foreground/30"}`}>
                         {isSelected && <Check className="h-3.5 w-3.5 text-background" />}
                       </div>
 
-                      {/* Badge: saved contract data */}
+                      {/* ── Badge: saved contract data ── */}
                       {hasContractData && (
                         <div className="absolute top-4 left-4">
                           <span title="Vertragsdaten gespeichert" className="flex items-center gap-1 rounded-full bg-green-100 dark:bg-green-900/30 border border-green-300 dark:border-green-700 text-green-700 dark:text-green-400 text-[10px] font-bold px-1.5 py-0.5">
@@ -1555,12 +1556,12 @@ export function KundigungGenerator() {
                       )}
 
                       <div className="relative z-10">
-                        {/* Лого */}
+                        {/* ── Logo ── */}
                         <div className="mb-3 sm:mb-4 pr-8">
                           <CompanyCardLogo company={company} size="sm" />
                         </div>
 
-                        {/* Категория с цветной точкой */}
+                        {/* ── Category with colored dot ── */}
                         <div className="hidden sm:flex items-center gap-1.5 mb-2">
                           <span className={`h-1.5 w-1.5 rounded-full flex-shrink-0 ${accent.dot}`} />
                           <span className={`text-[10px] font-bold uppercase tracking-wider ${accent.text}`}>
@@ -1568,33 +1569,40 @@ export function KundigungGenerator() {
                           </span>
                         </div>
 
-                        {/* Название */}
+                        {/* ── Company name ── */}
                         <h3 className="font-semibold text-xs sm:text-sm text-foreground line-clamp-2 leading-tight tracking-tight mb-2">
                           {company.name}
                         </h3>
 
-                        {/* Kündigungsfrist — ключевое улучшение */}
+                        {/* ── Kündigungsfrist — displayed as clean stat, not a box ── */}
                         {company.kuendigungsfrist && (
-                          <div className={`hidden sm:flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 mb-3 ${accent.bg}`}>
-                            <Clock className={`h-3 w-3 flex-shrink-0 ${accent.text}`} />
-                            <span className={`text-[11px] font-semibold ${accent.text}`}>
+                          <div className="hidden sm:flex items-center gap-1.5 mb-3">
+                            <Clock className={`h-3 w-3 flex-shrink-0 ${accent.text} opacity-70`} />
+                            <span className="text-[11px] text-muted-foreground font-medium">
                               {company.kuendigungsfrist}
                             </span>
                           </div>
                         )}
-
-                        {/* Mehr erfahren */}
-                        <a
-                          href={`/${companyToSlug(company.name)}`}
-                          onClick={(e) => e.stopPropagation()}
-                          tabIndex={-1}
-                          className="hidden sm:inline-flex items-center gap-1.5 rounded-full border border-border/60 bg-muted/60 px-3 py-1 text-[11px] font-semibold text-muted-foreground hover:border-foreground/30 hover:bg-muted hover:text-foreground transition-all duration-200"
-                        >
-                          Mehr erfahren
-                          <ChevronRight className="h-3 w-3" />
-                        </a>
                       </div>
                     </div>
+
+                    {/* ── "Details" link — clean footer strip, no pill border ── */}
+                    <a
+                      href={`/${companyToSlug(company.name)}`}
+                      onClick={(e) => e.stopPropagation()}
+                      tabIndex={-1}
+                      className={[
+                        "hidden sm:flex items-center justify-between",
+                        "px-4 py-2.5 border-t border-border/40",
+                        "text-[11px] font-medium text-muted-foreground",
+                        "opacity-0 group-hover:opacity-100 transition-all duration-200",
+                        "hover:text-foreground hover:bg-muted/30",
+                        isSelected ? "border-foreground/20" : "",
+                      ].join(" ")}
+                    >
+                      <span>Kündigungsdetails ansehen</span>
+                      <ExternalLink className="h-3 w-3 flex-shrink-0" />
+                    </a>
                   </button>
                 </div>
               )
