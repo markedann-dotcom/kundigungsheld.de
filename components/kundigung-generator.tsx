@@ -72,6 +72,23 @@ import { useLocalStorage } from "@/hooks/use-local-storage"
 import { getLogoUrl } from "@/lib/company-domains"
 import { useI18n } from "@/contexts/i18n-context"
 
+/* ─── Category accent colors ─── */
+
+const CATEGORY_COLORS: Record<string, { bg: string; text: string; dot: string }> = {
+  telekommunikation: { bg: "bg-pink-500/10", text: "text-pink-600 dark:text-pink-400", dot: "bg-pink-500" },
+  mobilfunk:         { bg: "bg-violet-500/10", text: "text-violet-600 dark:text-violet-400", dot: "bg-violet-500" },
+  internet:          { bg: "bg-blue-500/10", text: "text-blue-600 dark:text-blue-400", dot: "bg-blue-500" },
+  streaming:         { bg: "bg-red-500/10", text: "text-red-600 dark:text-red-400", dot: "bg-red-500" },
+  fitness:           { bg: "bg-orange-500/10", text: "text-orange-600 dark:text-orange-400", dot: "bg-orange-500" },
+  versicherung:      { bg: "bg-emerald-500/10", text: "text-emerald-600 dark:text-emerald-400", dot: "bg-emerald-500" },
+  energie:           { bg: "bg-yellow-500/10", text: "text-yellow-600 dark:text-yellow-500", dot: "bg-yellow-500" },
+  bank:              { bg: "bg-teal-500/10", text: "text-teal-600 dark:text-teal-400", dot: "bg-teal-500" },
+  verlag:            { bg: "bg-indigo-500/10", text: "text-indigo-600 dark:text-indigo-400", dot: "bg-indigo-500" },
+  mitgliedschaft:    { bg: "bg-cyan-500/10", text: "text-cyan-600 dark:text-cyan-400", dot: "bg-cyan-500" },
+  arbeit:            { bg: "bg-sky-500/10", text: "text-sky-600 dark:text-sky-400", dot: "bg-sky-500" },
+  sonstiges:         { bg: "bg-muted", text: "text-muted-foreground", dot: "bg-muted-foreground" },
+}
+
 /* ─── Slug helper (must match app/[provider]/page.tsx) ─── */
 
 function companyToSlug(name: string): string {
@@ -1503,6 +1520,7 @@ export function KundigungGenerator() {
               const isSelected = selectedCompanies.some((c) => c.id === company.id)
               const isFocused = focusedCardIndex === idx
               const hasContractData = !!savedContractData[company.id]
+              const accent = CATEGORY_COLORS[company.category] ?? CATEGORY_COLORS.sonstiges
               return (
                 <div key={company.id} role="gridcell" className="relative group" style={{ animationDelay: `${idx * 30}ms` }}>
                   <AddressTooltip address={company.address} />
@@ -1511,42 +1529,71 @@ export function KundigungGenerator() {
                     aria-pressed={isSelected}
                     aria-label={`${company.name} ${isSelected ? "abgewählt" : "auswählen"}`}
                     className={[
-                      "relative overflow-hidden rounded-2xl border p-3 sm:p-6 text-left w-full",
+                      "relative overflow-hidden rounded-2xl border text-left w-full",
                       "transition-all duration-300 hover:shadow-card hover:scale-[1.01] animate-scale-in",
-                      isSelected ? "border-foreground bg-foreground/5 shadow-elegant" : "border-border/50 bg-card hover:bg-muted/30 hover:border-foreground/20",
+                      isSelected ? "border-foreground shadow-elegant" : "border-border/50 bg-card hover:border-foreground/20",
                       isFocused && keyboardNavActive ? "ring-2 ring-foreground ring-offset-2 ring-offset-background" : "",
                     ].join(" ")}
                   >
-                    <div className={`absolute top-3 right-3 h-6 w-6 rounded-full border-2 flex items-center justify-center transition-all duration-200 ${isSelected ? "bg-foreground border-foreground" : "border-border/50 group-hover:border-foreground/30"}`}>
-                      {isSelected && <Check className="h-3.5 w-3.5 text-background" />}
-                    </div>
-                    {/* Badge: saved contract data */}
-                    {hasContractData && (
-                      <div className="absolute top-3 left-3">
-                        <span title="Vertragsdaten gespeichert" className="flex items-center gap-1 rounded-full bg-green-100 dark:bg-green-900/30 border border-green-300 dark:border-green-700 text-green-700 dark:text-green-400 text-[10px] font-bold px-1.5 py-0.5">
-                          <Check className="h-2.5 w-2.5" />
-                          <span className="hidden sm:inline">Daten</span>
-                        </span>
+                    {/* Цветная полоска сверху по категории */}
+                    <div className={`h-1 w-full ${accent.dot} ${isSelected ? "opacity-100" : "opacity-40 group-hover:opacity-70"} transition-opacity duration-300`} />
+
+                    <div className="p-3 sm:p-5">
+                      {/* Чекбокс */}
+                      <div className={`absolute top-4 right-4 h-6 w-6 rounded-full border-2 flex items-center justify-center transition-all duration-200 ${isSelected ? "bg-foreground border-foreground" : "border-border/50 group-hover:border-foreground/30"}`}>
+                        {isSelected && <Check className="h-3.5 w-3.5 text-background" />}
                       </div>
-                    )}
-                    <div className="relative z-10">
-                      <div className="mb-2 sm:mb-4 flex items-start justify-between pr-8">
-                        <CompanyCardLogo company={company} size="sm" />
+
+                      {/* Badge: saved contract data */}
+                      {hasContractData && (
+                        <div className="absolute top-4 left-4">
+                          <span title="Vertragsdaten gespeichert" className="flex items-center gap-1 rounded-full bg-green-100 dark:bg-green-900/30 border border-green-300 dark:border-green-700 text-green-700 dark:text-green-400 text-[10px] font-bold px-1.5 py-0.5">
+                            <Check className="h-2.5 w-2.5" />
+                            <span className="hidden sm:inline">Daten</span>
+                          </span>
+                        </div>
+                      )}
+
+                      <div className="relative z-10">
+                        {/* Лого */}
+                        <div className="mb-3 sm:mb-4 pr-8">
+                          <CompanyCardLogo company={company} size="sm" />
+                        </div>
+
+                        {/* Категория с цветной точкой */}
+                        <div className="hidden sm:flex items-center gap-1.5 mb-2">
+                          <span className={`h-1.5 w-1.5 rounded-full flex-shrink-0 ${accent.dot}`} />
+                          <span className={`text-[10px] font-bold uppercase tracking-wider ${accent.text}`}>
+                            {CATEGORY_LABELS[company.category]}
+                          </span>
+                        </div>
+
+                        {/* Название */}
+                        <h3 className="font-semibold text-xs sm:text-sm text-foreground line-clamp-2 leading-tight tracking-tight mb-2">
+                          {company.name}
+                        </h3>
+
+                        {/* Kündigungsfrist — ключевое улучшение */}
+                        {company.kuendigungsfrist && (
+                          <div className={`hidden sm:flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 mb-3 ${accent.bg}`}>
+                            <Clock className={`h-3 w-3 flex-shrink-0 ${accent.text}`} />
+                            <span className={`text-[11px] font-semibold ${accent.text}`}>
+                              {company.kuendigungsfrist}
+                            </span>
+                          </div>
+                        )}
+
+                        {/* Mehr erfahren */}
+                        <a
+                          href={`/${companyToSlug(company.name)}`}
+                          onClick={(e) => e.stopPropagation()}
+                          tabIndex={-1}
+                          className="hidden sm:inline-flex items-center gap-1.5 rounded-full border border-border/60 bg-muted/60 px-3 py-1 text-[11px] font-semibold text-muted-foreground hover:border-foreground/30 hover:bg-muted hover:text-foreground transition-all duration-200"
+                        >
+                          Mehr erfahren
+                          <ChevronRight className="h-3 w-3" />
+                        </a>
                       </div>
-                      <Badge variant="secondary" className="hidden sm:inline-flex text-[10px] font-semibold uppercase bg-muted text-muted-foreground border border-border/50 mb-2">
-                        {CATEGORY_LABELS[company.category]}
-                      </Badge>
-                      <h3 className="font-semibold text-xs sm:text-base text-foreground line-clamp-2 mb-1 sm:mb-2 leading-tight tracking-tight">{company.name}</h3>
-                      <p className="hidden sm:block text-xs text-muted-foreground line-clamp-2">{company.address.split("\n")[0]}</p>
-                      <a
-                        href={`/${companyToSlug(company.name)}`}
-                        onClick={(e) => e.stopPropagation()}
-                        tabIndex={-1}
-                        className="hidden sm:inline-flex items-center gap-1.5 mt-3 rounded-full border border-border/60 bg-muted/60 px-3 py-1 text-[11px] font-semibold text-muted-foreground hover:border-foreground/30 hover:bg-muted hover:text-foreground transition-all duration-200"
-                      >
-                        Mehr erfahren
-                        <ChevronRight className="h-3 w-3" />
-                      </a>
                     </div>
                   </button>
                 </div>
