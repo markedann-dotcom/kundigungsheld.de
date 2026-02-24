@@ -1,10 +1,23 @@
 import type { MetadataRoute } from "next"
 import { blogArticles } from "@/lib/blog-articles"
+import { companies } from "@/lib/companies"
 
 const BASE_URL = "https://kundigungsheld.de"
 
-// дата билда (один раз на деплой)
 const BUILD_DATE = new Date()
+
+// Slug-генератор — должен совпадать с тем что в app/[provider]/page.tsx
+function companyToSlug(name: string): string {
+  return (
+    name
+      .toLowerCase()
+      .replace(/[äöüß]/g, (c) =>
+        ({ ä: "ae", ö: "oe", ü: "ue", ß: "ss" })[c] ?? c
+      )
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-|-$/g, "") + "-kundigen"
+  )
+}
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes: MetadataRoute.Sitemap = [
@@ -47,5 +60,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }))
 
-  return [...staticRoutes, ...blogRoutes]
+  // Страницы провайдеров — высокий приоритет для SEO
+  const providerRoutes: MetadataRoute.Sitemap = companies.map((company) => ({
+    url: `${BASE_URL}/${companyToSlug(company.name)}`,
+    lastModified: BUILD_DATE,
+    changeFrequency: "monthly",
+    priority: 0.9,
+  }))
+
+  return [...staticRoutes, ...providerRoutes, ...blogRoutes]
 }
