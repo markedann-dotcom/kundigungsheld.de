@@ -72,6 +72,18 @@ import { useLocalStorage } from "@/hooks/use-local-storage"
 import { getLogoUrl } from "@/lib/company-domains"
 import { useI18n } from "@/contexts/i18n-context"
 
+/* ─── Slug helper (must match app/[provider]/page.tsx) ─── */
+
+function companyToSlug(name: string): string {
+  return (
+    name
+      .toLowerCase()
+      .replace(/[äöüß]/g, (c) => ({ ä: "ae", ö: "oe", ü: "ue", ß: "ss" })[c] ?? c)
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-|-$/g, "") + "-kundigen"
+  )
+}
+
 /* ─── Constants ─── */
 
 type Step = "company" | "details" | "preview"
@@ -1526,6 +1538,14 @@ export function KundigungGenerator() {
                       </Badge>
                       <h3 className="font-semibold text-xs sm:text-base text-foreground line-clamp-2 mb-1 sm:mb-2 leading-tight tracking-tight">{company.name}</h3>
                       <p className="hidden sm:block text-xs text-muted-foreground line-clamp-2">{company.address.split("\n")[0]}</p>
+                      <a
+                        href={`/${companyToSlug(company.name)}`}
+                        onClick={(e) => e.stopPropagation()}
+                        tabIndex={-1}
+                        className="hidden sm:inline-flex items-center gap-1 mt-2 text-[11px] font-medium text-muted-foreground hover:text-foreground transition-colors"
+                      >
+                        Mehr erfahren →
+                      </a>
                     </div>
                   </button>
                 </div>
