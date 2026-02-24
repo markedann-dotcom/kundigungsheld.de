@@ -34,14 +34,17 @@ export function AiChat() {
   const bottomRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
 
+  // Плавная прокрутка вниз при новых сообщениях
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" })
   }, [messages])
 
+  // Автофокус на поле ввода при открытии чата
   useEffect(() => {
     if (isOpen) setTimeout(() => inputRef.current?.focus(), 300)
   }, [isOpen])
 
+  // Открытие чата из других мест приложения
   useEffect(() => {
     const handleOpen = () => {
       setIsOpen(true)
@@ -115,10 +118,7 @@ export function AiChat() {
 
   return (
     <>
-      {/* Floating Button
-          Мобиле: круглая кнопка h-12 w-12, только иконка
-          Десктоп (sm+): полная кнопка с текстом
-      */}
+      {/* Floating Button */}
       <button
         onClick={() => setIsOpen(true)}
         className={`fixed bottom-20 right-4 z-50 flex items-center justify-center rounded-full bg-foreground text-background shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300
@@ -185,7 +185,8 @@ export function AiChat() {
                   : <Bot className="h-3.5 w-3.5 text-foreground" />
                 }
               </div>
-              <div className={`max-w-[80%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed ${
+              {/* ДОБАВЛЕНЫ КЛАССЫ whitespace-pre-wrap и break-words для правильного отображения абзацев */}
+              <div className={`max-w-[80%] whitespace-pre-wrap break-words rounded-2xl px-4 py-2.5 text-sm leading-relaxed ${
                 msg.role === "user"
                   ? "bg-foreground text-background rounded-tr-sm"
                   : "bg-muted text-foreground rounded-tl-sm"

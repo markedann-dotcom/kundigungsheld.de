@@ -1,5 +1,9 @@
 import { NextRequest, NextResponse } from "next/server"
 
+// ВАЖНО: Это увеличит лимит времени работы функции на Vercel до 60 секунд, 
+// чтобы сервер не обрывал ответ нейросети на полуслове.
+export const maxDuration = 60;
+
 const rateLimitMap = new Map<string, { count: number; resetTime: number }>()
 
 const MAX_MESSAGES_PER_DAY = 20
@@ -54,6 +58,8 @@ export async function POST(req: NextRequest) {
       body: JSON.stringify({
         model: "google/gemini-flash-1.5",
         prompt: message,
+        // ВАЖНО: Даем нейросети запас в 800 токенов (слов/слогов), чтобы она могла закончить мысль
+        max_tokens: 800, 
         system_prompt: `Du bist ein hilfreicher Assistent auf KündigungsHeld.de — einer Webseite, die Menschen hilft, Verträge in Deutschland zu kündigen. 
 
 Beantworte nur Fragen zu:
@@ -62,7 +68,7 @@ Beantworte nur Fragen zu:
 - Wie man Verträge kündigt
 - Nutzung des KündigungsHeld-Generators
 
-Halte Antworten kurz (max 3-4 Sätze). Bei komplexen Rechtsfragen empfehle einen Anwalt.
+Halte Antworten kurz (max 3-4 Sätze). Beende deine Sätze immer vollständig und brich niemals mitten im Satz ab. Bei komplexen Rechtsfragen empfehle einen Anwalt.
 Antworte immer auf Deutsch.`,
       }),
     })
