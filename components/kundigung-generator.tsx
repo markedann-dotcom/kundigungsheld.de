@@ -75,19 +75,19 @@ import { useI18n } from "@/contexts/i18n-context"
 
 /* ─── Category accent colors ─── */
 
-const CATEGORY_COLORS: Record<string, { bg: string; text: string; dot: string; bar: string }> = {
-  telekommunikation: { bg: "bg-pink-500/10", text: "text-pink-600 dark:text-pink-400", dot: "bg-pink-500", bar: "bg-gradient-to-r from-pink-500 to-rose-400" },
-  mobilfunk:         { bg: "bg-violet-500/10", text: "text-violet-600 dark:text-violet-400", dot: "bg-violet-500", bar: "bg-gradient-to-r from-violet-500 to-purple-400" },
-  internet:          { bg: "bg-blue-500/10", text: "text-blue-600 dark:text-blue-400", dot: "bg-blue-500", bar: "bg-gradient-to-r from-blue-500 to-sky-400" },
-  streaming:         { bg: "bg-red-500/10", text: "text-red-600 dark:text-red-400", dot: "bg-red-500", bar: "bg-gradient-to-r from-red-500 to-orange-400" },
-  fitness:           { bg: "bg-orange-500/10", text: "text-orange-600 dark:text-orange-400", dot: "bg-orange-500", bar: "bg-gradient-to-r from-orange-500 to-amber-400" },
-  versicherung:      { bg: "bg-emerald-500/10", text: "text-emerald-600 dark:text-emerald-400", dot: "bg-emerald-500", bar: "bg-gradient-to-r from-emerald-500 to-teal-400" },
-  energie:           { bg: "bg-yellow-500/10", text: "text-yellow-600 dark:text-yellow-500", dot: "bg-yellow-500", bar: "bg-gradient-to-r from-yellow-500 to-amber-400" },
-  bank:              { bg: "bg-teal-500/10", text: "text-teal-600 dark:text-teal-400", dot: "bg-teal-500", bar: "bg-gradient-to-r from-teal-500 to-cyan-400" },
-  verlag:            { bg: "bg-indigo-500/10", text: "text-indigo-600 dark:text-indigo-400", dot: "bg-indigo-500", bar: "bg-gradient-to-r from-indigo-500 to-blue-400" },
-  mitgliedschaft:    { bg: "bg-cyan-500/10", text: "text-cyan-600 dark:text-cyan-400", dot: "bg-cyan-500", bar: "bg-gradient-to-r from-cyan-500 to-sky-400" },
-  arbeit:            { bg: "bg-sky-500/10", text: "text-sky-600 dark:text-sky-400", dot: "bg-sky-500", bar: "bg-gradient-to-r from-sky-500 to-blue-400" },
-  sonstiges:         { bg: "bg-muted", text: "text-muted-foreground", dot: "bg-muted-foreground", bar: "bg-gradient-to-r from-muted-foreground/60 to-muted-foreground/40" },
+const CATEGORY_COLORS: Record<string, { bg: string; text: string; dot: string; bar: string; hex: string; glow: string; gradFrom: string; gradTo: string }> = {
+  telekommunikation: { bg: "bg-pink-500/10", text: "text-pink-500 dark:text-pink-400", dot: "bg-pink-500", bar: "bg-gradient-to-r from-pink-500 to-rose-400", hex: "#ec4899", glow: "rgba(236,72,153,0.18)", gradFrom: "#ec4899", gradTo: "#f43f5e" },
+  mobilfunk:         { bg: "bg-violet-500/10", text: "text-violet-500 dark:text-violet-400", dot: "bg-violet-500", bar: "bg-gradient-to-r from-violet-500 to-purple-400", hex: "#8b5cf6", glow: "rgba(139,92,246,0.18)", gradFrom: "#8b5cf6", gradTo: "#a855f7" },
+  internet:          { bg: "bg-blue-500/10", text: "text-blue-500 dark:text-blue-400", dot: "bg-blue-500", bar: "bg-gradient-to-r from-blue-500 to-sky-400", hex: "#3b82f6", glow: "rgba(59,130,246,0.18)", gradFrom: "#3b82f6", gradTo: "#0ea5e9" },
+  streaming:         { bg: "bg-red-500/10", text: "text-red-500 dark:text-red-400", dot: "bg-red-500", bar: "bg-gradient-to-r from-red-500 to-orange-400", hex: "#ef4444", glow: "rgba(239,68,68,0.18)", gradFrom: "#ef4444", gradTo: "#f97316" },
+  fitness:           { bg: "bg-orange-500/10", text: "text-orange-500 dark:text-orange-400", dot: "bg-orange-500", bar: "bg-gradient-to-r from-orange-500 to-amber-400", hex: "#f97316", glow: "rgba(249,115,22,0.18)", gradFrom: "#f97316", gradTo: "#f59e0b" },
+  versicherung:      { bg: "bg-emerald-500/10", text: "text-emerald-500 dark:text-emerald-400", dot: "bg-emerald-500", bar: "bg-gradient-to-r from-emerald-500 to-teal-400", hex: "#10b981", glow: "rgba(16,185,129,0.18)", gradFrom: "#10b981", gradTo: "#14b8a6" },
+  energie:           { bg: "bg-yellow-500/10", text: "text-yellow-600 dark:text-yellow-400", dot: "bg-yellow-500", bar: "bg-gradient-to-r from-yellow-500 to-amber-400", hex: "#eab308", glow: "rgba(234,179,8,0.18)", gradFrom: "#eab308", gradTo: "#f59e0b" },
+  bank:              { bg: "bg-teal-500/10", text: "text-teal-500 dark:text-teal-400", dot: "bg-teal-500", bar: "bg-gradient-to-r from-teal-500 to-cyan-400", hex: "#14b8a6", glow: "rgba(20,184,166,0.18)", gradFrom: "#14b8a6", gradTo: "#06b6d4" },
+  verlag:            { bg: "bg-indigo-500/10", text: "text-indigo-500 dark:text-indigo-400", dot: "bg-indigo-500", bar: "bg-gradient-to-r from-indigo-500 to-blue-400", hex: "#6366f1", glow: "rgba(99,102,241,0.18)", gradFrom: "#6366f1", gradTo: "#3b82f6" },
+  mitgliedschaft:    { bg: "bg-cyan-500/10", text: "text-cyan-500 dark:text-cyan-400", dot: "bg-cyan-500", bar: "bg-gradient-to-r from-cyan-500 to-sky-400", hex: "#06b6d4", glow: "rgba(6,182,212,0.18)", gradFrom: "#06b6d4", gradTo: "#0ea5e9" },
+  arbeit:            { bg: "bg-sky-500/10", text: "text-sky-500 dark:text-sky-400", dot: "bg-sky-500", bar: "bg-gradient-to-r from-sky-500 to-blue-400", hex: "#0ea5e9", glow: "rgba(14,165,233,0.18)", gradFrom: "#0ea5e9", gradTo: "#3b82f6" },
+  sonstiges:         { bg: "bg-muted", text: "text-muted-foreground", dot: "bg-muted-foreground", bar: "bg-gradient-to-r from-muted-foreground/60 to-muted-foreground/30", hex: "#6b7280", glow: "rgba(107,114,128,0.12)", gradFrom: "#6b7280", gradTo: "#9ca3af" },
 }
 
 /* ─── Slug helper (must match app/[provider]/page.tsx) ─── */
@@ -257,7 +257,7 @@ function FormProgressBar({ formData, needsZusatztext }: { formData: TemplateData
 
 /* ─── CompanyCardLogo ─── */
 
-function CompanyCardLogo({ company, size = "md" }: { company: Company; size?: "sm" | "md" }) {
+function CompanyCardLogo({ company, size = "md", hovered = false }: { company: Company; size?: "sm" | "md"; hovered?: boolean }) {
   const [imgError, setImgError] = useState(false)
   const logoUrl = getLogoUrl(company.id)
 
@@ -272,12 +272,20 @@ function CompanyCardLogo({ company, size = "md" }: { company: Company; size?: "s
     .split("")
     .reduce((acc, c) => acc + c.charCodeAt(0), 0) % 360
 
-  const sizeClass = size === "sm" ? "h-8 w-8" : "h-14 w-14"
-  const imgClass = size === "sm" ? "w-6 h-6" : "w-10 h-10"
+  const sizeClass = size === "sm" ? "h-8 w-8" : "h-12 w-12"
+  const imgClass = size === "sm" ? "w-6 h-6" : "w-9 h-9"
+
+  const logoStyle: React.CSSProperties = {
+    transition: "transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease",
+    transform: hovered ? "scale(1.1) rotate(-3deg)" : "scale(1) rotate(0deg)",
+  }
 
   if (logoUrl && !imgError) {
     return (
-      <div className={`flex ${sizeClass} items-center justify-center rounded-xl overflow-hidden border border-border/50 group-hover:border-foreground/20 group-hover:scale-105 transition-all duration-300 bg-white`}>
+      <div
+        className={`flex ${sizeClass} items-center justify-center rounded-xl overflow-hidden border border-border/50 bg-white`}
+        style={logoStyle}
+      >
         <img
           src={logoUrl}
           alt={`${company.name} logo`}
@@ -291,9 +299,11 @@ function CompanyCardLogo({ company, size = "md" }: { company: Company; size?: "s
 
   return (
     <div
-      className={`flex ${sizeClass} items-center justify-center rounded-xl border border-border/50 group-hover:border-foreground/20 group-hover:scale-105 transition-all duration-300 text-white font-black ${size === "sm" ? "text-[10px]" : "text-sm"}`}
+      className={`flex ${sizeClass} items-center justify-center rounded-xl text-white font-black ${size === "sm" ? "text-[10px]" : "text-xs"}`}
       style={{
         background: `linear-gradient(135deg, hsl(${hue}, 65%, 45%), hsl(${(hue + 40) % 360}, 70%, 35%))`,
+        boxShadow: hovered ? `0 6px 20px hsl(${hue}, 65%, 45%, 0.5)` : `0 2px 8px hsl(${hue}, 65%, 45%, 0.3)`,
+        ...logoStyle,
       }}
     >
       {initials}
@@ -327,6 +337,204 @@ function AddressTooltip({ address }: { address: string }) {
       </div>
       <div className="absolute left-1/2 top-full -translate-x-1/2 border-4 border-transparent border-t-border" />
       <div className="absolute left-1/2 top-full -translate-x-1/2 mt-[-1px] border-4 border-transparent border-t-card/95" />
+    </div>
+  )
+}
+
+/* ─── Beautiful Company Card ─── */
+
+function CompanyCard({
+  company,
+  isSelected,
+  isFocused,
+  keyboardNavActive,
+  hasContractData,
+  onToggle,
+}: {
+  company: Company
+  isSelected: boolean
+  isFocused: boolean
+  keyboardNavActive: boolean
+  hasContractData: boolean
+  onToggle: (company: Company) => void
+}) {
+  const [hovered, setHovered] = useState(false)
+  const accent = CATEGORY_COLORS[company.category] ?? CATEGORY_COLORS.sonstiges
+
+  const cardStyle: React.CSSProperties = {
+    position: "relative",
+    borderRadius: "18px",
+    border: isSelected
+      ? `1.5px solid ${accent.hex}50`
+      : hovered
+      ? "1.5px solid rgba(128,128,128,0.25)"
+      : "1.5px solid rgba(128,128,128,0.12)",
+    background: "var(--card)",
+    transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+    transform: hovered ? "translateY(-3px) scale(1.008)" : "translateY(0) scale(1)",
+    boxShadow: isSelected
+      ? `0 0 0 1px ${accent.hex}25, 0 16px 48px -8px ${accent.glow}, 0 4px 16px rgba(0,0,0,0.08)`
+      : hovered
+      ? `0 12px 40px -8px ${accent.glow}, 0 4px 16px rgba(0,0,0,0.06)`
+      : "0 1px 4px rgba(0,0,0,0.04)",
+    overflow: "hidden",
+    cursor: "pointer",
+    textAlign: "left",
+    width: "100%",
+    display: "block",
+    outline: "none",
+  }
+
+  const glowStyle: React.CSSProperties = {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    height: "120px",
+    background: `radial-gradient(ellipse at top left, ${accent.glow} 0%, transparent 70%)`,
+    opacity: hovered || isSelected ? 1 : 0,
+    transition: "opacity 0.4s ease",
+    pointerEvents: "none",
+    borderRadius: "inherit",
+  }
+
+  const barStyle: React.CSSProperties = {
+    height: "2.5px",
+    background: `linear-gradient(90deg, ${accent.gradFrom}, ${accent.gradTo})`,
+    width: isSelected ? "100%" : hovered ? "70%" : "35%",
+    transition: "width 0.45s cubic-bezier(0.4, 0, 0.2, 1)",
+    borderRadius: "0 2px 2px 0",
+  }
+
+  const checkboxStyle: React.CSSProperties = {
+    width: "22px",
+    height: "22px",
+    borderRadius: "50%",
+    border: isSelected ? "none" : `1.5px solid ${hovered ? "rgba(128,128,128,0.4)" : "rgba(128,128,128,0.2)"}`,
+    background: isSelected ? `linear-gradient(135deg, ${accent.gradFrom}, ${accent.gradTo})` : "transparent",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    transition: "all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1)",
+    transform: isSelected ? "scale(1)" : hovered ? "scale(1.08)" : "scale(0.92)",
+    boxShadow: isSelected ? `0 0 14px ${accent.hex}55` : "none",
+    flexShrink: 0,
+  }
+
+  return (
+    <div className="relative group">
+      <AddressTooltip address={company.address} />
+
+      <button
+        onClick={() => onToggle(company)}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+        aria-pressed={isSelected}
+        aria-label={`${company.name} ${isSelected ? "abgewählt" : "auswählen"}`}
+        style={{
+          ...cardStyle,
+          ...(isFocused && keyboardNavActive ? { outline: `2px solid ${accent.hex}`, outlineOffset: "2px" } : {}),
+        }}
+      >
+        {/* Ambient glow layer */}
+        <div style={glowStyle} />
+
+        {/* Animated color bar */}
+        <div style={barStyle} />
+
+        <div className="p-4 sm:p-5 pb-3">
+          {/* Top row: logo + checkbox */}
+          <div className="flex items-start justify-between mb-4">
+            <CompanyCardLogo company={company} size="sm" hovered={hovered} />
+            <div style={checkboxStyle}>
+              {isSelected && (
+                <svg width="11" height="8" viewBox="0 0 11 8" fill="none">
+                  <path d="M1 4L4 7L10 1" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              )}
+            </div>
+          </div>
+
+          {/* Category label with glowing dot */}
+          <div className="hidden sm:flex items-center gap-1.5 mb-1.5">
+            <span
+              style={{
+                width: "5px",
+                height: "5px",
+                borderRadius: "50%",
+                background: accent.gradFrom,
+                boxShadow: hovered || isSelected ? `0 0 6px ${accent.hex}` : "none",
+                transition: "box-shadow 0.3s ease",
+                flexShrink: 0,
+                display: "inline-block",
+              }}
+            />
+            <span
+              className="text-[10px] font-bold uppercase tracking-wider"
+              style={{ color: accent.hex, opacity: 0.85 }}
+            >
+              {CATEGORY_LABELS[company.category]}
+            </span>
+          </div>
+
+          {/* Company name */}
+          <h3 className="font-semibold text-xs sm:text-sm text-foreground line-clamp-2 leading-tight tracking-tight mb-2.5">
+            {company.name}
+          </h3>
+
+          {/* Kündigungsfrist */}
+          {(company as any).kuendigungsfrist && (
+            <div className="hidden sm:flex items-center gap-1.5">
+              <Clock className="h-3 w-3 flex-shrink-0 text-muted-foreground/50" />
+              <span className="text-[11px] text-muted-foreground/70 font-medium">
+                {(company as any).kuendigungsfrist}
+              </span>
+            </div>
+          )}
+
+          {/* Saved contract data badge */}
+          {hasContractData && (
+            <div className="mt-2">
+              <span
+                className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full"
+                style={{
+                  background: `${accent.hex}15`,
+                  color: accent.hex,
+                  border: `1px solid ${accent.hex}30`,
+                }}
+              >
+                <Check className="h-2.5 w-2.5" />
+                Daten gespeichert
+              </span>
+            </div>
+          )}
+        </div>
+
+        {/* Footer: "Details" link — elegant hover-reveal */}
+        <a
+          href={`/${companyToSlug(company.name)}`}
+          onClick={(e) => e.stopPropagation()}
+          tabIndex={-1}
+          className="hidden sm:flex items-center justify-between px-4 sm:px-5 py-2.5"
+          style={{
+            borderTop: `1px solid ${hovered || isSelected ? `${accent.hex}20` : "rgba(128,128,128,0.08)"}`,
+            opacity: hovered ? 1 : 0,
+            transform: hovered ? "translateY(0)" : "translateY(3px)",
+            transition: "all 0.25s ease",
+          }}
+        >
+          <span className="text-[11px] font-medium text-muted-foreground">
+            Kündigungsdetails
+          </span>
+          <ExternalLink
+            className="h-3 w-3 text-muted-foreground/60"
+            style={{
+              transform: hovered ? "translate(1px, -1px)" : "translate(0, 0)",
+              transition: "transform 0.2s ease",
+            }}
+          />
+        </a>
+      </button>
     </div>
   )
 }
@@ -1517,96 +1725,17 @@ export function KundigungGenerator() {
             onKeyDown={handleGridKeyDown}
             className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 max-w-7xl mx-auto outline-none"
           >
-            {pagedCompanies.map((company, idx) => {
-              const isSelected = selectedCompanies.some((c) => c.id === company.id)
-              const isFocused = focusedCardIndex === idx
-              const hasContractData = !!savedContractData[company.id]
-              const accent = CATEGORY_COLORS[company.category] ?? CATEGORY_COLORS.sonstiges
-              return (
-                <div key={company.id} role="gridcell" className="relative group" style={{ animationDelay: `${idx * 30}ms` }}>
-                  <AddressTooltip address={company.address} />
-                  <button
-                    onClick={() => toggleCompany(company)}
-                    aria-pressed={isSelected}
-                    aria-label={`${company.name} ${isSelected ? "abgewählt" : "auswählen"}`}
-                    className={[
-                      "relative overflow-hidden rounded-2xl border text-left w-full",
-                      "transition-all duration-300 hover:shadow-card hover:scale-[1.01] animate-scale-in",
-                      isSelected ? "border-foreground shadow-elegant" : "border-border/50 bg-card hover:border-foreground/20",
-                      isFocused && keyboardNavActive ? "ring-2 ring-foreground ring-offset-2 ring-offset-background" : "",
-                    ].join(" ")}
-                  >
-                    {/* ── Category color bar (top stripe) ── */}
-                    <div className={`h-[3px] w-full ${accent.bar} ${isSelected ? "opacity-100" : "opacity-50 group-hover:opacity-80"} transition-opacity duration-300`} />
-
-                    <div className="p-3 sm:p-5 pb-4">
-                      {/* ── Checkbox (top-right) ── */}
-                      <div className={`absolute top-4 right-4 h-6 w-6 rounded-full border-2 flex items-center justify-center transition-all duration-200 ${isSelected ? "bg-foreground border-foreground" : "border-border/50 group-hover:border-foreground/30"}`}>
-                        {isSelected && <Check className="h-3.5 w-3.5 text-background" />}
-                      </div>
-
-                      {/* ── Badge: saved contract data ── */}
-                      {hasContractData && (
-                        <div className="absolute top-4 left-4">
-                          <span title="Vertragsdaten gespeichert" className="flex items-center gap-1 rounded-full bg-green-100 dark:bg-green-900/30 border border-green-300 dark:border-green-700 text-green-700 dark:text-green-400 text-[10px] font-bold px-1.5 py-0.5">
-                            <Check className="h-2.5 w-2.5" />
-                            <span className="hidden sm:inline">Daten</span>
-                          </span>
-                        </div>
-                      )}
-
-                      <div className="relative z-10">
-                        {/* ── Logo ── */}
-                        <div className="mb-3 sm:mb-4 pr-8">
-                          <CompanyCardLogo company={company} size="sm" />
-                        </div>
-
-                        {/* ── Category with colored dot ── */}
-                        <div className="hidden sm:flex items-center gap-1.5 mb-2">
-                          <span className={`h-1.5 w-1.5 rounded-full flex-shrink-0 ${accent.dot}`} />
-                          <span className={`text-[10px] font-bold uppercase tracking-wider ${accent.text}`}>
-                            {CATEGORY_LABELS[company.category]}
-                          </span>
-                        </div>
-
-                        {/* ── Company name ── */}
-                        <h3 className="font-semibold text-xs sm:text-sm text-foreground line-clamp-2 leading-tight tracking-tight mb-2">
-                          {company.name}
-                        </h3>
-
-                        {/* ── Kündigungsfrist — displayed as clean stat, not a box ── */}
-                        {company.kuendigungsfrist && (
-                          <div className="hidden sm:flex items-center gap-1.5 mb-3">
-                            <Clock className={`h-3 w-3 flex-shrink-0 ${accent.text} opacity-70`} />
-                            <span className="text-[11px] text-muted-foreground font-medium">
-                              {company.kuendigungsfrist}
-                            </span>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-
-                    {/* ── "Details" link — clean footer strip, no pill border ── */}
-                    <a
-                      href={`/${companyToSlug(company.name)}`}
-                      onClick={(e) => e.stopPropagation()}
-                      tabIndex={-1}
-                      className={[
-                        "hidden sm:flex items-center justify-between",
-                        "px-4 py-2.5 border-t border-border/40",
-                        "text-[11px] font-medium text-muted-foreground",
-                        "opacity-0 group-hover:opacity-100 transition-all duration-200",
-                        "hover:text-foreground hover:bg-muted/30",
-                        isSelected ? "border-foreground/20" : "",
-                      ].join(" ")}
-                    >
-                      <span>Kündigungsdetails ansehen</span>
-                      <ExternalLink className="h-3 w-3 flex-shrink-0" />
-                    </a>
-                  </button>
-                </div>
-              )
-            })}
+            {pagedCompanies.map((company, idx) => (
+              <CompanyCard
+                key={company.id}
+                company={company}
+                isSelected={selectedCompanies.some((c) => c.id === company.id)}
+                isFocused={focusedCardIndex === idx}
+                keyboardNavActive={keyboardNavActive}
+                hasContractData={!!savedContractData[company.id]}
+                onToggle={toggleCompany}
+              />
+            ))}
           </div>
 
           {totalPages > 1 && (
