@@ -141,7 +141,7 @@ export default async function ProviderPage({ params }: Props) {
   if (!company) notFound()
 
   const categoryLabel = CATEGORY_LABELS[company.category] ?? company.category
-  const logoUrl = getLogoUrl(company.domain)
+  const logoUrl = getLogoUrl(company.id)
   const avgFee = AVG_FEE_BY_CATEGORY[company.category] ?? AVG_FEE_BY_CATEGORY.default
   const faqs = FAQ_BY_CATEGORY[company.category] ?? FAQ_BY_CATEGORY.default
 
