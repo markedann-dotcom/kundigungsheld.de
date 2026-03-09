@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next"
 import { blogArticles } from "@/lib/blog-articles"
 import { companies } from "@/lib/companies"
 
-const BASE_URL = "https://kundigungsheld.de"
+const BASE_URL = "https://www.kundigungsheld.de"
 
 const BUILD_DATE = new Date()
 
