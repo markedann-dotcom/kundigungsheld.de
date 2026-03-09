@@ -20,15 +20,15 @@ const spaceGrotesk = Space_Grotesk({
   preload: true,
 })
 
-// Caveat перенесён из globals.css в next/font — больше не блокирует рендер
 const caveat = Caveat({
   subsets: ['latin'],
   variable: '--font-caveat',
   display: 'swap',
-  preload: false, // не критичный шрифт — не preload
+  preload: false,
 })
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://www.kundigungsheld.de'),
   title: 'KündigungsHeld - Verträge einfach kündigen | 100% kostenlos',
   description:
     'Erstellen Sie in wenigen Minuten rechtssichere Kündigungsschreiben für über 150 deutsche Unternehmen. 100% kostenlos, schnell und zuverlässig.',
@@ -39,6 +39,7 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'de_DE',
     siteName: 'KündigungsHeld',
+    url: 'https://www.kundigungsheld.de',
   },
   twitter: {
     card: 'summary_large_image',
