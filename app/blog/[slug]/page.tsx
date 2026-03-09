@@ -8,7 +8,7 @@ import { Footer } from "@/components/footer"
 import { blogArticles, getArticleBySlug } from "@/lib/blog-articles"
 import { ShareButtons } from "@/components/share-buttons"
 
-const BASE_URL = "https://kuendigungsheld.de"
+const BASE_URL = "https://www.kundigungsheld.de"
 
 interface Props {
   params: Promise<{ slug: string }>
@@ -28,6 +28,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${article.title} - KündigungsHeld Blog`,
     description: article.excerpt,
+    alternates: {
+      canonical: `${BASE_URL}/blog/${slug}`,
+    },
     openGraph: {
       title: article.title,
       description: article.excerpt,
