@@ -19,6 +19,7 @@ import { SuggestCompanyButton } from "@/components/suggest-company-button"
 import { KundigungAnfechtenBanner } from "@/components/kundigung-anfechten-banner"
 import { AbfindungsrechnerBanner } from "@/components/abfindungsrechner-banner"
 import { KikiSection } from "@/components/kiki-section"
+import { AboKostenRechner } from "@/components/abo-kosten-rechner"
 
 export const metadata: Metadata = {
   title: "KündigungsHeld – Verträge kostenlos & rechtssicher kündigen",
@@ -95,6 +96,7 @@ export default function Home() {
         </div>
 
         <Fristenrechner />
+        <AboKostenRechner />
         <TestimonialsSection />
 
         <KundigungAnfechtenBanner />

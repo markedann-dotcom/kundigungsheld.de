@@ -5,7 +5,7 @@ import Link from "next/link"
 import {
   FileText, Menu, X, Archive, Clock, Scale,
   Zap, BookOpen, ChevronDown, Calculator,
-  HelpCircle, Newspaper, Library, Shield
+  HelpCircle, Newspaper, Library, Shield, Euro
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { ThemeToggle } from "@/components/theme-toggle"
@@ -42,6 +42,13 @@ const MENU_GROUPS = [
         href: "/archiv",
         icon: Archive,
         desc: "Alle Anbieter durchsuchen",
+      },
+      {
+        label: "Abo-Kosten-Rechner",
+        href: "/#abo-rechner",
+        icon: Euro,
+        desc: "Was kosten Ihre Abos?",
+        isNew: true,
       },
     ],
   },
@@ -137,6 +144,7 @@ export function Navbar() {
     { label: t.nav.features, href: "/#funktionen", icon: Shield },
     { label: t.nav.generator, href: "/#generator", icon: FileText },
     { label: t.nav.fristenrechner, href: "/#fristenrechner", icon: Calculator, highlight: true },
+    { label: "Abo-Kosten-Rechner", href: "/#abo-rechner", icon: Euro, isNew: true },
     { label: "Kiki — Bibliothek", href: "/#kiki", icon: BookOpen, isNew: true },
     { label: "Kündigung anfechten", href: "/kundigung-anfechten", icon: Scale, isNew: true },
     { label: t.nav.blog, href: "/blog", icon: Newspaper },
