@@ -521,5 +521,5 @@ const styles = {
 
   footer:  { textAlign: "center", padding: "20px 24px", fontFamily: "sans-serif", fontSize: 12, color: C.muted, borderTop: `1px solid ${C.border}` },
 };
-```
+
 
