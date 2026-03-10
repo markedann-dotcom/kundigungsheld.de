@@ -160,6 +160,13 @@ export function Footer() {
         <div className="absolute -right-32 bottom-0 h-80 w-80 rounded-full bg-primary/4 blur-[80px]" />
       </div>
 
+      {/* ── Trustpilot script ── */}
+      <script
+        type="text/javascript"
+        src="//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js"
+        async
+      />
+
       {/* ── Top CTA band ── */}
       <div className="relative border-b border-border/30">
         <div className="mx-auto max-w-7xl px-4 py-10 lg:px-8">
@@ -174,17 +181,38 @@ export function Footer() {
               </h2>
             </div>
 
-            {/* Trust badges */}
-            <div className="flex flex-wrap gap-2">
-              {TRUST_BADGES.map(({ icon: Icon, label }) => (
-                <div
-                  key={label}
-                  className="flex items-center gap-1.5 rounded-full border border-border/60 bg-background/60 px-3 py-1.5 text-xs font-medium text-muted-foreground backdrop-blur-sm"
+            {/* Trust badges + Trustpilot widget */}
+            <div className="flex flex-col gap-3">
+              <div className="flex flex-wrap gap-2">
+                {TRUST_BADGES.map(({ icon: Icon, label }) => (
+                  <div
+                    key={label}
+                    className="flex items-center gap-1.5 rounded-full border border-border/60 bg-background/60 px-3 py-1.5 text-xs font-medium text-muted-foreground backdrop-blur-sm"
+                  >
+                    <Icon className="h-3.5 w-3.5 text-foreground" />
+                    {label}
+                  </div>
+                ))}
+              </div>
+
+              {/* Trustpilot Widget */}
+              <div
+                className="trustpilot-widget"
+                data-locale="de-DE"
+                data-template-id="56278e9abfbbba0bdcd568bc"
+                data-businessunit-id="69b083d0f755aea13919612e"
+                data-style-height="52px"
+                data-token="e6cf4202-e572-430d-ace0-a4b662581e08"
+                data-style-width="100%"
+              >
+                <a
+                  href="https://de.trustpilot.com/review/kundigungsheld.de"
+                  target="_blank"
+                  rel="noopener"
                 >
-                  <Icon className="h-3.5 w-3.5 text-foreground" />
-                  {label}
-                </div>
-              ))}
+                  Trustpilot
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -237,7 +265,7 @@ export function Footer() {
               <a
                 href="https://tiktok.com"
                 target="_blank"
-                rel="noopener noreferrer"
+                rel="noopener"
                 className="flex h-9 w-9 items-center justify-center rounded-lg border border-border/50 bg-background text-muted-foreground transition-all duration-200 hover:border-foreground/30 hover:bg-foreground hover:text-background"
                 aria-label="TikTok"
               >
@@ -336,7 +364,7 @@ export function Footer() {
               <a
                 href="https://github.com/markovolchkoа"
                 target="_blank"
-                rel="noopener noreferrer"
+                rel="noopener"
                 className="font-medium text-foreground underline-offset-4 transition-colors hover:text-primary hover:underline"
               >
                 Marko Volchkov
