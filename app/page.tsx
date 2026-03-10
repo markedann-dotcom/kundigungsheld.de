@@ -18,6 +18,7 @@ import { AdBanner } from "@/components/ad-banner"
 import { SuggestCompanyButton } from "@/components/suggest-company-button"
 import { KundigungAnfechtenBanner } from "@/components/kundigung-anfechten-banner"
 import { AbfindungsrechnerBanner } from "@/components/abfindungsrechner-banner"
+import { KikiSection } from "@/components/kiki-section"
 
 export const metadata: Metadata = {
   title: "KündigungsHeld – Verträge kostenlos & rechtssicher kündigen",
@@ -102,6 +103,10 @@ export default function Home() {
         <div className="h-px bg-border/30" />
 
         <AiAssistantSection />
+
+        <div className="h-px bg-border/30" />
+
+        <KikiSection />
 
         <div className="h-px bg-border/30" />
 
