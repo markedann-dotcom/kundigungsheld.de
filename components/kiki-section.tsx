@@ -488,6 +488,28 @@ export function KikiSection() {
           </div>
         </div>
 
+        {/* Mobile category tabs — above the flex row on mobile */}
+        <div className="lg:hidden w-full mb-4">
+          <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none">
+            {CATEGORIES.map((cat) => {
+              const Icon = cat.icon
+              const isActive = activeCategory === cat.id
+              return (
+                <button
+                  key={cat.id}
+                  onClick={() => { setActiveCategory(cat.id); setActiveArticle(null) }}
+                  className={`flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-medium transition-colors ${
+                    isActive ? "bg-foreground text-background" : "border border-border/60 bg-background text-muted-foreground"
+                  }`}
+                >
+                  <Icon className="h-3.5 w-3.5" />
+                  {cat.label}
+                </button>
+              )
+            })}
+          </div>
+        </div>
+
         {/* Layout */}
         <div className="flex gap-6 lg:gap-8">
 
@@ -522,28 +544,6 @@ export function KikiSection() {
             </nav>
           </aside>
 
-          {/* Mobile category tabs */}
-          <div className="lg:hidden w-full mb-4">
-            <div className="flex gap-2 overflow-x-auto pb-1">
-              {CATEGORIES.map((cat) => {
-                const Icon = cat.icon
-                const isActive = activeCategory === cat.id
-                return (
-                  <button
-                    key={cat.id}
-                    onClick={() => { setActiveCategory(cat.id); setActiveArticle(null) }}
-                    className={`flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-medium transition-colors ${
-                      isActive ? "bg-foreground text-background" : "border border-border/60 bg-background text-muted-foreground"
-                    }`}
-                  >
-                    <Icon className="h-3.5 w-3.5" />
-                    {cat.label}
-                  </button>
-                )
-              })}
-            </div>
-          </div>
-
           {/* Main content */}
           <div className="flex-1 min-w-0">
             {!activeArticle ? (
@@ -576,7 +576,7 @@ export function KikiSection() {
               /* Article detail */
               <div className="rounded-xl border border-border/60 bg-background overflow-hidden">
                 {/* Article header */}
-                <div className="flex items-start justify-between gap-4 border-b border-border/40 p-6">
+                <div className="flex flex-col gap-3 border-b border-border/40 p-5 sm:p-6 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
                   <div>
                     <span className="inline-flex items-center rounded-md border border-border/50 bg-muted/50 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground mb-2">
                       {activeArticle.tag}
@@ -584,7 +584,7 @@ export function KikiSection() {
                     <h3 className="text-xl font-bold text-foreground">{activeArticle.title}</h3>
                     <p className="mt-1 text-sm text-muted-foreground">{activeArticle.summary}</p>
                   </div>
-                  <div className="flex shrink-0 items-center gap-2">
+                  <div className="flex shrink-0 items-center gap-2 flex-wrap sm:flex-nowrap">
                     {activeArticle.category === "vorlagen" && (
                       <button
                         onClick={handleCopy}
@@ -604,14 +604,14 @@ export function KikiSection() {
 
                 {/* Article body */}
                 <div className="p-6">
-                  <pre className="whitespace-pre-wrap font-mono text-sm leading-relaxed text-foreground bg-muted/30 rounded-xl border border-border/40 p-6">
+                  <pre className="whitespace-pre-wrap font-mono text-sm leading-relaxed text-foreground bg-muted/30 rounded-xl border border-border/40 p-4 sm:p-6 overflow-x-auto break-words">
                     {activeArticle.content}
                   </pre>
                 </div>
 
                 {/* CTA */}
                 {activeArticle.category === "vorlagen" && (
-                  <div className="border-t border-border/40 bg-muted/20 px-6 py-4 flex items-center justify-between gap-4">
+                  <div className="border-t border-border/40 bg-muted/20 px-5 sm:px-6 py-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
                     <p className="text-xs text-muted-foreground">Möchten Sie die Vorlage mit Ihren Daten ausfüllen lassen?</p>
                     <a
                       href="#generator"
