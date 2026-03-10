@@ -195,24 +195,37 @@ export function Footer() {
                 ))}
               </div>
 
-              {/* Trustpilot Widget */}
-              <div
-                className="trustpilot-widget"
-                data-locale="de-DE"
-                data-template-id="56278e9abfbbba0bdcd568bc"
-                data-businessunit-id="69b083d0f755aea13919612e"
-                data-style-height="52px"
-                data-token="e6cf4202-e572-430d-ace0-a4b662581e08"
-                data-style-width="100%"
+              {/* Trustpilot Badge */}
+              <a
+                href="https://de.trustpilot.com/review/kundigungsheld.de"
+                target="_blank"
+                rel="noopener"
+                className="group inline-flex items-center gap-3 rounded-xl border border-border/60 bg-background/60 px-4 py-2.5 backdrop-blur-sm transition-all duration-200 hover:border-[#00b67a]/40 hover:bg-[#00b67a]/5"
               >
-                <a
-                  href="https://de.trustpilot.com/review/kundigungsheld.de"
-                  target="_blank"
-                  rel="noopener"
-                >
-                  Trustpilot
-                </a>
-              </div>
+                {/* Trustpilot logo */}
+                <svg className="h-4 w-auto shrink-0" viewBox="0 0 126 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M30.047 12.67H18.573l-3.527-10.86-3.527 10.86H0l9.56 6.946-3.527 10.86 9.56-6.947 9.559 6.947-3.527-10.86 9.422-6.946z" fill="#00b67a"/>
+                  <path d="M21.493 21.06l-.816-2.444-5.631 4.09 6.447-1.646z" fill="#005128"/>
+                  <text x="38" y="22" fontFamily="Arial, sans-serif" fontSize="14" fontWeight="700" fill="currentColor" className="text-foreground">Trustpilot</text>
+                </svg>
+
+                <div className="h-4 w-px bg-border/60" />
+
+                {/* Stars */}
+                <div className="flex items-center gap-0.5">
+                  {[1,2,3,4,5].map((i) => (
+                    <svg key={i} className="h-4 w-4" viewBox="0 0 24 24" fill="#00b67a">
+                      <path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/>
+                    </svg>
+                  ))}
+                </div>
+
+                {/* Rating */}
+                <div className="flex items-baseline gap-1">
+                  <span className="text-sm font-bold text-foreground">5.0</span>
+                  <span className="text-xs text-muted-foreground">/ 5</span>
+                </div>
+              </a>
             </div>
           </div>
         </div>
