@@ -523,12 +523,3 @@ const styles = {
 };
 ```
 
----
-
-## Как интегрировать в Next.js — пошагово
-
-**Шаг 1 — создай файл страницы**
-```
-/pages/kundigung-anfechten.jsx
-# или если App Router:
-/app/kundigung-anfechten/page.jsx
