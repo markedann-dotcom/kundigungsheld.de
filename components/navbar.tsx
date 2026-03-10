@@ -152,6 +152,23 @@ export function Navbar() {
     { label: "FAQ", href: "/#faq", icon: HelpCircle },
   ]
 
+  // For hash links on mobile: close menu first, then scroll after a short delay
+  const handleMobileNav = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (href.includes("#")) {
+      e.preventDefault()
+      setMobileOpen(false)
+      const hash = href.split("#")[1]
+      setTimeout(() => {
+        const el = document.getElementById(hash)
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth" })
+        }
+      }, 300)
+    } else {
+      setMobileOpen(false)
+    }
+  }
+
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/50 bg-background/80 backdrop-blur-lg">
       <nav ref={navRef} className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 lg:px-8">
@@ -241,7 +258,7 @@ export function Navbar() {
                     className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors hover:bg-secondary hover:text-foreground ${
                       link.highlight ? "text-foreground font-semibold" : "text-muted-foreground"
                     }`}
-                    onClick={() => setMobileOpen(false)}
+                    onClick={(e) => handleMobileNav(e, link.href)}
                   >
                     <Icon className="h-4 w-4 shrink-0" />
                     {link.label}
