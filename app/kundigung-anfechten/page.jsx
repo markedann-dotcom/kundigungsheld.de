@@ -1,13 +1,7 @@
-"use client";
-
 import { useState, useEffect } from "react";
-import Link from "next/link";
-import { Scale, ChevronRight, CheckCircle2, Copy, Check, AlertTriangle, Clock } from "lucide-react";
-
-// ─── DATA ────────────────────────────────────────────────────────────────────
 
 const STEPS = [
-  { id: 0, label: "Fristberechnung" },
+  { id: 0, label: "Frist" },
   { id: 1, label: "Ihre Daten" },
   { id: 2, label: "Arbeitgeber" },
   { id: 3, label: "Grund" },
@@ -15,368 +9,377 @@ const STEPS = [
 ];
 
 const REASONS = [
-  { id: "sozialauswahl",   title: "Fehlerhafte Sozialauswahl",     desc: "Bei betriebsbedingter Kündigung wurden Sozialdaten nicht korrekt berücksichtigt." },
-  { id: "betriebsrat",     title: "Betriebsrat nicht angehört",    desc: "Der Betriebsrat wurde vor der Kündigung nicht ordnungsgemäß konsultiert." },
-  { id: "formfehler",      title: "Formfehler",                    desc: "Kündigung nicht schriftlich oder ohne eigenhändige Unterschrift." },
-  { id: "diskriminierung", title: "Diskriminierung (AGG)",         desc: "Verdacht auf Kündigung wegen Geschlecht, Alter, Religion oder Herkunft." },
-  { id: "sonderschutz",    title: "Sonderkündigungsschutz",        desc: "Schwangerschaft, Schwerbehinderung, Betriebsratsmitgliedschaft, Elternzeit." },
-  { id: "sonstige",        title: "Sonstiger Grund",               desc: "Ein anderer Grund macht die Kündigung unwirksam." },
+  { id: "sozialauswahl",   title: "Fehlerhafte Sozialauswahl",  desc: "Bei betriebsbedingter Kündigung wurden Sozialdaten nicht korrekt berücksichtigt.", icon: "⚖️" },
+  { id: "betriebsrat",     title: "Betriebsrat nicht angehört", desc: "Der Betriebsrat wurde vor der Kündigung nicht ordnungsgemäß konsultiert.", icon: "🏛️" },
+  { id: "formfehler",      title: "Formfehler",                 desc: "Kündigung nicht schriftlich oder ohne eigenhändige Unterschrift.", icon: "📄" },
+  { id: "diskriminierung", title: "Diskriminierung (AGG)",      desc: "Verdacht auf Kündigung wegen Geschlecht, Alter, Religion oder Herkunft.", icon: "🚫" },
+  { id: "sonderschutz",    title: "Sonderkündigungsschutz",     desc: "Schwangerschaft, Schwerbehinderung, Betriebsratsmitgliedschaft, Elternzeit.", icon: "🛡️" },
+  { id: "sonstige",        title: "Sonstiger Grund",            desc: "Ein anderer Grund macht die Kündigung unwirksam.", icon: "💬" },
 ];
 
-// ─── COUNTDOWN HOOK ──────────────────────────────────────────────────────────
-
-function useCountdown(kuendigungDate) {
+function useCountdown(date) {
   const [state, setState] = useState({ days: 21, hours: 0, minutes: 0, seconds: 0, expired: false, percent: 0, deadline: null });
-
   useEffect(() => {
-    if (!kuendigungDate) return;
-    const deadline = new Date(kuendigungDate);
+    if (!date) return;
+    const deadline = new Date(date);
     deadline.setDate(deadline.getDate() + 21);
-
     const tick = () => {
       const now = new Date();
       const diff = deadline - now;
       if (diff <= 0) { setState(s => ({ ...s, expired: true })); return; }
       const total = 21 * 24 * 60 * 60 * 1000;
-      const percent = Math.min(((total - diff) / total) * 100, 100);
       setState({
-        days:    Math.floor(diff / 86400000),
-        hours:   Math.floor((diff % 86400000) / 3600000),
+        days: Math.floor(diff / 86400000),
+        hours: Math.floor((diff % 86400000) / 3600000),
         minutes: Math.floor((diff % 3600000) / 60000),
         seconds: Math.floor((diff % 60000) / 1000),
         expired: false,
-        percent,
+        percent: Math.min(((total - diff) / total) * 100, 100),
         deadline,
       });
     };
     tick();
     const id = setInterval(tick, 1000);
     return () => clearInterval(id);
-  }, [kuendigungDate]);
-
+  }, [date]);
   return state;
 }
 
-// ─── TEMPLATE ────────────────────────────────────────────────────────────────
-
-function generateKlageschrift({ personal, employer, reasons, kuendigungDate }) {
+function downloadPDF({ personal, employer, reasons, date }) {
   const today = new Date().toLocaleDateString("de-DE");
-  const reasonTitles = reasons.map(r => REASONS.find(x => x.id === r)?.title).filter(Boolean);
+  const kuendigungDatum = new Date(date).toLocaleDateString("de-DE");
+  const titles = reasons.map(r => REASONS.find(x => x.id === r)?.title).filter(Boolean);
+  const deadline = new Date(date);
+  deadline.setDate(deadline.getDate() + 21);
 
-  return `${personal.name}
-${personal.address}
-${personal.plz} ${personal.city}
+  const html = `<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<style>
+  @page { margin: 2.5cm 2.8cm; size: A4; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: "Times New Roman", Times, serif; font-size: 12pt; color: #000; line-height: 1.5; }
+  .sender { margin-bottom: 8mm; }
+  .sender p { line-height: 1.6; }
+  .recipient { margin: 8mm 0 12mm 0; }
+  .recipient p { line-height: 1.6; }
+  .place-date { text-align: right; margin-bottom: 12mm; }
+  .subject { font-weight: bold; font-size: 13pt; margin-bottom: 8mm; text-decoration: underline; }
+  .re { margin-bottom: 8mm; }
+  .re span { font-weight: bold; }
+  .body-text { margin-bottom: 6mm; text-align: justify; }
+  .section-title { font-weight: bold; margin: 8mm 0 4mm; text-transform: uppercase; letter-spacing: 1px; font-size: 11pt; }
+  .reason-item { margin-bottom: 3mm; padding-left: 5mm; }
+  .divider { border: none; border-top: 1px solid #000; margin: 10mm 0; }
+  .signature-block { margin-top: 20mm; }
+  .signature-line { border-bottom: 1px solid #000; width: 70mm; margin-bottom: 2mm; }
+  .footer-note { margin-top: 16mm; font-size: 9pt; color: #555; border-top: 1px solid #ccc; padding-top: 4mm; }
+  .header-bar { background: #111; color: #fff; padding: 4mm 6mm; margin-bottom: 10mm; display: flex; justify-content: space-between; align-items: center; }
+  .header-bar .logo { font-weight: 800; font-size: 13pt; font-family: Arial, sans-serif; letter-spacing: -0.3px; }
+  .header-bar .badge { font-size: 9pt; font-family: Arial, sans-serif; opacity: 0.7; }
+  .urgent-box { border: 1.5px solid #dc2626; border-radius: 4px; padding: 3mm 5mm; margin-bottom: 8mm; background: #fef2f2; }
+  .urgent-box p { color: #dc2626; font-family: Arial, sans-serif; font-size: 10pt; font-weight: 600; }
+  .parties-table { width: 100%; border-collapse: collapse; margin-bottom: 8mm; }
+  .parties-table td { padding: 3mm 4mm; vertical-align: top; font-size: 11pt; }
+  .parties-table td:first-child { width: 28mm; font-weight: bold; color: #555; font-family: Arial, sans-serif; font-size: 10pt; text-transform: uppercase; letter-spacing: 0.5px; }
+  .parties-table tr { border-bottom: 1px solid #eee; }
+</style>
+</head>
+<body>
 
-An das
-Arbeitsgericht ${employer.city || "[Stadt]"}
+<div class="header-bar">
+  <span class="logo">KündigungsHeld</span>
+  <span class="badge">Kündigungsschutzklage · § 4 KSchG</span>
+</div>
 
-${personal.city}, den ${today}
+<div class="sender">
+  <p><strong>${personal.name}</strong></p>
+  <p>${personal.address}</p>
+  <p>${personal.plz} ${personal.city}</p>
+</div>
 
-K L A G E S C H R I F T
+<div class="recipient">
+  <p><strong>An das</strong></p>
+  <p><strong>Arbeitsgericht ${employer.city}</strong></p>
+  <p>– z. Hd. Eingangsgeschäftsstelle –</p>
+</div>
 
-Kläger/in:  ${personal.name}, ${personal.address}, ${personal.plz} ${personal.city}
+<div class="place-date">
+  <p>${personal.city}, den ${today}</p>
+</div>
 
-Beklagte/r:  ${employer.name}, ${employer.address}, ${employer.plz} ${employer.city}
+<div class="subject">Kündigungsschutzklage gem. § 4 KSchG</div>
 
-wegen: Kündigungsschutzklage gem. § 4 KSchG
+<table class="parties-table">
+  <tr>
+    <td>Kläger/in</td>
+    <td>${personal.name}<br>${personal.address}, ${personal.plz} ${personal.city}</td>
+  </tr>
+  <tr>
+    <td>Beklagte/r</td>
+    <td>${employer.name}<br>${employer.address}, ${employer.plz} ${employer.city}</td>
+  </tr>
+</table>
 
-─────────────────────────────────────────────
+<hr class="divider">
 
-Ich erhebe Klage gegen die Kündigung vom ${new Date(kuendigungDate).toLocaleDateString("de-DE")} und beantrage,
+<p class="section-title">Klageantrag</p>
 
-festzustellen, dass das Arbeitsverhältnis durch die Kündigung
-nicht aufgelöst worden ist.
+<p class="body-text">
+Hiermit erhebe ich Klage gegen die Kündigung vom <strong>${kuendigungDatum}</strong>
+und beantrage das Gericht festzustellen:
+</p>
 
-B E G R Ü N D U N G
+<p class="body-text" style="padding-left: 8mm; font-style: italic;">
+„Das Arbeitsverhältnis zwischen den Parteien ist durch die Kündigung
+vom ${kuendigungDatum} nicht aufgelöst worden und besteht unverändert fort."
+</p>
 
-Die Kündigung ist aus folgenden Gründen sozial ungerechtfertigt
-und damit rechtsunwirksam:
+<p class="section-title">Begründung</p>
 
-${reasonTitles.map((r, i) => `${i + 1}. ${r}`).join("\n")}
+<p class="body-text">
+Die ausgesprochene Kündigung ist sozial ungerechtfertigt im Sinne des
+§ 1 KSchG und damit rechtsunwirksam. Sie verletzt folgende gesetzliche
+Bestimmungen:
+</p>
 
-Ich bitte das Gericht, einen Gütetermin anzuberaumen.
+${titles.map((t, i) => `<p class="reason-item"><strong>${i + 1}.</strong> ${t}</p>`).join("")}
 
-Mit freundlichen Grüßen,
+<p class="body-text" style="margin-top: 6mm;">
+Ich behalte mir vor, die Begründung nach Einsicht in die Personalakte
+und die vollständigen Kündigungsunterlagen zu ergänzen.
+</p>
 
+<p class="section-title">Beweisangebot</p>
+<p class="body-text">Zeuge: Betriebsrat und alle weiteren benannten Personen. Urkunden: Arbeitsvertrag, Kündigungsschreiben, alle weiteren relevanten Dokumente (werden nachgereicht).</p>
 
-_______________________________
-${personal.name}`;
+<p class="body-text">Ich bitte das Gericht, einen <strong>Gütetermin</strong> gemäß § 54 ArbGG anzuberaumen.</p>
+
+<hr class="divider">
+
+<div class="urgent-box">
+  <p>⚠ Fristhinweis: Die Klagefrist gem. § 4 KSchG endet am ${deadline.toLocaleDateString("de-DE")} (21 Tage ab Zugang der Kündigung).</p>
+</div>
+
+<div class="signature-block">
+  <p style="margin-bottom: 12mm;">Mit freundlichen Grüßen,</p>
+  <div class="signature-line"></div>
+  <p style="font-family: Arial, sans-serif; font-size: 10pt;">${personal.name}</p>
+  <p style="font-family: Arial, sans-serif; font-size: 10pt; color: #555;">${personal.city}, den ${today}</p>
+</div>
+
+<div class="footer-note">
+  <p>Erstellt mit KündigungsHeld (kundigungsheld.de) · Dieses Dokument ersetzt keine Rechtsberatung. Bei Unsicherheiten wenden Sie sich an einen Fachanwalt für Arbeitsrecht.</p>
+</div>
+
+</body>
+</html>`;
+
+  const blob = new Blob([html], { type: "text/html;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const win = window.open(url, "_blank");
+  if (win) {
+    win.onload = () => {
+      setTimeout(() => {
+        win.print();
+        URL.revokeObjectURL(url);
+      }, 500);
+    };
+  }
 }
 
-// ─── MAIN PAGE ───────────────────────────────────────────────────────────────
-
-export default function KuendigungsschutzPage() {
-  const [step, setStep]         = useState(0);
-  const [kuendigungDate, setKuendigungDate] = useState("");
+export default function App() {
+  const [step, setStep] = useState(0);
+  const [date, setDate] = useState("");
   const [personal, setPersonal] = useState({ name: "", address: "", plz: "", city: "" });
   const [employer, setEmployer] = useState({ name: "", address: "", plz: "", city: "" });
-  const [reasons, setReasons]   = useState([]);
-  const [copied, setCopied]     = useState(false);
+  const [reasons, setReasons] = useState([]);
+  const [copied, setCopied] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
-  const countdown = useCountdown(kuendigungDate);
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 640);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
+  const countdown = useCountdown(date);
   const urgency = countdown.days <= 3 ? "red" : countdown.days <= 7 ? "amber" : "green";
-
-  const toggleReason = (id) =>
-    setReasons(r => r.includes(id) ? r.filter(x => x !== id) : [...r, id]);
+  const urgentColor = urgency === "red" ? "#ef4444" : urgency === "amber" ? "#f59e0b" : "#22c55e";
 
   const canAdvance = () => {
-    if (step === 0) return !!kuendigungDate && !countdown.expired;
+    if (step === 0) return !!date && !countdown.expired;
     if (step === 1) return personal.name && personal.address && personal.plz && personal.city;
     if (step === 2) return employer.name && employer.address && employer.plz && employer.city;
     if (step === 3) return reasons.length > 0;
     return true;
   };
 
-  const klageschrift = step === 4
-    ? generateKlageschrift({ personal, employer, reasons, kuendigungDate })
-    : "";
+  const toggle = (id) => setReasons(r => r.includes(id) ? r.filter(x => x !== id) : [...r, id]);
 
-  const copyText = () => {
-    navigator.clipboard.writeText(klageschrift);
+  const klageschriftText = step === 4 ? [
+    `${personal.name}`, `${personal.address}`, `${personal.plz} ${personal.city}`, ``,
+    `An das Arbeitsgericht ${employer.city}`, ``,
+    `${personal.city}, den ${new Date().toLocaleDateString("de-DE")}`, ``,
+    `KLAGESCHRIFT gem. § 4 KSchG`, `${"─".repeat(45)}`, ``,
+    `Kläger/in:  ${personal.name}, ${personal.address}, ${personal.plz} ${personal.city}`,
+    `Beklagte/r: ${employer.name}, ${employer.address}, ${employer.plz} ${employer.city}`, ``,
+    `Ich erhebe Klage gegen die Kündigung vom ${new Date(date).toLocaleDateString("de-DE")}`,
+    `und beantrage festzustellen, dass das Arbeitsverhältnis nicht aufgelöst wurde.`, ``,
+    `BEGRÜNDUNG`, ``,
+    ...reasons.map((r, i) => `${i + 1}. ${REASONS.find(x => x.id === r)?.title}`), ``,
+    `Mit freundlichen Grüßen,`, ``, `${"_".repeat(30)}`, personal.name,
+  ].join("\n") : "";
+
+  const copy = () => {
+    navigator.clipboard.writeText(klageschriftText);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const urgencyBadgeClass = {
-    red:   "bg-destructive/10 text-destructive border-destructive/20",
-    amber: "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20",
-    green: "bg-foreground/5 text-foreground border-border",
-  }[urgency];
-
-  const urgencyBarClass = {
-    red:   "bg-destructive",
-    amber: "bg-amber-500",
-    green: "bg-foreground",
-  }[urgency];
-
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div style={{ fontFamily: "system-ui,-apple-system,sans-serif", background: "#fafaf9", minHeight: "100vh", color: "#111" }}>
 
-      {/* ── HERO ── */}
-      <section className="border-b border-border/50 bg-secondary/30">
-        <div className="mx-auto max-w-3xl px-4 py-12 lg:px-8 lg:py-16">
-          <div className="flex items-center gap-2 mb-4">
-            <Link href="/" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-              KündigungsHeld
-            </Link>
-            <ChevronRight className="h-3.5 w-3.5 text-muted-foreground" />
-            <span className="text-sm text-foreground font-medium">Kündigung anfechten</span>
-          </div>
-          <div className="flex items-start gap-4">
-            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-foreground text-background">
-              <Scale className="h-5 w-5" />
-            </div>
+      {/* NAV */}
+      <div style={{ background: "#fff", borderBottom: "1px solid #e5e5e5", position: "sticky", top: 0, zIndex: 50 }}>
+        <div style={{ maxWidth: 720, margin: "0 auto", padding: "0 16px", height: 52, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <a href="/" style={{ display: "flex", alignItems: "center", gap: 8, textDecoration: "none", color: "#111" }}>
+            <div style={{ width: 30, height: 30, background: "#111", borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontSize: 14 }}>⚖</div>
+            <span style={{ fontWeight: 700, fontSize: 15, letterSpacing: "-0.3px" }}>KündigungsHeld</span>
+          </a>
+          <a href="/" style={{ fontSize: 13, color: "#666", textDecoration: "none", display: "flex", alignItems: "center", gap: 4, padding: "6px 12px", borderRadius: 8, border: "1px solid #e5e5e5" }}>
+            ← Startseite
+          </a>
+        </div>
+      </div>
+
+      {/* HERO */}
+      <div style={{ background: "#111", color: "#fff", padding: isMobile ? "24px 16px" : "32px 16px" }}>
+        <div style={{ maxWidth: 720, margin: "0 auto" }}>
+          <div style={{ display: "flex", alignItems: "flex-start", gap: 14 }}>
+            <div style={{ width: 44, height: 44, background: "rgba(255,255,255,0.1)", borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, flexShrink: 0 }}>⚖️</div>
             <div>
-              <h1 className="font-display text-3xl font-bold tracking-tight text-foreground lg:text-4xl">
-                Kündigungsschutzklage
-              </h1>
-              <p className="mt-2 text-muted-foreground text-base leading-relaxed max-w-xl">
-                Wurde Ihnen ungerechtfertigt gekündigt? Erstellen Sie Ihre Klageschrift nach § 4 KSchG — kostenlos, in 5 Minuten.
-              </p>
-              <div className="mt-3 flex items-center gap-2">
-                <Clock className="h-3.5 w-3.5 text-amber-500" />
-                <span className="text-sm font-medium text-amber-600 dark:text-amber-400">
-                  Gesetzliche Frist: 21 Tage ab Zugang der Kündigung
-                </span>
+              <h1 style={{ fontSize: isMobile ? 20 : 26, fontWeight: 800, letterSpacing: "-0.5px", margin: 0 }}>Kündigung anfechten</h1>
+              <p style={{ margin: "5px 0 8px", fontSize: 13, color: "rgba(255,255,255,0.55)", lineHeight: 1.5 }}>Klageschrift nach § 4 KSchG — kostenlos als PDF</p>
+              <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(245,158,11,0.15)", border: "1px solid rgba(245,158,11,0.3)", borderRadius: 20, padding: "3px 10px" }}>
+                <span style={{ fontSize: 11 }}>⏱</span>
+                <span style={{ fontSize: 11, color: "#fbbf24", fontWeight: 600 }}>Gesetzliche Frist: 21 Tage ab Zugang</span>
               </div>
             </div>
           </div>
         </div>
-      </section>
+      </div>
 
-      {/* ── MAIN ── */}
-      <main className="mx-auto max-w-3xl px-4 py-10 lg:px-8">
-
-        {/* STEPPER */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between relative">
-            <div className="absolute left-0 right-0 top-4 h-px bg-border -z-0" />
+      {/* STEPPER */}
+      <div style={{ background: "#fff", borderBottom: "1px solid #e5e5e5" }}>
+        <div style={{ maxWidth: 720, margin: "0 auto", padding: "0 16px" }}>
+          <div style={{ display: "flex", alignItems: "center", padding: "10px 0", gap: 0 }}>
             {STEPS.map((s, i) => (
-              <button
-                key={s.id}
-                onClick={() => i < step && setStep(i)}
-                className="flex flex-col items-center gap-1.5 z-10"
-                disabled={i >= step}
-              >
-                <div className={`flex h-8 w-8 items-center justify-center rounded-full border text-xs font-bold transition-all duration-200 ${
-                  i < step
-                    ? "bg-foreground text-background border-foreground"
-                    : i === step
-                    ? "bg-background text-foreground border-foreground"
-                    : "bg-background text-muted-foreground border-border"
-                }`}>
-                  {i < step ? <Check className="h-3.5 w-3.5" /> : i + 1}
-                </div>
-                <span className={`hidden text-[10px] font-medium uppercase tracking-wide sm:block ${
-                  i === step ? "text-foreground" : "text-muted-foreground"
-                }`}>
-                  {s.label}
-                </span>
-              </button>
+              <div key={s.id} style={{ display: "flex", alignItems: "center", flexShrink: 0 }}>
+                <button onClick={() => i < step && setStep(i)} style={{ display: "flex", alignItems: "center", gap: 6, background: "none", border: "none", cursor: i < step ? "pointer" : "default", padding: "3px 5px", borderRadius: 6 }}>
+                  <div style={{ width: 22, height: 22, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 10, fontWeight: 700, flexShrink: 0, background: i < step ? "#111" : i === step ? "#111" : "#f0f0f0", color: i < step ? "#fff" : i === step ? "#fff" : "#999" }}>
+                    {i < step ? "✓" : i + 1}
+                  </div>
+                  {!isMobile && <span style={{ fontSize: 11, fontWeight: i === step ? 600 : 400, color: i === step ? "#111" : "#999", whiteSpace: "nowrap" }}>{s.label}</span>}
+                </button>
+                {i < STEPS.length - 1 && <div style={{ width: isMobile ? 10 : 16, height: 1, background: i < step ? "#111" : "#e5e5e5", margin: "0 2px" }} />}
+              </div>
             ))}
           </div>
+          <div style={{ height: 2, background: "#f0f0f0" }}>
+            <div style={{ height: "100%", background: "#111", width: `${(step / (STEPS.length - 1)) * 100}%`, transition: "width 0.3s ease" }} />
+          </div>
         </div>
+      </div>
 
-        {/* CARD */}
-        <div className="rounded-xl border border-border/50 bg-card shadow-card overflow-hidden">
+      {/* MAIN */}
+      <div style={{ maxWidth: 720, margin: "0 auto", padding: isMobile ? "14px 12px 80px" : "20px 16px 80px" }}>
+        <div style={{ background: "#fff", borderRadius: 16, border: "1px solid #e5e5e5", overflow: "hidden", boxShadow: "0 1px 4px rgba(0,0,0,0.04)" }}>
 
-          {/* ── STEP 0: DEADLINE ── */}
+          {/* STEP 0 */}
           {step === 0 && (
-            <div className="p-6 lg:p-8">
-              <h2 className="text-xl font-semibold text-foreground mb-1">Wann haben Sie die Kündigung erhalten?</h2>
-              <p className="text-sm text-muted-foreground mb-6">
-                Geben Sie das Datum des Zugangs an. Wir berechnen Ihre verbleibende Klagefrist automatisch.
-              </p>
+            <div style={{ padding: isMobile ? 18 : 26 }}>
+              <h2 style={{ fontSize: 17, fontWeight: 700, margin: "0 0 5px", letterSpacing: "-0.3px" }}>Wann haben Sie die Kündigung erhalten?</h2>
+              <p style={{ fontSize: 12, color: "#888", margin: "0 0 18px" }}>Wir berechnen automatisch Ihre verbleibende Klagefrist.</p>
+              <input type="date" value={date} max={new Date().toISOString().split("T")[0]} onChange={e => setDate(e.target.value)}
+                style={{ width: "100%", padding: "11px 13px", fontSize: 14, border: "1.5px solid #e5e5e5", borderRadius: 10, background: "#fafaf9", color: "#111", boxSizing: "border-box", outline: "none" }} />
 
-              <input
-                type="date"
-                value={kuendigungDate}
-                max={new Date().toISOString().split("T")[0]}
-                onChange={e => setKuendigungDate(e.target.value)}
-                className="w-full rounded-lg border border-input bg-background px-4 py-3 text-base text-foreground focus:outline-none focus:ring-2 focus:ring-foreground/20 focus:border-foreground/50 transition-colors"
-              />
-
-              {kuendigungDate && !countdown.expired && (
-                <div className="mt-6 rounded-xl border border-border/50 bg-secondary/40 p-5">
-                  <div className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-semibold mb-4 ${urgencyBadgeClass}`}>
-                    <Clock className="h-3 w-3" />
-                    {countdown.days <= 3 ? "Dringend — nur noch" : "Verbleibende Frist"}
+              {date && !countdown.expired && (
+                <div style={{ marginTop: 14, borderRadius: 12, border: `1.5px solid ${urgentColor}33`, background: `${urgentColor}08`, padding: 14 }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
+                    <span style={{ fontSize: 11, fontWeight: 700, color: urgentColor, textTransform: "uppercase", letterSpacing: "0.5px" }}>{urgency === "red" ? "⚠️ Dringend!" : "⏱ Verbleibende Frist"}</span>
+                    <span style={{ fontSize: 11, color: "#888" }}>bis {countdown.deadline?.toLocaleDateString("de-DE")}</span>
                   </div>
-
-                  <div className="flex items-end gap-4 mb-4">
-                    {[
-                      { v: countdown.days,    u: "Tage"    },
-                      { v: countdown.hours,   u: "Std"     },
-                      { v: countdown.minutes, u: "Min"     },
-                      { v: countdown.seconds, u: "Sek"     },
-                    ].map(({ v, u }) => (
-                      <div key={u} className="flex flex-col items-center">
-                        <span className={`font-display text-3xl font-bold tabular-nums ${
-                          urgency === "red" ? "text-destructive" :
-                          urgency === "amber" ? "text-amber-600 dark:text-amber-400" :
-                          "text-foreground"
-                        }`}>
-                          {String(v).padStart(2, "0")}
-                        </span>
-                        <span className="text-[10px] uppercase tracking-widest text-muted-foreground mt-0.5">{u}</span>
+                  <div style={{ display: "flex", gap: isMobile ? 12 : 20, marginBottom: 10 }}>
+                    {[{ v: countdown.days, u: "Tage" }, { v: countdown.hours, u: "Std" }, { v: countdown.minutes, u: "Min" }, { v: countdown.seconds, u: "Sek" }].map(({ v, u }) => (
+                      <div key={u} style={{ textAlign: "center" }}>
+                        <div style={{ fontSize: isMobile ? 26 : 32, fontWeight: 800, letterSpacing: "-1px", color: urgentColor, lineHeight: 1 }}>{String(v).padStart(2, "0")}</div>
+                        <div style={{ fontSize: 9, color: "#aaa", textTransform: "uppercase", letterSpacing: "0.5px", marginTop: 2 }}>{u}</div>
                       </div>
                     ))}
                   </div>
-
-                  <div className="h-1.5 w-full rounded-full bg-border overflow-hidden">
-                    <div
-                      className={`h-full rounded-full transition-all duration-1000 ${urgencyBarClass}`}
-                      style={{ width: `${countdown.percent}%` }}
-                    />
+                  <div style={{ height: 3, background: `${urgentColor}22`, borderRadius: 4, overflow: "hidden" }}>
+                    <div style={{ height: "100%", background: urgentColor, width: `${countdown.percent}%`, transition: "width 1s linear" }} />
                   </div>
-                  <p className="mt-2 text-xs text-muted-foreground">
-                    Klagefrist endet am{" "}
-                    <span className="font-semibold text-foreground">
-                      {countdown.deadline?.toLocaleDateString("de-DE")}
-                    </span>
-                  </p>
                 </div>
               )}
-
               {countdown.expired && (
-                <div className="mt-6 rounded-xl border border-destructive/20 bg-destructive/5 p-5">
-                  <div className="flex items-start gap-3">
-                    <AlertTriangle className="h-5 w-5 text-destructive shrink-0 mt-0.5" />
-                    <div>
-                      <p className="font-semibold text-destructive text-sm">Klagefrist abgelaufen</p>
-                      <p className="mt-1 text-sm text-muted-foreground leading-relaxed">
-                        Die 21-Tage-Frist ist verstrichen. Bitte wenden Sie sich an einen Fachanwalt für Arbeitsrecht — in Ausnahmefällen ist eine nachträgliche Zulassung möglich (§ 5 KSchG).
-                      </p>
-                    </div>
-                  </div>
+                <div style={{ marginTop: 14, borderRadius: 12, border: "1.5px solid #fecaca", background: "#fef2f2", padding: 14 }}>
+                  <p style={{ fontWeight: 700, color: "#dc2626", margin: "0 0 5px", fontSize: 13 }}>⚠️ Klagefrist abgelaufen</p>
+                  <p style={{ fontSize: 12, color: "#7f1d1d", margin: 0, lineHeight: 1.6 }}>Die 21-Tage-Frist ist verstrichen. Wenden Sie sich an einen Fachanwalt — in Ausnahmefällen ist nachträgliche Zulassung möglich (§ 5 KSchG).</p>
                 </div>
               )}
             </div>
           )}
 
-          {/* ── STEP 1: PERSONAL ── */}
-          {step === 1 && (
-            <div className="p-6 lg:p-8">
-              <h2 className="text-xl font-semibold text-foreground mb-1">Ihre persönlichen Daten</h2>
-              <p className="text-sm text-muted-foreground mb-6">Diese Angaben erscheinen als Kläger/in in der Klageschrift.</p>
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          {/* STEP 1 & 2 */}
+          {(step === 1 || step === 2) && (
+            <div style={{ padding: isMobile ? 18 : 26 }}>
+              <h2 style={{ fontSize: 17, fontWeight: 700, margin: "0 0 5px", letterSpacing: "-0.3px" }}>{step === 1 ? "Ihre persönlichen Daten" : "Daten des Arbeitgebers"}</h2>
+              <p style={{ fontSize: 12, color: "#888", margin: "0 0 18px" }}>{step === 1 ? "Erscheinen als Kläger/in in der Klageschrift." : "Erscheinen als Beklagte/r in der Klageschrift."}</p>
+              <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 10 }}>
                 {[
-                  { key: "name",    label: "Vor- und Nachname",   placeholder: "Max Mustermann",  col: "sm:col-span-2" },
-                  { key: "address", label: "Straße und Hausnr.",  placeholder: "Musterstraße 1",  col: "sm:col-span-2" },
-                  { key: "plz",     label: "PLZ",                 placeholder: "10115",            col: "" },
-                  { key: "city",    label: "Stadt",               placeholder: "Berlin",           col: "" },
-                ].map(f => (
-                  <div key={f.key} className={f.col}>
-                    <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                      {f.label}
-                    </label>
-                    <input
-                      className="w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-foreground/20 focus:border-foreground/50 transition-colors"
-                      placeholder={f.placeholder}
-                      value={personal[f.key]}
-                      onChange={e => setPersonal(p => ({ ...p, [f.key]: e.target.value }))}
-                    />
-                  </div>
-                ))}
+                  { key: "name",    label: step === 1 ? "Vor- und Nachname" : "Firmenname",  placeholder: step === 1 ? "Max Mustermann" : "Musterfirma GmbH", full: true },
+                  { key: "address", label: "Straße und Hausnr.", placeholder: "Musterstraße 1", full: true },
+                  { key: "plz",     label: "PLZ",  placeholder: "10115", full: false },
+                  { key: "city",    label: "Stadt", placeholder: "Berlin", full: false },
+                ].map(f => {
+                  const data = step === 1 ? personal : employer;
+                  const setData = step === 1 ? setPersonal : setEmployer;
+                  return (
+                    <div key={f.key} style={{ gridColumn: f.full || isMobile ? "1 / -1" : "auto" }}>
+                      <label style={{ display: "block", fontSize: 10, fontWeight: 600, color: "#888", textTransform: "uppercase", letterSpacing: "0.5px", marginBottom: 4 }}>{f.label}</label>
+                      <input style={{ width: "100%", padding: "10px 12px", fontSize: 14, border: "1.5px solid #e5e5e5", borderRadius: 9, background: "#fafaf9", color: "#111", boxSizing: "border-box", outline: "none" }}
+                        placeholder={f.placeholder} value={data[f.key]} onChange={e => setData(p => ({ ...p, [f.key]: e.target.value }))} />
+                    </div>
+                  );
+                })}
               </div>
             </div>
           )}
 
-          {/* ── STEP 2: EMPLOYER ── */}
-          {step === 2 && (
-            <div className="p-6 lg:p-8">
-              <h2 className="text-xl font-semibold text-foreground mb-1">Daten des Arbeitgebers</h2>
-              <p className="text-sm text-muted-foreground mb-6">Diese Angaben erscheinen als Beklagte/r in der Klageschrift.</p>
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                {[
-                  { key: "name",    label: "Firmenname",          placeholder: "Musterfirma GmbH", col: "sm:col-span-2" },
-                  { key: "address", label: "Straße und Hausnr.",  placeholder: "Firmenstraße 5",   col: "sm:col-span-2" },
-                  { key: "plz",     label: "PLZ",                 placeholder: "10115",             col: "" },
-                  { key: "city",    label: "Stadt",               placeholder: "Berlin",            col: "" },
-                ].map(f => (
-                  <div key={f.key} className={f.col}>
-                    <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                      {f.label}
-                    </label>
-                    <input
-                      className="w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-foreground/20 focus:border-foreground/50 transition-colors"
-                      placeholder={f.placeholder}
-                      value={employer[f.key]}
-                      onChange={e => setEmployer(p => ({ ...p, [f.key]: e.target.value }))}
-                    />
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* ── STEP 3: REASONS ── */}
+          {/* STEP 3 */}
           {step === 3 && (
-            <div className="p-6 lg:p-8">
-              <h2 className="text-xl font-semibold text-foreground mb-1">Warum ist die Kündigung unwirksam?</h2>
-              <p className="text-sm text-muted-foreground mb-6">Wählen Sie alle zutreffenden Gründe aus.</p>
-              <div className="flex flex-col gap-2.5">
+            <div style={{ padding: isMobile ? 18 : 26 }}>
+              <h2 style={{ fontSize: 17, fontWeight: 700, margin: "0 0 5px", letterSpacing: "-0.3px" }}>Warum ist die Kündigung unwirksam?</h2>
+              <p style={{ fontSize: 12, color: "#888", margin: "0 0 18px" }}>Mehrfachauswahl möglich.</p>
+              <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
                 {REASONS.map(r => {
                   const active = reasons.includes(r.id);
                   return (
-                    <button
-                      key={r.id}
-                      onClick={() => toggleReason(r.id)}
-                      className={`flex items-start gap-3 rounded-xl border px-4 py-3.5 text-left transition-all duration-150 ${
-                        active
-                          ? "border-foreground bg-foreground/5"
-                          : "border-border/50 bg-background hover:border-border hover:bg-secondary/40"
-                      }`}
-                    >
-                      <div className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border transition-colors ${
-                        active ? "border-foreground bg-foreground" : "border-border"
-                      }`}>
-                        {active && <Check className="h-3 w-3 text-background" />}
+                    <button key={r.id} onClick={() => toggle(r.id)}
+                      style={{ display: "flex", alignItems: "flex-start", gap: 11, padding: "12px 13px", borderRadius: 10, border: `1.5px solid ${active ? "#111" : "#e5e5e5"}`, background: active ? "#f5f5f5" : "#fff", cursor: "pointer", textAlign: "left", transition: "all 0.15s" }}>
+                      <div style={{ width: 19, height: 19, borderRadius: "50%", border: `2px solid ${active ? "#111" : "#ddd"}`, background: active ? "#111" : "transparent", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 1 }}>
+                        {active && <span style={{ color: "#fff", fontSize: 10, fontWeight: 700 }}>✓</span>}
                       </div>
                       <div>
-                        <p className="text-sm font-semibold text-foreground">{r.title}</p>
-                        <p className="mt-0.5 text-xs text-muted-foreground leading-relaxed">{r.desc}</p>
+                        <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                          <span style={{ fontSize: 13 }}>{r.icon}</span>
+                          <span style={{ fontSize: 13, fontWeight: 600 }}>{r.title}</span>
+                        </div>
+                        <p style={{ margin: "2px 0 0", fontSize: 11, color: "#888", lineHeight: 1.5 }}>{r.desc}</p>
                       </div>
                     </button>
                   );
@@ -385,94 +388,73 @@ export default function KuendigungsschutzPage() {
             </div>
           )}
 
-          {/* ── STEP 4: RESULT ── */}
+          {/* STEP 4 */}
           {step === 4 && (
-            <div className="p-6 lg:p-8">
-              <div className="flex items-start gap-3 rounded-xl border border-border/50 bg-secondary/30 p-4 mb-6">
-                <CheckCircle2 className="h-5 w-5 text-foreground shrink-0 mt-0.5" />
+            <div style={{ padding: isMobile ? 18 : 26 }}>
+              {/* Success */}
+              <div style={{ display: "flex", alignItems: "flex-start", gap: 11, background: "#f0fdf4", border: "1.5px solid #bbf7d0", borderRadius: 12, padding: 13, marginBottom: 18 }}>
+                <span style={{ fontSize: 18 }}>✅</span>
                 <div>
-                  <p className="font-semibold text-foreground text-sm">Klageschrift erstellt</p>
-                  <p className="mt-0.5 text-xs text-muted-foreground leading-relaxed">
-                    Kopieren Sie den Text, drucken Sie ihn aus und reichen Sie ihn beim zuständigen Arbeitsgericht ein — persönlich oder per Einschreiben.
-                  </p>
+                  <p style={{ fontWeight: 700, color: "#15803d", margin: "0 0 2px", fontSize: 13 }}>Klageschrift erstellt</p>
+                  <p style={{ fontSize: 12, color: "#166534", margin: 0, lineHeight: 1.5 }}>Laden Sie das PDF herunter und reichen Sie es beim Arbeitsgericht ein.</p>
                 </div>
               </div>
 
-              <div className="mb-6 flex flex-col gap-2.5 sm:flex-row sm:gap-3">
-                {[
-                  { n: "1", t: "Ausdrucken",         d: "Auf weißem Papier" },
-                  { n: "2", t: "Arbeitsgericht",      d: "Persönlich einreichen" },
-                  { n: "3", t: "Gütetermin",          d: "Gericht lädt beide Parteien" },
-                ].map(ns => (
-                  <div key={ns.n} className="flex flex-1 items-start gap-2.5 rounded-lg border border-border/50 bg-background p-3">
-                    <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-foreground text-background text-xs font-bold">
-                      {ns.n}
-                    </div>
+              {/* PDF DOWNLOAD — main CTA */}
+              <button
+                onClick={() => downloadPDF({ personal, employer, reasons, date })}
+                style={{ width: "100%", padding: isMobile ? "14px" : "16px", borderRadius: 12, border: "none", background: "#111", color: "#fff", fontSize: 15, fontWeight: 700, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 9, marginBottom: 12, letterSpacing: "-0.2px" }}>
+                <span style={{ fontSize: 18 }}>📄</span>
+                Als PDF herunterladen / Drucken
+              </button>
+
+              {/* Next steps */}
+              <div style={{ display: "flex", gap: 7, marginBottom: 16, flexWrap: "wrap" }}>
+                {[{ n: "1", t: "PDF speichern", d: "Oder direkt drucken" }, { n: "2", t: "Arbeitsgericht", d: "Persönlich einreichen" }, { n: "3", t: "Gütetermin", d: "Beide Parteien geladen" }].map(ns => (
+                  <div key={ns.n} style={{ flex: 1, minWidth: 90, display: "flex", alignItems: "center", gap: 8, padding: "9px 11px", borderRadius: 9, border: "1px solid #e5e5e5", background: "#fafaf9" }}>
+                    <div style={{ width: 20, height: 20, borderRadius: "50%", background: "#111", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 10, fontWeight: 700, flexShrink: 0 }}>{ns.n}</div>
                     <div>
-                      <p className="text-xs font-semibold text-foreground">{ns.t}</p>
-                      <p className="text-xs text-muted-foreground">{ns.d}</p>
+                      <p style={{ fontSize: 11, fontWeight: 600, margin: 0 }}>{ns.t}</p>
+                      <p style={{ fontSize: 10, color: "#888", margin: 0 }}>{ns.d}</p>
                     </div>
                   </div>
                 ))}
               </div>
 
-              <div className="rounded-xl border border-border/50 overflow-hidden">
-                <div className="flex items-center justify-between border-b border-border/50 bg-secondary/50 px-4 py-2.5">
-                  <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                    Klageschrift gem. § 4 KSchG
-                  </span>
-                  <button
-                    onClick={copyText}
-                    className="flex items-center gap-1.5 rounded-lg border border-border bg-background px-3 py-1.5 text-xs font-medium text-foreground hover:bg-secondary transition-colors"
-                  >
-                    {copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
-                    {copied ? "Kopiert" : "Kopieren"}
+              {/* Text preview collapsible */}
+              <div style={{ borderRadius: 11, border: "1.5px solid #e5e5e5", overflow: "hidden" }}>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "9px 13px", background: "#f5f5f5", borderBottom: "1px solid #e5e5e5" }}>
+                  <span style={{ fontSize: 11, fontWeight: 600, color: "#888", textTransform: "uppercase", letterSpacing: "0.5px" }}>Vorschau — Textversion</span>
+                  <button onClick={copy} style={{ display: "flex", alignItems: "center", gap: 4, padding: "4px 10px", borderRadius: 6, border: "1px solid #e5e5e5", background: copied ? "#111" : "#fff", color: copied ? "#fff" : "#111", fontSize: 11, fontWeight: 600, cursor: "pointer" }}>
+                    {copied ? "✓ Kopiert" : "Kopieren"}
                   </button>
                 </div>
-                <textarea
-                  readOnly
-                  value={klageschrift}
-                  className="w-full min-h-72 resize-y bg-background p-4 font-mono text-xs leading-relaxed text-foreground focus:outline-none"
-                />
+                <textarea readOnly value={klageschriftText}
+                  style={{ width: "100%", minHeight: 220, padding: 14, fontFamily: "monospace", fontSize: 11, lineHeight: 1.8, border: "none", background: "#fff", resize: "vertical", boxSizing: "border-box", color: "#111" }} />
               </div>
             </div>
           )}
 
-          {/* NAV BUTTONS */}
-          <div className="flex items-center justify-between border-t border-border/50 px-6 py-4 lg:px-8">
-            {step > 0 ? (
-              <button
-                onClick={() => setStep(s => s - 1)}
-                className="rounded-lg border border-border bg-background px-4 py-2 text-sm font-medium text-muted-foreground hover:bg-secondary hover:text-foreground transition-colors"
-              >
-                ← Zurück
-              </button>
-            ) : (
-              <div />
-            )}
+          {/* BOTTOM NAV */}
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "13px 18px", borderTop: "1px solid #e5e5e5", background: "#fafaf9" }}>
+            {step > 0
+              ? <button onClick={() => setStep(s => s - 1)} style={{ padding: "8px 15px", borderRadius: 8, border: "1.5px solid #e5e5e5", background: "#fff", color: "#555", fontSize: 13, fontWeight: 500, cursor: "pointer" }}>← Zurück</button>
+              : <div />}
             {step < 4 && (
-              <button
-                disabled={!canAdvance()}
-                onClick={() => setStep(s => s + 1)}
-                className="rounded-lg bg-foreground px-5 py-2 text-sm font-semibold text-background hover:bg-foreground/90 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
-              >
+              <button disabled={!canAdvance()} onClick={() => setStep(s => s + 1)}
+                style={{ padding: "9px 18px", borderRadius: 8, border: "none", background: canAdvance() ? "#111" : "#e5e5e5", color: canAdvance() ? "#fff" : "#aaa", fontSize: 13, fontWeight: 600, cursor: canAdvance() ? "pointer" : "not-allowed", transition: "all 0.15s" }}>
                 {step === 3 ? "Klageschrift erstellen →" : "Weiter →"}
               </button>
             )}
           </div>
         </div>
 
-        {/* TRUST STRIP */}
-        <div className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
-          {[
-            "🔒 Daten bleiben in Ihrem Browser",
-            "⚖️ Basiert auf § 4 KSchG",
-            "🆓 Kostenlos",
-          ].map(item => (
-            <span key={item} className="text-xs text-muted-foreground">{item}</span>
+        <div style={{ display: "flex", justifyContent: "center", gap: 20, marginTop: 14, flexWrap: "wrap" }}>
+          {["🔒 Daten bleiben im Browser", "⚖️ Basis: § 4 KSchG", "🆓 Kostenlos"].map(t => (
+            <span key={t} style={{ fontSize: 11, color: "#aaa" }}>{t}</span>
           ))}
         </div>
-      </main>
+      </div>
     </div>
   );
 }
