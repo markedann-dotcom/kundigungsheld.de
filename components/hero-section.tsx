@@ -164,7 +164,7 @@ function TrustBadges() {
             </div>
             <div className="min-w-0">
               <p className="text-xs font-semibold text-foreground leading-tight">{title}</p>
-              <p className="text-[11px] text-muted-foreground leading-tight mt-0.5 truncate">{desc}</p>
+              <p className="text-[11px] text-muted-foreground leading-tight mt-0.5">{desc}</p>
             </div>
           </div>
         ))}
@@ -286,7 +286,7 @@ export function HeroSection() {
 
           {/* Heading — instant for LCP */}
           <AnimateIn instant>
-            <h1 className="font-display text-6xl font-black leading-[1.05] tracking-tight text-foreground sm:text-7xl lg:text-8xl mb-6">
+            <h1 className="font-display text-4xl font-black leading-[1.05] tracking-tight text-foreground sm:text-6xl lg:text-8xl mb-6">
               {t.hero.title}
             </h1>
           </AnimateIn>
@@ -303,7 +303,7 @@ export function HeroSection() {
             <div className="mt-12 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
               <Button
                 size="lg"
-                className="group h-14 rounded-full px-10 text-base font-semibold shadow-md hover:shadow-lg hover:scale-[1.02] transition-all duration-300 bg-foreground text-background hover:bg-foreground/90"
+                className="group h-14 rounded-full px-10 text-base font-semibold shadow-md hover:shadow-lg hover:scale-[1.02] transition-all duration-300 bg-foreground text-background hover:bg-foreground/90 w-full sm:w-auto"
                 asChild
               >
                 <a href="#generator">
@@ -314,7 +314,7 @@ export function HeroSection() {
               <Button
                 variant="outline"
                 size="lg"
-                className="h-14 rounded-full px-10 text-base font-semibold border-border/60 hover:bg-muted/50 hover:border-border transition-all duration-300"
+                className="h-14 rounded-full px-10 text-base font-semibold border-border/60 hover:bg-muted/50 hover:border-border transition-all duration-300 w-full sm:w-auto"
                 asChild
               >
                 <a href="#howItWorks">
@@ -327,7 +327,7 @@ export function HeroSection() {
 
           {/* AI Mobile Banner — показывается только на мобиле */}
           <AnimateIn delay={420}>
-            <div className="mx-auto max-w-sm">
+            <div className="mx-auto w-full max-w-md px-1">
               <AiMobileBanner />
             </div>
           </AnimateIn>
@@ -346,7 +346,7 @@ export function HeroSection() {
 
           {/* Animated Stats */}
           <AnimateIn delay={480}>
-            <div className="mt-12 rounded-2xl border border-border/40 bg-muted/20 backdrop-blur-sm px-8 py-6 flex flex-wrap items-center justify-center gap-x-12 gap-y-6 text-center max-w-2xl mx-auto">
+            <div className="mt-12 rounded-2xl border border-border/40 bg-muted/20 backdrop-blur-sm px-4 sm:px-8 py-6 flex flex-wrap items-center justify-center gap-x-6 sm:gap-x-12 gap-y-6 text-center max-w-2xl mx-auto">
               <AnimatedStat value={100000} suffix="+" label={t.hero.stats?.terminations} />
               <div className="hidden sm:block w-px h-10 bg-border/60" />
               <AnimatedStat value={300} suffix="+" label={t.hero.stats?.companies} />
@@ -373,7 +373,7 @@ export function HeroSection() {
             </div>
 
             {/* Document Card */}
-            <div className="relative mx-auto w-full max-w-2xl aspect-[1/1.35] rounded-2xl shadow-xl border border-border/50 overflow-hidden ring-1 ring-foreground/5">
+            <div className="relative mx-auto w-full max-w-2xl aspect-[1/1.35] rounded-2xl shadow-xl border border-border/50 overflow-hidden ring-1 ring-foreground/5 min-w-0 max-h-[80vh]">
               <PdfPreview url="/preview/kuendigung-muster.pdf" />
             </div>
 
@@ -440,7 +440,7 @@ export function HeroSection() {
 
         {/* Feature Badges */}
         <AnimateIn delay={600}>
-          <div className="mt-24 flex flex-wrap items-center justify-center gap-x-12 gap-y-6 border-t border-border/40 pt-12 max-w-4xl mx-auto">
+          <div className="mt-24 flex flex-wrap items-center justify-center gap-x-6 sm:gap-x-12 gap-y-6 border-t border-border/40 pt-12 max-w-4xl mx-auto">
             <div className="flex items-center gap-3.5 text-base font-medium group">
               <div className="h-11 w-11 rounded-xl bg-foreground flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
                 <Shield className="h-5 w-5 text-background" />
