@@ -17,6 +17,7 @@ import { AiAssistantSection } from "@/components/ai-assistant-section"
 import { AdBanner } from "@/components/ad-banner"
 import { SuggestCompanyButton } from "@/components/suggest-company-button"
 import { KundigungAnfechtenBanner } from "@/components/kundigung-anfechten-banner"
+import { AbfindungsrechnerBanner } from "@/components/abfindungsrechner-banner"
 
 export const metadata: Metadata = {
   title: "KündigungsHeld – Verträge kostenlos & rechtssicher kündigen",
@@ -96,6 +97,7 @@ export default function Home() {
         <TestimonialsSection />
 
         <KundigungAnfechtenBanner />
+        <AbfindungsrechnerBanner />
 
         <div className="h-px bg-border/30" />
 
