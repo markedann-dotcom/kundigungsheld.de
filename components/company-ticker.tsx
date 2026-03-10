@@ -82,7 +82,7 @@ export function CompanyTicker() {
   }, [])
 
   return (
-    <section className="relative overflow-hidden py-12" aria-label="Unterstützte Unternehmen">
+    <section className="relative overflow-hidden py-12 max-w-full" style={{ contain: "layout" }} aria-label="Unterstützte Unternehmen">
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute inset-0 bg-gradient-to-b from-muted/30 via-background to-muted/30" />
         <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
@@ -108,12 +108,12 @@ export function CompanyTicker() {
         </div>
       </div>
 
-      <div className="relative">
+      <div className="relative overflow-hidden w-full">
         <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-background via-background/70 to-transparent sm:w-44" />
         <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-background via-background/70 to-transparent sm:w-44" />
 
         <div className="space-y-3">
-          <div className="flex overflow-hidden">
+          <div className="flex overflow-hidden w-full">
             <div className="flex animate-ticker gap-3 motion-reduce:animate-none">
               <div className="flex shrink-0 gap-3">
                 {row1.map((c) => <CompanyCard key={c.id} id={c.id} name={c.name} category={c.category} />)}
@@ -128,7 +128,7 @@ export function CompanyTicker() {
             <div className="h-px w-full bg-gradient-to-r from-transparent via-border/50 to-transparent" />
           </div>
 
-          <div className="flex overflow-hidden">
+          <div className="flex overflow-hidden w-full">
             <div className="flex animate-ticker-reverse gap-3 motion-reduce:animate-none">
               <div className="flex shrink-0 gap-3">
                 {row2.map((c) => <CompanyCard key={c.id} id={c.id} name={c.name} category={c.category} />)}
