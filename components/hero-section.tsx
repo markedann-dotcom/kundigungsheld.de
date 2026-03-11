@@ -1,145 +1,165 @@
-"use client"
+Понял — полный редизайн в стиле Stripe/Apple: светлый, чистый, с отличными анимациями. Делаю.
 
-import { useState, useEffect } from "react"
-import { ArrowRight, Shield, Zap, CheckCircle2, FileText, Lock, Sparkles } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { useI18n } from "@/contexts/i18n-context"
+```jsx
+import { useState, useEffect, useRef } from "react"
 
-/* ─── useCountUp ─── */
+// ── Icons ──────────────────────────────────────────────────────────────────
+const ArrowRight = ({ style, className }) => <svg style={style} className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+const Shield = ({ style }) => <svg style={style} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+const Zap = ({ style }) => <svg style={style} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+const Check = ({ style }) => <svg style={style} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7"/></svg>
+const FileText = ({ style }) => <svg style={style} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+const Lock = ({ style }) => <svg style={style} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/></svg>
+const Sparkles = ({ style }) => <svg style={style} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z"/></svg>
+const Star = ({ style }) => <svg style={style} fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+const ChevronRight = ({ style }) => <svg style={style} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7"/></svg>
 
-function useCountUp(target: number, duration = 2000) {
-  const [value, setValue] = useState(0)
+// ── Hooks ──────────────────────────────────────────────────────────────────
+function useCountUp(target, duration = 2200) {
+  const [v, setV] = useState(0)
   useEffect(() => {
     const t = setTimeout(() => {
-      let s: number
-      const step = (ts: number) => {
+      let s
+      const step = ts => {
         if (!s) s = ts
         const p = Math.min((ts - s) / duration, 1)
-        setValue(Math.floor((1 - Math.pow(1 - p, 4)) * target))
+        setV(Math.floor((1 - Math.pow(1 - p, 3)) * target))
         if (p < 1) requestAnimationFrame(step)
       }
       requestAnimationFrame(step)
-    }, 800)
+    }, 600)
     return () => clearTimeout(t)
-  }, [target, duration])
-  return value
+  }, [])
+  return v
 }
 
-/* ─── Animated Demo ─── */
+function useVisible(delay = 0) {
+  const [vis, setVis] = useState(false)
+  useEffect(() => { const t = setTimeout(() => setVis(true), delay); return () => clearTimeout(t) }, [])
+  return vis
+}
 
-function TypingDemo() {
-  const [step, setStep] = useState(0)
+// ── Live Demo Component ────────────────────────────────────────────────────
+function LiveDemo() {
+  const [phase, setPhase] = useState(0) // 0=idle, 1=step1, 2=step2, 3=typing, 4=done
   const [typed, setTyped] = useState("")
-  const [showDoc, setShowDoc] = useState(false)
-  const fullText = "Sehr geehrte Damen und Herren, hiermit kündige ich meinen Vertrag fristgerecht zum nächstmöglichen Termin..."
+  const [selectedProvider, setSelectedProvider] = useState(null)
+  const [selectedReason, setSelectedReason] = useState(null)
+  const full = "Hiermit kündige ich meinen Mobilfunkvertrag (Nr. 1234567890) fristgerecht zum nächstmöglichen Termin. Ich bitte um schriftliche Bestätigung."
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setStep(s => (s < 2 ? s + 1 : s))
-    }, 1200)
-    return () => clearInterval(timer)
+    const seq = [
+      () => { setTimeout(() => { setPhase(1); setSelectedProvider("Telekom") }, 900) },
+      () => { setTimeout(() => { setPhase(2); setSelectedReason("Vertragsende") }, 1800) },
+      () => {
+        setTimeout(() => {
+          setPhase(3)
+          let i = 0
+          const iv = setInterval(() => {
+            setTyped(full.slice(0, i))
+            i++
+            if (i > full.length) {
+              clearInterval(iv)
+              setTimeout(() => setPhase(4), 400)
+            }
+          }, 22)
+        }, 2800)
+      },
+    ]
+    seq.forEach(fn => fn())
+    const reset = setTimeout(() => {
+      setPhase(0); setTyped(""); setSelectedProvider(null); setSelectedReason(null)
+      setTimeout(() => { seq.forEach(fn => fn()) }, 500)
+    }, 9000)
+    return () => clearTimeout(reset)
   }, [])
 
-  useEffect(() => {
-    if (step === 2) {
-      let i = 0
-      const t = setInterval(() => {
-        setTyped(fullText.slice(0, i))
-        i++
-        if (i > fullText.length) {
-          clearInterval(t)
-          setTimeout(() => setShowDoc(true), 300)
-        }
-      }, 28)
-      return () => clearInterval(t)
-    }
-  }, [step])
-
-  useEffect(() => {
-    if (showDoc) {
-      const t = setTimeout(() => {
-        setStep(0)
-        setTyped("")
-        setShowDoc(false)
-      }, 3200)
-      return () => clearTimeout(t)
-    }
-  }, [showDoc])
+  const providers = ["Telekom", "Netflix", "Fitnessstudio", "Spotify"]
+  const reasons = ["Vertragsende", "Preiserhöhung", "Umzug", "Unzufrieden"]
 
   return (
-    <div style={{ width: "100%", height: "100%", background: "#0f0f0f", display: "flex", flexDirection: "column" }}>
-      {/* Window chrome */}
-      <div style={{ padding: "12px 16px", background: "#1a1a1a", borderBottom: "1px solid rgba(255,255,255,0.07)", display: "flex", alignItems: "center", gap: 8 }}>
-        <div style={{ display: "flex", gap: 5 }}>
-          {["#ff5f57", "#febc2e", "#28c840"].map(c => (
-            <div key={c} style={{ width: 10, height: 10, borderRadius: "50%", background: c }} />
-          ))}
+    <div style={{ fontFamily: "-apple-system, BlinkMacSystemFont, sans-serif", height: "100%", display: "flex", flexDirection: "column", background: "#fff", borderRadius: 16, overflow: "hidden" }}>
+      {/* App header */}
+      <div style={{ padding: "14px 20px", borderBottom: "1px solid #f0f0f0", display: "flex", alignItems: "center", gap: 10 }}>
+        <div style={{ width: 28, height: 28, borderRadius: 8, background: "linear-gradient(135deg, #059669, #10b981)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <FileText style={{ width: 14, height: 14, color: "#fff" }} />
         </div>
-        <div style={{ flex: 1, textAlign: "center", fontSize: 11, color: "rgba(255,255,255,0.3)", fontFamily: "monospace" }}>
-          kuendigungsheld.de/generator
+        <span style={{ fontWeight: 700, fontSize: 13, color: "#111", letterSpacing: "-0.02em" }}>KündigungsHeld</span>
+        <div style={{ marginLeft: "auto", display: "flex", gap: 6 }}>
+          {[1,2,3].map(s => (
+            <div key={s} style={{ width: 20, height: 20, borderRadius: "50%", border: `2px solid ${s <= (phase >= 4 ? 3 : phase >= 3 ? 2 : phase >= 2 ? 2 : phase >= 1 ? 1 : 0) ? "#10b981" : "#e5e7eb"}`, background: s <= (phase >= 4 ? 3 : phase >= 3 ? 2 : phase >= 2 ? 2 : phase >= 1 ? 1 : 0) ? "#10b981" : "transparent", display: "flex", alignItems: "center", justifyContent: "center", transition: "all 0.4s" }}>
+              {s <= (phase >= 4 ? 3 : phase >= 2 ? 2 : phase >= 1 ? 1 : 0) && <Check style={{ width: 10, height: 10, color: "#fff" }} />}
+            </div>
+          ))}
         </div>
       </div>
 
-      <div style={{ flex: 1, padding: 18, display: "flex", flexDirection: "column", gap: 10, overflow: "hidden" }}>
-        {/* Progress */}
-        <div style={{ display: "flex", gap: 5, marginBottom: 2 }}>
-          {["Anbieter", "Details", "Dokument"].map((s, i) => (
-            <div key={s} style={{ flex: 1, height: 3, borderRadius: 2, background: i <= step ? "#10b981" : "rgba(255,255,255,0.1)", transition: "background 0.5s" }} />
-          ))}
-        </div>
-
-        {/* Step 1 — always shown */}
-        <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 12, padding: "11px 13px" }}>
-          <div style={{ fontSize: 9, color: "rgba(255,255,255,0.4)", marginBottom: 5, textTransform: "uppercase", letterSpacing: "0.08em" }}>Anbieter</div>
-          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <div style={{ width: 26, height: 26, borderRadius: 7, background: "linear-gradient(135deg,#e0c3fc,#8ec5fc)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 700 }}>T</div>
-            <span style={{ color: "#fff", fontSize: 12, fontWeight: 500 }}>Telekom Deutschland</span>
-            <div style={{ marginLeft: "auto", color: "#10b981", fontSize: 11 }}>✓</div>
+      <div style={{ flex: 1, padding: "16px 20px", display: "flex", flexDirection: "column", gap: 12, overflowY: "auto" }}>
+        {/* Step 1 — Provider */}
+        <div>
+          <div style={{ fontSize: 11, fontWeight: 600, color: "#6b7280", marginBottom: 8, textTransform: "uppercase", letterSpacing: "0.06em" }}>1. Anbieter wählen</div>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6 }}>
+            {providers.map(p => (
+              <div key={p} style={{ padding: "8px 12px", borderRadius: 10, border: selectedProvider === p ? "1.5px solid #10b981" : "1.5px solid #e5e7eb", background: selectedProvider === p ? "#f0fdf4" : "#fafafa", fontSize: 12, fontWeight: 500, color: selectedProvider === p ? "#059669" : "#6b7280", cursor: "pointer", transition: "all 0.25s", display: "flex", alignItems: "center", gap: 6 }}>
+                {selectedProvider === p && <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#10b981", flexShrink: 0 }} />}
+                {p}
+              </div>
+            ))}
           </div>
         </div>
 
-        {/* Step 2 */}
-        {step >= 1 && (
-          <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 12, padding: "11px 13px", animation: "kh-fadeIn 0.4s ease" }}>
-            <div style={{ fontSize: 9, color: "rgba(255,255,255,0.4)", marginBottom: 5, textTransform: "uppercase", letterSpacing: "0.08em" }}>Kündigungsgrund</div>
-            <div style={{ display: "flex", gap: 5, flexWrap: "wrap" }}>
-              {["Vertragsende", "Preiserhöhung", "Umzug"].map((g, i) => (
-                <div key={g} style={{ padding: "3px 9px", borderRadius: 6, fontSize: 11, border: i === 0 ? "1px solid #10b981" : "1px solid rgba(255,255,255,0.1)", color: i === 0 ? "#10b981" : "rgba(255,255,255,0.45)", background: i === 0 ? "rgba(16,185,129,0.1)" : "transparent" }}>{g}</div>
+        {/* Step 2 — Reason */}
+        {phase >= 2 && (
+          <div style={{ animation: "apple-up 0.5s cubic-bezier(0.16,1,0.3,1) both" }}>
+            <div style={{ fontSize: 11, fontWeight: 600, color: "#6b7280", marginBottom: 8, textTransform: "uppercase", letterSpacing: "0.06em" }}>2. Kündigungsgrund</div>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+              {reasons.map(r => (
+                <div key={r} style={{ padding: "6px 12px", borderRadius: 8, border: selectedReason === r ? "1.5px solid #10b981" : "1.5px solid #e5e7eb", background: selectedReason === r ? "#f0fdf4" : "#fafafa", fontSize: 12, fontWeight: 500, color: selectedReason === r ? "#059669" : "#6b7280", cursor: "pointer", transition: "all 0.25s" }}>
+                  {r}
+                </div>
               ))}
             </div>
           </div>
         )}
 
-        {/* Step 3 — typing */}
-        {step >= 2 && !showDoc && (
-          <div style={{ background: "rgba(16,185,129,0.06)", border: "1px solid rgba(16,185,129,0.2)", borderRadius: 12, padding: "11px 13px", flex: 1, animation: "kh-fadeIn 0.4s ease", overflow: "hidden" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 5, marginBottom: 7 }}>
-              <span style={{ fontSize: 9, color: "#10b981", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.08em" }}>✦ KI schreibt...</span>
-              <div style={{ marginLeft: "auto", display: "flex", gap: 3 }}>
-                {[0, 1, 2].map(i => (
-                  <div key={i} style={{ width: 4, height: 4, borderRadius: "50%", background: "#10b981", animation: `kh-bounce 1s ${i * 0.2}s infinite` }} />
-                ))}
+        {/* Step 3 — AI writing */}
+        {phase >= 3 && phase < 4 && (
+          <div style={{ animation: "apple-up 0.5s cubic-bezier(0.16,1,0.3,1) both", flex: 1 }}>
+            <div style={{ fontSize: 11, fontWeight: 600, color: "#6b7280", marginBottom: 8, textTransform: "uppercase", letterSpacing: "0.06em", display: "flex", alignItems: "center", gap: 6 }}>
+              <div style={{ width: 5, height: 5, borderRadius: "50%", background: "#10b981", animation: "apple-pulse 1s infinite" }} />
+              KI generiert...
+            </div>
+            <div style={{ background: "#f9fafb", borderRadius: 10, padding: "12px 14px", border: "1px solid #e5e7eb", minHeight: 80 }}>
+              <p style={{ fontSize: 12, lineHeight: 1.7, color: "#374151", margin: 0, fontFamily: "Georgia, serif" }}>
+                {typed}
+                <span style={{ borderRight: "1.5px solid #10b981", marginLeft: 1, animation: "apple-blink 0.8s infinite" }}>&nbsp;</span>
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* Step 4 — Done */}
+        {phase === 4 && (
+          <div style={{ animation: "apple-scale 0.6s cubic-bezier(0.16,1,0.3,1) both", flex: 1, display: "flex", flexDirection: "column", gap: 10 }}>
+            <div style={{ background: "linear-gradient(135deg, #f0fdf4, #ecfdf5)", borderRadius: 12, border: "1px solid #bbf7d0", padding: "14px 16px" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
+                <div style={{ width: 24, height: 24, borderRadius: "50%", background: "#10b981", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <Check style={{ width: 12, height: 12, color: "#fff" }} />
+                </div>
+                <span style={{ fontWeight: 700, fontSize: 13, color: "#065f46" }}>Kündigung erstellt!</span>
+              </div>
+              <p style={{ fontSize: 11, color: "#047857", lineHeight: 1.6, margin: 0, fontFamily: "Georgia, serif" }}>
+                Sehr geehrte Damen und Herren, hiermit kündige ich meinen Mobilfunkvertrag fristgerecht...
+              </p>
+            </div>
+            <div style={{ display: "flex", gap: 8 }}>
+              <div style={{ flex: 1, background: "#111", borderRadius: 10, padding: "10px 14px", textAlign: "center", cursor: "pointer" }}>
+                <div style={{ fontSize: 12, fontWeight: 600, color: "#fff" }}>📄 PDF laden</div>
+              </div>
+              <div style={{ flex: 1, background: "#f3f4f6", borderRadius: 10, padding: "10px 14px", textAlign: "center", cursor: "pointer" }}>
+                <div style={{ fontSize: 12, fontWeight: 600, color: "#374151" }}>✉️ Per E‑Mail</div>
               </div>
             </div>
-            <p style={{ fontSize: 10, color: "rgba(255,255,255,0.7)", lineHeight: 1.65, fontFamily: "Georgia, serif", margin: 0 }}>
-              {typed}<span style={{ borderRight: "1.5px solid #10b981", marginLeft: 1, animation: "kh-blink 1s infinite" }}>&nbsp;</span>
-            </p>
-          </div>
-        )}
-
-        {/* Step 3 — doc ready */}
-        {showDoc && (
-          <div style={{ background: "#fff", borderRadius: 12, flex: 1, padding: "13px 15px", animation: "kh-scaleIn 0.5s cubic-bezier(0.34,1.56,0.64,1)" }}>
-            <div style={{ fontSize: 9, color: "#888", textAlign: "right", marginBottom: 7 }}>Berlin, 12.03.2025</div>
-            <div style={{ fontSize: 11, fontWeight: 700, color: "#111", marginBottom: 5 }}>Kündigung — Telekom</div>
-            <div style={{ fontSize: 9.5, color: "#444", lineHeight: 1.7, fontFamily: "Georgia, serif" }}>
-              Sehr geehrte Damen und Herren,<br />
-              hiermit kündige ich meinen Vertrag fristgerecht zum nächstmöglichen Termin.
-            </div>
-            <div style={{ marginTop: 10, display: "flex", alignItems: "center", gap: 5, background: "#f0fdf4", borderRadius: 6, padding: "5px 9px" }}>
-              <span style={{ fontSize: 10 }}>✓</span>
-              <span style={{ fontSize: 9, color: "#15803d", fontWeight: 600 }}>PDF bereit zum Download</span>
-            </div>
           </div>
         )}
       </div>
@@ -147,241 +167,276 @@ function TypingDemo() {
   )
 }
 
-/* ─── Social Proof ─── */
-
-const AVATAR_PHOTOS = [
-  "https://i.pravatar.cc/64?img=47",
-  "https://i.pravatar.cc/64?img=32",
-  "https://i.pravatar.cc/64?img=12",
-  "https://i.pravatar.cc/64?img=25",
-  "https://i.pravatar.cc/64?img=56",
-]
-
-function SocialProof() {
-  return (
-    <div className="flex items-center gap-3">
-      <div className="flex -space-x-2">
-        {AVATAR_PHOTOS.map((src, i) => (
-          <div key={i} className="h-7 w-7 rounded-full border-2 border-background overflow-hidden bg-muted">
-            <img src={src} alt={`Nutzer ${i + 1}`} className="h-full w-full object-cover" width={28} height={28} />
-          </div>
-        ))}
-      </div>
-      <div>
-        <div className="flex gap-0.5">
-          {"★★★★★".split("").map((s, i) => (
-            <span key={i} className="text-amber-400 text-xs">{s}</span>
-          ))}
-        </div>
-        <p className="text-xs text-muted-foreground">
-          <span className="text-foreground font-semibold">2.400+</span> diese Woche gekündigt
-        </p>
-      </div>
-    </div>
-  )
-}
-
-/* ─── Main Export ─── */
-
-export function HeroSection() {
-  const { t } = useI18n()
+// ── Main Hero ──────────────────────────────────────────────────────────────
+export default function HeroApple() {
   const countT = useCountUp(100000)
   const countC = useCountUp(300)
 
+  const vis0 = useVisible(0)
+  const vis1 = useVisible(150)
+  const vis2 = useVisible(280)
+  const vis3 = useVisible(420)
+  const vis4 = useVisible(560)
+  const vis5 = useVisible(700)
+
+  const anim = (v, extra = {}) => ({
+    opacity: v ? 1 : 0,
+    transform: v ? "translateY(0)" : "translateY(24px)",
+    transition: "opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1)",
+    ...extra
+  })
+
   return (
-    <section className="relative overflow-hidden bg-background">
+    <div style={{ background: "#ffffff", minHeight: "100vh", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif", color: "#111" }}>
+      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
 
-      {/* Background grid */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#00000008_1px,transparent_1px),linear-gradient(to_bottom,#00000008_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_80%_60%_at_50%_0%,#000_50%,transparent_100%)]" />
+      {/* ── Subtle top gradient ── */}
+      <div style={{ position: "fixed", top: 0, left: 0, right: 0, height: 400, pointerEvents: "none", background: "radial-gradient(ellipse 80% 50% at 50% -10%, rgba(16,185,129,0.07) 0%, transparent 70%)", zIndex: 0 }} />
 
-      {/* Orbs */}
-      <div className="pointer-events-none absolute -top-48 left-1/2 -translate-x-1/4 h-[600px] w-[600px] rounded-full bg-emerald-500/8 dark:bg-emerald-400/8 blur-[100px]" />
-      <div className="pointer-events-none absolute top-1/3 -right-32 h-[400px] w-[400px] rounded-full bg-violet-500/6 blur-[90px]" />
-      <div className="pointer-events-none absolute top-1/4 -left-32 h-[350px] w-[350px] rounded-full bg-blue-500/5 blur-[80px]" />
+      {/* ── Navbar ── */}
+      <nav style={{ position: "sticky", top: 0, zIndex: 100, background: "rgba(255,255,255,0.85)", backdropFilter: "blur(24px) saturate(200%)", WebkitBackdropFilter: "blur(24px) saturate(200%)", borderBottom: "1px solid rgba(0,0,0,0.06)", padding: "0 40px", height: 52, display: "flex", alignItems: "center", gap: 32 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <div style={{ width: 28, height: 28, borderRadius: 8, background: "linear-gradient(135deg,#059669,#10b981)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <FileText style={{ width: 13, height: 13, color: "#fff" }} />
+          </div>
+          <span style={{ fontWeight: 800, fontSize: 15, letterSpacing: "-0.03em", color: "#111" }}>KündigungsHeld</span>
+        </div>
+        <div style={{ display: "flex", gap: 4, marginLeft: 8 }}>
+          {["Tools", "Wissen", "Preise", "Blog"].map(l => (
+            <button key={l} style={{ background: "none", border: "none", color: "#6b7280", fontSize: 13, fontWeight: 500, cursor: "pointer", padding: "4px 10px", borderRadius: 7, fontFamily: "inherit" }}>{l}</button>
+          ))}
+        </div>
+        <div style={{ marginLeft: "auto", display: "flex", gap: 8, alignItems: "center" }}>
+          <button style={{ background: "none", border: "none", color: "#374151", fontSize: 13, fontWeight: 500, cursor: "pointer", fontFamily: "inherit" }}>Anmelden</button>
+          <button style={{ background: "#111", color: "#fff", border: "none", borderRadius: 9, padding: "8px 18px", fontSize: 13, fontWeight: 600, cursor: "pointer", fontFamily: "inherit", letterSpacing: "-0.01em" }}>
+            Kostenlos starten
+          </button>
+        </div>
+      </nav>
 
-      <div className="relative mx-auto max-w-7xl px-4 lg:px-8 pt-20 pb-20 lg:pt-28 lg:pb-28">
+      {/* ── Hero content ── */}
+      <main style={{ position: "relative", zIndex: 1, maxWidth: 1200, margin: "0 auto", padding: "80px 40px 100px" }}>
 
-        {/* Top badge */}
-        <div className="flex justify-center mb-10">
-          <div className="inline-flex items-center gap-2 rounded-full border border-border/50 bg-background/80 px-4 py-1.5 backdrop-blur-sm shadow-sm">
-            <div className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-            <span className="text-xs font-medium text-muted-foreground tracking-wide uppercase">
-              {t.hero.badge}
-            </span>
-            <ArrowRight className="h-3 w-3 text-muted-foreground/50" />
+        {/* Eyebrow */}
+        <div style={{ display: "flex", justifyContent: "center", marginBottom: 28, ...anim(vis0) }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "#f0fdf4", border: "1px solid #bbf7d0", borderRadius: 999, padding: "5px 14px 5px 8px" }}>
+            <div style={{ background: "#10b981", borderRadius: 999, padding: "2px 8px", fontSize: 10, fontWeight: 700, color: "#fff", letterSpacing: "0.04em", textTransform: "uppercase" }}>Neu</div>
+            <span style={{ fontSize: 12, fontWeight: 500, color: "#059669" }}>KI-Assistent — Fragen sofort beantwortet</span>
+            <ChevronRight style={{ width: 12, height: 12, color: "#059669" }} />
           </div>
         </div>
 
-        {/* Headline */}
-        <div className="text-center max-w-4xl mx-auto mb-14">
-          <h1 className="font-display text-4xl sm:text-6xl lg:text-8xl font-black leading-[1.03] tracking-tight text-foreground mb-6">
-            {t.hero.title}
+        {/* ── Headline ── */}
+        <div style={{ textAlign: "center", marginBottom: 56, ...anim(vis1) }}>
+          <h1 style={{ fontSize: "clamp(44px, 6.5vw, 88px)", fontWeight: 900, letterSpacing: "-0.045em", lineHeight: 1.0, color: "#111", margin: "0 0 24px" }}>
+            Verträge kündigen.
+            <br />
+            <span style={{ background: "linear-gradient(135deg, #059669 0%, #10b981 50%, #34d399 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+              Einfach. Kostenlos.
+            </span>
           </h1>
-          <p className="text-xl leading-relaxed text-muted-foreground max-w-2xl mx-auto mb-10">
-            {t.hero.subtitle}
+          <p style={{ fontSize: 20, lineHeight: 1.6, color: "#6b7280", maxWidth: 560, margin: "0 auto 40px", fontWeight: 400, letterSpacing: "-0.01em" }}>
+            Rechtssichere Kündigungsschreiben in&nbsp;2&nbsp;Minuten — für Telekom, Netflix, Fitnessstudio und über&nbsp;300 weitere Anbieter.
           </p>
 
           {/* CTAs */}
-          <div className="flex flex-col sm:flex-row gap-3 justify-center mb-10">
-            <Button
-              size="lg"
-              className="h-13 rounded-xl px-8 text-base font-semibold bg-emerald-500 hover:bg-emerald-600 text-white shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/35 hover:-translate-y-0.5 transition-all duration-300 w-full sm:w-auto"
-              asChild
+          <div style={{ display: "flex", gap: 12, justifyContent: "center", marginBottom: 48 }}>
+            <button style={{ display: "inline-flex", alignItems: "center", gap: 8, height: 52, borderRadius: 14, padding: "0 30px", background: "#111", color: "#fff", fontWeight: 600, fontSize: 15, border: "none", cursor: "pointer", fontFamily: "inherit", letterSpacing: "-0.02em", boxShadow: "0 1px 2px rgba(0,0,0,0.2), 0 4px 16px rgba(0,0,0,0.12)", transition: "transform 0.2s, box-shadow 0.2s" }}
+              onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-1px)"; e.currentTarget.style.boxShadow = "0 1px 2px rgba(0,0,0,0.2), 0 8px 24px rgba(0,0,0,0.18)" }}
+              onMouseLeave={e => { e.currentTarget.style.transform = ""; e.currentTarget.style.boxShadow = "0 1px 2px rgba(0,0,0,0.2), 0 4px 16px rgba(0,0,0,0.12)" }}
             >
-              <a href="#generator">
-                {t.hero.cta}
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </a>
-            </Button>
-            <Button
-              variant="outline"
-              size="lg"
-              className="h-13 rounded-xl px-8 text-base font-semibold border-border/60 hover:bg-muted/50 transition-all duration-300 w-full sm:w-auto"
-              asChild
+              Jetzt kündigen
+              <ArrowRight style={{ width: 15, height: 15 }} />
+            </button>
+            <button style={{ display: "inline-flex", alignItems: "center", gap: 8, height: 52, borderRadius: 14, padding: "0 26px", background: "#fff", color: "#374151", fontWeight: 600, fontSize: 15, border: "1.5px solid #e5e7eb", cursor: "pointer", fontFamily: "inherit", letterSpacing: "-0.02em", transition: "border-color 0.2s, transform 0.2s" }}
+              onMouseEnter={e => { e.currentTarget.style.borderColor = "#d1d5db"; e.currentTarget.style.transform = "translateY(-1px)" }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor = "#e5e7eb"; e.currentTarget.style.transform = "" }}
             >
-              <a href="#howItWorks">
-                <FileText className="mr-2 h-4 w-4" />
-                {t.hero.howItWorksCTA}
-              </a>
-            </Button>
+              <FileText style={{ width: 15, height: 15 }} />
+              So funktioniert's
+            </button>
           </div>
 
           {/* Social proof */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <SocialProof />
-            <div className="hidden sm:block w-px h-7 bg-border/50" />
-            <p className="text-sm text-muted-foreground">Keine Registrierung · DSGVO · SSL</p>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 14 }}>
+            <div style={{ display: "flex" }}>
+              {["47","32","12","25","56"].map((n, i) => (
+                <div key={n} style={{ width: 30, height: 30, borderRadius: "50%", border: "2px solid #fff", overflow: "hidden", marginLeft: i > 0 ? -9 : 0, boxShadow: "0 1px 3px rgba(0,0,0,0.1)" }}>
+                  <img src={`https://i.pravatar.cc/64?img=${n}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} alt="" />
+                </div>
+              ))}
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+              <div style={{ display: "flex", gap: 1 }}>
+                {[1,2,3,4,5].map(i => <Star key={i} style={{ width: 12, height: 12, color: "#fbbf24" }} />)}
+              </div>
+              <span style={{ fontSize: 13, color: "#6b7280", fontWeight: 500 }}>
+                <strong style={{ color: "#111" }}>4.9</strong> · 2.400+ Nutzer diese Woche
+              </span>
+            </div>
           </div>
         </div>
 
-        {/* Browser mockup */}
-        <div className="relative max-w-3xl mx-auto">
+        {/* ── Mockup section ── */}
+        <div style={{ position: "relative", ...anim(vis2) }}>
 
           {/* Glow */}
-          <div className="pointer-events-none absolute -bottom-16 left-1/2 -translate-x-1/2 h-48 w-96 rounded-full bg-emerald-500/12 blur-[60px]" />
+          <div style={{ position: "absolute", top: "30%", left: "50%", transform: "translateX(-50%)", width: 700, height: 300, background: "radial-gradient(ellipse, rgba(16,185,129,0.1) 0%, transparent 65%)", pointerEvents: "none", zIndex: 0 }} />
 
-          {/* Frame */}
-          <div
-            className="relative rounded-2xl overflow-hidden border border-border/50 shadow-2xl dark:shadow-black/60"
-            style={{ animation: "kh-float 6s ease-in-out infinite" }}
-          >
-            {/* Chrome bar */}
-            <div className="bg-muted/80 dark:bg-zinc-900 border-b border-border/40 px-4 py-3 flex items-center gap-3 backdrop-blur-sm">
-              <div className="flex gap-1.5">
-                {["#ff5f57", "#febc2e", "#28c840"].map(c => (
-                  <div key={c} style={{ width: 10, height: 10, borderRadius: "50%", background: c }} />
-                ))}
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 2fr 1fr", gap: 20, alignItems: "start", position: "relative", zIndex: 1 }}>
+
+            {/* LEFT side cards */}
+            <div style={{ display: "flex", flexDirection: "column", gap: 14, paddingTop: 40 }}>
+
+              {/* Stat card */}
+              <div style={{ background: "#fff", borderRadius: 20, border: "1px solid #e5e7eb", padding: "20px 22px", boxShadow: "0 4px 24px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04)", animation: "apple-float 5s 0.3s ease-in-out infinite" }}>
+                <div style={{ fontSize: 10, fontWeight: 600, color: "#9ca3af", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 10 }}>Kündigungen</div>
+                <div style={{ fontSize: 32, fontWeight: 900, color: "#111", letterSpacing: "-0.04em", lineHeight: 1, marginBottom: 6 }}>
+                  {countT > 0 ? (countT / 1000).toFixed(0) : "—"}k<span style={{ fontSize: 20 }}>+</span>
+                </div>
+                <div style={{ display: "flex", alignItems: "center", gap: 5, background: "#f0fdf4", borderRadius: 8, padding: "4px 10px", width: "fit-content" }}>
+                  <div style={{ width: 5, height: 5, borderRadius: "50%", background: "#10b981" }} />
+                  <span style={{ fontSize: 11, color: "#059669", fontWeight: 600 }}>↑ 12% diese Woche</span>
+                </div>
               </div>
-              <div className="flex-1 bg-background/60 dark:bg-zinc-800/60 rounded-md px-3 py-1 flex items-center gap-2">
-                <Lock className="h-2.5 w-2.5 text-emerald-500" />
-                <span className="text-xs text-muted-foreground font-mono">kuendigungsheld.de/generator</span>
+
+              {/* Trust card */}
+              <div style={{ background: "#fff", borderRadius: 20, border: "1px solid #e5e7eb", padding: "18px 20px", boxShadow: "0 4px 24px rgba(0,0,0,0.06)", animation: "apple-float 6s 1s ease-in-out infinite" }}>
+                <div style={{ fontSize: 10, fontWeight: 600, color: "#9ca3af", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 12 }}>Vertraut von</div>
+                <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                  {[
+                    { label: "DSGVO-konform", icon: Shield, color: "#10b981" },
+                    { label: "SSL 256-Bit", icon: Lock, color: "#3b82f6" },
+                    { label: "Rechtssicher", icon: Sparkles, color: "#8b5cf6" },
+                  ].map(({ label, icon: Icon, color }) => (
+                    <div key={label} style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                      <div style={{ width: 26, height: 26, borderRadius: 8, background: color + "15", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                        <Icon style={{ width: 12, height: 12, color }} />
+                      </div>
+                      <span style={{ fontSize: 12, fontWeight: 500, color: "#374151" }}>{label}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
 
-            {/* Demo */}
-            <div className="h-[360px] sm:h-[420px]">
-              <TypingDemo />
-            </div>
-          </div>
-
-          {/* Floating — Kündigungen */}
-          <div
-            className="absolute -left-4 sm:-left-14 top-12 hidden sm:flex items-center gap-3 rounded-2xl bg-card border border-border/50 px-4 py-3.5 shadow-xl backdrop-blur-md"
-            style={{ animation: "kh-float 5s 0.5s ease-in-out infinite" }}
-          >
-            <div className="text-center">
-              <div className="text-2xl font-black text-foreground leading-none tabular-nums">
-                {countT > 0 ? countT.toLocaleString("de-DE") : "—"}<span className="text-lg">+</span>
+            {/* CENTER — main demo */}
+            <div style={{ position: "relative" }}>
+              {/* Browser shell */}
+              <div style={{ borderRadius: 20, overflow: "hidden", border: "1px solid rgba(0,0,0,0.08)", boxShadow: "0 2px 4px rgba(0,0,0,0.04), 0 8px 32px rgba(0,0,0,0.08), 0 32px 80px rgba(0,0,0,0.08)", animation: "apple-float 7s ease-in-out infinite" }}>
+                {/* Browser bar */}
+                <div style={{ background: "#f7f7f7", borderBottom: "1px solid #e5e7eb", padding: "10px 16px", display: "flex", alignItems: "center", gap: 10 }}>
+                  <div style={{ display: "flex", gap: 5 }}>
+                    {["#ff5f57","#febc2e","#28c840"].map(c => <div key={c} style={{ width: 10, height: 10, borderRadius: "50%", background: c }} />)}
+                  </div>
+                  <div style={{ flex: 1, background: "#efefef", borderRadius: 7, padding: "4px 12px", display: "flex", alignItems: "center", gap: 5 }}>
+                    <Lock style={{ width: 9, height: 9, color: "#10b981" }} />
+                    <span style={{ fontSize: 10.5, color: "#9ca3af", fontFamily: "monospace" }}>kuendigungsheld.de</span>
+                  </div>
+                </div>
+                {/* Demo */}
+                <div style={{ height: 380 }}>
+                  <LiveDemo />
+                </div>
               </div>
-              <div className="text-[10px] text-emerald-500 font-semibold mt-1">↑ Kündigungen</div>
             </div>
-          </div>
 
-          {/* Floating — Speed */}
-          <div
-            className="absolute -right-4 sm:-right-14 top-8 hidden sm:flex items-center gap-3 rounded-2xl bg-card border border-border/50 px-4 py-3.5 shadow-xl backdrop-blur-md"
-            style={{ animation: "kh-float 4s 1s ease-in-out infinite" }}
-          >
-            <div className="text-center">
-              <div className="text-2xl font-black text-foreground leading-none">
-                2 <span className="text-sm font-medium text-muted-foreground">Min.</span>
-              </div>
-              <div className="text-[10px] text-amber-500 font-semibold mt-1">⚡ Blitzschnell</div>
-            </div>
-          </div>
+            {/* RIGHT side cards */}
+            <div style={{ display: "flex", flexDirection: "column", gap: 14, paddingTop: 60 }}>
 
-          {/* Floating — Rating */}
-          <div
-            className="absolute -left-4 sm:-left-12 -bottom-5 hidden sm:flex items-center gap-3 rounded-2xl bg-card border border-border/50 px-4 py-3 shadow-xl backdrop-blur-md"
-            style={{ animation: "kh-float 5.5s 0.3s ease-in-out infinite" }}
-          >
-            <div className="text-xl font-black text-foreground">4.9</div>
-            <div>
-              <div className="flex gap-0.5">
-                {"★★★★★".split("").map((s, i) => <span key={i} className="text-amber-400 text-[10px]">{s}</span>)}
+              {/* Speed */}
+              <div style={{ background: "#fff", borderRadius: 20, border: "1px solid #e5e7eb", padding: "18px 20px", boxShadow: "0 4px 24px rgba(0,0,0,0.06)", animation: "apple-float 5.5s 0.7s ease-in-out infinite" }}>
+                <div style={{ fontSize: 10, fontWeight: 600, color: "#9ca3af", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 8 }}>Ø Dauer</div>
+                <div style={{ display: "flex", alignItems: "baseline", gap: 4, marginBottom: 4 }}>
+                  <span style={{ fontSize: 32, fontWeight: 900, color: "#111", letterSpacing: "-0.04em", lineHeight: 1 }}>2</span>
+                  <span style={{ fontSize: 15, color: "#9ca3af", fontWeight: 500 }}>Min.</span>
+                </div>
+                <div style={{ fontSize: 11, color: "#f59e0b", fontWeight: 600 }}>⚡ Blitzschnell</div>
               </div>
-              <div className="text-[10px] text-muted-foreground">1.200+ Bewertungen</div>
-            </div>
-          </div>
 
-          {/* Floating — KI */}
-          <div
-            className="absolute -right-4 sm:-right-12 -bottom-3 hidden sm:flex items-center gap-3 rounded-2xl border border-violet-300/40 dark:border-violet-700/40 bg-card px-4 py-3 shadow-xl shadow-violet-500/10 backdrop-blur-md cursor-pointer hover:-translate-y-0.5 transition-transform duration-300"
-            style={{ animation: "kh-float 4.5s 0.8s ease-in-out infinite" }}
-            onClick={() => window.dispatchEvent(new Event("open-ai-chat"))}
-          >
-            <div className="relative h-8 w-8 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shrink-0">
-              <Sparkles className="h-4 w-4 text-white" />
-              <div className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-green-400 border-2 border-card" />
-            </div>
-            <div>
-              <div className="text-xs font-bold text-foreground flex items-center gap-1.5">
-                KI-Assistent
-                <span className="text-[9px] bg-violet-100 dark:bg-violet-900/40 text-violet-600 dark:text-violet-400 px-1.5 py-0.5 rounded-full font-bold">NEU</span>
+              {/* Rating */}
+              <div style={{ background: "#fff", borderRadius: 20, border: "1px solid #e5e7eb", padding: "18px 20px", boxShadow: "0 4px 24px rgba(0,0,0,0.06)", animation: "apple-float 4.5s 1.3s ease-in-out infinite" }}>
+                <div style={{ fontSize: 10, fontWeight: 600, color: "#9ca3af", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 10 }}>Bewertung</div>
+                <div style={{ fontSize: 32, fontWeight: 900, color: "#111", letterSpacing: "-0.04em", lineHeight: 1, marginBottom: 6 }}>4.9</div>
+                <div style={{ display: "flex", gap: 2, marginBottom: 4 }}>
+                  {[1,2,3,4,5].map(i => <Star key={i} style={{ width: 13, height: 13, color: "#fbbf24" }} />)}
+                </div>
+                <div style={{ fontSize: 11, color: "#9ca3af", fontWeight: 500 }}>1.200+ Rezensionen</div>
               </div>
-              <div className="text-[10px] text-muted-foreground">Online · Bereit</div>
+
+              {/* KI */}
+              <div style={{ background: "linear-gradient(135deg, #f5f3ff, #ede9fe)", borderRadius: 20, border: "1px solid #ddd6fe", padding: "16px 18px", boxShadow: "0 4px 24px rgba(139,92,246,0.1)", animation: "apple-float 6s 0.5s ease-in-out infinite", cursor: "pointer" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
+                  <div style={{ position: "relative", width: 30, height: 30, borderRadius: 10, background: "linear-gradient(135deg, #8b5cf6, #7c3aed)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    <Sparkles style={{ width: 14, height: 14, color: "#fff" }} />
+                    <div style={{ position: "absolute", top: -2, right: -2, width: 8, height: 8, borderRadius: "50%", background: "#4ade80", border: "2px solid #f5f3ff" }} />
+                  </div>
+                  <div>
+                    <div style={{ fontSize: 12, fontWeight: 700, color: "#5b21b6" }}>KI-Assistent</div>
+                    <div style={{ fontSize: 10, color: "#7c3aed" }}>Jetzt online</div>
+                  </div>
+                </div>
+                <div style={{ fontSize: 11, color: "#6d28d9", lineHeight: 1.5 }}>Fragen zur Kündigung? Sofort beantwortet.</div>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Stats bar */}
-        <div className="mt-24 max-w-2xl mx-auto grid grid-cols-2 sm:grid-cols-4 border border-border/40 rounded-2xl bg-muted/20 overflow-hidden">
-          {[
-            { val: countT.toLocaleString("de-DE") + "+", label: t.hero.stats?.terminations, color: "text-emerald-500" },
-            { val: countC + "+", label: t.hero.stats?.companies, color: "text-blue-500" },
-            { val: "4.9★", label: t.hero.stats?.rating, color: "text-amber-500" },
-            { val: "100%", label: "Kostenlos", color: "text-violet-500" },
-          ].map(({ val, label, color }, i) => (
-            <div key={i} className={`text-center py-5 px-3 ${i > 0 ? "border-l border-border/40" : ""}`}>
-              <div className={`text-2xl font-black ${color} leading-none tracking-tight`}>{val}</div>
-              <div className="text-[11px] text-muted-foreground mt-2 font-medium leading-tight">{label}</div>
-            </div>
-          ))}
+        {/* ── Stats strip ── */}
+        <div style={{ marginTop: 80, ...anim(vis3) }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", border: "1px solid #e5e7eb", borderRadius: 20, overflow: "hidden", background: "#fff", boxShadow: "0 1px 4px rgba(0,0,0,0.04)" }}>
+            {[
+              { val: countT > 0 ? Math.floor(countT / 1000) + "k+" : "—", label: "Kündigungen", sub: "erfolgreich versendet", color: "#10b981" },
+              { val: countC + "+", label: "Anbieter", sub: "werden unterstützt", color: "#3b82f6" },
+              { val: "4.9★", label: "Bewertung", sub: "von 1.200+ Nutzern", color: "#f59e0b" },
+              { val: "100%", label: "Kostenlos", sub: "keine versteckten Kosten", color: "#8b5cf6" },
+            ].map(({ val, label, sub, color }, i) => (
+              <div key={i} style={{ padding: "28px 24px", borderLeft: i > 0 ? "1px solid #f3f4f6" : "none", textAlign: "center" }}>
+                <div style={{ fontSize: 30, fontWeight: 900, color, letterSpacing: "-0.03em", lineHeight: 1, marginBottom: 6 }}>{val}</div>
+                <div style={{ fontSize: 14, fontWeight: 700, color: "#111", marginBottom: 3, letterSpacing: "-0.01em" }}>{label}</div>
+                <div style={{ fontSize: 11, color: "#9ca3af" }}>{sub}</div>
+              </div>
+            ))}
+          </div>
         </div>
 
-        {/* Feature chips */}
-        <div className="mt-10 flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
+        {/* ── Feature pills ── */}
+        <div style={{ display: "flex", justifyContent: "center", gap: 12, marginTop: 48, flexWrap: "wrap", ...anim(vis4) }}>
           {[
-            { icon: Shield, label: t.hero.features?.secure },
-            { icon: Zap, label: t.hero.features?.fast },
-            { icon: CheckCircle2, label: t.hero.features?.free },
-            { icon: Lock, label: "SSL-verschlüsselt" },
+            { icon: Shield, label: "DSGVO & SSL gesichert" },
+            { icon: Zap, label: "In 2 Minuten fertig" },
+            { icon: Check, label: "Keine Registrierung" },
+            { icon: FileText, label: "300+ Anbieter" },
           ].map(({ icon: Icon, label }) => (
-            <div key={String(label)} className="flex items-center gap-2 text-sm text-muted-foreground font-medium">
-              <Icon className="h-3.5 w-3.5 text-emerald-500 shrink-0" />
+            <div key={label} style={{ display: "flex", alignItems: "center", gap: 7, background: "#f9fafb", border: "1px solid #e5e7eb", borderRadius: 999, padding: "8px 16px", fontSize: 13, fontWeight: 500, color: "#374151" }}>
+              <Icon style={{ width: 14, height: 14, color: "#10b981" }} />
               {label}
             </div>
           ))}
         </div>
-      </div>
+
+        {/* ── Logos strip ── */}
+        <div style={{ marginTop: 64, textAlign: "center", ...anim(vis5) }}>
+          <div style={{ fontSize: 12, color: "#c4c4c4", fontWeight: 500, letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 24 }}>Funktioniert für alle großen Anbieter</div>
+          <div style={{ display: "flex", justifyContent: "center", gap: 32, flexWrap: "wrap" }}>
+            {["Telekom", "Vodafone", "Netflix", "Spotify", "ADAC", "Sky", "O₂", "Amazon"].map(name => (
+              <div key={name} style={{ fontSize: 15, fontWeight: 700, color: "#d1d5db", letterSpacing: "-0.02em", transition: "color 0.2s", cursor: "pointer" }}
+                onMouseEnter={e => e.currentTarget.style.color = "#6b7280"}
+                onMouseLeave={e => e.currentTarget.style.color = "#d1d5db"}
+              >{name}</div>
+            ))}
+          </div>
+        </div>
+      </main>
 
       <style>{`
-        @keyframes kh-float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
-        @keyframes kh-fadeIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
-        @keyframes kh-scaleIn { from{opacity:0;transform:scale(0.94)} to{opacity:1;transform:scale(1)} }
-        @keyframes kh-bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
-        @keyframes kh-blink { 0%,100%{opacity:1} 50%{opacity:0} }
+        @keyframes apple-float { 0%,100%{transform:translateY(0px)} 50%{transform:translateY(-7px)} }
+        @keyframes apple-up { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+        @keyframes apple-scale { from{opacity:0;transform:scale(0.96)} to{opacity:1;transform:scale(1)} }
+        @keyframes apple-pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.3)} }
+        @keyframes apple-blink { 0%,100%{opacity:1} 50%{opacity:0} }
       `}</style>
-    </section>
+    </div>
   )
 }
+```
