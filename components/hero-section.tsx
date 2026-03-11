@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from "react"
 
 // ── Icons ──────────────────────────────────────────────────────────────────
@@ -437,3 +436,5 @@ export default function HeroApple() {
     </div>
   )
 }
+
+export { HeroApple as HeroSection }
