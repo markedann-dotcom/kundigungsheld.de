@@ -1,6 +1,4 @@
-Понял — полный редизайн в стиле Stripe/Apple: светлый, чистый, с отличными анимациями. Делаю.
 
-```jsx
 import { useState, useEffect, useRef } from "react"
 
 // ── Icons ──────────────────────────────────────────────────────────────────
@@ -439,4 +437,3 @@ export default function HeroApple() {
     </div>
   )
 }
-```
