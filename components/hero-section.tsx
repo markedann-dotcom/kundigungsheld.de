@@ -1,22 +1,18 @@
-import { useState, useEffect, useRef } from "react"
+"use client"
 
-// ── Icons ────────────────────────────────────────────────────────────────────
-const ArrowRight = ({ style }) => <svg style={style} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
-const Play = ({ style }) => <svg style={style} fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-const Shield = ({ style }) => <svg style={style} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-const Zap = ({ style }) => <svg style={style} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-const CheckCircle = ({ style }) => <svg style={style} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-const FileText = ({ style }) => <svg style={style} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-const Lock = ({ style }) => <svg style={style} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/></svg>
-const Sparkles = ({ style }) => <svg style={style} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z"/></svg>
-const Star = ({ style }) => <svg style={style} fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+import { useState, useEffect } from "react"
+import { ArrowRight, Shield, Zap, CheckCircle2, FileText, Lock, Sparkles } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { useI18n } from "@/contexts/i18n-context"
 
-function useCountUp(target, duration = 2000) {
+/* ─── useCountUp ─── */
+
+function useCountUp(target: number, duration = 2000) {
   const [value, setValue] = useState(0)
   useEffect(() => {
     const t = setTimeout(() => {
-      let s
-      const step = ts => {
+      let s: number
+      const step = (ts: number) => {
         if (!s) s = ts
         const p = Math.min((ts - s) / duration, 1)
         setValue(Math.floor((1 - Math.pow(1 - p, 4)) * target))
@@ -25,28 +21,21 @@ function useCountUp(target, duration = 2000) {
       requestAnimationFrame(step)
     }, 800)
     return () => clearTimeout(t)
-  }, [])
+  }, [target, duration])
   return value
 }
 
-// ── Animated typing demo ─────────────────────────────────────────────────────
+/* ─── Animated Demo ─── */
+
 function TypingDemo() {
-  const steps = [
-    { label: "Anbieter wählen", value: "Telekom", done: true },
-    { label: "Grund angeben", value: "Vertragsende", done: true },
-    { label: "KI generiert...", value: "", generating: true },
-  ]
   const [step, setStep] = useState(0)
   const [typed, setTyped] = useState("")
   const [showDoc, setShowDoc] = useState(false)
-  const fullText = "Sehr geehrte Damen und Herren, hiermit kündige ich meinen Vertrag..."
+  const fullText = "Sehr geehrte Damen und Herren, hiermit kündige ich meinen Vertrag fristgerecht zum nächstmöglichen Termin..."
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setStep(s => {
-        if (s < 2) return s + 1
-        return s
-      })
+      setStep(s => (s < 2 ? s + 1 : s))
     }, 1200)
     return () => clearInterval(timer)
   }, [])
@@ -72,302 +61,314 @@ function TypingDemo() {
         setStep(0)
         setTyped("")
         setShowDoc(false)
-      }, 3000)
+      }, 3200)
       return () => clearTimeout(t)
     }
   }, [showDoc])
 
   return (
-    <div style={{ width: "100%", height: "100%", background: "#0f0f0f", borderRadius: 20, overflow: "hidden", display: "flex", flexDirection: "column" }}>
+    <div style={{ width: "100%", height: "100%", background: "#0f0f0f", display: "flex", flexDirection: "column" }}>
       {/* Window chrome */}
-      <div style={{ padding: "14px 18px", background: "#1a1a1a", borderBottom: "1px solid rgba(255,255,255,0.07)", display: "flex", alignItems: "center", gap: 8 }}>
-        <div style={{ display: "flex", gap: 6 }}>
-          {["#ff5f57","#febc2e","#28c840"].map(c => <div key={c} style={{ width: 10, height: 10, borderRadius: "50%", background: c }} />)}
+      <div style={{ padding: "12px 16px", background: "#1a1a1a", borderBottom: "1px solid rgba(255,255,255,0.07)", display: "flex", alignItems: "center", gap: 8 }}>
+        <div style={{ display: "flex", gap: 5 }}>
+          {["#ff5f57", "#febc2e", "#28c840"].map(c => (
+            <div key={c} style={{ width: 10, height: 10, borderRadius: "50%", background: c }} />
+          ))}
         </div>
-        <div style={{ flex: 1, textAlign: "center", fontSize: 11, color: "rgba(255,255,255,0.3)", fontFamily: "monospace" }}>kuendigungsheld.de</div>
+        <div style={{ flex: 1, textAlign: "center", fontSize: 11, color: "rgba(255,255,255,0.3)", fontFamily: "monospace" }}>
+          kuendigungsheld.de/generator
+        </div>
       </div>
 
-      <div style={{ flex: 1, padding: 20, display: "flex", flexDirection: "column", gap: 12 }}>
-        {/* Progress steps */}
-        <div style={{ display: "flex", gap: 6, marginBottom: 4 }}>
-          {["Anbieter","Details","Dokument"].map((s, i) => (
+      <div style={{ flex: 1, padding: 18, display: "flex", flexDirection: "column", gap: 10, overflow: "hidden" }}>
+        {/* Progress */}
+        <div style={{ display: "flex", gap: 5, marginBottom: 2 }}>
+          {["Anbieter", "Details", "Dokument"].map((s, i) => (
             <div key={s} style={{ flex: 1, height: 3, borderRadius: 2, background: i <= step ? "#10b981" : "rgba(255,255,255,0.1)", transition: "background 0.5s" }} />
           ))}
         </div>
 
-        {/* Step cards */}
-        {step >= 0 && (
-          <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 12, padding: "12px 14px", transition: "all 0.3s" }}>
-            <div style={{ fontSize: 10, color: "rgba(255,255,255,0.4)", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.08em" }}>Anbieter</div>
-            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              <div style={{ width: 28, height: 28, borderRadius: 8, background: "linear-gradient(135deg,#e0c3fc,#8ec5fc)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 700 }}>T</div>
-              <span style={{ color: "#fff", fontSize: 13, fontWeight: 500 }}>Telekom Deutschland</span>
-              <div style={{ marginLeft: "auto", color: "#10b981", fontSize: 11 }}>✓</div>
-            </div>
+        {/* Step 1 — always shown */}
+        <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 12, padding: "11px 13px" }}>
+          <div style={{ fontSize: 9, color: "rgba(255,255,255,0.4)", marginBottom: 5, textTransform: "uppercase", letterSpacing: "0.08em" }}>Anbieter</div>
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <div style={{ width: 26, height: 26, borderRadius: 7, background: "linear-gradient(135deg,#e0c3fc,#8ec5fc)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 700 }}>T</div>
+            <span style={{ color: "#fff", fontSize: 12, fontWeight: 500 }}>Telekom Deutschland</span>
+            <div style={{ marginLeft: "auto", color: "#10b981", fontSize: 11 }}>✓</div>
           </div>
-        )}
+        </div>
 
+        {/* Step 2 */}
         {step >= 1 && (
-          <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 12, padding: "12px 14px", animation: "fadeIn 0.4s ease" }}>
-            <div style={{ fontSize: 10, color: "rgba(255,255,255,0.4)", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.08em" }}>Kündigungsgrund</div>
-            <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
-              {["Vertragsende","Preiserhöhung","Umzug"].map((g, i) => (
-                <div key={g} style={{ padding: "4px 10px", borderRadius: 6, fontSize: 11, border: i === 0 ? "1px solid #10b981" : "1px solid rgba(255,255,255,0.1)", color: i === 0 ? "#10b981" : "rgba(255,255,255,0.5)", background: i === 0 ? "rgba(16,185,129,0.1)" : "transparent", cursor: "pointer" }}>{g}</div>
+          <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 12, padding: "11px 13px", animation: "kh-fadeIn 0.4s ease" }}>
+            <div style={{ fontSize: 9, color: "rgba(255,255,255,0.4)", marginBottom: 5, textTransform: "uppercase", letterSpacing: "0.08em" }}>Kündigungsgrund</div>
+            <div style={{ display: "flex", gap: 5, flexWrap: "wrap" }}>
+              {["Vertragsende", "Preiserhöhung", "Umzug"].map((g, i) => (
+                <div key={g} style={{ padding: "3px 9px", borderRadius: 6, fontSize: 11, border: i === 0 ? "1px solid #10b981" : "1px solid rgba(255,255,255,0.1)", color: i === 0 ? "#10b981" : "rgba(255,255,255,0.45)", background: i === 0 ? "rgba(16,185,129,0.1)" : "transparent" }}>{g}</div>
               ))}
             </div>
           </div>
         )}
 
+        {/* Step 3 — typing */}
         {step >= 2 && !showDoc && (
-          <div style={{ background: "rgba(16,185,129,0.06)", border: "1px solid rgba(16,185,129,0.2)", borderRadius: 12, padding: "12px 14px", flex: 1, animation: "fadeIn 0.4s ease" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 8 }}>
-              <Sparkles style={{ width: 12, height: 12, color: "#10b981" }} />
-              <span style={{ fontSize: 10, color: "#10b981", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.08em" }}>KI schreibt...</span>
+          <div style={{ background: "rgba(16,185,129,0.06)", border: "1px solid rgba(16,185,129,0.2)", borderRadius: 12, padding: "11px 13px", flex: 1, animation: "kh-fadeIn 0.4s ease", overflow: "hidden" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 5, marginBottom: 7 }}>
+              <span style={{ fontSize: 9, color: "#10b981", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.08em" }}>✦ KI schreibt...</span>
               <div style={{ marginLeft: "auto", display: "flex", gap: 3 }}>
-                {[0,1,2].map(i => <div key={i} style={{ width: 4, height: 4, borderRadius: "50%", background: "#10b981", animation: `bounce 1s ${i * 0.2}s infinite` }} />)}
+                {[0, 1, 2].map(i => (
+                  <div key={i} style={{ width: 4, height: 4, borderRadius: "50%", background: "#10b981", animation: `kh-bounce 1s ${i * 0.2}s infinite` }} />
+                ))}
               </div>
             </div>
-            <p style={{ fontSize: 11, color: "rgba(255,255,255,0.7)", lineHeight: 1.6, fontFamily: "Georgia, serif" }}>
-              {typed}<span style={{ borderRight: "2px solid #10b981", marginLeft: 1, animation: "blink 1s infinite" }}>&nbsp;</span>
+            <p style={{ fontSize: 10, color: "rgba(255,255,255,0.7)", lineHeight: 1.65, fontFamily: "Georgia, serif", margin: 0 }}>
+              {typed}<span style={{ borderRight: "1.5px solid #10b981", marginLeft: 1, animation: "kh-blink 1s infinite" }}>&nbsp;</span>
             </p>
           </div>
         )}
 
+        {/* Step 3 — doc ready */}
         {showDoc && (
-          <div style={{ background: "#fff", borderRadius: 12, flex: 1, padding: "14px 16px", animation: "scaleIn 0.5s cubic-bezier(0.34,1.56,0.64,1)" }}>
-            <div style={{ fontSize: 10, color: "#888", textAlign: "right", marginBottom: 8 }}>Berlin, 12.03.2025</div>
-            <div style={{ fontSize: 12, fontWeight: 700, color: "#111", marginBottom: 6 }}>Kündigung — Telekom</div>
-            <div style={{ fontSize: 10, color: "#444", lineHeight: 1.7, fontFamily: "Georgia, serif" }}>
+          <div style={{ background: "#fff", borderRadius: 12, flex: 1, padding: "13px 15px", animation: "kh-scaleIn 0.5s cubic-bezier(0.34,1.56,0.64,1)" }}>
+            <div style={{ fontSize: 9, color: "#888", textAlign: "right", marginBottom: 7 }}>Berlin, 12.03.2025</div>
+            <div style={{ fontSize: 11, fontWeight: 700, color: "#111", marginBottom: 5 }}>Kündigung — Telekom</div>
+            <div style={{ fontSize: 9.5, color: "#444", lineHeight: 1.7, fontFamily: "Georgia, serif" }}>
               Sehr geehrte Damen und Herren,<br />
               hiermit kündige ich meinen Vertrag fristgerecht zum nächstmöglichen Termin.
             </div>
-            <div style={{ marginTop: 12, display: "flex", alignItems: "center", gap: 6, background: "#f0fdf4", borderRadius: 6, padding: "6px 10px" }}>
-              <span style={{ fontSize: 11 }}>✓</span>
-              <span style={{ fontSize: 10, color: "#15803d", fontWeight: 600 }}>PDF bereit zum Download</span>
+            <div style={{ marginTop: 10, display: "flex", alignItems: "center", gap: 5, background: "#f0fdf4", borderRadius: 6, padding: "5px 9px" }}>
+              <span style={{ fontSize: 10 }}>✓</span>
+              <span style={{ fontSize: 9, color: "#15803d", fontWeight: 600 }}>PDF bereit zum Download</span>
             </div>
           </div>
         )}
       </div>
-
-      <style>{`
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px) } to { opacity: 1; transform: translateY(0) } }
-        @keyframes scaleIn { from { opacity: 0; transform: scale(0.95) } to { opacity: 1; transform: scale(1) } }
-        @keyframes bounce { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-4px) } }
-        @keyframes blink { 0%,100% { opacity: 1 } 50% { opacity: 0 } }
-        @keyframes float { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-6px) } }
-        @keyframes shimmer { 0% { background-position: -200% center } 100% { background-position: 200% center } }
-        @keyframes spin { from { transform: rotate(0deg) } to { transform: rotate(360deg) } }
-        @keyframes pulse2 { 0%,100% { opacity:1; transform: scale(1) } 50% { opacity:.7; transform: scale(1.05) } }
-      `}</style>
     </div>
   )
 }
 
-export default function HeroModern() {
-  const [dark, setDark] = useState(true)
+/* ─── Social Proof ─── */
+
+const AVATAR_PHOTOS = [
+  "https://i.pravatar.cc/64?img=47",
+  "https://i.pravatar.cc/64?img=32",
+  "https://i.pravatar.cc/64?img=12",
+  "https://i.pravatar.cc/64?img=25",
+  "https://i.pravatar.cc/64?img=56",
+]
+
+function SocialProof() {
+  return (
+    <div className="flex items-center gap-3">
+      <div className="flex -space-x-2">
+        {AVATAR_PHOTOS.map((src, i) => (
+          <div key={i} className="h-7 w-7 rounded-full border-2 border-background overflow-hidden bg-muted">
+            <img src={src} alt={`Nutzer ${i + 1}`} className="h-full w-full object-cover" width={28} height={28} />
+          </div>
+        ))}
+      </div>
+      <div>
+        <div className="flex gap-0.5">
+          {"★★★★★".split("").map((s, i) => (
+            <span key={i} className="text-amber-400 text-xs">{s}</span>
+          ))}
+        </div>
+        <p className="text-xs text-muted-foreground">
+          <span className="text-foreground font-semibold">2.400+</span> diese Woche gekündigt
+        </p>
+      </div>
+    </div>
+  )
+}
+
+/* ─── Main Export ─── */
+
+export function HeroSection() {
+  const { t } = useI18n()
   const countT = useCountUp(100000)
   const countC = useCountUp(300)
 
-  const bg = dark ? "#050505" : "#f8f8f5"
-  const fg = dark ? "#ffffff" : "#0a0a0a"
-  const muted = dark ? "rgba(255,255,255,0.45)" : "rgba(0,0,0,0.45)"
-  const border = dark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.07)"
-  const card = dark ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.03)"
-  const cardSolid = dark ? "#111" : "#fff"
-
   return (
-    <div style={{ background: bg, minHeight: "100vh", fontFamily: "'DM Sans', system-ui, sans-serif", color: fg, transition: "all 0.4s", position: "relative", overflow: "hidden" }}>
-      <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,900;1,9..40,300&display=swap" rel="stylesheet" />
+    <section className="relative overflow-hidden bg-background">
 
-      {/* Theme toggle */}
-      <button onClick={() => setDark(v => !v)} style={{ position: "fixed", top: 14, right: 14, zIndex: 999, background: cardSolid, border: `1px solid ${border}`, borderRadius: 10, padding: "7px 14px", cursor: "pointer", fontSize: 12, color: fg, fontFamily: "inherit", fontWeight: 500 }}>
-        {dark ? "☀️ Hell" : "🌙 Dunkel"}
-      </button>
+      {/* Background grid */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#00000008_1px,transparent_1px),linear-gradient(to_bottom,#00000008_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_80%_60%_at_50%_0%,#000_50%,transparent_100%)]" />
 
-      {/* ── Noise texture overlay ── */}
-      <div style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 1, opacity: dark ? 0.035 : 0.025, backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E\")", backgroundSize: "128px" }} />
+      {/* Orbs */}
+      <div className="pointer-events-none absolute -top-48 left-1/2 -translate-x-1/4 h-[600px] w-[600px] rounded-full bg-emerald-500/8 dark:bg-emerald-400/8 blur-[100px]" />
+      <div className="pointer-events-none absolute top-1/3 -right-32 h-[400px] w-[400px] rounded-full bg-violet-500/6 blur-[90px]" />
+      <div className="pointer-events-none absolute top-1/4 -left-32 h-[350px] w-[350px] rounded-full bg-blue-500/5 blur-[80px]" />
 
-      {/* ── Gradient mesh ── */}
-      <div style={{ position: "absolute", inset: 0, pointerEvents: "none", zIndex: 0 }}>
-        {/* Top center bloom */}
-        <div style={{ position: "absolute", top: -200, left: "50%", transform: "translateX(-50%)", width: 800, height: 600, background: dark ? "radial-gradient(ellipse, rgba(16,185,129,0.12) 0%, transparent 65%)" : "radial-gradient(ellipse, rgba(16,185,129,0.08) 0%, transparent 65%)" }} />
-        {/* Right violet */}
-        <div style={{ position: "absolute", top: "10%", right: -200, width: 600, height: 600, background: dark ? "radial-gradient(circle, rgba(124,58,237,0.1) 0%, transparent 60%)" : "radial-gradient(circle, rgba(124,58,237,0.06) 0%, transparent 60%)" }} />
-        {/* Bottom left blue */}
-        <div style={{ position: "absolute", bottom: 0, left: -100, width: 500, height: 400, background: dark ? "radial-gradient(circle, rgba(59,130,246,0.08) 0%, transparent 60%)" : "radial-gradient(circle, rgba(59,130,246,0.05) 0%, transparent 60%)" }} />
-      </div>
-
-      {/* ── Fine grid ── */}
-      <div style={{ position: "absolute", inset: 0, pointerEvents: "none", zIndex: 0, backgroundImage: dark ? "linear-gradient(rgba(255,255,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.025) 1px,transparent 1px)" : "linear-gradient(rgba(0,0,0,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,0.03) 1px,transparent 1px)", backgroundSize: "40px 40px", WebkitMaskImage: "radial-gradient(ellipse 100% 80% at 50% 0%, #000 50%, transparent 100%)" }} />
-
-      {/* ── Navbar ── */}
-      <nav style={{ position: "relative", zIndex: 10, borderBottom: `1px solid ${border}`, padding: "0 32px", height: 56, display: "flex", alignItems: "center", gap: 12, background: dark ? "rgba(5,5,5,0.7)" : "rgba(248,248,245,0.7)", backdropFilter: "blur(20px)" }}>
-        <div style={{ width: 30, height: 30, borderRadius: 9, background: fg, display: "flex", alignItems: "center", justifyContent: "center" }}>
-          <FileText style={{ width: 14, height: 14, color: bg }} />
-        </div>
-        <span style={{ fontWeight: 800, fontSize: 15, letterSpacing: "-0.03em" }}>KündigungsHeld</span>
-        <div style={{ marginLeft: "auto", display: "flex", gap: 8 }}>
-          {["Tools","Wissen","Blog"].map(l => <button key={l} style={{ background: "none", border: "none", color: muted, fontSize: 13, cursor: "pointer", fontFamily: "inherit", fontWeight: 500, padding: "4px 8px" }}>{l}</button>)}
-        </div>
-        <button style={{ background: fg, color: bg, border: "none", borderRadius: 8, padding: "8px 18px", fontSize: 13, fontWeight: 600, cursor: "pointer", fontFamily: "inherit" }}>Loslegen →</button>
-      </nav>
-
-      {/* ── Hero ── */}
-      <div style={{ position: "relative", zIndex: 5, maxWidth: 1200, margin: "0 auto", padding: "72px 32px 80px" }}>
+      <div className="relative mx-auto max-w-7xl px-4 lg:px-8 pt-20 pb-20 lg:pt-28 lg:pb-28">
 
         {/* Top badge */}
-        <div style={{ display: "flex", justifyContent: "center", marginBottom: 36 }}>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "6px 16px 6px 8px", borderRadius: 999, border: `1px solid ${border}`, background: card, backdropFilter: "blur(12px)" }}>
-            <div style={{ background: "linear-gradient(135deg,#10b981,#059669)", borderRadius: 999, padding: "3px 10px", fontSize: 10, fontWeight: 700, color: "#fff", letterSpacing: "0.05em", textTransform: "uppercase" }}>Neu</div>
-            <span style={{ fontSize: 12, color: muted, fontWeight: 500 }}>KI-Assistent beantwortet alle Kündigungsfragen sofort</span>
-            <ArrowRight style={{ width: 12, height: 12, color: muted }} />
+        <div className="flex justify-center mb-10">
+          <div className="inline-flex items-center gap-2 rounded-full border border-border/50 bg-background/80 px-4 py-1.5 backdrop-blur-sm shadow-sm">
+            <div className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="text-xs font-medium text-muted-foreground tracking-wide uppercase">
+              {t.hero.badge}
+            </span>
+            <ArrowRight className="h-3 w-3 text-muted-foreground/50" />
           </div>
         </div>
 
-        {/* ── Main headline — centered ── */}
-        <div style={{ textAlign: "center", maxWidth: 780, margin: "0 auto 56px" }}>
-          <h1 style={{ fontSize: "clamp(42px, 6vw, 80px)", fontWeight: 900, lineHeight: 1.02, letterSpacing: "-0.04em", color: fg, margin: "0 0 24px" }}>
-            Kündigen war<br />
-            <span style={{ background: "linear-gradient(135deg, #10b981 0%, #059669 40%, #34d399 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>nie so einfach.</span>
+        {/* Headline */}
+        <div className="text-center max-w-4xl mx-auto mb-14">
+          <h1 className="font-display text-4xl sm:text-6xl lg:text-8xl font-black leading-[1.03] tracking-tight text-foreground mb-6">
+            {t.hero.title}
           </h1>
-          <p style={{ fontSize: 18, lineHeight: 1.65, color: muted, margin: "0 0 36px", fontWeight: 400 }}>
-            Rechtssichere Kündigungsschreiben in 2 Minuten — für Telekom, Netflix,<br />Fitnessstudio und 300+ weitere Anbieter. Komplett kostenlos.
+          <p className="text-xl leading-relaxed text-muted-foreground max-w-2xl mx-auto mb-10">
+            {t.hero.subtitle}
           </p>
 
           {/* CTAs */}
-          <div style={{ display: "flex", gap: 12, justifyContent: "center", marginBottom: 40 }}>
-            <button style={{ display: "flex", alignItems: "center", gap: 8, height: 52, borderRadius: 14, padding: "0 28px", background: "#10b981", color: "#fff", fontWeight: 700, fontSize: 15, border: "none", cursor: "pointer", fontFamily: "inherit", boxShadow: "0 0 0 1px rgba(16,185,129,0.3), 0 8px 32px rgba(16,185,129,0.3)", transition: "transform 0.2s, box-shadow 0.2s" }}
-              onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-1px)"; e.currentTarget.style.boxShadow = "0 0 0 1px rgba(16,185,129,0.4), 0 12px 40px rgba(16,185,129,0.4)" }}
-              onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 0 0 1px rgba(16,185,129,0.3), 0 8px 32px rgba(16,185,129,0.3)" }}
+          <div className="flex flex-col sm:flex-row gap-3 justify-center mb-10">
+            <Button
+              size="lg"
+              className="h-13 rounded-xl px-8 text-base font-semibold bg-emerald-500 hover:bg-emerald-600 text-white shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/35 hover:-translate-y-0.5 transition-all duration-300 w-full sm:w-auto"
+              asChild
             >
-              Jetzt kostenlos starten
-              <ArrowRight style={{ width: 16, height: 16 }} />
-            </button>
-            <button style={{ display: "flex", alignItems: "center", gap: 8, height: 52, borderRadius: 14, padding: "0 24px", background: card, color: fg, fontWeight: 600, fontSize: 15, border: `1px solid ${border}`, cursor: "pointer", fontFamily: "inherit", backdropFilter: "blur(12px)" }}>
-              <Play style={{ width: 14, height: 14 }} />
-              Demo ansehen
-            </button>
+              <a href="#generator">
+                {t.hero.cta}
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </a>
+            </Button>
+            <Button
+              variant="outline"
+              size="lg"
+              className="h-13 rounded-xl px-8 text-base font-semibold border-border/60 hover:bg-muted/50 transition-all duration-300 w-full sm:w-auto"
+              asChild
+            >
+              <a href="#howItWorks">
+                <FileText className="mr-2 h-4 w-4" />
+                {t.hero.howItWorksCTA}
+              </a>
+            </Button>
           </div>
 
-          {/* Social proof row */}
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 20 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              <div style={{ display: "flex" }}>
-                {["47","32","12","25","56"].map((n, i) => (
-                  <div key={n} style={{ width: 28, height: 28, borderRadius: "50%", border: `2px solid ${bg}`, overflow: "hidden", marginLeft: i > 0 ? -8 : 0 }}>
-                    <img src={`https://i.pravatar.cc/64?img=${n}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} alt="" />
-                  </div>
-                ))}
-              </div>
-              <div style={{ textAlign: "left" }}>
-                <div style={{ display: "flex", gap: 1 }}>
-                  {[1,2,3,4,5].map(i => <Star key={i} style={{ width: 10, height: 10, color: "#fbbf24" }} />)}
-                </div>
-                <div style={{ fontSize: 11, color: muted }}><strong style={{ color: fg }}>2.400+</strong> diese Woche</div>
-              </div>
-            </div>
-            <div style={{ width: 1, height: 28, background: border }} />
-            <div style={{ fontSize: 12, color: muted }}>Keine Registrierung · Keine Kosten · DSGVO</div>
+          {/* Social proof */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <SocialProof />
+            <div className="hidden sm:block w-px h-7 bg-border/50" />
+            <p className="text-sm text-muted-foreground">Keine Registrierung · DSGVO · SSL</p>
           </div>
         </div>
 
-        {/* ── Browser mockup with animated demo ── */}
-        <div style={{ position: "relative", maxWidth: 860, margin: "0 auto" }}>
+        {/* Browser mockup */}
+        <div className="relative max-w-3xl mx-auto">
 
-          {/* Glow under */}
-          <div style={{ position: "absolute", bottom: -60, left: "50%", transform: "translateX(-50%)", width: 600, height: 200, background: "radial-gradient(ellipse, rgba(16,185,129,0.15) 0%, transparent 70%)", pointerEvents: "none" }} />
+          {/* Glow */}
+          <div className="pointer-events-none absolute -bottom-16 left-1/2 -translate-x-1/2 h-48 w-96 rounded-full bg-emerald-500/12 blur-[60px]" />
 
-          {/* Browser frame */}
-          <div style={{ position: "relative", borderRadius: 20, overflow: "hidden", border: `1px solid ${border}`, boxShadow: dark ? "0 0 0 1px rgba(255,255,255,0.05), 0 40px 100px rgba(0,0,0,0.8), 0 0 60px rgba(16,185,129,0.08)" : "0 0 0 1px rgba(0,0,0,0.06), 0 40px 100px rgba(0,0,0,0.15)", animation: "float 6s ease-in-out infinite" }}>
-
-            {/* Browser chrome */}
-            <div style={{ background: dark ? "#1a1a1a" : "#f0f0f0", padding: "12px 16px", borderBottom: `1px solid ${border}`, display: "flex", alignItems: "center", gap: 10 }}>
-              <div style={{ display: "flex", gap: 5 }}>
-                {["#ff5f57","#febc2e","#28c840"].map(c => <div key={c} style={{ width: 10, height: 10, borderRadius: "50%", background: c }} />)}
+          {/* Frame */}
+          <div
+            className="relative rounded-2xl overflow-hidden border border-border/50 shadow-2xl dark:shadow-black/60"
+            style={{ animation: "kh-float 6s ease-in-out infinite" }}
+          >
+            {/* Chrome bar */}
+            <div className="bg-muted/80 dark:bg-zinc-900 border-b border-border/40 px-4 py-3 flex items-center gap-3 backdrop-blur-sm">
+              <div className="flex gap-1.5">
+                {["#ff5f57", "#febc2e", "#28c840"].map(c => (
+                  <div key={c} style={{ width: 10, height: 10, borderRadius: "50%", background: c }} />
+                ))}
               </div>
-              <div style={{ flex: 1, background: dark ? "#0f0f0f" : "#e8e8e8", borderRadius: 6, padding: "4px 12px", display: "flex", alignItems: "center", gap: 6 }}>
-                <Lock style={{ width: 10, height: 10, color: "#10b981" }} />
-                <span style={{ fontSize: 11, color: muted, fontFamily: "monospace" }}>kuendigungsheld.de/generator</span>
+              <div className="flex-1 bg-background/60 dark:bg-zinc-800/60 rounded-md px-3 py-1 flex items-center gap-2">
+                <Lock className="h-2.5 w-2.5 text-emerald-500" />
+                <span className="text-xs text-muted-foreground font-mono">kuendigungsheld.de/generator</span>
               </div>
             </div>
 
-            {/* App UI inside browser */}
-            <div style={{ height: 420, background: dark ? "#0f0f0f" : "#f9f9f9" }}>
+            {/* Demo */}
+            <div className="h-[360px] sm:h-[420px]">
               <TypingDemo />
             </div>
           </div>
 
-          {/* ── Floating cards ── */}
-
-          {/* Top left — stat */}
-          <div style={{ position: "absolute", left: -48, top: 40, background: cardSolid, border: `1px solid ${border}`, borderRadius: 16, padding: "14px 18px", boxShadow: dark ? "0 20px 60px rgba(0,0,0,0.6)" : "0 20px 60px rgba(0,0,0,0.12)", backdropFilter: "blur(20px)", animation: "float 5s 0.5s ease-in-out infinite", minWidth: 160 }}>
-            <div style={{ fontSize: 10, color: muted, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 6 }}>Diese Woche</div>
-            <div style={{ fontSize: 28, fontWeight: 900, color: fg, letterSpacing: "-0.03em", lineHeight: 1 }}>
-              {countT > 0 ? countT.toLocaleString("de-DE") : "—"}
-              <span style={{ fontSize: 18 }}>+</span>
-            </div>
-            <div style={{ fontSize: 11, color: "#10b981", fontWeight: 600, marginTop: 4 }}>↑ Kündigungen</div>
-          </div>
-
-          {/* Top right — time */}
-          <div style={{ position: "absolute", right: -48, top: 30, background: cardSolid, border: `1px solid ${border}`, borderRadius: 16, padding: "14px 18px", boxShadow: dark ? "0 20px 60px rgba(0,0,0,0.6)" : "0 20px 60px rgba(0,0,0,0.12)", backdropFilter: "blur(20px)", animation: "float 4s 1s ease-in-out infinite" }}>
-            <div style={{ fontSize: 10, color: muted, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 6 }}>Durchschnitt</div>
-            <div style={{ display: "flex", alignItems: "baseline", gap: 4 }}>
-              <span style={{ fontSize: 28, fontWeight: 900, color: fg, letterSpacing: "-0.03em", lineHeight: 1 }}>2</span>
-              <span style={{ fontSize: 14, color: muted, fontWeight: 500 }}>Min.</span>
-            </div>
-            <div style={{ fontSize: 11, color: "#f59e0b", fontWeight: 600, marginTop: 4 }}>⚡ Blitzschnell</div>
-          </div>
-
-          {/* Bottom left — rating */}
-          <div style={{ position: "absolute", left: -32, bottom: -20, background: cardSolid, border: `1px solid ${border}`, borderRadius: 16, padding: "12px 16px", boxShadow: dark ? "0 20px 60px rgba(0,0,0,0.6)" : "0 20px 60px rgba(0,0,0,0.12)", backdropFilter: "blur(20px)", animation: "float 5.5s 0.3s ease-in-out infinite", display: "flex", alignItems: "center", gap: 12 }}>
-            <div style={{ fontSize: 22, fontWeight: 900, color: fg }}>4.9</div>
-            <div>
-              <div style={{ display: "flex", gap: 1, marginBottom: 2 }}>
-                {[1,2,3,4,5].map(i => <Star key={i} style={{ width: 10, height: 10, color: "#fbbf24" }} />)}
+          {/* Floating — Kündigungen */}
+          <div
+            className="absolute -left-4 sm:-left-14 top-12 hidden sm:flex items-center gap-3 rounded-2xl bg-card border border-border/50 px-4 py-3.5 shadow-xl backdrop-blur-md"
+            style={{ animation: "kh-float 5s 0.5s ease-in-out infinite" }}
+          >
+            <div className="text-center">
+              <div className="text-2xl font-black text-foreground leading-none tabular-nums">
+                {countT > 0 ? countT.toLocaleString("de-DE") : "—"}<span className="text-lg">+</span>
               </div>
-              <div style={{ fontSize: 10, color: muted }}>1.200+ Bewertungen</div>
+              <div className="text-[10px] text-emerald-500 font-semibold mt-1">↑ Kündigungen</div>
             </div>
           </div>
 
-          {/* Bottom right — KI badge */}
-          <div style={{ position: "absolute", right: -32, bottom: -10, background: dark ? "rgba(124,58,237,0.15)" : "rgba(124,58,237,0.08)", border: "1px solid rgba(124,58,237,0.3)", borderRadius: 16, padding: "12px 16px", boxShadow: "0 8px 32px rgba(124,58,237,0.2)", backdropFilter: "blur(20px)", animation: "float 4.5s 0.8s ease-in-out infinite", display: "flex", alignItems: "center", gap: 10 }}>
-            <div style={{ width: 32, height: 32, borderRadius: 10, background: "linear-gradient(135deg,#8b5cf6,#7c3aed)", display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
-              <Sparkles style={{ width: 14, height: 14, color: "#fff" }} />
-              <div style={{ position: "absolute", top: -3, right: -3, width: 8, height: 8, borderRadius: "50%", background: "#4ade80", border: "2px solid " + cardSolid }} />
+          {/* Floating — Speed */}
+          <div
+            className="absolute -right-4 sm:-right-14 top-8 hidden sm:flex items-center gap-3 rounded-2xl bg-card border border-border/50 px-4 py-3.5 shadow-xl backdrop-blur-md"
+            style={{ animation: "kh-float 4s 1s ease-in-out infinite" }}
+          >
+            <div className="text-center">
+              <div className="text-2xl font-black text-foreground leading-none">
+                2 <span className="text-sm font-medium text-muted-foreground">Min.</span>
+              </div>
+              <div className="text-[10px] text-amber-500 font-semibold mt-1">⚡ Blitzschnell</div>
+            </div>
+          </div>
+
+          {/* Floating — Rating */}
+          <div
+            className="absolute -left-4 sm:-left-12 -bottom-5 hidden sm:flex items-center gap-3 rounded-2xl bg-card border border-border/50 px-4 py-3 shadow-xl backdrop-blur-md"
+            style={{ animation: "kh-float 5.5s 0.3s ease-in-out infinite" }}
+          >
+            <div className="text-xl font-black text-foreground">4.9</div>
+            <div>
+              <div className="flex gap-0.5">
+                {"★★★★★".split("").map((s, i) => <span key={i} className="text-amber-400 text-[10px]">{s}</span>)}
+              </div>
+              <div className="text-[10px] text-muted-foreground">1.200+ Bewertungen</div>
+            </div>
+          </div>
+
+          {/* Floating — KI */}
+          <div
+            className="absolute -right-4 sm:-right-12 -bottom-3 hidden sm:flex items-center gap-3 rounded-2xl border border-violet-300/40 dark:border-violet-700/40 bg-card px-4 py-3 shadow-xl shadow-violet-500/10 backdrop-blur-md cursor-pointer hover:-translate-y-0.5 transition-transform duration-300"
+            style={{ animation: "kh-float 4.5s 0.8s ease-in-out infinite" }}
+            onClick={() => window.dispatchEvent(new Event("open-ai-chat"))}
+          >
+            <div className="relative h-8 w-8 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shrink-0">
+              <Sparkles className="h-4 w-4 text-white" />
+              <div className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-green-400 border-2 border-card" />
             </div>
             <div>
-              <div style={{ fontSize: 12, fontWeight: 700, color: fg }}>KI-Assistent</div>
-              <div style={{ fontSize: 10, color: "rgba(139,92,246,0.8)", fontWeight: 500 }}>Online · Bereit</div>
+              <div className="text-xs font-bold text-foreground flex items-center gap-1.5">
+                KI-Assistent
+                <span className="text-[9px] bg-violet-100 dark:bg-violet-900/40 text-violet-600 dark:text-violet-400 px-1.5 py-0.5 rounded-full font-bold">NEU</span>
+              </div>
+              <div className="text-[10px] text-muted-foreground">Online · Bereit</div>
             </div>
           </div>
         </div>
 
-        {/* ── Stats bar ── */}
-        <div style={{ maxWidth: 700, margin: "80px auto 0", display: "flex", alignItems: "center", justifyContent: "center", gap: 0 }}>
+        {/* Stats bar */}
+        <div className="mt-24 max-w-2xl mx-auto grid grid-cols-2 sm:grid-cols-4 border border-border/40 rounded-2xl bg-muted/20 overflow-hidden">
           {[
-            { val: countT.toLocaleString("de-DE") + "+", label: "Erfolgreich gekündigt", color: "#10b981" },
-            { val: countC + "+", label: "Unterstützte Anbieter", color: "#3b82f6" },
-            { val: "4.9★", label: "Nutzerbewertung", color: "#f59e0b" },
-            { val: "100%", label: "Kostenlos", color: "#8b5cf6" },
+            { val: countT.toLocaleString("de-DE") + "+", label: t.hero.stats?.terminations, color: "text-emerald-500" },
+            { val: countC + "+", label: t.hero.stats?.companies, color: "text-blue-500" },
+            { val: "4.9★", label: t.hero.stats?.rating, color: "text-amber-500" },
+            { val: "100%", label: "Kostenlos", color: "text-violet-500" },
           ].map(({ val, label, color }, i) => (
-            <div key={label} style={{ flex: 1, textAlign: "center", padding: "20px 8px", borderLeft: i > 0 ? `1px solid ${border}` : "none" }}>
-              <div style={{ fontSize: 26, fontWeight: 900, color, letterSpacing: "-0.02em", lineHeight: 1 }}>{val}</div>
-              <div style={{ fontSize: 11, color: muted, marginTop: 6, fontWeight: 500 }}>{label}</div>
+            <div key={i} className={`text-center py-5 px-3 ${i > 0 ? "border-l border-border/40" : ""}`}>
+              <div className={`text-2xl font-black ${color} leading-none tracking-tight`}>{val}</div>
+              <div className="text-[11px] text-muted-foreground mt-2 font-medium leading-tight">{label}</div>
             </div>
           ))}
         </div>
 
         {/* Feature chips */}
-        <div style={{ display: "flex", justifyContent: "center", gap: 24, marginTop: 48, paddingTop: 32, borderTop: `1px solid ${border}` }}>
+        <div className="mt-10 flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
           {[
-            { Icon: Shield, label: "DSGVO-konform" },
-            { Icon: Zap, label: "In 2 Minuten fertig" },
-            { Icon: CheckCircle, label: "Keine Registrierung" },
-            { Icon: Lock, label: "SSL-verschlüsselt" },
-          ].map(({ Icon, label }) => (
-            <div key={label} style={{ display: "flex", alignItems: "center", gap: 7, fontSize: 13, color: muted, fontWeight: 500 }}>
-              <Icon style={{ width: 14, height: 14, color: "#10b981" }} />
+            { icon: Shield, label: t.hero.features?.secure },
+            { icon: Zap, label: t.hero.features?.fast },
+            { icon: CheckCircle2, label: t.hero.features?.free },
+            { icon: Lock, label: "SSL-verschlüsselt" },
+          ].map(({ icon: Icon, label }) => (
+            <div key={String(label)} className="flex items-center gap-2 text-sm text-muted-foreground font-medium">
+              <Icon className="h-3.5 w-3.5 text-emerald-500 shrink-0" />
               {label}
             </div>
           ))}
@@ -375,12 +376,12 @@ export default function HeroModern() {
       </div>
 
       <style>{`
-        @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
-        @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
-        @keyframes scaleIn { from{opacity:0;transform:scale(0.93)} to{opacity:1;transform:scale(1)} }
-        @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-5px)} }
-        @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+        @keyframes kh-float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+        @keyframes kh-fadeIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+        @keyframes kh-scaleIn { from{opacity:0;transform:scale(0.94)} to{opacity:1;transform:scale(1)} }
+        @keyframes kh-bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
+        @keyframes kh-blink { 0%,100%{opacity:1} 50%{opacity:0} }
       `}</style>
-    </div>
+    </section>
   )
 }
