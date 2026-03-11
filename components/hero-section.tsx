@@ -1,6 +1,6 @@
 "use client"
 
-import { ArrowRight, CheckCircle2, Shield, Zap, FileText, Clock, Lock, BadgeCheck, ShieldCheck, Sparkles, MessageCircle } from "lucide-react"
+import { ArrowRight, CheckCircle2, Shield, Zap, FileText, Clock, Lock, BadgeCheck, ShieldCheck, Sparkles } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { AnimateIn } from "@/components/animate-in"
 import { useI18n } from "@/contexts/i18n-context"
@@ -9,13 +9,12 @@ import { PdfPreview } from "@/components/pdf-preview"
 
 /* ─── Animated Counter ─── */
 
-function useCountUp(target: number, duration = 1800, startOnMount = false) {
+function useCountUp(target: number, duration = 1800) {
   const [value, setValue] = useState(0)
   const [started, setStarted] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    if (startOnMount) { setStarted(true); return }
     const el = ref.current
     if (!el) return
     const observer = new IntersectionObserver(
@@ -24,7 +23,7 @@ function useCountUp(target: number, duration = 1800, startOnMount = false) {
     )
     observer.observe(el)
     return () => observer.disconnect()
-  }, [startOnMount])
+  }, [])
 
   useEffect(() => {
     if (!started) return
@@ -42,27 +41,7 @@ function useCountUp(target: number, duration = 1800, startOnMount = false) {
   return { value, ref }
 }
 
-function AnimatedStat({
-  value,
-  suffix = "",
-  label,
-}: {
-  value: number
-  suffix?: string
-  label: string
-}) {
-  const { value: count, ref } = useCountUp(value)
-  return (
-    <div ref={ref} className="group text-center">
-      <div className="text-4xl font-black text-foreground group-hover:scale-105 transition-transform duration-300 tabular-nums">
-        {count.toLocaleString("de-DE")}{suffix}
-      </div>
-      <div className="text-sm text-muted-foreground mt-1.5 font-medium">{label}</div>
-    </div>
-  )
-}
-
-/* ─── Social Proof Avatars ─── */
+/* ─── Social Proof ─── */
 
 const AVATAR_PHOTOS = [
   "https://i.pravatar.cc/64?img=47",
@@ -72,7 +51,6 @@ const AVATAR_PHOTOS = [
   "https://i.pravatar.cc/64?img=56",
 ]
 
-// Preload avatars to avoid render-blocking
 if (typeof window !== "undefined") {
   AVATAR_PHOTOS.forEach((src) => {
     const link = document.createElement("link")
@@ -88,18 +66,8 @@ function SocialProof() {
     <div className="flex items-center gap-3">
       <div className="flex -space-x-2">
         {AVATAR_PHOTOS.map((src, i) => (
-          <div
-            key={i}
-            className="h-8 w-8 rounded-full border-2 border-background overflow-hidden bg-muted"
-          >
-            <img
-              src={src}
-              alt={`Nutzer ${i + 1}`}
-              className="h-full w-full object-cover"
-              width={32}
-              height={32}
-              loading="eager"
-            />
+          <div key={i} className="h-8 w-8 rounded-full border-2 border-background overflow-hidden bg-muted">
+            <img src={src} alt={`Nutzer ${i + 1}`} className="h-full w-full object-cover" width={32} height={32} loading="eager" />
           </div>
         ))}
       </div>
@@ -117,124 +85,17 @@ function SocialProof() {
   )
 }
 
-/* ─── Trust Badge Strip ─── */
-
-const TRUST_BADGES = [
-  {
-    icon: ShieldCheck,
-    title: "DSGVO-konform",
-    desc: "Keine Datenspeicherung",
-    color: "text-emerald-600 dark:text-emerald-400",
-    bg: "bg-emerald-50 dark:bg-emerald-950/40 border-emerald-200/60 dark:border-emerald-800/40",
-  },
-  {
-    icon: Lock,
-    title: "SSL-verschlüsselt",
-    desc: "256-Bit Verschlüsselung",
-    color: "text-blue-600 dark:text-blue-400",
-    bg: "bg-blue-50 dark:bg-blue-950/40 border-blue-200/60 dark:border-blue-800/40",
-  },
-  {
-    icon: BadgeCheck,
-    title: "Rechtssicher",
-    desc: "Von Experten geprüft",
-    color: "text-violet-600 dark:text-violet-400",
-    bg: "bg-violet-50 dark:bg-violet-950/40 border-violet-200/60 dark:border-violet-800/40",
-  },
-  {
-    icon: FileText,
-    title: "Keine Registrierung",
-    desc: "Sofort loslegen",
-    color: "text-amber-600 dark:text-amber-400",
-    bg: "bg-amber-50 dark:bg-amber-950/40 border-amber-200/60 dark:border-amber-800/40",
-  },
-]
-
-function TrustBadges() {
-  return (
-    <div className="w-full max-w-4xl mx-auto mt-10">
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        {TRUST_BADGES.map(({ icon: Icon, title, desc, color, bg }) => (
-          <div
-            key={title}
-            className={`flex items-center gap-3 rounded-2xl border px-4 py-3 ${bg} transition-all duration-300 hover:scale-[1.02] hover:shadow-sm`}
-          >
-            <div className={`shrink-0 ${color}`}>
-              <Icon className="h-5 w-5" />
-            </div>
-            <div className="min-w-0">
-              <p className="text-xs font-semibold text-foreground leading-tight">{title}</p>
-              <p className="text-[11px] text-muted-foreground leading-tight mt-0.5">{desc}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  )
-}
-
-/* ─── AI Chat Floating Card ─── */
-
-function AiFloatingCard() {
-  const [pulse, setPulse] = useState(false)
-
-  // Subtle attention pulse every 4s
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setPulse(true)
-      setTimeout(() => setPulse(false), 600)
-    }, 4000)
-    return () => clearInterval(interval)
-  }, [])
-
-  const openChat = () => {
-    window.dispatchEvent(new Event("open-ai-chat"))
-  }
-
-  return (
-    <button
-      onClick={openChat}
-      className="group absolute -right-12 bottom-72 hidden lg:flex items-center gap-3 rounded-2xl border border-violet-300/50 dark:border-violet-700/50 bg-card px-4 py-3.5 shadow-lg shadow-violet-500/10 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-violet-500/15 hover:border-violet-400/70 dark:hover:border-violet-500/70"
-    >
-      {/* Icon with glow */}
-      <div className="relative h-11 w-11 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shadow-md shadow-violet-500/30 group-hover:scale-105 transition-transform duration-300">
-        <Sparkles className="h-5 w-5 text-white" />
-        {/* Live dot */}
-        <span className="absolute -right-1 -top-1 flex h-3 w-3">
-          <span className={`absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75 ${pulse ? "animate-ping" : ""}`} />
-          <span className="relative inline-flex h-3 w-3 rounded-full bg-green-400 border-2 border-card" />
-        </span>
-      </div>
-
-      {/* Text */}
-      <div className="text-left">
-        <div className="text-sm font-semibold text-foreground leading-tight flex items-center gap-1.5">
-          KI-Assistent
-          <span className="text-[10px] font-medium text-violet-600 dark:text-violet-400 bg-violet-100 dark:bg-violet-900/40 px-1.5 py-0.5 rounded-full">NEU</span>
-        </div>
-        <div className="text-xs text-muted-foreground mt-0.5">Kündigungsfragen sofort beantwortet</div>
-      </div>
-
-      {/* Arrow */}
-      <ArrowRight className="h-4 w-4 text-muted-foreground/40 group-hover:text-violet-500 group-hover:translate-x-0.5 transition-all duration-200 ml-1" />
-    </button>
-  )
-}
-
-/* ─── Mobile AI Banner ─── */
+/* ─── AI Mobile Banner ─── */
 
 function AiMobileBanner() {
-  const openChat = () => {
-    window.dispatchEvent(new Event("open-ai-chat"))
-  }
-
+  const openChat = () => window.dispatchEvent(new Event("open-ai-chat"))
   return (
     <button
       onClick={openChat}
-      className="group lg:hidden w-full mt-6 flex items-center gap-3 rounded-2xl border border-violet-300/50 dark:border-violet-700/50 bg-card px-4 py-3.5 shadow-sm hover:shadow-md transition-all duration-300 hover:border-violet-400/70"
+      className="group lg:hidden w-full mt-5 flex items-center gap-3 rounded-2xl border border-violet-300/50 dark:border-violet-700/50 bg-card px-4 py-3 shadow-sm hover:shadow-md transition-all duration-300 hover:border-violet-400/70"
     >
-      <div className="relative h-10 w-10 shrink-0 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shadow-sm">
-        <Sparkles className="h-5 w-5 text-white" />
+      <div className="relative h-9 w-9 shrink-0 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shadow-sm">
+        <Sparkles className="h-4 w-4 text-white" />
         <span className="absolute -right-1 -top-1 flex h-2.5 w-2.5">
           <span className="absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75 animate-ping" />
           <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-green-400 border-2 border-card" />
@@ -252,213 +113,276 @@ function AiMobileBanner() {
   )
 }
 
+/* ─── Floating cards for right panel ─── */
+
+function FloatingCard({
+  className,
+  children,
+}: {
+  className?: string
+  children: React.ReactNode
+}) {
+  return (
+    <div className={`absolute hidden lg:flex items-center gap-3 rounded-xl bg-card/95 border border-border/50 px-4 py-3 shadow-xl backdrop-blur-md hover:-translate-y-1 transition-transform duration-300 ${className}`}>
+      {children}
+    </div>
+  )
+}
+
 /* ─── Main Component ─── */
 
 export function HeroSection() {
   const { t } = useI18n()
+  const [pulse, setPulse] = useState(false)
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setPulse(true)
+      setTimeout(() => setPulse(false), 600)
+    }, 4000)
+    return () => clearInterval(interval)
+  }, [])
+
+  const { value: countTerminations, ref: refTerminations } = useCountUp(100000)
+  const { value: countCompanies, ref: refCompanies } = useCountUp(300)
 
   return (
     <section className="relative overflow-hidden bg-background">
 
-      {/* Background */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#00000008_1px,transparent_1px),linear-gradient(to_bottom,#00000008_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:48px_48px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_60%,transparent_100%)]" />
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-muted/30" />
+      {/* ── Background grid + orbs ── */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#00000008_1px,transparent_1px),linear-gradient(to_bottom,#00000008_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#ffffff06_1px,transparent_1px),linear-gradient(to_bottom,#ffffff06_1px,transparent_1px)] bg-[size:48px_48px] [mask-image:radial-gradient(ellipse_80%_60%_at_50%_0%,#000_60%,transparent_100%)]" />
+      <div className="pointer-events-none absolute -top-40 left-1/4 h-[500px] w-[500px] rounded-full bg-emerald-500/6 dark:bg-emerald-400/5 blur-[100px]" />
+      <div className="pointer-events-none absolute top-1/2 -right-32 h-[400px] w-[400px] rounded-full bg-blue-500/5 dark:bg-blue-400/5 blur-[90px]" />
+      <div className="pointer-events-none absolute top-1/3 -left-32 h-[350px] w-[350px] rounded-full bg-violet-500/5 blur-[90px]" />
 
-      {/* Орбы */}
-      <div className="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 h-[600px] w-[600px] rounded-full bg-emerald-500/5 dark:bg-emerald-400/5 blur-[120px]" />
-      <div className="pointer-events-none absolute top-1/3 -right-40 h-[400px] w-[400px] rounded-full bg-blue-500/5 dark:bg-blue-400/5 blur-[100px]" />
-      <div className="pointer-events-none absolute top-1/3 -left-40 h-[400px] w-[400px] rounded-full bg-violet-500/5 dark:bg-violet-400/5 blur-[100px]" />
-      {/* AI glow — subtle violet bloom behind document */}
-      <div className="pointer-events-none absolute bottom-1/3 right-1/4 h-[300px] w-[300px] rounded-full bg-violet-500/4 dark:bg-violet-400/6 blur-[100px]" />
+      <div className="relative mx-auto max-w-7xl px-4 lg:px-8 pt-20 pb-16 lg:pt-28 lg:pb-24">
 
-      <div className="relative mx-auto max-w-7xl px-4 pb-24 pt-24 lg:px-8 lg:pb-32 lg:pt-32">
-        <div className="mx-auto max-w-5xl text-center">
+        {/* ── Split layout ── */}
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
 
-          {/* Badge */}
-          <AnimateIn instant>
-            <div className="mb-12 inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/80 px-4 py-1.5 backdrop-blur-sm shadow-sm">
-              <div className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              <span className="text-xs font-medium text-muted-foreground tracking-wide uppercase">
-                {t.hero.badge}
-              </span>
-            </div>
-          </AnimateIn>
+          {/* ── LEFT: Copy ── */}
+          <div className="flex flex-col items-start">
 
-          {/* Heading — instant for LCP */}
-          <AnimateIn instant>
-            <h1 className="font-display text-4xl font-black leading-[1.05] tracking-tight text-foreground sm:text-6xl lg:text-8xl mb-6">
-              {t.hero.title}
-            </h1>
-          </AnimateIn>
+            {/* Badge */}
+            <AnimateIn instant>
+              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/80 px-4 py-1.5 backdrop-blur-sm shadow-sm">
+                <div className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                <span className="text-xs font-medium text-muted-foreground tracking-wide uppercase">
+                  {t.hero.badge}
+                </span>
+              </div>
+            </AnimateIn>
 
-          {/* Description */}
-          <AnimateIn delay={300}>
-            <p className="mx-auto mt-8 max-w-2xl text-xl leading-relaxed text-muted-foreground font-normal">
-              {t.hero.subtitle}
-            </p>
-          </AnimateIn>
+            {/* Heading */}
+            <AnimateIn instant>
+              <h1 className="font-display text-4xl font-black leading-[1.05] tracking-tight text-foreground sm:text-5xl lg:text-6xl xl:text-7xl mb-5">
+                {t.hero.title}
+              </h1>
+            </AnimateIn>
 
-          {/* CTA Buttons */}
-          <AnimateIn delay={400}>
-            <div className="mt-12 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-              <Button
-                size="lg"
-                className="group h-14 rounded-full px-10 text-base font-semibold shadow-md hover:shadow-lg hover:scale-[1.02] transition-all duration-300 bg-foreground text-background hover:bg-foreground/90 w-full sm:w-auto"
-                asChild
-              >
-                <a href="#generator">
-                  {t.hero.cta}
-                  <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
-                </a>
-              </Button>
-              <Button
-                variant="outline"
-                size="lg"
-                className="h-14 rounded-full px-10 text-base font-semibold border-border/60 hover:bg-muted/50 hover:border-border transition-all duration-300 w-full sm:w-auto"
-                asChild
-              >
-                <a href="#howItWorks">
-                  <FileText className="mr-2 h-4 w-4" />
-                  {t.hero.howItWorksCTA}
-                </a>
-              </Button>
-            </div>
-          </AnimateIn>
+            {/* Description */}
+            <AnimateIn delay={200}>
+              <p className="text-lg leading-relaxed text-muted-foreground font-normal max-w-xl mb-8">
+                {t.hero.subtitle}
+              </p>
+            </AnimateIn>
 
-          {/* AI Mobile Banner — показывается только на мобиле */}
-          <AnimateIn delay={420}>
-            <div className="mx-auto w-full max-w-md px-1">
-              <AiMobileBanner />
-            </div>
-          </AnimateIn>
+            {/* Trust chips */}
+            <AnimateIn delay={280}>
+              <div className="flex flex-wrap gap-2 mb-8">
+                {[
+                  { icon: ShieldCheck, label: "DSGVO-konform", color: "text-emerald-600 dark:text-emerald-400" },
+                  { icon: Lock, label: "SSL 256-Bit", color: "text-blue-600 dark:text-blue-400" },
+                  { icon: BadgeCheck, label: "Rechtssicher", color: "text-violet-600 dark:text-violet-400" },
+                  { icon: FileText, label: "Keine Registrierung", color: "text-amber-600 dark:text-amber-400" },
+                ].map(({ icon: Icon, label, color }) => (
+                  <div key={label} className="flex items-center gap-1.5 rounded-full border border-border/50 bg-muted/30 px-3 py-1.5 text-xs font-medium text-foreground/80">
+                    <Icon className={`h-3.5 w-3.5 ${color}`} />
+                    {label}
+                  </div>
+                ))}
+              </div>
+            </AnimateIn>
 
-          {/* Social Proof */}
-          <AnimateIn delay={440}>
-            <div className="mt-6 flex justify-center">
+            {/* CTA buttons */}
+            <AnimateIn delay={350}>
+              <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto mb-8">
+                <Button
+                  size="lg"
+                  className="group h-13 rounded-full px-8 text-base font-semibold shadow-md hover:shadow-lg hover:scale-[1.02] transition-all duration-300 bg-foreground text-background hover:bg-foreground/90 w-full sm:w-auto"
+                  asChild
+                >
+                  <a href="#generator">
+                    {t.hero.cta}
+                    <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
+                  </a>
+                </Button>
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="h-13 rounded-full px-8 text-base font-semibold border-border/60 hover:bg-muted/50 hover:border-border transition-all duration-300 w-full sm:w-auto"
+                  asChild
+                >
+                  <a href="#howItWorks">
+                    <FileText className="mr-2 h-4 w-4" />
+                    {t.hero.howItWorksCTA}
+                  </a>
+                </Button>
+              </div>
+            </AnimateIn>
+
+            {/* Social proof */}
+            <AnimateIn delay={420}>
               <SocialProof />
-            </div>
-          </AnimateIn>
+            </AnimateIn>
 
-          {/* Trust Badges */}
-          <AnimateIn delay={460}>
-            <TrustBadges />
-          </AnimateIn>
+            {/* AI banner — mobile only */}
+            <AnimateIn delay={440}>
+              <div className="w-full">
+                <AiMobileBanner />
+              </div>
+            </AnimateIn>
 
-          {/* Animated Stats */}
-          <AnimateIn delay={480}>
-            <div className="mt-12 rounded-2xl border border-border/40 bg-muted/20 backdrop-blur-sm px-4 sm:px-8 py-6 flex flex-wrap items-center justify-center gap-x-6 sm:gap-x-12 gap-y-6 text-center max-w-2xl mx-auto">
-              <AnimatedStat value={100000} suffix="+" label={t.hero.stats?.terminations} />
-              <div className="hidden sm:block w-px h-10 bg-border/60" />
-              <AnimatedStat value={300} suffix="+" label={t.hero.stats?.companies} />
-              <div className="hidden sm:block w-px h-10 bg-border/60" />
-              <div className="group text-center">
-                <div className="text-4xl font-black text-foreground group-hover:scale-105 transition-transform duration-300">
-                  4.9
+            {/* Stats row */}
+            <AnimateIn delay={480}>
+              <div className="mt-10 pt-8 border-t border-border/40 grid grid-cols-3 gap-6 w-full max-w-sm">
+                <div ref={refTerminations} className="text-center">
+                  <div className="text-2xl font-black text-foreground tabular-nums">
+                    {countTerminations.toLocaleString("de-DE")}+
+                  </div>
+                  <div className="text-[11px] text-muted-foreground mt-1 font-medium leading-tight">
+                    {t.hero.stats?.terminations}
+                  </div>
                 </div>
-                <div className="text-sm text-muted-foreground mt-1.5 font-medium">
-                  ★ {t.hero.stats?.rating}
+                <div ref={refCompanies} className="text-center">
+                  <div className="text-2xl font-black text-foreground tabular-nums">
+                    {countCompanies}+
+                  </div>
+                  <div className="text-[11px] text-muted-foreground mt-1 font-medium leading-tight">
+                    {t.hero.stats?.companies}
+                  </div>
                 </div>
+                <div className="text-center">
+                  <div className="text-2xl font-black text-foreground">4.9</div>
+                  <div className="text-[11px] text-muted-foreground mt-1 font-medium leading-tight">
+                    ★ {t.hero.stats?.rating}
+                  </div>
+                </div>
+              </div>
+            </AnimateIn>
+          </div>
+
+          {/* ── RIGHT: Visual mockup ── */}
+          <AnimateIn delay={300}>
+            <div className="relative lg:pl-8">
+
+              {/* Glow behind document */}
+              <div className="pointer-events-none absolute inset-0 flex items-center justify-center -z-10">
+                <div className="h-72 w-72 rounded-full bg-emerald-500/8 dark:bg-emerald-400/8 blur-[80px]" />
+                <div className="absolute h-48 w-48 rounded-full bg-violet-500/8 blur-[60px] translate-x-16 translate-y-8" />
+              </div>
+
+              {/* Subtle frame / tilt */}
+              <div className="relative mx-auto max-w-sm lg:max-w-none">
+
+                {/* Document card — slight tilt for depth */}
+                <div className="relative lg:rotate-1 lg:hover:rotate-0 transition-transform duration-500">
+                  <div className="w-full aspect-[1/1.35] rounded-2xl shadow-2xl border border-border/50 overflow-hidden ring-1 ring-foreground/5 min-w-0">
+                    <PdfPreview url="/preview/kuendigung-muster.pdf" />
+                  </div>
+
+                  {/* Gloss overlay */}
+                  <div className="pointer-events-none absolute inset-0 rounded-2xl bg-gradient-to-br from-white/5 via-transparent to-transparent" />
+                </div>
+
+                {/* ── Floating cards ── */}
+
+                {/* PDF ready — top right */}
+                <FloatingCard className="-right-6 -top-4 lg:-right-10 lg:top-6">
+                  <div className="h-9 w-9 rounded-lg bg-foreground flex items-center justify-center shrink-0">
+                    <FileText className="h-4 w-4 text-background" />
+                  </div>
+                  <div>
+                    <div className="text-sm font-semibold text-foreground">{t.hero.mockup?.pdfReady}</div>
+                    <div className="text-xs text-muted-foreground">{t.hero.mockup?.instantDownload}</div>
+                  </div>
+                </FloatingCard>
+
+                {/* SSL — top left */}
+                <FloatingCard className="-left-6 top-16 lg:-left-10 lg:top-20">
+                  <div className="h-9 w-9 rounded-lg bg-blue-500 flex items-center justify-center shrink-0">
+                    <Lock className="h-4 w-4 text-white" />
+                  </div>
+                  <div>
+                    <div className="text-sm font-semibold text-foreground">SSL-gesichert</div>
+                    <div className="text-xs text-blue-600 dark:text-blue-400 font-medium">256-Bit</div>
+                  </div>
+                </FloatingCard>
+
+                {/* Validated — bottom left */}
+                <FloatingCard className="-left-6 bottom-32 lg:-left-10 lg:bottom-40">
+                  <div className="h-9 w-9 rounded-lg bg-emerald-500 flex items-center justify-center shrink-0">
+                    <ShieldCheck className="h-4 w-4 text-white" />
+                  </div>
+                  <div>
+                    <div className="text-sm font-semibold text-foreground">{t.hero.mockup?.validated}</div>
+                    <div className="text-xs text-emerald-600 dark:text-emerald-400 font-medium">{t.hero.mockup?.legal}</div>
+                  </div>
+                </FloatingCard>
+
+                {/* Fristenrechner — bottom right */}
+                <FloatingCard className="-right-6 bottom-20 lg:-right-10 lg:bottom-24">
+                  <div className="h-9 w-9 rounded-lg bg-amber-400/20 border border-amber-400/30 flex items-center justify-center shrink-0">
+                    <Clock className="h-4 w-4 text-amber-500" />
+                  </div>
+                  <div>
+                    <div className="text-sm font-semibold text-foreground">Fristenrechner</div>
+                    <div className="text-xs text-muted-foreground">Frist berechnen</div>
+                  </div>
+                </FloatingCard>
+
+                {/* KI-Assistent — mid right */}
+                <button
+                  onClick={() => window.dispatchEvent(new Event("open-ai-chat"))}
+                  className="group absolute -right-6 top-1/2 -translate-y-1/2 hidden lg:flex lg:-right-10 items-center gap-3 rounded-xl bg-card/95 border border-violet-300/50 dark:border-violet-700/50 px-4 py-3 shadow-xl backdrop-blur-md hover:-translate-y-[calc(50%+4px)] transition-transform duration-300"
+                >
+                  <div className="relative h-9 w-9 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shrink-0">
+                    <Sparkles className="h-4 w-4 text-white" />
+                    <span className="absolute -right-1 -top-1 flex h-2.5 w-2.5">
+                      <span className={`absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75 ${pulse ? "animate-ping" : ""}`} />
+                      <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-green-400 border-2 border-card" />
+                    </span>
+                  </div>
+                  <div className="text-left">
+                    <div className="text-sm font-semibold text-foreground flex items-center gap-1.5">
+                      KI-Assistent
+                      <span className="text-[9px] font-bold text-violet-600 dark:text-violet-400 bg-violet-100 dark:bg-violet-900/40 px-1.5 py-0.5 rounded-full">NEU</span>
+                    </div>
+                    <div className="text-xs text-muted-foreground">Sofort beantwortet</div>
+                  </div>
+                </button>
+
               </div>
             </div>
           </AnimateIn>
+
         </div>
 
-        {/* Mockup */}
-        <AnimateIn delay={500}>
-          <div className="relative mx-auto mt-24 max-w-4xl">
-
-            {/* Свечение за документом */}
-            <div className="pointer-events-none absolute inset-0 -z-10 flex items-center justify-center">
-              <div className="h-64 w-64 rounded-full bg-foreground/5 blur-[60px]" />
-            </div>
-
-            {/* Document Card */}
-            <div className="relative mx-auto w-full max-w-2xl aspect-[1/1.35] rounded-2xl shadow-xl border border-border/50 overflow-hidden ring-1 ring-foreground/5 min-w-0 max-h-[80vh]">
-              <PdfPreview url="/preview/kuendigung-muster.pdf" />
-            </div>
-
-            {/* Floating Card — PDF */}
-            <div className="absolute -right-12 top-20 hidden lg:block hover:-translate-y-1 transition-transform duration-300">
-              <div className="flex items-center gap-3 rounded-xl bg-card border border-border/50 px-4 py-3 shadow-lg backdrop-blur-sm">
-                <div className="h-10 w-10 rounded-lg bg-foreground flex items-center justify-center">
-                  <FileText className="h-5 w-5 text-background" />
-                </div>
-                <div>
-                  <div className="text-sm font-semibold text-foreground">{t.hero.mockup?.pdfReady}</div>
-                  <div className="text-xs text-muted-foreground">{t.hero.mockup?.instantDownload}</div>
-                </div>
-              </div>
-            </div>
-
-            {/* Floating Card — Validated */}
-            <div className="absolute -left-12 bottom-44 hidden lg:block hover:-translate-y-1 transition-transform duration-300">
-              <div className="flex items-center gap-3 rounded-xl bg-card border border-emerald-200/60 dark:border-emerald-800/40 px-4 py-3 shadow-lg backdrop-blur-sm">
-                <div className="h-10 w-10 rounded-lg bg-emerald-500 flex items-center justify-center">
-                  <ShieldCheck className="h-5 w-5 text-white" />
-                </div>
-                <div>
-                  <div className="text-sm font-semibold text-foreground">{t.hero.mockup?.validated}</div>
-                  <div className="text-xs text-emerald-600 dark:text-emerald-400 font-medium">{t.hero.mockup?.legal}</div>
-                </div>
-              </div>
-            </div>
-
-            {/* Floating Card — SSL */}
-            <div className="absolute -left-12 top-20 hidden lg:block hover:-translate-y-1 transition-transform duration-300">
-              <div className="flex items-center gap-3 rounded-xl bg-card border border-blue-200/60 dark:border-blue-800/40 px-4 py-3 shadow-lg backdrop-blur-sm">
-                <div className="h-10 w-10 rounded-lg bg-blue-500 flex items-center justify-center">
-                  <Lock className="h-5 w-5 text-white" />
-                </div>
-                <div>
-                  <div className="text-sm font-semibold text-foreground">SSL-gesichert</div>
-                  <div className="text-xs text-blue-600 dark:text-blue-400 font-medium">256-Bit Verschlüsselung</div>
-                </div>
-              </div>
-            </div>
-
-            {/* Floating Card — Fristenrechner */}
-            <div className="absolute -right-12 bottom-32 hidden lg:block hover:-translate-y-1 transition-transform duration-300">
-              <a
-                href="#fristenrechner"
-                className="flex items-center gap-3 rounded-xl bg-card border border-amber-400/40 px-4 py-3 shadow-lg backdrop-blur-sm hover:border-amber-400/70 transition-colors group"
-              >
-                <div className="h-10 w-10 rounded-lg bg-amber-400/15 border border-amber-400/30 flex items-center justify-center group-hover:bg-amber-400/20 transition-colors">
-                  <Clock className="h-5 w-5 text-amber-500" />
-                </div>
-                <div>
-                  <div className="text-sm font-semibold text-foreground">Fristenrechner</div>
-                  <div className="text-xs text-muted-foreground">Kündigungsfrist berechnen</div>
-                </div>
-              </a>
-            </div>
-
-            {/* ✨ Floating Card — KI-Assistent (НОВОЕ) */}
-            <AiFloatingCard />
-
-          </div>
-        </AnimateIn>
-
-        {/* Feature Badges */}
+        {/* ── Feature badges ── */}
         <AnimateIn delay={600}>
-          <div className="mt-24 flex flex-wrap items-center justify-center gap-x-6 sm:gap-x-12 gap-y-6 border-t border-border/40 pt-12 max-w-4xl mx-auto">
-            <div className="flex items-center gap-3.5 text-base font-medium group">
-              <div className="h-11 w-11 rounded-xl bg-foreground flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
-                <Shield className="h-5 w-5 text-background" />
+          <div className="mt-20 flex flex-wrap items-center justify-center gap-x-8 sm:gap-x-12 gap-y-5 border-t border-border/40 pt-10 max-w-3xl mx-auto">
+            {[
+              { icon: Shield, label: t.hero.features?.secure },
+              { icon: Zap, label: t.hero.features?.fast },
+              { icon: CheckCircle2, label: t.hero.features?.free },
+            ].map(({ icon: Icon, label }) => (
+              <div key={label} className="flex items-center gap-3 text-sm font-medium group">
+                <div className="h-9 w-9 rounded-xl bg-foreground flex items-center justify-center group-hover:scale-105 transition-transform duration-300 shrink-0">
+                  <Icon className="h-4 w-4 text-background" />
+                </div>
+                <span className="text-foreground/75 group-hover:text-foreground transition-colors">{label}</span>
               </div>
-              <span className="text-foreground/80 group-hover:text-foreground transition-colors">{t.hero.features?.secure}</span>
-            </div>
-            <div className="flex items-center gap-3.5 text-base font-medium group">
-              <div className="h-11 w-11 rounded-xl bg-foreground flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
-                <Zap className="h-5 w-5 text-background" />
-              </div>
-              <span className="text-foreground/80 group-hover:text-foreground transition-colors">{t.hero.features?.fast}</span>
-            </div>
-            <div className="flex items-center gap-3.5 text-base font-medium group">
-              <div className="h-11 w-11 rounded-xl bg-foreground flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
-                <CheckCircle2 className="h-5 w-5 text-background" />
-              </div>
-              <span className="text-foreground/80 group-hover:text-foreground transition-colors">{t.hero.features?.free}</span>
-            </div>
+            ))}
           </div>
         </AnimateIn>
 
