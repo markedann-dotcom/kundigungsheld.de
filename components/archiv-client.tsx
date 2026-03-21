@@ -415,7 +415,7 @@ export function ArchivClient() {
   const handleExportCsv = useCallback(() => {
     const header = "Unternehmen;Grund;Status;Datum;Kündigung zum;Name;Notiz"
     const rows = items.map((item) => {
-      const validStatus = (item.status && STATUS_CONFIG[item.status]) ? item.status : "erstellt"
+      const validStatus = (item.status && STATUS_CONFIG[item.status as Status]) ? item.status as Status : "erstellt"
       return [
         item.companyName,
         item.grundLabel,
@@ -700,7 +700,7 @@ export function ArchivClient() {
           {filteredItems.map((item, index) => {
             const isExpanded = expandedId === item.id
             const isSelected = selectedIds.has(item.id)
-            const validStatus = (item.status && STATUS_CONFIG[item.status]) ? item.status : "erstellt"
+            const validStatus = (item.status && STATUS_CONFIG[item.status as Status]) ? item.status as Status : "erstellt"
             const statusCfg = STATUS_CONFIG[validStatus]
             const isCopied = copiedId === item.id
             const isReCreating = reCreatingId === item.id
