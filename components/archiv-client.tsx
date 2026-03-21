@@ -315,8 +315,8 @@ export function ArchivClient() {
         cmp = a.companyName.localeCompare(b.companyName, "de")
       } else if (sortField === "status") {
         const order: Record<Status, number> = { erstellt: 0, gesendet: 1, bestaetigt: 2 }
-        const sa = (a.status && STATUS_CONFIG[a.status]) ? a.status : "erstellt"
-        const sb = (b.status && STATUS_CONFIG[b.status]) ? b.status : "erstellt"
+        const sa = (a.status && STATUS_CONFIG[a.status as Status]) ? a.status as Status : "erstellt"
+        const sb = (b.status && STATUS_CONFIG[b.status as Status]) ? b.status as Status : "erstellt"
         cmp = order[sa] - order[sb]
       }
       return sortDir === "asc" ? cmp : -cmp
