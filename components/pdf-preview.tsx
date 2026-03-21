@@ -51,7 +51,7 @@ export function PdfPreview({ url, className = "", previewImageUrl = "/preview/ku
         const ctx = canvas.getContext("2d")
         if (!ctx) return
 
-        await page.render({ canvasContext: ctx, viewport }).promise
+        await page.render({ canvasContext: ctx, viewport, canvas: canvas }).promise
 
         if (!cancelled) setStage("pdf")
       } catch (err) {
