@@ -146,10 +146,10 @@ const GRUENDE_MIT_ZUSATZ = ["sonderkuendigung", "fristlos", "umzug", "todesfall"
 const NOTICE_HINTS: Partial<Record<CompanyCategory, string>> = {
   telekommunikation: "⚠️ Telekom-Verträge: meist 3 Monate Kündigungsfrist zum Vertragsende",
   streaming: "ℹ️ Streaming-Dienste: meist monatlich kündbar, oft zum Monatsende",
-  strom: "ℹ️ Strom/Gas: meist 6 Wochen vor Vertragsende",
+  energie: "ℹ️ Strom/Gas: meist 6 Wochen vor Vertragsende",
   versicherung: "⚠️ Versicherungen: meist 3 Monate vor Jahresablauf oder nach Schadenfall",
   fitness: "ℹ️ Fitnessstudio: meist 4–6 Wochen zum Quartals-/Monatsende",
-  zeitung: "ℹ️ Zeitungen/Magazine: meist 4–8 Wochen zum Abo-Ende",
+  verlag: "ℹ️ Zeitungen/Magazine: meist 4–8 Wochen zum Abo-Ende",
 }
 
 // Page overflow thresholds
