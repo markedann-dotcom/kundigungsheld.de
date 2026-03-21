@@ -305,7 +305,7 @@ export default async function ProviderPage({ params }: Props) {
                     { label: "Kategorie", value: categoryLabel },
                     { label: "Kündigungsform", value: "Schriftlich (Post / Fax / E-Mail)" },
                     ...(company.address ? [{ label: "Adresse", value: company.address }] : []),
-                    ...(company.noticePeriod ? [{ label: "Kündigungsfrist", value: company.noticePeriod }] : []),
+                    ...(company.kuendigungsfrist ? [{ label: "Kündigungsfrist", value: company.kuendigungsfrist }] : []),
                   ].map((row) => (
                     <div key={row.label} className="flex justify-between gap-4 py-3.5 text-sm">
                       <span className="font-medium text-muted-foreground whitespace-nowrap">{row.label}</span>
