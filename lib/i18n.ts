@@ -1286,3 +1286,13 @@ export const translations: Record<Language, TranslationKeys> = {
 export function getTranslations(lang: Language): TranslationKeys {
   return translations[lang] || translations.de
 }
+// Aliases for compatibility with language-selector.tsx
+export type Locale = Language
+
+export const SUPPORTED_LOCALES: { code: Locale; name: string; flag: string }[] = [
+  { code: 'de', name: 'Deutsch', flag: '🇩🇪' },
+  { code: 'uk', name: 'Українська', flag: '🇺🇦' },
+  { code: 'en', name: 'English', flag: '🇬🇧' },
+  { code: 'tr', name: 'Türkçe', flag: '🇹🇷' },
+  { code: 'zh', name: '中文', flag: '🇨🇳' },
+]
