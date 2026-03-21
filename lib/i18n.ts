@@ -1296,3 +1296,6 @@ export const SUPPORTED_LOCALES: { code: Locale; name: string; flag: string }[] =
   { code: 'tr', name: 'Türkçe', flag: '🇹🇷' },
   { code: 'zh', name: '中文', flag: '🇨🇳' },
 ]
+
+// Alias for compatibility
+export const getTranslation = getTranslations
