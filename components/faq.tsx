@@ -149,8 +149,8 @@ export function FAQ() {
         </div>
 
         {/* Accordion list */}
+        <div ref={listRef}>
         <dl
-          ref={listRef}
           className={`scroll-reveal-stagger flex flex-col gap-2 ${listVisible ? "visible" : ""}`}
         >
           {filtered.length === 0 ? (
@@ -231,6 +231,7 @@ export function FAQ() {
             })
           )}
         </dl>
+        </div>
 
         {/* Footer count */}
         {filtered.length > 0 && search && (
