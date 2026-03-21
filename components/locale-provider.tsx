@@ -1,7 +1,7 @@
 "use client"
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
-import { Locale, getTranslation } from '@/lib/i18n'
+import { Locale, getTranslations } from '@/lib/i18n'
 
 type LocaleContextType = {
   locale: Locale
@@ -29,7 +29,14 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
     localStorage.setItem(LOCALE_STORAGE_KEY, newLocale)
   }
 
-  const t = (key: string) => getTranslation(locale, key)
+  const translations = getTranslations(locale)
+  const t = (key: string): string => {
+    const keys = key.split('.')
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let val: any = translations
+    for (const k of keys) val = val?.[k]
+    return typeof val === 'string' ? val : key
+  }
 
   return (
     <LocaleContext.Provider value={{ locale, setLocale, t }}>
