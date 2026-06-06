@@ -1,57 +1,40 @@
-import type { Metadata, Viewport } from 'next'
-import { Inter, Space_Grotesk, Caveat } from 'next/font/google'
-
+import { Analytics } from '@vercel/analytics/next'
+import type { Metadata } from 'next'
+import { Geist, Geist_Mono, Fraunces } from 'next/font/google'
 import './globals.css'
-import { CookieBanner } from '@/components/cookie-banner'
-import { ThemeProvider } from '@/components/theme-provider'
-import { I18nProvider } from '@/contexts/i18n-context'
 
-const inter = Inter({
+const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] })
+const geistMono = Geist_Mono({
+  variable: '--font-geist-mono',
   subsets: ['latin'],
-  variable: '--font-inter',
-  display: 'swap',
-  preload: true,
 })
-
-const spaceGrotesk = Space_Grotesk({
+const fraunces = Fraunces({
+  variable: '--font-fraunces',
   subsets: ['latin'],
-  variable: '--font-space-grotesk',
-  display: 'swap',
-  preload: true,
-})
-
-const caveat = Caveat({
-  subsets: ['latin'],
-  variable: '--font-caveat',
-  display: 'swap',
-  preload: false,
+  style: ['normal', 'italic'],
 })
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://www.kundigungsheld.de'),
-  title: 'KündigungsHeld - Verträge einfach kündigen | 100% kostenlos',
-  description:
-    'Erstellen Sie in wenigen Minuten rechtssichere Kündigungsschreiben für über 150 deutsche Unternehmen. 100% kostenlos, schnell und zuverlässig.',
-  keywords: 'Kündigung, Kündigungsschreiben, Vertrag kündigen, Deutschland, Vorlage, kostenlos',
-  openGraph: {
-    title: 'KündigungsHeld - Verträge einfach kündigen',
-    description: 'Rechtssichere Kündigungsschreiben in 2 Minuten erstellen. Über 150 Unternehmen, 100% kostenlos.',
-    type: 'website',
-    locale: 'de_DE',
-    siteName: 'KündigungsHeld',
-    url: 'https://www.kundigungsheld.de',
+  title: 'v0 App',
+  description: 'Created with v0',
+  generator: 'v0.app',
+  icons: {
+    icon: [
+      {
+        url: '/icon-light-32x32.png',
+        media: '(prefers-color-scheme: light)',
+      },
+      {
+        url: '/icon-dark-32x32.png',
+        media: '(prefers-color-scheme: dark)',
+      },
+      {
+        url: '/icon.svg',
+        type: 'image/svg+xml',
+      },
+    ],
+    apple: '/apple-icon.png',
   },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'KündigungsHeld - Verträge einfach kündigen',
-    description: 'Rechtssichere Kündigungsschreiben in 2 Minuten erstellen. 100% kostenlos.',
-  },
-}
-
-export const viewport: Viewport = {
-  themeColor: '#1a9a82',
-  width: 'device-width',
-  initialScale: 1,
 }
 
 export default function RootLayout({
@@ -60,18 +43,10 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="de" className={`${inter.variable} ${spaceGrotesk.variable} ${caveat.variable}`} suppressHydrationWarning>
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-      </head>
-      <body className="font-sans antialiased overflow-x-hidden">
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          <I18nProvider>
-            {children}
-            <CookieBanner />
-          </I18nProvider>
-        </ThemeProvider>
+    <html lang="de" className={`${geistSans.variable} ${geistMono.variable} ${fraunces.variable} bg-background`}>
+      <body className="font-sans antialiased">
+        {children}
+        {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>
   )
