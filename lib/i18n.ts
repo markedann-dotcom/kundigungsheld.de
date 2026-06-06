@@ -1299,3 +1299,9 @@ export const SUPPORTED_LOCALES: { code: Locale; name: string; flag: string }[] =
 
 // Alias for compatibility
 export const getTranslation = getTranslations
+// ... (твой существующий код остается без изменений)
+
+// ДОБАВЬ ЭТО В САМЫЙ КОНЕЦ ФАЙЛА lib/i18n.ts
+export const I18nProvider = ({ children }: { children: React.ReactNode }) => {
+  return <>{children}</>
+}
