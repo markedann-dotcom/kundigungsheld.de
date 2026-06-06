@@ -1,7 +1,7 @@
 import type { Config } from 'tailwindcss'
 
 const config: Config = {
-  darkMode: ['class'],
+  darkMode: 'class',
   content: [
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
     './components/**/*.{js,ts,jsx,tsx,mdx}',
@@ -84,7 +84,6 @@ const config: Config = {
           '0%': { transform: 'translateX(0)' },
           '100%': { transform: 'translateX(-50%)' },
         },
-        // ✅ НОВОЕ: анимация для второй строки (едет вправо)
         'ticker-reverse': {
           '0%': { transform: 'translateX(-50%)' },
           '100%': { transform: 'translateX(0)' },
@@ -94,11 +93,11 @@ const config: Config = {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
         ticker: 'ticker 45s linear infinite',
-        // ✅ НОВОЕ: чуть медленнее для разной скорости строк
         'ticker-reverse': 'ticker-reverse 35s linear infinite',
       },
     },
   },
   plugins: [require('tailwindcss-animate')],
 }
+
 export default config
