@@ -1,8 +1,13 @@
+"use client"
+
 import Link from "next/link"
+import dynamic from "next/dynamic"
 import { FileText, Home, BookOpen, Archive, ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Navbar } from "@/components/navbar"
-import { Footer } from "@/components/footer"
+
+// Динамический импорт компонентов для предотвращения ошибок SSR при сборке
+const Navbar = dynamic(() => import("@/components/navbar").then((mod) => mod.Navbar), { ssr: false })
+const Footer = dynamic(() => import("@/components/footer").then((mod) => mod.Footer), { ssr: false })
 
 const QUICK_LINKS = [
   {
@@ -37,7 +42,7 @@ export default function NotFound() {
       <Navbar />
       <main className="bg-background">
         <section className="relative flex min-h-[80vh] items-center justify-center overflow-hidden py-20">
-
+          
           {/* Background decoration */}
           <div className="pointer-events-none absolute inset-0">
             <div className="absolute left-1/2 top-1/2 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/4 blur-3xl" />
@@ -58,7 +63,7 @@ export default function NotFound() {
           </div>
 
           <div className="relative mx-auto max-w-2xl px-4 text-center">
-
+            
             {/* Icon */}
             <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-3xl border border-border/60 bg-card shadow-sm">
               <FileText className="h-9 w-9 text-primary" />
@@ -123,7 +128,6 @@ export default function NotFound() {
                 })}
               </div>
             </div>
-
           </div>
         </section>
       </main>
