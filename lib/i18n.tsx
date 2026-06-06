@@ -1306,18 +1306,3 @@ export const SUPPORTED_LOCALES: { code: Locale; name: string; flag: string }[] =
 
 // Alias for compatibility
 export const getTranslation = getTranslations
-// ... (твой существующий код остается без изменений)
-
-// --- Замени всё, что было связано с I18nProvider в конце файла, на это: ---
-
-import { createContext } from 'react'
-
-const I18nContext = createContext(null)
-
-export const I18nProvider = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <I18nContext.Provider value={null}>
-      {children}
-    </I18nContext.Provider>
-  )
-}
