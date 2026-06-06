@@ -1,7 +1,6 @@
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import Link from "next/link"
-import dynamic from "next/dynamic"
 import {
   ArrowLeft,
   Clock,
@@ -18,10 +17,8 @@ import { Button } from "@/components/ui/button"
 import { companies, CATEGORY_LABELS, type Company } from "@/lib/companies"
 import { getLogoUrl } from "@/lib/company-domains"
 import { SavingsCalculator } from "@/components/savings-calculator"
-
-// Динамический импорт для предотвращения ошибок SSR с useI18n
-const Navbar = dynamic(() => import("@/components/navbar").then((mod) => mod.Navbar), { ssr: false })
-const Footer = dynamic(() => import("@/components/footer").then((mod) => mod.Footer), { ssr: false })
+import { Navbar } from "@/components/navbar"
+import { Footer } from "@/components/footer"
 
 const BASE_URL = "https://kundigungsheld.de"
 
@@ -143,7 +140,6 @@ export default async function ProviderPage({ params }: Props) {
       <Navbar />
 
       <main>
-        {/* Оставшаяся верстка страницы остается без изменений */}
         <section className="relative overflow-hidden bg-background">
           <div className="pointer-events-none absolute inset-0 overflow-hidden">
             <div className="absolute -top-40 -right-40 h-[600px] w-[600px] rounded-full bg-primary/5 blur-[120px]" />
@@ -155,10 +151,8 @@ export default async function ProviderPage({ params }: Props) {
               <ChevronRight className="h-3.5 w-3.5" />
               <span className="text-foreground font-medium">{company.name} kündigen</span>
             </nav>
-            {/* ... остальное содержание ... */}
           </div>
         </section>
-        {/* ... остальная часть страницы ... */}
       </main>
 
       <Footer />
