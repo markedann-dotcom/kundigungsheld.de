@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { Geist, Geist_Mono, Fraunces } from 'next/font/google'
 import './globals.css'
 import { I18nProvider } from '@/lib/i18n'
+import { ThemeProvider } from '@/components/theme-provider'
 
 const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] })
 const geistMono = Geist_Mono({
@@ -44,11 +45,13 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="de" className={`${geistSans.variable} ${geistMono.variable} ${fraunces.variable} bg-background`}>
+    <html lang="de" className={`${geistSans.variable} ${geistMono.variable} ${fraunces.variable} bg-background`} suppressHydrationWarning>
       <body className="font-sans antialiased">
-        <I18nProvider>
-          {children}
-        </I18nProvider>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+          <I18nProvider>
+            {children}
+          </I18nProvider>
+        </ThemeProvider>
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>
