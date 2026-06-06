@@ -1,4 +1,10 @@
-import React from 'react'
+"use client" // ЭТА СТРОЧКА ОБЯЗАТЕЛЬНА!
+
+import React, { createContext } from 'react'
+
+/**
+ * Complete i18n System for KündigungsHeld
+ * ...
 /**
  * Complete i18n System for KündigungsHeld
  * Supports: German (de), Ukrainian (uk), English (en), Turkish (tr), Chinese (zh)
