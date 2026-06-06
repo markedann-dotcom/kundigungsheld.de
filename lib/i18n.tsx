@@ -1,3 +1,4 @@
+import React from 'react'
 /**
  * Complete i18n System for KündigungsHeld
  * Supports: German (de), Ukrainian (uk), English (en), Turkish (tr), Chinese (zh)
