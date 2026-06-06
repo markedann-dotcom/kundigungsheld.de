@@ -307,26 +307,24 @@ export function HeroSection() {
                 {/* CTAs */}
                 <div className="mt-8 flex flex-wrap items-center gap-3">
                   <Button
-                    asChild
                     size="lg"
                     className="h-12 rounded-full bg-primary px-7 text-base font-semibold text-primary-foreground shadow-lg shadow-primary/30 transition-all duration-200 hover:-translate-y-0.5 hover:bg-primary/90"
+                    nativeButton={false}
+                    render={<a href="#generator" />}
                   >
-                    <a href="#generator">
-                      {t.hero.cta}
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </a>
+                    {t.hero.cta}
+                    <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
 
                   <Button
-                    asChild
                     variant="outline"
                     size="lg"
                     className="h-12 rounded-full border-foreground/15 bg-card/80 px-7 text-base font-semibold text-foreground backdrop-blur transition-all duration-200 hover:-translate-y-0.5 hover:bg-card"
+                    nativeButton={false}
+                    render={<a href="#howItWorks" />}
                   >
-                    <a href="#howItWorks">
-                      <FileText className="mr-2 h-4 w-4" />
-                      {t.hero.howItWorksCTA}
-                    </a>
+                    <FileText className="mr-2 h-4 w-4" />
+                    {t.hero.howItWorksCTA}
                   </Button>
                 </div>
               </div>
@@ -522,3 +520,4 @@ export function HeroSection() {
     </section>
   )
 }
+
