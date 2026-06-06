@@ -51,7 +51,8 @@ export function PdfPreview({ url, className = "", previewImageUrl = "/preview/ku
         const ctx = canvas.getContext("2d")
         if (!ctx) return
 
-        await page.render({ canvasContext: ctx, viewport, canvas: canvas }).promise
+        // Ошибка была здесь: убрали свойство canvas, оставили только нужные
+        await page.render({ canvasContext: ctx, viewport }).promise
 
         if (!cancelled) setStage("pdf")
       } catch (err) {
