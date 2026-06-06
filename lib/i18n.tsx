@@ -1307,7 +1307,5 @@ export const SUPPORTED_LOCALES: { code: Locale; name: string; flag: string }[] =
 // Alias for compatibility
 export const getTranslation = getTranslations
 
-// I18nProvider — passthrough wrapper for layout compatibility
-export const I18nProvider = ({ children }: { children: React.ReactNode }) => {
-  return <>{children}</>
-}
+// Re-export I18nProvider from the real context
+export { I18nProvider } from '@/contexts/i18n-context'
