@@ -1,7 +1,9 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
-import { ArrowRight, Shield, Zap, CheckCircle2, FileText, Lock, Sparkles } from "lucide-react"
+import type React from "react"
+
+import { useState, useEffect } from "react"
+import { ArrowRight, Shield, Zap, CheckCircle2, FileText, Lock, Sparkles, ArrowUpRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useI18n } from "@/contexts/i18n-context"
 
@@ -34,7 +36,7 @@ function TypingDemo() {
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setStep(s => (s < 2 ? s + 1 : s))
+      setStep((s) => (s < 2 ? s + 1 : s))
     }, 1200)
     return () => clearInterval(timer)
   }, [])
@@ -68,28 +70,28 @@ function TypingDemo() {
   const steps = ["Anbieter", "Details", "Dokument"]
 
   return (
-    <div className="w-full h-full bg-zinc-950 dark:bg-zinc-950 flex flex-col">
+    <div className="flex h-full w-full flex-col bg-card">
       {/* Window chrome */}
-      <div className="px-4 py-3 bg-zinc-900 border-b border-white/[0.07] flex items-center gap-2">
+      <div className="flex items-center gap-2 border-b border-border bg-secondary px-4 py-3">
         <div className="flex gap-1.5">
-          {["#ff5f57", "#febc2e", "#28c840"].map(c => (
-            <div key={c} style={{ background: c }} className="w-2.5 h-2.5 rounded-full" />
+          {["#ff5f57", "#febc2e", "#28c840"].map((c) => (
+            <div key={c} style={{ background: c }} className="h-2.5 w-2.5 rounded-full" />
           ))}
         </div>
-        <div className="flex-1 text-center text-[11px] text-white/30 font-mono">
+        <div className="flex-1 text-center font-mono text-[11px] tracking-wide text-muted-foreground">
           kuendigungsheld.de/generator
         </div>
       </div>
 
-      <div className="flex-1 p-4 flex flex-col gap-3 overflow-hidden">
+      <div className="flex flex-1 flex-col gap-3 overflow-hidden p-5">
         {/* Progress bar */}
-        <div className="flex gap-1.5 mb-1">
+        <div className="mb-1 flex gap-3">
           {steps.map((s, i) => (
             <div key={s} className="flex-1">
-              <div className="text-[9px] text-white/30 uppercase tracking-widest mb-1">{s}</div>
-              <div className="h-[3px] rounded-full bg-white/10 overflow-hidden">
+              <div className="mb-2 text-[9px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">{s}</div>
+              <div className="h-[3px] overflow-hidden rounded-full bg-secondary">
                 <div
-                  className="h-full rounded-full bg-gradient-to-r from-emerald-600 to-emerald-400 transition-all duration-700"
+                  className="h-full rounded-full bg-primary transition-all duration-700"
                   style={{ width: i <= step ? "100%" : "0%" }}
                 />
               </div>
@@ -98,29 +100,33 @@ function TypingDemo() {
         </div>
 
         {/* Provider card */}
-        <div className="bg-white/[0.04] border border-white/[0.08] rounded-xl p-3">
-          <div className="text-[9px] text-white/35 uppercase tracking-widest mb-2">Anbieter</div>
-          <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-purple-300 to-blue-300 flex items-center justify-center text-sm font-black">
+        <div className="rounded-xl border border-border bg-secondary/60 p-3.5">
+          <div className="mb-2.5 text-[9px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+            Anbieter
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary text-sm font-semibold text-primary-foreground">
               T
             </div>
-            <span className="text-white text-[13px] font-semibold">Telekom Deutschland</span>
-            <span className="ml-auto text-emerald-400 text-[11px] font-bold">✓</span>
+            <span className="text-[13px] font-medium text-foreground">Telekom Deutschland</span>
+            <CheckCircle2 className="ml-auto h-4 w-4 text-primary" />
           </div>
         </div>
 
         {/* Reason card */}
         {step >= 1 && (
-          <div className="bg-white/[0.04] border border-white/[0.08] rounded-xl p-3 kh-fadein">
-            <div className="text-[9px] text-white/35 uppercase tracking-widest mb-2">Kündigungsgrund</div>
-            <div className="flex gap-2 flex-wrap">
+          <div className="kh-fadein rounded-xl border border-border bg-secondary/60 p-3.5">
+            <div className="mb-2.5 text-[9px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+              Kündigungsgrund
+            </div>
+            <div className="flex flex-wrap gap-2">
               {["Vertragsende", "Preiserhöhung", "Umzug"].map((g, i) => (
                 <div
                   key={g}
-                  className={`px-2.5 py-1 rounded-lg text-[11px] font-medium border ${
+                  className={`rounded-lg border px-2.5 py-1 text-[11px] font-medium transition-colors ${
                     i === 0
-                      ? "border-emerald-500/60 text-emerald-400 bg-emerald-500/10"
-                      : "border-white/10 text-white/40"
+                      ? "border-primary/40 bg-primary/10 text-primary"
+                      : "border-border text-muted-foreground"
                   }`}
                 >
                   {g}
@@ -132,38 +138,40 @@ function TypingDemo() {
 
         {/* Typing card */}
         {step >= 2 && !showDoc && (
-          <div className="bg-emerald-500/[0.06] border border-emerald-500/20 rounded-xl p-3 flex-1 kh-fadein overflow-hidden">
-            <div className="flex items-center gap-2 mb-2">
-              <span className="text-[9px] text-emerald-400 font-bold uppercase tracking-widest">✦ KI schreibt...</span>
+          <div className="kh-fadein flex-1 overflow-hidden rounded-xl border border-primary/20 bg-primary/[0.06] p-3.5">
+            <div className="mb-2.5 flex items-center gap-2">
+              <Sparkles className="h-3 w-3 text-primary" />
+              <span className="text-[9px] font-semibold uppercase tracking-[0.18em] text-primary">KI schreibt</span>
               <div className="ml-auto flex gap-1">
-                {[0, 1, 2].map(i => (
+                {[0, 1, 2].map((i) => (
                   <div
                     key={i}
-                    className="w-1 h-1 rounded-full bg-emerald-400 kh-bounce"
+                    className="kh-bounce h-1 w-1 rounded-full bg-primary"
                     style={{ animationDelay: `${i * 0.2}s` }}
                   />
                 ))}
               </div>
             </div>
-            <p className="text-[10px] text-white/65 leading-[1.7] font-serif">
+            <p className="font-serif text-[11px] leading-[1.8] text-foreground/70">
               {typed}
-              <span className="border-r-2 border-emerald-400 ml-px kh-blink">&nbsp;</span>
+              <span className="kh-blink ml-px border-r-2 border-primary">&nbsp;</span>
             </p>
           </div>
         )}
 
         {/* Doc ready */}
         {showDoc && (
-          <div className="bg-white rounded-xl flex-1 p-4 kh-scalein">
-            <div className="text-[10px] text-gray-400 text-right mb-2">Berlin, 12.03.2025</div>
-            <div className="text-[13px] font-black text-gray-900 mb-2">Kündigung — Telekom</div>
-            <div className="text-[10px] text-gray-500 leading-[1.7] font-serif mb-3">
-              Sehr geehrte Damen und Herren,<br />
+          <div className="kh-scalein flex-1 rounded-xl bg-secondary p-5 shadow-inner">
+            <div className="mb-3 text-right font-serif text-[10px] italic text-muted-foreground">Berlin, 12.03.2025</div>
+            <div className="mb-2.5 font-serif text-[15px] font-semibold text-foreground">Kündigung — Telekom</div>
+            <div className="mb-4 font-serif text-[11px] leading-[1.8] text-muted-foreground">
+              Sehr geehrte Damen und Herren,
+              <br />
               hiermit kündige ich meinen Vertrag fristgerecht zum nächstmöglichen Termin.
             </div>
-            <div className="flex items-center gap-2 bg-emerald-50 rounded-lg px-3 py-2">
-              <span className="text-emerald-600 text-sm">✓</span>
-              <span className="text-[10px] text-emerald-700 font-bold">PDF bereit zum Download</span>
+            <div className="flex items-center gap-2 rounded-lg bg-primary/10 px-3 py-2">
+              <CheckCircle2 className="h-4 w-4 text-primary" />
+              <span className="text-[10px] font-semibold tracking-wide text-primary">PDF bereit zum Download</span>
             </div>
           </div>
         )}
@@ -181,24 +189,34 @@ const AVATAR_PHOTOS = [
   "https://i.pravatar.cc/64?img=56",
 ]
 
+const PARTNERS = ["Telekom", "Vodafone", "O2", "1&1"]
+
 function SocialProof() {
   return (
     <div className="flex items-center gap-3">
-      <div className="flex -space-x-2">
+      <div className="flex -space-x-2.5">
         {AVATAR_PHOTOS.map((src, i) => (
-          <div key={i} className="h-7 w-7 rounded-full border-2 border-background overflow-hidden bg-muted ring-0">
-            <img src={src} alt={`Nutzer ${i + 1}`} className="h-full w-full object-cover" width={28} height={28} />
+          <div key={i} className="h-8 w-8 overflow-hidden rounded-full ring-2 ring-card bg-muted">
+            <img
+              src={src || "/placeholder.svg"}
+              alt={`Nutzer ${i + 1}`}
+              className="h-full w-full object-cover"
+              width={32}
+              height={32}
+            />
           </div>
         ))}
       </div>
-      <div>
-        <div className="flex gap-0.5">
+      <div className="leading-tight">
+        <div className="flex gap-0.5 text-amber-500">
           {"★★★★★".split("").map((s, i) => (
-            <span key={i} className="text-amber-400 text-xs">{s}</span>
+            <span key={i} className="text-xs">
+              {s}
+            </span>
           ))}
         </div>
-        <p className="text-xs text-muted-foreground">
-          <span className="text-foreground font-semibold">2.400+</span> diese Woche gekündigt
+        <p className="mt-0.5 text-xs text-muted-foreground">
+          <span className="font-semibold text-foreground">2.400+</span> diese Woche gekündigt
         </p>
       </div>
     </div>
@@ -217,15 +235,7 @@ function FloatCard({
 }) {
   return (
     <div
-      className={`
-        absolute hidden sm:flex items-center gap-3
-        rounded-2xl px-4 py-3.5
-        bg-white/95 dark:bg-zinc-900/95
-        border border-black/[0.06] dark:border-white/[0.1]
-        shadow-xl shadow-black/10 dark:shadow-black/60
-        backdrop-blur-xl
-        ${className}
-      `}
+      className={`absolute hidden items-center gap-3 rounded-2xl border border-border bg-card/95 px-4 py-3 shadow-xl shadow-black/[0.08] backdrop-blur-xl sm:flex dark:shadow-black/50 ${className}`}
       style={style}
     >
       {children}
@@ -239,193 +249,156 @@ export function HeroSection() {
   const countT = useCountUp(100000)
   const countC = useCountUp(300)
 
+  const titleHead = (t.hero.title as string).split("—")[0].trim()
+  const titleAccent = (t.hero.title as string).split("—")[1]?.trim() ?? "einfach & kostenlos"
+
+  const steps = ["Anbieter wählen", "Daten eingeben", "PDF erhalten"]
+
   return (
-    <section className="relative overflow-hidden bg-white dark:bg-zinc-950">
+    <section className="relative overflow-hidden bg-background">
+      <div className="relative mx-auto max-w-7xl px-4 pt-8 pb-20 lg:px-8 lg:pb-28">
+        {/* ══════════ HERO CARD ══════════ */}
+        <div className="relative overflow-hidden rounded-[2rem] shadow-2xl shadow-primary/10">
+          {/* Background image */}
+          <img
+            src="/images/hero-sky.png"
+            alt="Blauer Himmel mit Wolken"
+            className="absolute inset-0 h-full w-full object-cover"
+          />
+          {/* Readability overlay */}
+          <div className="absolute inset-0 bg-gradient-to-r from-card/90 via-card/50 to-transparent" />
 
-      {/* ── Light mode background ── */}
-      <div className="dark:hidden pointer-events-none absolute inset-0">
-        {/* Soft gradient wash */}
-        <div className="absolute inset-0 bg-gradient-to-b from-emerald-50/80 via-white to-white" />
-        {/* Radial glow top */}
-        <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[800px] h-[500px] rounded-full bg-emerald-400/10 blur-[120px]" />
-        <div className="absolute top-1/3 -right-40 w-[400px] h-[400px] rounded-full bg-violet-400/8 blur-[100px]" />
-        {/* Subtle dot grid */}
-        <div
-          className="absolute inset-0 opacity-[0.35]"
-          style={{
-            backgroundImage: "radial-gradient(circle, #10b981 1px, transparent 1px)",
-            backgroundSize: "36px 36px",
-            maskImage: "radial-gradient(ellipse 70% 50% at 50% 0%, black 40%, transparent 100%)",
-          }}
-        />
-      </div>
+          <div className="relative flex min-h-[460px] flex-col justify-center px-6 py-12 sm:px-12 lg:min-h-[540px] lg:px-16">
+            <div className="flex items-start gap-6 lg:gap-10">
+              {/* Numbered steps */}
+              <div className="hidden flex-col items-center pt-2 sm:flex">
+                {steps.map((_, i) => (
+                  <div key={i} className="flex flex-col items-center">
+                    <div
+                      className={`flex h-8 w-8 items-center justify-center rounded-full border text-xs font-semibold ${
+                        i === 0
+                          ? "border-primary bg-primary text-primary-foreground"
+                          : "border-foreground/20 bg-card/70 text-muted-foreground"
+                      }`}
+                    >
+                      {i + 1}
+                    </div>
+                    {i < steps.length - 1 && <div className="h-12 w-px bg-foreground/15 lg:h-16" />}
+                  </div>
+                ))}
+              </div>
 
-      {/* ── Dark mode background ── */}
-      <div className="hidden dark:block pointer-events-none absolute inset-0">
-        <div className="absolute -top-48 left-1/2 -translate-x-1/4 h-[700px] w-[700px] rounded-full bg-emerald-500/[0.12] blur-[120px]" />
-        <div className="absolute top-1/3 -right-32 h-[400px] w-[400px] rounded-full bg-violet-500/[0.10] blur-[100px]" />
-        <div className="absolute top-1/4 -left-32 h-[350px] w-[350px] rounded-full bg-blue-500/[0.07] blur-[90px]" />
-        {/* Grid lines */}
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)",
-            backgroundSize: "44px 44px",
-            maskImage: "radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 100%)",
-          }}
-        />
-      </div>
+              {/* Headline block */}
+              <div className="max-w-xl">
+                <div className="mb-4 inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">
+                  <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-primary" />
+                  {t.hero.badge}
+                </div>
 
-      <div className="relative mx-auto max-w-7xl px-4 lg:px-8 pt-20 pb-20 lg:pt-28 lg:pb-28">
+                <h1 className="font-display text-4xl font-extrabold leading-[1.05] tracking-tight text-balance text-foreground sm:text-5xl lg:text-6xl">
+                  {titleHead}
+                  <span className="mt-1 block text-primary">{titleAccent}</span>
+                </h1>
 
-        {/* ── Top badge ── */}
-        <div className="flex justify-center mb-10">
-          <div className="
-            inline-flex items-center gap-2 rounded-full px-4 py-1.5
-            bg-white/80 dark:bg-white/[0.05]
-            border border-black/[0.07] dark:border-white/[0.1]
-            backdrop-blur-sm shadow-sm dark:shadow-none
-          ">
-            {/* Live dot */}
-            <span className="
-              flex items-center gap-1.5
-              bg-emerald-100 dark:bg-emerald-500/15
-              text-emerald-700 dark:text-emerald-400
-              text-[10px] font-bold uppercase tracking-wider
-              px-2 py-0.5 rounded-full
-            ">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              Live
-            </span>
-            <span className="text-xs font-medium text-zinc-500 dark:text-white/40 tracking-wide uppercase">
-              {t.hero.badge}
-            </span>
-            <ArrowRight className="h-3 w-3 text-zinc-400 dark:text-white/30" />
-          </div>
-        </div>
+                <p className="mt-5 max-w-md text-base leading-relaxed text-muted-foreground text-pretty">
+                  {t.hero.subtitle}
+                </p>
 
-        {/* ── Headline ── */}
-        <div className="text-center max-w-4xl mx-auto mb-14">
-          <h1 className="
-            font-display text-4xl sm:text-6xl lg:text-[5.5rem]
-            font-black leading-[1.03] tracking-tight
-            text-zinc-900 dark:text-white
-            mb-6
-          ">
-            {/* First line: plain */}
-            <span className="block">{(t.hero.title as string).split("—")[0].trim()} —</span>
-            {/* Second line: gradient accent */}
-            <span className="
-              block
-              bg-gradient-to-r from-emerald-600 via-emerald-500 to-teal-400
-              dark:from-emerald-400 dark:via-emerald-300 dark:to-teal-300
-              bg-clip-text text-transparent
-            ">
-              {(t.hero.title as string).split("—")[1]?.trim() ?? "einfach & kostenlos"}
-            </span>
-          </h1>
+                {/* CTAs */}
+                <div className="mt-8 flex flex-wrap items-center gap-3">
+                  <Button
+                    size="lg"
+                    className="h-12 rounded-full bg-primary px-7 text-base font-semibold text-primary-foreground shadow-lg shadow-primary/30 transition-all duration-200 hover:-translate-y-0.5 hover:bg-primary/90"
+                    nativeButton={false}
+                    render={<a href="#generator" />}
+                  >
+                    {t.hero.cta}
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
 
-          <p className="text-xl leading-relaxed text-zinc-500 dark:text-white/50 max-w-2xl mx-auto mb-10">
-            {t.hero.subtitle}
-          </p>
-
-          {/* ── CTAs ── */}
-          <div className="flex flex-col sm:flex-row gap-3 justify-center mb-10">
-            <Button
-              size="lg"
-              className="
-                h-13 rounded-xl px-8 text-base font-bold
-                bg-emerald-600 hover:bg-emerald-500
-                dark:bg-emerald-500 dark:hover:bg-emerald-400
-                text-white
-                shadow-lg shadow-emerald-600/25 hover:shadow-emerald-500/40
-                dark:shadow-emerald-500/25 dark:hover:shadow-emerald-400/40
-                hover:-translate-y-0.5 transition-all duration-200
-                w-full sm:w-auto
-              "
-              asChild
-            >
-              <a href="#generator">
-                {t.hero.cta}
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </a>
-            </Button>
-
-            <Button
-              variant="outline"
-              size="lg"
-              className="
-                h-13 rounded-xl px-8 text-base font-semibold
-                border-zinc-200 dark:border-white/[0.12]
-                text-zinc-700 dark:text-white/70
-                hover:bg-zinc-50 dark:hover:bg-white/[0.06]
-                hover:border-zinc-300 dark:hover:border-white/20
-                transition-all duration-200
-                w-full sm:w-auto
-              "
-              asChild
-            >
-              <a href="#howItWorks">
-                <FileText className="mr-2 h-4 w-4" />
-                {t.hero.howItWorksCTA}
-              </a>
-            </Button>
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    className="h-12 rounded-full border-foreground/15 bg-card/80 px-7 text-base font-semibold text-foreground backdrop-blur transition-all duration-200 hover:-translate-y-0.5 hover:bg-card"
+                    nativeButton={false}
+                    render={<a href="#howItWorks" />}
+                  >
+                    <FileText className="mr-2 h-4 w-4" />
+                    {t.hero.howItWorksCTA}
+                  </Button>
+                </div>
+              </div>
+            </div>
           </div>
 
-          {/* ── Social proof ── */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <SocialProof />
-            <div className="hidden sm:block w-px h-7 bg-zinc-200 dark:bg-white/10" />
-            <div className="flex items-center gap-4">
-              {["Keine Registrierung", "DSGVO", "SSL"].map(item => (
-                <span key={item} className="flex items-center gap-1.5 text-sm text-zinc-500 dark:text-white/40 font-medium">
-                  <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500 dark:text-emerald-400 shrink-0" />
-                  {item}
-                </span>
-              ))}
+          {/* Floating "Mehr erfahren" card */}
+          <div className="absolute right-4 bottom-4 hidden w-64 rounded-2xl border border-border bg-card/95 p-4 shadow-xl shadow-black/10 backdrop-blur-xl lg:block">
+            <a
+              href="#howItWorks"
+              className="flex items-center justify-between text-sm font-semibold text-foreground transition-colors hover:text-primary"
+            >
+              Mehr erfahren
+              <ArrowUpRight className="h-4 w-4" />
+            </a>
+            <div className="mt-3 flex items-center gap-3 border-t border-border pt-3">
+              <div className="flex -space-x-2">
+                {AVATAR_PHOTOS.slice(0, 3).map((src, i) => (
+                  <div key={i} className="h-8 w-8 overflow-hidden rounded-full ring-2 ring-card">
+                    <img src={src || "/placeholder.svg"} alt="" className="h-full w-full object-cover" />
+                  </div>
+                ))}
+              </div>
+              <div className="leading-tight">
+                <div className="text-xs font-semibold text-foreground">Über 100.000 Nutzer</div>
+                <div className="text-[11px] text-muted-foreground">Vertrauen auf uns</div>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* ── Browser mockup ── */}
-        <div className="relative max-w-3xl mx-auto">
+        {/* ══════════ PARTNER / TRUST BAR ══════════ */}
+        <div className="mt-10 flex flex-col items-center justify-between gap-6 sm:flex-row">
+          <div className="flex items-center gap-3 rounded-full border border-border bg-card py-1.5 pr-4 pl-1.5 shadow-sm">
+            <SocialProof />
+          </div>
+          <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
+            {PARTNERS.map((p) => (
+              <span key={p} className="text-lg font-bold tracking-tight text-muted-foreground/60">
+                {p}
+              </span>
+            ))}
+          </div>
+        </div>
 
+        {/* ══════════ DEMO + FLOATING CARDS ══════════ */}
+        <div id="howItWorks" className="mt-24 text-center">
+          <h2 className="font-display text-3xl font-extrabold tracking-tight text-balance text-foreground sm:text-4xl">
+            So einfach geht Kündigen
+          </h2>
+          <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-muted-foreground text-pretty">
+            In nur drei Schritten zum rechtssicheren Kündigungsschreiben — komplett kostenlos.
+          </p>
+        </div>
+
+        <div className="relative mx-auto mt-14 max-w-3xl">
           {/* Bottom glow */}
-          <div className="
-            pointer-events-none absolute -bottom-16 left-1/2 -translate-x-1/2
-            h-48 w-96 rounded-full
-            bg-emerald-500/10 dark:bg-emerald-500/15
-            blur-[70px]
-          " />
+          <div className="pointer-events-none absolute -bottom-16 left-1/2 h-48 w-96 -translate-x-1/2 rounded-full bg-primary/10 blur-[70px]" />
 
           {/* Browser frame */}
           <div
-            className="
-              relative rounded-2xl overflow-hidden
-              border border-black/[0.08] dark:border-white/[0.08]
-              shadow-2xl shadow-black/15 dark:shadow-black/70
-            "
+            className="relative overflow-hidden rounded-2xl border border-border shadow-2xl shadow-black/[0.12] dark:shadow-black/60"
             style={{ animation: "kh-float 6s ease-in-out infinite" }}
           >
             {/* Chrome bar */}
-            <div className="
-              bg-zinc-100 dark:bg-zinc-900
-              border-b border-black/[0.06] dark:border-white/[0.07]
-              px-4 py-3 flex items-center gap-3
-            ">
+            <div className="flex items-center gap-3 border-b border-border bg-secondary px-4 py-3">
               <div className="flex gap-1.5">
-                {["#ff5f57", "#febc2e", "#28c840"].map(c => (
-                  <div key={c} style={{ background: c }} className="w-2.5 h-2.5 rounded-full" />
+                {["#ff5f57", "#febc2e", "#28c840"].map((c) => (
+                  <div key={c} style={{ background: c }} className="h-2.5 w-2.5 rounded-full" />
                 ))}
               </div>
-              <div className="
-                flex-1 rounded-md px-3 py-1 flex items-center gap-2
-                bg-white dark:bg-zinc-800/60
-                border border-black/[0.06] dark:border-white/[0.06]
-              ">
-                <Lock className="h-3 w-3 text-emerald-500" />
-                <span className="text-xs text-zinc-400 dark:text-white/35 font-mono">kuendigungsheld.de/generator</span>
+              <div className="flex flex-1 items-center gap-2 rounded-md border border-border bg-card px-3 py-1">
+                <Lock className="h-3 w-3 text-primary" />
+                <span className="font-mono text-xs text-muted-foreground">kuendigungsheld.de/generator</span>
               </div>
             </div>
 
@@ -436,99 +409,83 @@ export function HeroSection() {
           </div>
 
           {/* ── Floating card: Kündigungen ── */}
-          <FloatCard
-            className="-left-4 sm:-left-14 top-12"
-            style={{ animation: "kh-float 5s 0.5s ease-in-out infinite" }}
-          >
+          <FloatCard className="top-12 -left-4 sm:-left-14" style={{ animation: "kh-float 5s 0.5s ease-in-out infinite" }}>
             <div className="text-center">
-              <div className="text-2xl font-black text-zinc-900 dark:text-white leading-none tabular-nums">
-                {countT > 0 ? countT.toLocaleString("de-DE") : "—"}<span className="text-lg">+</span>
+              <div className="font-display text-2xl font-bold leading-none tabular-nums text-foreground">
+                {countT > 0 ? countT.toLocaleString("de-DE") : "—"}
+                <span className="text-lg">+</span>
               </div>
-              <div className="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold mt-1">↑ Kündigungen</div>
+              <div className="mt-1.5 text-[10px] font-semibold uppercase tracking-wider text-primary">Kündigungen</div>
             </div>
           </FloatCard>
 
           {/* ── Floating card: Speed ── */}
-          <FloatCard
-            className="-right-4 sm:-right-14 top-8"
-            style={{ animation: "kh-float 4s 1s ease-in-out infinite" }}
-          >
+          <FloatCard className="top-8 -right-4 sm:-right-14" style={{ animation: "kh-float 4s 1s ease-in-out infinite" }}>
             <div className="text-center">
-              <div className="text-2xl font-black text-zinc-900 dark:text-white leading-none">
-                2 <span className="text-sm font-medium text-zinc-400 dark:text-white/40">Min.</span>
+              <div className="font-display text-2xl font-bold leading-none text-foreground">
+                2 <span className="text-sm font-normal text-muted-foreground">Min.</span>
               </div>
-              <div className="text-[10px] text-amber-500 dark:text-amber-400 font-bold mt-1">⚡ Blitzschnell</div>
+              <div className="mt-1.5 flex items-center justify-center gap-1 text-[10px] font-semibold uppercase tracking-wider text-amber-600 dark:text-amber-400">
+                <Zap className="h-3 w-3" />
+                Blitzschnell
+              </div>
             </div>
           </FloatCard>
 
           {/* ── Floating card: Rating ── */}
           <FloatCard
-            className="-left-4 sm:-left-12 -bottom-5"
+            className="-bottom-5 -left-4 sm:-left-12"
             style={{ animation: "kh-float 5.5s 0.3s ease-in-out infinite" }}
           >
-            <div className="text-2xl font-black text-zinc-900 dark:text-white">4.9</div>
-            <div>
-              <div className="flex gap-0.5">
+            <div className="font-display text-2xl font-bold text-foreground">4.9</div>
+            <div className="leading-tight">
+              <div className="flex gap-0.5 text-amber-500">
                 {"★★★★★".split("").map((s, i) => (
-                  <span key={i} className="text-amber-400 text-[11px]">{s}</span>
+                  <span key={i} className="text-[11px]">
+                    {s}
+                  </span>
                 ))}
               </div>
-              <div className="text-[10px] text-zinc-400 dark:text-white/40">1.200+ Bewertungen</div>
+              <div className="mt-0.5 text-[10px] text-muted-foreground">1.200+ Bewertungen</div>
             </div>
           </FloatCard>
 
           {/* ── Floating card: KI-Assistent ── */}
           <div
-            className="
-              absolute -right-4 sm:-right-12 -bottom-3
-              hidden sm:flex items-center gap-3
-              rounded-2xl px-4 py-3
-              bg-white/95 dark:bg-zinc-900/95
-              border border-violet-200/60 dark:border-violet-500/25
-              shadow-xl shadow-violet-500/10 dark:shadow-violet-500/20
-              backdrop-blur-xl
-              cursor-pointer
-              hover:-translate-y-0.5 transition-transform duration-300
-            "
+            className="absolute -right-4 -bottom-3 hidden cursor-pointer items-center gap-3 rounded-2xl border border-primary/20 bg-card/95 px-4 py-3 shadow-xl shadow-primary/10 backdrop-blur-xl transition-transform duration-300 hover:-translate-y-0.5 sm:-right-12 sm:flex"
             style={{ animation: "kh-float 4.5s 0.8s ease-in-out infinite" }}
             onClick={() => window.dispatchEvent(new Event("open-ai-chat"))}
           >
-            <div className="relative h-9 w-9 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shrink-0 shadow-lg shadow-violet-500/30">
-              <Sparkles className="h-4 w-4 text-white" />
-              <div className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-emerald-400 border-2 border-white dark:border-zinc-900" />
+            <div className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary shadow-lg shadow-primary/30">
+              <Sparkles className="h-4 w-4 text-primary-foreground" />
+              <div className="absolute -top-1 -right-1 h-2.5 w-2.5 rounded-full border-2 border-card bg-emerald-400" />
             </div>
-            <div>
-              <div className="text-xs font-bold text-zinc-900 dark:text-white flex items-center gap-1.5">
+            <div className="leading-tight">
+              <div className="flex items-center gap-1.5 text-xs font-semibold text-foreground">
                 KI-Assistent
-                <span className="
-                  text-[9px] px-1.5 py-0.5 rounded-full font-bold
-                  bg-violet-100 text-violet-700
-                  dark:bg-violet-900/40 dark:text-violet-300
-                ">NEU</span>
+                <span className="rounded-full bg-primary/10 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-primary">
+                  Neu
+                </span>
               </div>
-              <div className="text-[10px] text-zinc-400 dark:text-white/40">Online · Bereit</div>
+              <div className="text-[10px] text-muted-foreground">Online · Bereit</div>
             </div>
           </div>
         </div>
 
         {/* ── Stats bar ── */}
-        <div className="
-          mt-24 max-w-2xl mx-auto
-          grid grid-cols-2 sm:grid-cols-4
-          rounded-2xl overflow-hidden
-          border border-black/[0.07] dark:border-white/[0.07]
-          bg-zinc-50/80 dark:bg-white/[0.03]
-          divide-x divide-black/[0.07] dark:divide-white/[0.07]
-        ">
+        <div className="mx-auto mt-24 grid max-w-2xl grid-cols-2 divide-x divide-y divide-border overflow-hidden rounded-2xl border border-border bg-card shadow-sm sm:grid-cols-4 sm:divide-y-0">
           {[
-            { val: countT.toLocaleString("de-DE") + "+", label: t.hero.stats?.terminations, color: "text-emerald-600 dark:text-emerald-400" },
-            { val: countC + "+",                          label: t.hero.stats?.companies,    color: "text-blue-600 dark:text-blue-400" },
-            { val: "4.9★",                               label: t.hero.stats?.rating,       color: "text-amber-500 dark:text-amber-400" },
-            { val: "100%",                                label: "Kostenlos",                color: "text-violet-600 dark:text-violet-400" },
-          ].map(({ val, label, color }) => (
-            <div key={String(label)} className="text-center py-5 px-3">
-              <div className={`text-2xl font-black ${color} leading-none tracking-tight`}>{val}</div>
-              <div className="text-[11px] text-zinc-500 dark:text-white/40 mt-2 font-medium leading-tight">{label}</div>
+            {
+              val: countT.toLocaleString("de-DE") + "+",
+              label: t.hero.stats?.terminations,
+            },
+            { val: countC + "+", label: t.hero.stats?.companies },
+            { val: "4.9★", label: t.hero.stats?.rating },
+            { val: "100%", label: "Kostenlos" },
+          ].map(({ val, label }) => (
+            <div key={String(label)} className="px-3 py-6 text-center">
+              <div className="font-display text-2xl font-bold leading-none tracking-tight text-foreground">{val}</div>
+              <div className="mt-2 text-[11px] font-medium leading-tight text-muted-foreground">{label}</div>
             </div>
           ))}
         </div>
@@ -536,13 +493,13 @@ export function HeroSection() {
         {/* ── Feature chips ── */}
         <div className="mt-10 flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
           {[
-            { icon: Shield,        label: t.hero.features?.secure },
-            { icon: Zap,           label: t.hero.features?.fast },
-            { icon: CheckCircle2,  label: t.hero.features?.free },
-            { icon: Lock,          label: "SSL-verschlüsselt" },
+            { icon: Shield, label: t.hero.features?.secure },
+            { icon: Zap, label: t.hero.features?.fast },
+            { icon: CheckCircle2, label: t.hero.features?.free },
+            { icon: Lock, label: "SSL-verschlüsselt" },
           ].map(({ icon: Icon, label }) => (
-            <div key={String(label)} className="flex items-center gap-2 text-sm text-zinc-500 dark:text-white/40 font-medium">
-              <Icon className="h-3.5 w-3.5 text-emerald-500 dark:text-emerald-400 shrink-0" />
+            <div key={String(label)} className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+              <Icon className="h-3.5 w-3.5 shrink-0 text-primary" />
               {label}
             </div>
           ))}
