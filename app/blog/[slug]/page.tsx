@@ -213,17 +213,13 @@ export default async function BlogArticlePage({ params }: Props) {
         <article className="py-12 lg:py-16">
           <div className="mx-auto max-w-3xl px-4 lg:px-8">
             <div className="mb-8">
-              <Button
-                variant="ghost"
-                size="sm"
-                className="gap-2 text-muted-foreground"
-                asChild
+              <Link
+                href="/blog"
+                className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
-                <Link href="/blog">
-                  <ArrowLeft className="h-4 w-4" />
-                  Alle Artikel
-                </Link>
-              </Button>
+                <ArrowLeft className="h-4 w-4" />
+                Alle Artikel
+              </Link>
             </div>
 
             {/* Category hero banner */}
@@ -284,7 +280,7 @@ export default async function BlogArticlePage({ params }: Props) {
               {renderContent(article.content)}
             </div>
 
-            {/* ── Share buttons ── */}
+            {/* Share buttons */}
             <ShareButtons
               title={article.title}
               slug={article.slug}
@@ -300,9 +296,12 @@ export default async function BlogArticlePage({ params }: Props) {
                 Nutzen Sie unseren kostenlosen Generator für rechtssichere
                 Kündigungsschreiben.
               </p>
-              <Button className="mt-4 rounded-full px-6" asChild>
-                <Link href="/#generator">Zum Generator</Link>
-              </Button>
+              <Link
+                href="/#generator"
+                className="mt-4 inline-flex items-center justify-center rounded-full bg-primary px-6 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/80 transition-colors"
+              >
+                Zum Generator
+              </Link>
             </div>
           </div>
         </article>
