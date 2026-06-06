@@ -1302,7 +1302,16 @@ export const SUPPORTED_LOCALES: { code: Locale; name: string; flag: string }[] =
 export const getTranslation = getTranslations
 // ... (твой существующий код остается без изменений)
 
-// ДОБАВЬ ЭТО В САМЫЙ КОНЕЦ ФАЙЛА lib/i18n.ts
+// --- Замени всё, что было связано с I18nProvider в конце файла, на это: ---
+
+import { createContext } from 'react'
+
+const I18nContext = createContext(null)
+
 export const I18nProvider = ({ children }: { children: React.ReactNode }) => {
-  return <>{children}</>
+  return (
+    <I18nContext.Provider value={null}>
+      {children}
+    </I18nContext.Provider>
+  )
 }
