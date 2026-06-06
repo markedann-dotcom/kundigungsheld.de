@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Link2, Check, Twitter, Facebook, Linkedin, Mail, MessageCircle } from "lucide-react"
+import { Link2, Check, X, Facebook, Linkedin, Mail, MessageCircle } from "lucide-react"
 
 interface ShareButtonsProps {
   title: string
@@ -12,7 +12,6 @@ interface ShareButtonsProps {
 export function ShareButtons({ title, slug, excerpt }: ShareButtonsProps) {
   const [copied, setCopied] = useState(false)
 
-  // Build absolute URL — works in both browser and SSR fallback
   const baseUrl =
     typeof window !== "undefined"
       ? window.location.origin
@@ -34,7 +33,7 @@ export function ShareButtons({ title, slug, excerpt }: ShareButtonsProps) {
     {
       id: "twitter",
       label: "X / Twitter",
-      icon: Twitter,
+      icon: X,
       href: `https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}`,
       color: "hover:bg-black/5 hover:border-black/20 hover:text-black dark:hover:bg-white/10 dark:hover:border-white/20 dark:hover:text-white",
     },
@@ -78,9 +77,8 @@ export function ShareButtons({ title, slug, excerpt }: ShareButtonsProps) {
       </p>
 
       <div className="flex flex-wrap items-center gap-2">
-        {/* Social buttons */}
         {shareLinks.map(({ id, label, icon: Icon, href, color }) => (
-          <a
+          
             key={id}
             href={href}
             target="_blank"
@@ -99,7 +97,6 @@ export function ShareButtons({ title, slug, excerpt }: ShareButtonsProps) {
           </a>
         ))}
 
-        {/* Copy link button */}
         <button
           onClick={handleCopy}
           aria-label="Link kopieren"
