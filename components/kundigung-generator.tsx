@@ -75,18 +75,18 @@ import { useI18n } from "@/contexts/i18n-context"
 /* ─── Category accent colors ─── */
 
 const CATEGORY_COLORS: Record<string, { bg: string; text: string; dot: string; bar: string; hex: string; glow: string; gradFrom: string; gradTo: string }> = {
-  telekommunikation: { bg: "bg-pink-500/10", text: "text-pink-500 dark:text-pink-400", dot: "bg-pink-500", bar: "bg-gradient-to-r from-pink-500 to-rose-400", hex: "#ec4899", glow: "rgba(236,72,153,0.18)", gradFrom: "#ec4899", gradTo: "#f43f5e" },
-  mobilfunk:         { bg: "bg-violet-500/10", text: "text-violet-500 dark:text-violet-400", dot: "bg-violet-500", bar: "bg-gradient-to-r from-violet-500 to-purple-400", hex: "#8b5cf6", glow: "rgba(139,92,246,0.18)", gradFrom: "#8b5cf6", gradTo: "#a855f7" },
-  internet:          { bg: "bg-blue-500/10", text: "text-blue-500 dark:text-blue-400", dot: "bg-blue-500", bar: "bg-gradient-to-r from-blue-500 to-sky-400", hex: "#3b82f6", glow: "rgba(59,130,246,0.18)", gradFrom: "#3b82f6", gradTo: "#0ea5e9" },
-  streaming:         { bg: "bg-red-500/10", text: "text-red-500 dark:text-red-400", dot: "bg-red-500", bar: "bg-gradient-to-r from-red-500 to-orange-400", hex: "#ef4444", glow: "rgba(239,68,68,0.18)", gradFrom: "#ef4444", gradTo: "#f97316" },
-  fitness:           { bg: "bg-orange-500/10", text: "text-orange-500 dark:text-orange-400", dot: "bg-orange-500", bar: "bg-gradient-to-r from-orange-500 to-amber-400", hex: "#f97316", glow: "rgba(249,115,22,0.18)", gradFrom: "#f97316", gradTo: "#f59e0b" },
-  versicherung:      { bg: "bg-emerald-500/10", text: "text-emerald-500 dark:text-emerald-400", dot: "bg-emerald-500", bar: "bg-gradient-to-r from-emerald-500 to-teal-400", hex: "#10b981", glow: "rgba(16,185,129,0.18)", gradFrom: "#10b981", gradTo: "#14b8a6" },
-  energie:           { bg: "bg-yellow-500/10", text: "text-yellow-600 dark:text-yellow-400", dot: "bg-yellow-500", bar: "bg-gradient-to-r from-yellow-500 to-amber-400", hex: "#eab308", glow: "rgba(234,179,8,0.18)", gradFrom: "#eab308", gradTo: "#f59e0b" },
-  bank:              { bg: "bg-teal-500/10", text: "text-teal-500 dark:text-teal-400", dot: "bg-teal-500", bar: "bg-gradient-to-r from-teal-500 to-cyan-400", hex: "#14b8a6", glow: "rgba(20,184,166,0.18)", gradFrom: "#14b8a6", gradTo: "#06b6d4" },
-  verlag:            { bg: "bg-indigo-500/10", text: "text-indigo-500 dark:text-indigo-400", dot: "bg-indigo-500", bar: "bg-gradient-to-r from-indigo-500 to-blue-400", hex: "#6366f1", glow: "rgba(99,102,241,0.18)", gradFrom: "#6366f1", gradTo: "#3b82f6" },
-  mitgliedschaft:    { bg: "bg-cyan-500/10", text: "text-cyan-500 dark:text-cyan-400", dot: "bg-cyan-500", bar: "bg-gradient-to-r from-cyan-500 to-sky-400", hex: "#06b6d4", glow: "rgba(6,182,212,0.18)", gradFrom: "#06b6d4", gradTo: "#0ea5e9" },
-  arbeit:            { bg: "bg-sky-500/10", text: "text-sky-500 dark:text-sky-400", dot: "bg-sky-500", bar: "bg-gradient-to-r from-sky-500 to-blue-400", hex: "#0ea5e9", glow: "rgba(14,165,233,0.18)", gradFrom: "#0ea5e9", gradTo: "#3b82f6" },
-  sonstiges:         { bg: "bg-muted", text: "text-slate-500", dot: "bg-muted-foreground", bar: "bg-gradient-to-r from-muted-foreground/60 to-muted-foreground/30", hex: "#6b7280", glow: "rgba(107,114,128,0.12)", gradFrom: "#6b7280", gradTo: "#9ca3af" },
+  telekommunikation: { bg: "bg-pink-500/10", text: "text-pink-500", dot: "bg-pink-500", bar: "bg-gradient-to-r from-pink-500 to-rose-400", hex: "#ec4899", glow: "rgba(236,72,153,0.18)", gradFrom: "#ec4899", gradTo: "#f43f5e" },
+  mobilfunk:         { bg: "bg-violet-500/10", text: "text-violet-500", dot: "bg-violet-500", bar: "bg-gradient-to-r from-violet-500 to-purple-400", hex: "#8b5cf6", glow: "rgba(139,92,246,0.18)", gradFrom: "#8b5cf6", gradTo: "#a855f7" },
+  internet:          { bg: "bg-blue-500/10", text: "text-blue-500", dot: "bg-blue-500", bar: "bg-gradient-to-r from-blue-500 to-sky-400", hex: "#3b82f6", glow: "rgba(59,130,246,0.18)", gradFrom: "#3b82f6", gradTo: "#0ea5e9" },
+  streaming:         { bg: "bg-red-500/10", text: "text-red-500", dot: "bg-red-500", bar: "bg-gradient-to-r from-red-500 to-orange-400", hex: "#ef4444", glow: "rgba(239,68,68,0.18)", gradFrom: "#ef4444", gradTo: "#f97316" },
+  fitness:           { bg: "bg-orange-500/10", text: "text-orange-500", dot: "bg-orange-500", bar: "bg-gradient-to-r from-orange-500 to-amber-400", hex: "#f97316", glow: "rgba(249,115,22,0.18)", gradFrom: "#f97316", gradTo: "#f59e0b" },
+  versicherung:      { bg: "bg-emerald-500/10", text: "text-emerald-500", dot: "bg-emerald-500", bar: "bg-gradient-to-r from-emerald-500 to-teal-400", hex: "#10b981", glow: "rgba(16,185,129,0.18)", gradFrom: "#10b981", gradTo: "#14b8a6" },
+  energie:           { bg: "bg-yellow-500/10", text: "text-yellow-600", dot: "bg-yellow-500", bar: "bg-gradient-to-r from-yellow-500 to-amber-400", hex: "#eab308", glow: "rgba(234,179,8,0.18)", gradFrom: "#eab308", gradTo: "#f59e0b" },
+  bank:              { bg: "bg-teal-500/10", text: "text-teal-500", dot: "bg-teal-500", bar: "bg-gradient-to-r from-teal-500 to-cyan-400", hex: "#14b8a6", glow: "rgba(20,184,166,0.18)", gradFrom: "#14b8a6", gradTo: "#06b6d4" },
+  verlag:            { bg: "bg-indigo-500/10", text: "text-indigo-500", dot: "bg-indigo-500", bar: "bg-gradient-to-r from-indigo-500 to-blue-400", hex: "#6366f1", glow: "rgba(99,102,241,0.18)", gradFrom: "#6366f1", gradTo: "#3b82f6" },
+  mitgliedschaft:    { bg: "bg-cyan-500/10", text: "text-cyan-500", dot: "bg-cyan-500", bar: "bg-gradient-to-r from-cyan-500 to-sky-400", hex: "#06b6d4", glow: "rgba(6,182,212,0.18)", gradFrom: "#06b6d4", gradTo: "#0ea5e9" },
+  arbeit:            { bg: "bg-sky-500/10", text: "text-sky-500", dot: "bg-sky-500", bar: "bg-gradient-to-r from-sky-500 to-blue-400", hex: "#0ea5e9", glow: "rgba(14,165,233,0.18)", gradFrom: "#0ea5e9", gradTo: "#3b82f6" },
+  sonstiges:         { bg: "bg-slate-100", text: "text-slate-500", dot: "bg-slate-400", bar: "bg-gradient-to-r from-slate-400 to-slate-300", hex: "#6b7280", glow: "rgba(107,114,128,0.12)", gradFrom: "#6b7280", gradTo: "#9ca3af" },
 }
 
 /* ─── Slug helper (must match app/[provider]/page.tsx) ─── */
@@ -334,8 +334,8 @@ function AddressTooltip({ address }: { address: string }) {
           ))}
         </div>
       </div>
-      <div className="absolute left-1/2 top-full -translate-x-1/2 border-4 border-transparent border-t-border" />
-      <div className="absolute left-1/2 top-full -translate-x-1/2 mt-[-1px] border-4 border-transparent border-t-card/95" />
+      <div className="absolute left-1/2 top-full -translate-x-1/2 border-4 border-transparent border-t-slate-200" />
+      <div className="absolute left-1/2 top-full -translate-x-1/2 mt-[-1px] border-4 border-transparent border-t-white" />
     </div>
   )
 }
@@ -1826,7 +1826,7 @@ export function KundigungGenerator() {
         {!isOnline && (
           <div className="flex items-center gap-3 rounded-xl border border-amber-200 bg-amber-50 p-4">
             <WifiOff className="h-5 w-5 text-amber-600 shrink-0" />
-            <p className="text-sm text-amber-800 dark:text-amber-300">
+            <p className="text-sm text-amber-800">
               Kein Internet — PLZ-Validierung und Stadtnamen-Vorschlag nicht verfügbar. Sie können trotzdem fortfahren.
             </p>
           </div>
@@ -1843,8 +1843,8 @@ export function KundigungGenerator() {
             <div key={companyId} className="flex items-start gap-3 rounded-xl border border-amber-200 bg-amber-50 p-4 animate-in fade-in slide-in-from-top-2">
               <AlertCircle className="h-5 w-5 shrink-0 text-amber-600 mt-0.5" />
               <div className="min-w-0 flex-1 text-sm">
-                <p className="font-semibold text-amber-900 dark:text-amber-400">Mögliches Duplikat: {company.name}</p>
-                <p className="text-amber-700 dark:text-amber-500 mt-0.5">
+                <p className="font-semibold text-amber-900">Mögliches Duplikat: {company.name}</p>
+                <p className="text-amber-700 mt-0.5">
                   Sie haben bereits am {info.date} eine Kündigung für <span className="font-semibold">{company.name}</span> erstellt
                   {info.daysAgo === 0 ? " (heute)" : info.daysAgo === 1 ? " (gestern)" : ` (vor ${info.daysAgo} Tagen)`}.
                   Möchten Sie wirklich eine neue erstellen?
