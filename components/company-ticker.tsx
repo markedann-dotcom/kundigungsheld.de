@@ -197,3 +197,4 @@ export function CompanyTicker() {
       </div>
     </section>
   )
+}
