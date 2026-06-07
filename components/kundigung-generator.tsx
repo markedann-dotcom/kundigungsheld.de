@@ -36,7 +36,6 @@ import {
   Redo2,
   SortAsc,
   FileType,
-  Wifi,
   WifiOff,
   Timer,
   ExternalLink,
@@ -87,7 +86,7 @@ const CATEGORY_COLORS: Record<string, { bg: string; text: string; dot: string; b
   verlag:            { bg: "bg-indigo-500/10", text: "text-indigo-500 dark:text-indigo-400", dot: "bg-indigo-500", bar: "bg-gradient-to-r from-indigo-500 to-blue-400", hex: "#6366f1", glow: "rgba(99,102,241,0.18)", gradFrom: "#6366f1", gradTo: "#3b82f6" },
   mitgliedschaft:    { bg: "bg-cyan-500/10", text: "text-cyan-500 dark:text-cyan-400", dot: "bg-cyan-500", bar: "bg-gradient-to-r from-cyan-500 to-sky-400", hex: "#06b6d4", glow: "rgba(6,182,212,0.18)", gradFrom: "#06b6d4", gradTo: "#0ea5e9" },
   arbeit:            { bg: "bg-sky-500/10", text: "text-sky-500 dark:text-sky-400", dot: "bg-sky-500", bar: "bg-gradient-to-r from-sky-500 to-blue-400", hex: "#0ea5e9", glow: "rgba(14,165,233,0.18)", gradFrom: "#0ea5e9", gradTo: "#3b82f6" },
-  sonstiges:         { bg: "bg-muted", text: "text-muted-foreground", dot: "bg-muted-foreground", bar: "bg-gradient-to-r from-muted-foreground/60 to-muted-foreground/30", hex: "#6b7280", glow: "rgba(107,114,128,0.12)", gradFrom: "#6b7280", gradTo: "#9ca3af" },
+  sonstiges:         { bg: "bg-muted", text: "text-slate-500", dot: "bg-muted-foreground", bar: "bg-gradient-to-r from-muted-foreground/60 to-muted-foreground/30", hex: "#6b7280", glow: "rgba(107,114,128,0.12)", gradFrom: "#6b7280", gradTo: "#9ca3af" },
 }
 
 /* ─── Slug helper (must match app/[provider]/page.tsx) ─── */
@@ -228,26 +227,26 @@ function FormProgressBar({ formData, needsZusatztext }: { formData: TemplateData
   const total = fields.length
   const pct = Math.round((filled / total) * 100)
 
-  const color =
+  const barColor =
     pct === 100
-      ? "bg-green-500"
+      ? "from-emerald-400 to-emerald-500"
       : pct >= 60
-      ? "bg-foreground"
+      ? "from-blue-400 to-violet-500"
       : pct >= 30
-      ? "bg-amber-500"
-      : "bg-muted-foreground"
+      ? "from-amber-400 to-orange-500"
+      : "from-slate-300 to-slate-400"
 
   return (
-    <div className="space-y-1.5">
+    <div className="space-y-2">
       <div className="flex items-center justify-between text-xs font-semibold">
-        <span className="text-muted-foreground">Formular ausgefüllt</span>
-        <span className={pct === 100 ? "text-green-600" : "text-foreground"}>
+        <span className="text-slate-400">Formular ausgefüllt</span>
+        <span className={pct === 100 ? "text-emerald-600 font-bold" : "text-slate-600"}>
           {filled}/{total} Felder {pct === 100 ? "✓ Bereit" : ""}
         </span>
       </div>
-      <div className="h-2 w-full rounded-full bg-muted overflow-hidden">
+      <div className="h-1.5 w-full rounded-full bg-slate-100 overflow-hidden">
         <div
-          className={`h-full rounded-full transition-all duration-500 ease-out ${color}`}
+          className={`h-full rounded-full bg-gradient-to-r ${barColor} transition-all duration-500 ease-out`}
           style={{ width: `${pct}%` }}
         />
       </div>
@@ -283,7 +282,7 @@ function CompanyCardLogo({ company, size = "md", hovered = false }: { company: C
   if (logoUrl && !imgError) {
     return (
       <div
-        className={`flex ${sizeClass} items-center justify-center rounded-xl overflow-hidden border border-border/50 bg-white`}
+        className={`flex ${sizeClass} items-center justify-center rounded-xl overflow-hidden border border-slate-200/70 bg-white`}
         style={logoStyle}
       >
         <img
@@ -320,16 +319,16 @@ function AddressTooltip({ address }: { address: string }) {
       role="tooltip"
       className={[
         "pointer-events-none absolute bottom-[calc(100%+8px)] left-1/2 -translate-x-1/2 z-50",
-        "w-max max-w-[220px] rounded-xl border border-border bg-card/95 backdrop-blur-sm px-3.5 py-2.5 shadow-xl",
+        "w-max max-w-[220px] rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 shadow-xl",
         "opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100",
         "transition-all duration-200 ease-out",
       ].join(" ")}
     >
-      <div className="flex items-start gap-2 text-xs text-foreground">
-        <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-muted-foreground" />
+      <div className="flex items-start gap-2 text-xs text-slate-700">
+        <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-slate-400" />
         <div className="space-y-0.5">
           {lines.map((line, i) => (
-            <p key={i} className={i === 0 ? "font-semibold" : "text-muted-foreground"}>
+            <p key={i} className={i === 0 ? "font-semibold" : "text-slate-500"}>
               {line}
             </p>
           ))}
@@ -478,15 +477,15 @@ function CompanyCard({
           </div>
 
           {/* Company name */}
-          <h3 className="font-semibold text-xs sm:text-sm text-foreground line-clamp-2 leading-tight tracking-tight mb-2.5">
+          <h3 className="font-semibold text-xs sm:text-sm text-slate-800 line-clamp-2 leading-tight tracking-tight mb-2.5">
             {company.name}
           </h3>
 
           {/* Kündigungsfrist */}
           {(company as any).kuendigungsfrist && (
             <div className="hidden sm:flex items-center gap-1.5">
-              <Clock className="h-3 w-3 flex-shrink-0 text-muted-foreground/50" />
-              <span className="text-[11px] text-muted-foreground/70 font-medium">
+              <Clock className="h-3 w-3 flex-shrink-0 text-slate-400" />
+              <span className="text-[11px] text-slate-500 font-medium">
                 {(company as any).kuendigungsfrist}
               </span>
             </div>
@@ -523,11 +522,11 @@ function CompanyCard({
             transition: "all 0.25s ease",
           }}
         >
-          <span className="text-[11px] font-medium text-muted-foreground">
+          <span className="text-[11px] font-medium text-slate-500">
             Kündigungsdetails
           </span>
           <ExternalLink
-            className="h-3 w-3 text-muted-foreground/60"
+            className="h-3 w-3 text-slate-400"
             style={{
               transform: hovered ? "translate(1px, -1px)" : "translate(0, 0)",
               transition: "transform 0.2s ease",
@@ -558,8 +557,8 @@ function ToggleButton({
       onClick={onClick}
       className={`rounded-full px-5 py-2.5 text-sm font-semibold transition-all duration-200 ${
         active
-          ? "bg-foreground text-background shadow-elegant"
-          : "bg-muted text-muted-foreground hover:bg-muted/80 hover:text-foreground"
+          ? "bg-slate-900 text-white shadow-sm shadow-slate-900/20"
+          : "bg-slate-50 text-slate-500 border border-slate-200 hover:bg-slate-100 hover:text-slate-700 hover:border-slate-300"
       } ${className}`}
     >
       {children}
@@ -595,11 +594,11 @@ function FormField({
 }) {
   return (
     <div className={className}>
-      <Label htmlFor={htmlFor} className="text-sm font-semibold text-foreground">
+      <Label htmlFor={htmlFor} className="text-sm font-semibold text-slate-700">
         {label}
         {required && <span className="text-destructive ml-1">*</span>}
       </Label>
-      {hint && <p className="text-xs text-muted-foreground mt-1">{hint}</p>}
+      {hint && <p className="text-xs text-slate-500 mt-1">{hint}</p>}
       <div className="mt-2">{children}</div>
       <FieldError message={error} />
     </div>
@@ -619,17 +618,24 @@ function InfoBanner({
 }) {
   const variantClass =
     variant === "success"
-      ? "border-green-200 bg-green-50 dark:border-green-800/40 dark:bg-green-900/10"
+      ? "border-emerald-200 bg-emerald-50 text-emerald-800"
       : variant === "warning"
-      ? "border-amber-200 bg-amber-50 dark:border-amber-800/40 dark:bg-amber-900/10"
-      : "border-border/50 bg-muted/30"
+      ? "border-amber-200 bg-amber-50 text-amber-800"
+      : "border-blue-100 bg-blue-50 text-blue-800"
+
+  const iconClass =
+    variant === "success"
+      ? "text-emerald-500"
+      : variant === "warning"
+      ? "text-amber-500"
+      : "text-blue-500"
 
   return (
-    <div className={`mb-6 flex items-center gap-3 rounded-xl border p-4 animate-in fade-in slide-in-from-top-2 ${variantClass}`}>
-      <Icon className="h-5 w-5 shrink-0 text-foreground" />
-      <div className="min-w-0 flex-1 text-sm font-medium text-foreground/80">{children}</div>
+    <div className={`mb-6 flex items-center gap-3 rounded-2xl border p-4 animate-in fade-in slide-in-from-top-2 ${variantClass}`}>
+      <Icon className={`h-5 w-5 shrink-0 ${iconClass}`} />
+      <div className="min-w-0 flex-1 text-sm font-medium">{children}</div>
       {onClose && (
-        <button onClick={onClose} className="shrink-0 text-muted-foreground hover:text-foreground transition-colors">
+        <button onClick={onClose} className="shrink-0 opacity-60 hover:opacity-100 transition-opacity">
           <X className="h-4 w-4" />
         </button>
       )}
@@ -645,17 +651,17 @@ function MobileStickyFooter({ count, onNext }: { count: number; onNext: () => vo
     <div
       className={[
         "fixed bottom-0 left-0 right-0 z-50 md:hidden",
-        "bg-background/90 backdrop-blur-md border-t border-border/60 px-4 py-3",
-        "flex items-center justify-between gap-3 shadow-[0_-4px_24px_rgba(0,0,0,0.08)]",
+        "bg-white/95 backdrop-blur-md border-t border-slate-200/80 px-4 py-3",
+        "flex items-center justify-between gap-3 shadow-[0_-8px_32px_rgba(0,0,0,0.08)]",
         "animate-in slide-in-from-bottom-2 duration-300",
       ].join(" ")}
     >
-      <span className="text-sm font-semibold text-foreground">
+      <span className="text-sm font-bold text-slate-800">
         {count === 1 ? "1 Anbieter ausgewählt" : `${count} Anbieter ausgewählt`}
       </span>
       <Button
         onClick={onNext}
-        className="h-11 rounded-full px-6 bg-foreground text-background hover:bg-foreground/90 shadow-elegant text-sm font-semibold shrink-0"
+        className="h-11 rounded-full px-6 bg-slate-900 text-white hover:bg-slate-800 text-sm font-semibold shrink-0 shadow-md"
       >
         <Package className="mr-1.5 h-4 w-4" />
         Weiter
@@ -670,7 +676,7 @@ function MobileStickyFooter({ count, onNext }: { count: number; onNext: () => vo
 function PageOverflowIndicator({ lineCount }: { lineCount: number }) {
   if (lineCount <= LINES_WARN) {
     return (
-      <div className="flex items-center gap-2 text-xs font-semibold text-green-600 dark:text-green-500">
+      <div className="flex items-center gap-2 text-xs font-semibold text-emerald-600 bg-emerald-50 rounded-lg px-3 py-2">
         <CheckCircle2 className="h-3.5 w-3.5" />
         <span>Passt auf eine Seite ({lineCount} / {LINES_WARN} Zeilen)</span>
       </div>
@@ -678,14 +684,14 @@ function PageOverflowIndicator({ lineCount }: { lineCount: number }) {
   }
   if (lineCount <= LINES_DANGER) {
     return (
-      <div className="flex items-center gap-2 text-xs font-semibold text-amber-600 dark:text-amber-500">
+      <div className="flex items-center gap-2 text-xs font-semibold text-amber-600 bg-amber-50 rounded-lg px-3 py-2">
         <AlertTriangle className="h-3.5 w-3.5" />
         <span>Nahe am Seitenende ({lineCount} Zeilen) — Text kürzen empfohlen</span>
       </div>
     )
   }
   return (
-    <div className="flex items-center gap-2 text-xs font-semibold text-destructive">
+    <div className="flex items-center gap-2 text-xs font-semibold text-red-600 bg-red-50 rounded-lg px-3 py-2">
       <AlertTriangle className="h-3.5 w-3.5 animate-pulse" />
       <span>Zu lang! Geht auf Seite 2 über ({lineCount} Zeilen) — bitte Text kürzen</span>
     </div>
@@ -697,27 +703,27 @@ function PageOverflowIndicator({ lineCount }: { lineCount: number }) {
 function EditingTips() {
   const [open, setOpen] = useState(false)
   return (
-    <div className="rounded-xl border border-border/50 bg-muted/30 overflow-hidden">
+    <div className="rounded-2xl border border-slate-200 bg-slate-50 overflow-hidden">
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className="w-full flex items-center justify-between px-4 py-3 text-sm font-semibold text-foreground hover:bg-muted/50 transition-colors"
+        className="w-full flex items-center justify-between px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-100 transition-colors"
       >
         <span className="flex items-center gap-2">
-          <FileText className="h-4 w-4 text-muted-foreground" />
+          <FileText className="h-4 w-4 text-slate-400" />
           Tipps zum Bearbeiten
         </span>
-        <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform duration-200 ${open ? "rotate-180" : ""}`} />
+        <ChevronDown className={`h-4 w-4 text-slate-400 transition-transform duration-200 ${open ? "rotate-180" : ""}`} />
       </button>
       {open && (
-        <div className="px-4 pb-4 text-xs text-muted-foreground space-y-2 animate-in fade-in slide-in-from-top-2 duration-200 border-t border-border/30">
+        <div className="px-4 pb-4 text-xs text-slate-500 space-y-2 animate-in fade-in slide-in-from-top-2 duration-200 border-t border-slate-200">
           <ul className="space-y-1.5 mt-3 list-disc list-inside">
-            <li>Halten Sie den Text <strong>unter 48 Zeilen</strong>, damit er auf eine PDF-Seite passt</li>
+            <li>Halten Sie den Text <strong className="text-slate-700">unter 48 Zeilen</strong>, damit er auf eine PDF-Seite passt</li>
             <li>Kürzere Absätze sehen professioneller aus als lange Blöcke</li>
             <li>Fügen Sie keine zusätzlichen Leerzeilen zwischen Absätzen ein — das verschwendet Platz</li>
             <li>Kundennummer / Vertragsnummer stehen bereits im Briefkopf — nicht doppelt erwähnen</li>
-            <li>Mit <kbd className="font-mono bg-muted border border-border/60 rounded px-1 py-0.5">Zurücksetzen</kbd> stellen Sie das Original jederzeit wieder her</li>
-            <li>Nutzen Sie <strong>Suchen & Ersetzen</strong> um Namen oder Daten schnell zu korrigieren</li>
+            <li>Mit <kbd className="font-mono bg-white border border-slate-200 rounded px-1 py-0.5 text-slate-600">Zurücksetzen</kbd> stellen Sie das Original jederzeit wieder her</li>
+            <li>Nutzen Sie <strong className="text-slate-700">Suchen & Ersetzen</strong> um Namen oder Daten schnell zu korrigieren</li>
           </ul>
         </div>
       )}
@@ -737,7 +743,7 @@ function LineNumbers({ text, scrollTop }: { text: string; scrollTop: number }) {
       {lines.map((_, i) => (
         <span
           key={i}
-          className="text-[11px] leading-[1.625rem] text-muted-foreground/30 font-mono tabular-nums"
+          className="text-[11px] leading-[1.625rem] text-slate-300 font-mono tabular-nums"
         >
           {i + 1}
         </span>
@@ -791,13 +797,13 @@ function SearchReplacePanel({
   }
 
   return (
-    <div className="rounded-xl border border-foreground/20 bg-card shadow-xl p-4 space-y-3 animate-in fade-in slide-in-from-top-2 duration-200">
+    <div className="rounded-2xl border border-slate-200 bg-white shadow-xl shadow-slate-100 p-4 space-y-3 animate-in fade-in slide-in-from-top-2 duration-200">
       <div className="flex items-center justify-between">
-        <span className="text-sm font-bold text-foreground flex items-center gap-2">
-          <Replace className="h-4 w-4" />
+        <span className="text-sm font-bold text-slate-800 flex items-center gap-2">
+          <Replace className="h-4 w-4 text-slate-500" />
           Suchen &amp; Ersetzen
         </span>
-        <button onClick={onClose} className="text-muted-foreground hover:text-foreground transition-colors">
+        <button onClick={onClose} className="text-slate-400 hover:text-slate-700 transition-colors">
           <X className="h-4 w-4" />
         </button>
       </div>
@@ -808,10 +814,10 @@ function SearchReplacePanel({
             value={find}
             onChange={(e) => setFind(e.target.value)}
             placeholder="Suchen..."
-            className="h-9 rounded-lg text-sm pr-16"
+            className="h-9 rounded-xl text-sm pr-16 border-slate-200"
           />
           {find && (
-            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground font-mono">
+            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-400 font-mono">
               {count}×
             </span>
           )}
@@ -820,11 +826,11 @@ function SearchReplacePanel({
           value={replace}
           onChange={(e) => setReplace(e.target.value)}
           placeholder="Ersetzen durch..."
-          className="h-9 rounded-lg text-sm"
+          className="h-9 rounded-xl text-sm border-slate-200"
         />
       </div>
       <div className="flex items-center gap-3">
-        <label className="flex items-center gap-1.5 text-xs text-muted-foreground cursor-pointer select-none">
+        <label className="flex items-center gap-1.5 text-xs text-slate-500 cursor-pointer select-none">
           <input
             type="checkbox"
             checked={caseSensitive}
@@ -837,7 +843,7 @@ function SearchReplacePanel({
           size="sm"
           onClick={handleReplace}
           disabled={!find || count === 0}
-          className="ml-auto h-8 rounded-lg text-xs"
+          className="ml-auto h-8 rounded-xl text-xs bg-slate-900 hover:bg-slate-800 text-white"
         >
           {count > 0 ? `${count} Treffer ersetzen` : "Ersetzen"}
         </Button>
@@ -952,14 +958,14 @@ function LetterEditor({
       {/* Toolbar */}
       <div className="flex items-center justify-between gap-3 flex-wrap">
         <div className="flex items-center gap-2">
-          <div className="flex items-center rounded-full bg-muted p-1 gap-0.5">
+          <div className="flex items-center rounded-full bg-slate-100 p-1 gap-0.5">
             <button
               type="button"
               onClick={() => setMode("view")}
               className={`flex items-center gap-1.5 rounded-full px-4 py-2 text-xs font-semibold transition-all duration-200 ${
                 mode === "view"
-                  ? "bg-background text-foreground shadow-sm"
-                  : "text-muted-foreground hover:text-foreground"
+                  ? "bg-white text-slate-800 shadow-sm"
+                  : "text-slate-400 hover:text-slate-700"
               }`}
             >
               <Eye className="h-3.5 w-3.5" />
@@ -970,8 +976,8 @@ function LetterEditor({
               onClick={() => setMode("edit")}
               className={`flex items-center gap-1.5 rounded-full px-4 py-2 text-xs font-semibold transition-all duration-200 ${
                 mode === "edit"
-                  ? "bg-foreground text-background shadow-sm"
-                  : "text-muted-foreground hover:text-foreground"
+                  ? "bg-slate-900 text-white shadow-sm"
+                  : "text-slate-400 hover:text-slate-700"
               }`}
             >
               <Pencil className="h-3.5 w-3.5" />
@@ -980,7 +986,7 @@ function LetterEditor({
           </div>
 
           {isEdited && (
-            <span className="flex items-center gap-1.5 text-xs font-semibold text-amber-600 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800/40 rounded-full px-3 py-1 animate-in fade-in duration-200">
+            <span className="flex items-center gap-1.5 text-xs font-semibold text-amber-700 bg-amber-50 border border-amber-200 rounded-full px-3 py-1 animate-in fade-in duration-200">
               <Pencil className="h-3 w-3" />
               Bearbeitet
             </span>
@@ -996,7 +1002,7 @@ function LetterEditor({
                 onClick={handleUndo}
                 disabled={!canUndo}
                 title="Rückgängig (Strg+Z)"
-                className="flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground bg-muted hover:bg-muted/80 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                className="flex items-center gap-1 rounded-xl px-2.5 py-1.5 text-xs font-semibold text-slate-500 hover:text-slate-800 bg-slate-100 hover:bg-slate-200 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
               >
                 <Undo2 className="h-3.5 w-3.5" />
               </button>
@@ -1005,7 +1011,7 @@ function LetterEditor({
                 onClick={handleRedo}
                 disabled={!canRedo}
                 title="Wiederholen (Strg+Y)"
-                className="flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground bg-muted hover:bg-muted/80 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                className="flex items-center gap-1 rounded-xl px-2.5 py-1.5 text-xs font-semibold text-slate-500 hover:text-slate-800 bg-slate-100 hover:bg-slate-200 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
               >
                 <Redo2 className="h-3.5 w-3.5" />
               </button>
@@ -1014,10 +1020,10 @@ function LetterEditor({
                 type="button"
                 onClick={() => setShowSearchReplace((v) => !v)}
                 title="Suchen & Ersetzen (Strg+H)"
-                className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-semibold transition-colors ${
+                className={`flex items-center gap-1.5 rounded-xl px-2.5 py-1.5 text-xs font-semibold transition-colors ${
                   showSearchReplace
-                    ? "bg-foreground text-background"
-                    : "text-muted-foreground hover:text-foreground bg-muted hover:bg-muted/80"
+                    ? "bg-slate-900 text-white"
+                    : "text-slate-500 hover:text-slate-800 bg-slate-100 hover:bg-slate-200"
                 }`}
               >
                 <Replace className="h-3.5 w-3.5" />
@@ -1030,7 +1036,7 @@ function LetterEditor({
             <button
               type="button"
               onClick={handleReset}
-              className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground bg-muted hover:bg-muted/80 rounded-full px-3 py-2 transition-colors"
+              className="flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-slate-800 bg-slate-100 hover:bg-slate-200 rounded-full px-3 py-2 transition-colors"
             >
               <RotateCcw className="h-3 w-3" />
               Zurücksetzen
@@ -1056,10 +1062,10 @@ function LetterEditor({
         <div className="relative group">
           <pre
             className={[
-              "w-full min-h-[520px] rounded-xl px-8 py-8",
-              "bg-background border font-mono text-sm text-foreground leading-[1.625rem]",
-              "whitespace-pre-wrap break-words overflow-auto",
-              isEdited ? "border-amber-300 dark:border-amber-700/50" : "border-border/50",
+              "w-full min-h-[520px] rounded-2xl px-8 py-8",
+              "bg-white border font-mono text-sm text-slate-800 leading-[1.625rem]",
+              "whitespace-pre-wrap break-words overflow-auto shadow-sm",
+              isEdited ? "border-amber-300" : "border-slate-200",
             ].join(" ")}
           >
             {currentText}
@@ -1069,23 +1075,23 @@ function LetterEditor({
             type="button"
             onClick={() => setMode("edit")}
             className={[
-              "absolute inset-0 rounded-xl flex flex-col items-center justify-end pb-10 gap-2",
-              "bg-gradient-to-t from-background/80 via-transparent to-transparent",
+              "absolute inset-0 rounded-2xl flex flex-col items-center justify-end pb-10 gap-2",
+              "bg-gradient-to-t from-white/70 via-transparent to-transparent",
               "opacity-0 group-hover:opacity-100 transition-opacity duration-300",
               "cursor-text",
             ].join(" ")}
           >
-            <div className="flex items-center gap-2 bg-foreground text-background rounded-full px-5 py-2.5 text-sm font-semibold shadow-xl scale-95 group-hover:scale-100 transition-transform duration-200">
+            <div className="flex items-center gap-2 bg-slate-900 text-white rounded-full px-5 py-2.5 text-sm font-semibold shadow-xl scale-95 group-hover:scale-100 transition-transform duration-200">
               <Pencil className="h-4 w-4" />
               Text bearbeiten
             </div>
-            <span className="text-xs text-foreground/60 font-medium">Klicken zum Bearbeiten</span>
+            <span className="text-xs text-slate-500 font-medium">Klicken zum Bearbeiten</span>
           </button>
         </div>
       ) : (
-        <div className="relative rounded-xl border border-foreground/30 bg-background overflow-hidden shadow-inner focus-within:ring-2 focus-within:ring-foreground/20 transition-shadow">
+        <div className="relative rounded-2xl border border-slate-300 bg-white overflow-hidden shadow-sm focus-within:ring-2 focus-within:ring-slate-300 focus-within:border-slate-400 transition-shadow">
           <div className="relative">
-            <div className="absolute left-0 top-0 bottom-0 w-10 bg-muted/30 border-r border-border/30 z-10 pointer-events-none" />
+            <div className="absolute left-0 top-0 bottom-0 w-10 bg-slate-50 border-r border-slate-200 z-10 pointer-events-none" />
             <LineNumbers text={currentText} scrollTop={scrollTop} />
 
             <textarea
@@ -1097,27 +1103,27 @@ function LetterEditor({
               rows={Math.max(28, currentText.split("\n").length + 2)}
               spellCheck={false}
               className={[
-                "w-full bg-transparent font-mono text-sm text-foreground",
+                "w-full bg-transparent font-mono text-sm text-slate-800",
                 "leading-[1.625rem] resize-none outline-none",
                 "pl-12 pr-6 pt-4 pb-8",
-                lineCount > LINES_DANGER ? "selection:bg-destructive/20" : "",
+                lineCount > LINES_DANGER ? "selection:bg-red-100" : "",
               ].join(" ")}
               aria-label="Kündigungsschreiben bearbeiten"
             />
           </div>
 
-          <div className="sticky bottom-0 flex items-center justify-between px-4 py-2 bg-muted/50 border-t border-border/30 backdrop-blur-sm">
-            <span className="text-[11px] text-muted-foreground font-mono">
+          <div className="sticky bottom-0 flex items-center justify-between px-4 py-2 bg-slate-50 border-t border-slate-200">
+            <span className="text-[11px] text-slate-400 font-mono">
               {currentText.length} Zeichen · {currentText.split("\n").length} Absätze
             </span>
             <div className="flex items-center gap-3">
-              <span className="text-[11px] text-muted-foreground font-mono hidden sm:block">
+              <span className="text-[11px] text-slate-400 font-mono hidden sm:block">
                 Strg+Z Rückgängig · Strg+H Suchen
               </span>
               <button
                 type="button"
                 onClick={() => setMode("view")}
-                className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors"
+                className="flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-slate-800 transition-colors"
               >
                 <Eye className="h-3.5 w-3.5" />
                 Vorschau
@@ -1139,9 +1145,9 @@ function NoticePeriodBanner({ category }: { category: CompanyCategory }) {
   const hint = NOTICE_HINTS[category]
   if (!hint || dismissed) return null
   return (
-    <div className="flex items-start gap-3 rounded-xl border border-blue-200 bg-blue-50 dark:border-blue-800/40 dark:bg-blue-900/10 p-4 animate-in fade-in slide-in-from-top-2">
-      <Timer className="h-5 w-5 shrink-0 text-blue-600 mt-0.5" />
-      <div className="flex-1 text-sm text-blue-800 dark:text-blue-300">
+    <div className="flex items-start gap-3 rounded-2xl border border-blue-200 bg-blue-50 p-4 animate-in fade-in slide-in-from-top-2">
+      <Timer className="h-5 w-5 shrink-0 text-blue-500 mt-0.5" />
+      <div className="flex-1 text-sm text-blue-800 font-medium">
         {hint}
       </div>
       <button onClick={() => setDismissed(true)} className="text-blue-400 hover:text-blue-600 transition-colors">
@@ -1586,23 +1592,23 @@ export function KundigungGenerator() {
   const renderCompanyStep = () => (
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div className="text-center space-y-3 mb-8">
-        <h2 className="text-4xl font-bold text-foreground tracking-tight">Wählen Sie Anbieter aus</h2>
-        <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
-          Wählen Sie <span className="font-semibold text-foreground">einen oder mehrere Anbieter</span> aus — alle Kündigungen mit einem Klick.
+        <h2 className="text-4xl font-bold text-slate-900 tracking-tight">Wählen Sie Anbieter aus</h2>
+        <p className="text-slate-500 max-w-2xl mx-auto text-lg">
+          Wählen Sie <span className="font-semibold text-slate-700">einen oder mehrere Anbieter</span> aus — alle Kündigungen mit einem Klick.
         </p>
       </div>
 
       {selectedCompanies.length > 0 && (
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-wrap gap-2 p-4 bg-muted/30 rounded-2xl border border-border/50">
-            <span className="text-sm font-semibold text-muted-foreground self-center mr-1">
+          <div className="flex flex-wrap gap-2 p-4 bg-white rounded-2xl border border-slate-200 shadow-sm">
+            <span className="text-sm font-semibold text-slate-400 self-center mr-1">
               Ausgewählt ({selectedCompanies.length}):
             </span>
             {selectedCompanies.map((c) => (
               <button
                 key={c.id}
                 onClick={() => toggleCompany(c)}
-                className="flex items-center gap-1.5 rounded-full bg-foreground text-background px-3 py-1 text-xs font-semibold hover:bg-foreground/80 transition-colors"
+                className="flex items-center gap-1.5 rounded-full bg-slate-900 text-white px-3 py-1 text-xs font-semibold hover:bg-slate-700 transition-colors"
               >
                 {c.name}
                 <X className="h-3 w-3" />
@@ -1610,7 +1616,7 @@ export function KundigungGenerator() {
             ))}
             <button
               onClick={() => setSelectedCompanies([])}
-              className="ml-auto text-xs text-muted-foreground hover:text-foreground transition-colors"
+              className="ml-auto text-xs text-slate-400 hover:text-slate-700 transition-colors"
             >
               Alle entfernen
             </button>
@@ -1619,31 +1625,31 @@ export function KundigungGenerator() {
       )}
 
       <div className="relative max-w-2xl mx-auto" ref={searchRef}>
-        <Search className="absolute left-5 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground z-10" />
+        <Search className="absolute left-5 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400 z-10" />
         <Input
           type="search"
           placeholder="Anbieter suchen (z.B. Vodafone, Netflix, O2...)"
           value={search}
           onChange={(e) => { setSearch(e.target.value); setCompanyPage(0); setShowSuggestions(true) }}
           onFocus={() => setShowSuggestions(true)}
-          className="h-14 pl-14 pr-4 text-base rounded-full border-border/60 focus:border-foreground/20 transition-colors duration-200 shadow-minimal bg-card"
+          className="h-14 pl-14 pr-4 text-base rounded-full border-slate-200 focus:border-slate-400 bg-white shadow-sm transition-colors duration-200"
         />
         {showSuggestions && suggestions.length > 0 && (
-          <div className="absolute top-full left-0 right-0 mt-2 z-50 rounded-2xl border border-border bg-card shadow-xl overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
+          <div className="absolute top-full left-0 right-0 mt-2 z-50 rounded-2xl border border-slate-200 bg-white shadow-xl overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
             {suggestions.map((company) => {
               const isSelected = selectedCompanies.some((c) => c.id === company.id)
               return (
                 <button
                   key={company.id}
                   onMouseDown={(e) => { e.preventDefault(); toggleCompany(company); setSearch(""); setShowSuggestions(false) }}
-                  className={`w-full flex items-center gap-3 px-4 py-3 hover:bg-muted/50 transition-colors text-left ${isSelected ? "bg-foreground/5" : ""}`}
+                  className={`w-full flex items-center gap-3 px-4 py-3 hover:bg-slate-50 transition-colors text-left ${isSelected ? "bg-slate-50" : ""}`}
                 >
                   <div className="group"><CompanyCardLogo company={company} size="sm" /></div>
                   <div className="flex-1 min-w-0">
-                    <p className="font-semibold text-sm text-foreground truncate">{company.name}</p>
-                    <p className="text-xs text-muted-foreground">{CATEGORY_LABELS[company.category]}</p>
+                    <p className="font-semibold text-sm text-slate-800 truncate">{company.name}</p>
+                    <p className="text-xs text-slate-400">{CATEGORY_LABELS[company.category]}</p>
                   </div>
-                  {isSelected && <Check className="h-4 w-4 text-foreground shrink-0" />}
+                  {isSelected && <Check className="h-4 w-4 text-emerald-500 shrink-0" />}
                 </button>
               )
             })}
@@ -1654,8 +1660,8 @@ export function KundigungGenerator() {
       {recentCompanies.length > 0 && !search && (
         <div className="max-w-2xl mx-auto">
           <div className="flex items-center gap-2 mb-2">
-            <History className="h-3.5 w-3.5 text-muted-foreground" />
-            <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Zuletzt verwendet</span>
+            <History className="h-3.5 w-3.5 text-slate-400" />
+            <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Zuletzt verwendet</span>
           </div>
           <div className="flex flex-wrap gap-2">
             {recentCompanies.map((company) => {
@@ -1666,8 +1672,8 @@ export function KundigungGenerator() {
                   onClick={() => toggleCompany(company)}
                   className={`flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-semibold border transition-all duration-200 ${
                     isSelected
-                      ? "bg-foreground text-background border-foreground"
-                      : "bg-card border-border/60 text-foreground hover:border-foreground/30 hover:bg-muted/30"
+                      ? "bg-slate-900 text-white border-slate-900"
+                      : "bg-white border-slate-200 text-slate-700 hover:border-slate-400 hover:bg-slate-50"
                   }`}
                 >
                   {isSelected && <Check className="h-3 w-3" />}
@@ -1694,7 +1700,7 @@ export function KundigungGenerator() {
 
         {/* Sort controls */}
         <div className="flex items-center justify-center gap-2">
-          <span className="text-xs text-muted-foreground font-semibold flex items-center gap-1.5">
+          <span className="text-xs text-slate-400 font-semibold flex items-center gap-1.5">
             <SortAsc className="h-3.5 w-3.5" />
             Sortierung:
           </span>
@@ -1705,8 +1711,8 @@ export function KundigungGenerator() {
               onClick={() => setSortMode(mode)}
               className={`rounded-full px-3 py-1 text-xs font-semibold transition-all duration-200 ${
                 sortMode === mode
-                  ? "bg-foreground text-background"
-                  : "bg-muted text-muted-foreground hover:text-foreground"
+                  ? "bg-slate-900 text-white"
+                  : "bg-white border border-slate-200 text-slate-500 hover:text-slate-700 hover:border-slate-300"
               }`}
             >
               {mode === "default" ? "Standard" : mode === "az" ? "A → Z" : "Z → A"}
@@ -1740,11 +1746,11 @@ export function KundigungGenerator() {
 
           {totalPages > 1 && (
             <div className="flex items-center justify-center gap-3 pt-4">
-              <Button variant="outline" size="sm" onClick={() => setCompanyPage((p) => Math.max(0, p - 1))} disabled={companyPage === 0} className="rounded-full">
+              <Button variant="outline" size="sm" onClick={() => setCompanyPage((p) => Math.max(0, p - 1))} disabled={companyPage === 0} className="rounded-full border-slate-200 hover:bg-slate-50">
                 <ArrowLeft className="h-4 w-4" />
               </Button>
-              <span className="text-sm font-medium text-muted-foreground">Seite {companyPage + 1} von {totalPages}</span>
-              <Button variant="outline" size="sm" onClick={() => setCompanyPage((p) => Math.min(totalPages - 1, p + 1))} disabled={companyPage === totalPages - 1} className="rounded-full">
+              <span className="text-sm font-medium text-slate-500">Seite {companyPage + 1} von {totalPages}</span>
+              <Button variant="outline" size="sm" onClick={() => setCompanyPage((p) => Math.min(totalPages - 1, p + 1))} disabled={companyPage === totalPages - 1} className="rounded-full border-slate-200 hover:bg-slate-50">
                 <ArrowRight className="h-4 w-4" />
               </Button>
             </div>
@@ -1752,9 +1758,9 @@ export function KundigungGenerator() {
         </>
       ) : (
         <div className="text-center py-16">
-          <AlertCircle className="h-16 w-16 text-muted-foreground mx-auto mb-4 opacity-50" />
-          <h3 className="text-xl font-semibold text-foreground mb-2">Keine Anbieter gefunden</h3>
-          <p className="text-muted-foreground">Versuchen Sie es mit einem anderen Suchbegriff oder Filter.</p>
+          <AlertCircle className="h-16 w-16 text-slate-300 mx-auto mb-4" />
+          <h3 className="text-xl font-semibold text-slate-700 mb-2">Keine Anbieter gefunden</h3>
+          <p className="text-slate-400">Versuchen Sie es mit einem anderen Suchbegriff oder Filter.</p>
         </div>
       )}
 
@@ -1762,7 +1768,7 @@ export function KundigungGenerator() {
         <div className="hidden md:flex justify-center pt-4">
           <Button
             onClick={() => setStep("details")}
-            className="h-14 rounded-full px-10 bg-foreground text-background hover:bg-foreground/90 shadow-elegant hover:shadow-premium transition-all duration-300 text-base font-semibold"
+            className="h-14 rounded-full px-10 bg-slate-900 text-white hover:bg-slate-800 shadow-lg shadow-slate-900/20 transition-all duration-300 text-base font-semibold"
           >
             <Package className="mr-2 h-5 w-5" />
             {selectedCompanies.length === 1 ? "Weiter mit 1 Anbieter" : `Weiter mit ${selectedCompanies.length} Anbietern`}
@@ -1786,20 +1792,20 @@ export function KundigungGenerator() {
       <div className="max-w-3xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
         <div className="text-center space-y-3 mb-8">
           <div className="flex items-center justify-center gap-3">
-            <h2 className="text-4xl font-bold text-foreground tracking-tight">Ihre Daten eingeben</h2>
+            <h2 className="text-4xl font-bold text-slate-900 tracking-tight">Ihre Daten eingeben</h2>
             {autoSaveStatus && (
-              <div className="flex items-center gap-1.5 text-sm text-muted-foreground animate-in fade-in">
+              <div className="flex items-center gap-1.5 text-sm text-slate-400 animate-in fade-in">
                 {autoSaveStatus === "saving" ? (
                   <><Clock className="h-4 w-4 animate-spin" /><span>Speichert...</span></>
                 ) : (
-                  <><Check className="h-4 w-4 text-foreground" /><span className="text-foreground/70">Gespeichert</span></>
+                  <><Check className="h-4 w-4 text-emerald-500" /><span>Gespeichert</span></>
                 )}
               </div>
             )}
           </div>
-          <p className="text-muted-foreground text-lg">
+          <p className="text-slate-500 text-lg">
             Daten werden für{" "}
-            <span className="font-semibold text-foreground">
+            <span className="font-semibold text-slate-800">
               {selectedCompanies.length === 1 ? selectedCompanies[0].name : `${selectedCompanies.length} Anbieter`}
             </span>{" "}
             verwendet
@@ -1807,7 +1813,7 @@ export function KundigungGenerator() {
           {selectedCompanies.length > 1 && (
             <div className="flex flex-wrap justify-center gap-2 pt-1">
               {selectedCompanies.map((c) => (
-                <span key={c.id} className="rounded-full bg-muted px-3 py-1 text-xs font-semibold text-foreground">{c.name}</span>
+                <span key={c.id} className="rounded-full bg-slate-100 border border-slate-200 px-3 py-1 text-xs font-semibold text-slate-700">{c.name}</span>
               ))}
             </div>
           )}
@@ -1818,7 +1824,7 @@ export function KundigungGenerator() {
 
         {/* Offline warning */}
         {!isOnline && (
-          <div className="flex items-center gap-3 rounded-xl border border-amber-200 bg-amber-50 dark:border-amber-800/40 dark:bg-amber-900/10 p-4">
+          <div className="flex items-center gap-3 rounded-xl border border-amber-200 bg-amber-50 p-4">
             <WifiOff className="h-5 w-5 text-amber-600 shrink-0" />
             <p className="text-sm text-amber-800 dark:text-amber-300">
               Kein Internet — PLZ-Validierung und Stadtnamen-Vorschlag nicht verfügbar. Sie können trotzdem fortfahren.
@@ -1826,7 +1832,7 @@ export function KundigungGenerator() {
           </div>
         )}
 
-        <div className="bg-card rounded-2xl border border-border/50 px-6 py-4 shadow-sm">
+        <div className="bg-white rounded-2xl border border-slate-200 px-6 py-4 shadow-sm">
           <FormProgressBar formData={formData} needsZusatztext={needsZusatztext} />
         </div>
 
@@ -1834,7 +1840,7 @@ export function KundigungGenerator() {
           const company = selectedCompanies.find((c) => c.id === companyId)
           if (!company) return null
           return (
-            <div key={companyId} className="flex items-start gap-3 rounded-xl border border-amber-200 bg-amber-50 dark:border-amber-800/40 dark:bg-amber-900/10 p-4 animate-in fade-in slide-in-from-top-2">
+            <div key={companyId} className="flex items-start gap-3 rounded-xl border border-amber-200 bg-amber-50 p-4 animate-in fade-in slide-in-from-top-2">
               <AlertCircle className="h-5 w-5 shrink-0 text-amber-600 mt-0.5" />
               <div className="min-w-0 flex-1 text-sm">
                 <p className="font-semibold text-amber-900 dark:text-amber-400">Mögliches Duplikat: {company.name}</p>
@@ -1852,10 +1858,12 @@ export function KundigungGenerator() {
           <span className="text-sm">Alle Daten werden <strong>lokal im Browser</strong> gespeichert und niemals an Server übertragen.</span>
         </InfoBanner>
 
-        <div className="space-y-6 bg-card rounded-2xl border border-border/50 p-8 shadow-card">
+        <div className="space-y-6 bg-white rounded-2xl border border-slate-200 p-8 shadow-sm">
           <div className="space-y-5">
-            <h3 className="text-lg font-bold text-foreground flex items-center gap-2">
-              <User className="h-5 w-5 text-foreground" />
+            <h3 className="text-lg font-bold text-slate-800 flex items-center gap-2">
+              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-slate-100">
+                <User className="h-4 w-4 text-slate-600" />
+              </div>
               Persönliche Daten
             </h3>
             <FormField label="Anrede" htmlFor="anrede" required>
@@ -1888,10 +1896,10 @@ export function KundigungGenerator() {
                     className={`h-12 rounded-xl pr-10 ${errors.plz ? "border-destructive" : plzStatus === "valid" ? "border-green-500 focus-visible:ring-green-500/20" : plzStatus === "invalid" ? "border-amber-500" : ""}`}
                   />
                   <div className="absolute right-3 top-1/2 -translate-y-1/2">
-                    {plzStatus === "loading" && <Clock className="h-4 w-4 text-muted-foreground animate-spin" />}
+                    {plzStatus === "loading" && <Clock className="h-4 w-4 text-slate-500 animate-spin" />}
                     {plzStatus === "valid" && <Check className="h-4 w-4 text-green-500" />}
                     {plzStatus === "invalid" && <AlertCircle className="h-4 w-4 text-amber-500" />}
-                    {plzStatus === "offline" && <WifiOff className="h-4 w-4 text-muted-foreground" />}
+                    {plzStatus === "offline" && <WifiOff className="h-4 w-4 text-slate-500" />}
                   </div>
                 </div>
                 {plzStatus === "invalid" && !errors.plz && (
@@ -1901,7 +1909,7 @@ export function KundigungGenerator() {
                   <p className="mt-1.5 text-xs text-green-600 flex items-center gap-1.5"><Check className="h-3.5 w-3.5" />PLZ gültig</p>
                 )}
                 {plzStatus === "offline" && (
-                  <p className="mt-1.5 text-xs text-muted-foreground flex items-center gap-1.5"><WifiOff className="h-3.5 w-3.5" />Offline — Validierung nicht möglich</p>
+                  <p className="mt-1.5 text-xs text-slate-500 flex items-center gap-1.5"><WifiOff className="h-3.5 w-3.5" />Offline — Validierung nicht möglich</p>
                 )}
               </FormField>
               <FormField label="Ort" htmlFor="ort" required error={errors.ort} className="sm:col-span-2">
@@ -1922,11 +1930,13 @@ export function KundigungGenerator() {
             </div>
           </div>
 
-          <div className="border-t border-border pt-6" />
+          <div className="border-t border-slate-100 pt-6" />
 
           <div className="space-y-5">
-            <h3 className="text-lg font-bold text-foreground flex items-center gap-2">
-              <FileText className="h-5 w-5" />
+            <h3 className="text-lg font-bold text-slate-800 flex items-center gap-2">
+              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-slate-100">
+                <FileText className="h-4 w-4 text-slate-600" />
+              </div>
               Vertragsdaten
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -1983,10 +1993,10 @@ export function KundigungGenerator() {
         </div>
 
         <div className="flex flex-col sm:flex-row gap-3 justify-between">
-          <Button variant="outline" onClick={() => setStep("company")} className="h-12 rounded-full px-6">
+          <Button variant="outline" onClick={() => setStep("company")} className="h-12 rounded-full px-6 border-slate-200 text-slate-700 hover:bg-slate-50">
             <ArrowLeft className="mr-2 h-4 w-4" />Zurück
           </Button>
-          <Button onClick={goToPreview} className="h-12 rounded-full px-8 bg-foreground text-background hover:bg-foreground/90 shadow-elegant hover:shadow-premium transition-all duration-300">
+          <Button onClick={goToPreview} className="h-12 rounded-full px-8 bg-slate-900 text-white hover:bg-slate-800 shadow-lg shadow-slate-900/20 transition-all duration-300">
             Weiter zur Vorschau<ArrowRight className="ml-2 h-4 w-4" />
           </Button>
         </div>
@@ -2001,8 +2011,8 @@ export function KundigungGenerator() {
     return (
       <div className="max-w-5xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
         <div className="text-center space-y-3">
-          <h2 className="text-3xl font-bold text-foreground">Vorschau &amp; Download</h2>
-          <p className="text-muted-foreground">
+          <h2 className="text-3xl font-bold text-slate-900">Vorschau &amp; Download</h2>
+          <p className="text-slate-500">
             {isMultiple ? `${letters.length} Kündigungsschreiben bereit zum Download` : "Überprüfen und bearbeiten Sie Ihr Kündigungsschreiben"}
           </p>
         </div>
@@ -2019,7 +2029,7 @@ export function KundigungGenerator() {
 
         {/* Online status indicator in preview */}
         {!isOnline && (
-          <div className="flex items-center gap-2 text-xs text-amber-600 bg-amber-50 dark:bg-amber-900/10 border border-amber-200 dark:border-amber-800/40 rounded-lg px-3 py-2">
+          <div className="flex items-center gap-2 text-xs text-amber-600 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
             <WifiOff className="h-3.5 w-3.5" />
             Offline — PDF-Download und ZIP funktionieren möglicherweise nicht
           </div>
@@ -2034,8 +2044,8 @@ export function KundigungGenerator() {
                 onClick={() => setActivePreviewIndex(i)}
                 className={`rounded-full px-4 py-2 text-sm font-semibold transition-all duration-200 ${
                   activePreviewIndex === i
-                    ? "bg-foreground text-background"
-                    : "bg-muted text-muted-foreground hover:text-foreground"
+                    ? "bg-slate-900 text-white shadow-sm"
+                    : "bg-white border border-slate-200 text-slate-600 hover:text-slate-900 hover:border-slate-300"
                 }`}
               >
                 {l.company.name}
@@ -2049,9 +2059,9 @@ export function KundigungGenerator() {
 
         {/* Letter editor */}
         {currentLetter && (
-          <div className="bg-card rounded-2xl border border-border p-8 shadow-card space-y-6">
+          <div className="bg-white rounded-2xl border border-slate-200 p-8 shadow-sm space-y-6">
             {isMultiple && (
-              <p className="text-sm font-semibold text-muted-foreground">
+              <p className="text-sm font-semibold text-slate-400">
                 {activePreviewIndex + 1} / {letters.length} — {currentLetter.company.name}
               </p>
             )}
@@ -2073,14 +2083,14 @@ export function KundigungGenerator() {
             />
 
             {/* Note */}
-            <div className="space-y-2 pt-2 border-t border-border/40">
+            <div className="space-y-2 pt-2 border-t border-slate-100">
               <label
                 htmlFor={`notiz-${currentLetter.company.id}`}
-                className="flex items-center gap-2 text-sm font-semibold text-foreground"
+                className="flex items-center gap-2 text-sm font-semibold text-slate-700"
               >
-                <FileText className="h-4 w-4 text-muted-foreground" />
+                <FileText className="h-4 w-4 text-slate-400" />
                 Notiz zu diesem Schreiben
-                <span className="text-xs font-normal text-muted-foreground ml-1">(optional)</span>
+                <span className="text-xs font-normal text-slate-400 ml-1">(optional)</span>
               </label>
               <Textarea
                 id={`notiz-${currentLetter.company.id}`}
@@ -2088,11 +2098,11 @@ export function KundigungGenerator() {
                 onChange={(e) => setNotizen((prev) => ({ ...prev, [currentLetter.company.id]: e.target.value }))}
                 placeholder="z.B. Per Einschreiben gesendet am 21.02, Sendungsnummer XY123..."
                 rows={3}
-                className="resize-none rounded-xl text-sm bg-background border-border/60 focus:border-foreground/30 placeholder:text-muted-foreground/50 transition-colors"
+                className="resize-none rounded-xl text-sm bg-slate-50 border-slate-200 focus:border-slate-400 placeholder:text-slate-300 transition-colors"
               />
               {notizen[currentLetter.company.id] && (
-                <p className="text-xs text-muted-foreground flex items-center gap-1">
-                  <Check className="h-3 w-3 text-green-500" />Notiz wird beim Archivieren gespeichert
+                <p className="text-xs text-slate-400 flex items-center gap-1">
+                  <Check className="h-3 w-3 text-emerald-500" />Notiz wird beim Archivieren gespeichert
                 </p>
               )}
             </div>
@@ -2103,24 +2113,24 @@ export function KundigungGenerator() {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           <Button
             onClick={() => currentLetter && generatePdf(currentText, currentLetter.company.name)}
-            className="h-16 rounded-2xl flex-col gap-1 bg-foreground text-background hover:bg-foreground/90 shadow-elegant transition-all duration-300"
+            className="h-16 rounded-2xl flex-col gap-1 bg-slate-900 text-white hover:bg-slate-800 shadow-md shadow-slate-900/20 transition-all duration-300"
           >
             <FileDown className="h-5 w-5" /><span className="text-xs font-semibold">PDF Download</span>
           </Button>
           <Button
             onClick={() => currentLetter && downloadDocx(currentLetter.company, currentText)}
             variant="outline"
-            className="h-16 rounded-2xl flex-col gap-1 hover:bg-primary/10 hover:border-primary transition-all duration-300"
+            className="h-16 rounded-2xl flex-col gap-1 border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-all duration-300"
           >
             <FileType className="h-5 w-5" /><span className="text-xs font-semibold">DOCX Export</span>
           </Button>
           <Button
             onClick={() => currentLetter && copyToClipboard(currentText, currentLetter.company.id)}
             variant="outline"
-            className="h-16 rounded-2xl flex-col gap-1 hover:bg-primary/10 hover:border-primary transition-all duration-300"
+            className="h-16 rounded-2xl flex-col gap-1 border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-all duration-300"
           >
             {copied === currentLetter?.company.id ? (
-              <><Check className="h-5 w-5 text-green-500" /><span className="text-xs font-semibold text-green-600">Kopiert!</span></>
+              <><Check className="h-5 w-5 text-emerald-500" /><span className="text-xs font-semibold text-emerald-600">Kopiert!</span></>
             ) : (
               <><Copy className="h-5 w-5" /><span className="text-xs font-semibold">Kopieren</span></>
             )}
@@ -2128,31 +2138,31 @@ export function KundigungGenerator() {
           <Button
             onClick={() => currentLetter && printKundigung(currentText, currentLetter.company.name)}
             variant="outline"
-            className="h-16 rounded-2xl flex-col gap-1 hover:bg-primary/10 hover:border-primary transition-all duration-300"
+            className="h-16 rounded-2xl flex-col gap-1 border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-all duration-300"
           >
             <Printer className="h-5 w-5" /><span className="text-xs font-semibold">Drucken</span>
           </Button>
           <Button
             onClick={() => currentLetter && openMailto(currentText, currentLetter.company.name)}
             variant="outline"
-            className="h-16 rounded-2xl flex-col gap-1 hover:bg-primary/10 hover:border-primary transition-all duration-300"
+            className="h-16 rounded-2xl flex-col gap-1 border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-all duration-300"
           >
             <Mail className="h-5 w-5" /><span className="text-xs font-semibold">Per E-Mail</span>
           </Button>
           <Button
             onClick={() => currentLetter && downloadSingleText(currentLetter.company, currentText)}
             variant="outline"
-            className="h-16 rounded-2xl flex-col gap-1 hover:bg-primary/10 hover:border-primary transition-all duration-300"
+            className="h-16 rounded-2xl flex-col gap-1 border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-all duration-300"
           >
             <Download className="h-5 w-5" /><span className="text-xs font-semibold">TXT Download</span>
           </Button>
           <Button
             onClick={handleSaveAllToArchiv}
             variant="outline"
-            className="h-16 rounded-2xl flex-col gap-1 hover:bg-primary/10 hover:border-primary transition-all duration-300"
+            className="h-16 rounded-2xl flex-col gap-1 border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-all duration-300"
           >
             {saved ? (
-              <><Check className="h-5 w-5 text-green-500" /><span className="text-xs font-semibold text-green-600">Gespeichert!</span></>
+              <><Check className="h-5 w-5 text-emerald-500" /><span className="text-xs font-semibold text-emerald-600">Gespeichert!</span></>
             ) : (
               <><Archive className="h-5 w-5" /><span className="text-xs font-semibold">{isMultiple ? "Alle archivieren" : "Archivieren"}</span></>
             )}
@@ -2160,7 +2170,7 @@ export function KundigungGenerator() {
           <Button
             onClick={() => currentLetter && addCalendarReminder(currentLetter.company.name, formData.kuendigungsDatum)}
             variant="outline"
-            className="h-16 rounded-2xl flex-col gap-1 hover:bg-primary/10 hover:border-primary transition-all duration-300"
+            className="h-16 rounded-2xl flex-col gap-1 border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-all duration-300"
           >
             <CalendarPlus className="h-5 w-5" /><span className="text-xs font-semibold">Erinnerung</span>
           </Button>
@@ -2175,7 +2185,7 @@ export function KundigungGenerator() {
               setPreviewBannerDismissed(false)
             }}
             variant="outline"
-            className="h-16 rounded-2xl flex-col gap-1 hover:bg-amber-500/10 hover:border-amber-500 transition-all duration-300"
+            className="h-16 rounded-2xl flex-col gap-1 border-violet-200 text-violet-700 bg-violet-50 hover:bg-violet-100 hover:border-violet-300 transition-all duration-300"
           >
             <Sparkles className="h-5 w-5" /><span className="text-xs font-semibold">Neue erstellen</span>
           </Button>
@@ -2184,7 +2194,7 @@ export function KundigungGenerator() {
         {isMultiple && (
           <Button
             onClick={downloadAllAsZip}
-            className="w-full h-14 rounded-full bg-foreground text-background hover:bg-foreground/90 shadow-elegant text-base font-semibold transition-all duration-300"
+            className="w-full h-14 rounded-full bg-slate-900 text-white hover:bg-slate-800 shadow-lg shadow-slate-900/20 text-base font-semibold transition-all duration-300"
           >
             <Download className="mr-2 h-5 w-5" />
             Alle {letters.length} Kündigungen als PDF-ZIP herunterladen
@@ -2192,7 +2202,7 @@ export function KundigungGenerator() {
         )}
 
         <div className="flex gap-3 justify-start">
-          <Button variant="outline" onClick={() => setStep("details")} className="h-12 rounded-full px-6">
+          <Button variant="outline" onClick={() => setStep("details")} className="h-12 rounded-full px-6 border-slate-200 text-slate-700 hover:bg-slate-50">
             <ArrowLeft className="mr-2 h-4 w-4" />Bearbeiten
           </Button>
         </div>
@@ -2203,38 +2213,52 @@ export function KundigungGenerator() {
   /* ─── Main Render ─── */
 
   return (
-    <section id="generator" className="relative py-20 lg:py-28 bg-background overflow-hidden">
+    <section id="generator" className="relative py-20 lg:py-28 bg-gradient-to-b from-slate-50 to-white overflow-hidden">
+      {/* Subtle background blobs */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-[10%] right-[10%] h-[500px] w-[500px] rounded-full bg-muted/30 blur-[120px]" />
-        <div className="absolute bottom-[10%] left-[10%] h-[500px] w-[500px] rounded-full bg-muted/20 blur-[120px]" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[400px] bg-gradient-to-b from-blue-50/60 to-transparent rounded-full blur-3xl" />
+        <div className="absolute bottom-0 right-0 w-[500px] h-[400px] bg-gradient-to-tl from-violet-50/40 to-transparent rounded-full blur-3xl" />
       </div>
 
       <div className="relative mx-auto max-w-7xl px-4 lg:px-8">
+        {/* Step indicator — pill style */}
         <div className="mb-12 flex items-center justify-center">
-          <div className="flex items-center gap-2 bg-background/80 backdrop-blur-xl rounded-full border-2 border-border p-2 shadow-xl">
+          <div className="flex items-center gap-1 bg-white rounded-2xl border border-slate-200 p-1.5 shadow-sm shadow-slate-100">
             {STEPS.map((s, idx) => {
               const isActive = s.key === step
               const isCompleted =
                 (s.key === "company" && selectedCompanies.length > 0) ||
                 (s.key === "details" && step === "preview")
-              const Icon = s.icon
+              const isClickable = isCompleted || isActive
               return (
-                <div key={s.key} className="flex items-center">
+                <div key={s.key} className="flex items-center gap-1">
                   <button
-                    onClick={() => navigateStep(s.key)}
-                    className={`flex items-center gap-2 rounded-full px-5 py-3 text-sm font-semibold transition-all duration-300 ${
+                    onClick={() => isClickable && navigateStep(s.key)}
+                    disabled={!isClickable && !isActive}
+                    className={`relative flex items-center gap-2.5 rounded-xl px-5 py-2.5 text-sm font-semibold transition-all duration-300 ${
                       isActive
-                        ? "bg-foreground text-background shadow-elegant"
+                        ? "bg-slate-900 text-white shadow-md shadow-slate-900/20"
                         : isCompleted
-                        ? "bg-muted text-foreground"
-                        : "text-muted-foreground hover:text-foreground"
+                        ? "bg-slate-100 text-slate-700 hover:bg-slate-200 cursor-pointer"
+                        : "text-slate-400 cursor-default"
                     }`}
                   >
-                    <Icon className="h-4 w-4" />
+                    <div
+                      className={`flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-black transition-all duration-300 ${
+                        isActive
+                          ? "bg-white/20 text-white"
+                          : isCompleted
+                          ? "bg-emerald-500 text-white"
+                          : "bg-slate-200 text-slate-400"
+                      }`}
+                    >
+                      {isCompleted && !isActive ? <Check className="h-3 w-3" /> : <span>{idx + 1}</span>}
+                    </div>
                     <span className="hidden sm:inline">{s.label}</span>
-                    {isCompleted && !isActive && <Check className="h-3.5 w-3.5" />}
                   </button>
-                  {idx < STEPS.length - 1 && <ChevronRight className="mx-1 h-4 w-4 text-muted-foreground" />}
+                  {idx < STEPS.length - 1 && (
+                    <ChevronRight className="h-3.5 w-3.5 text-slate-300 mx-0.5 flex-shrink-0" />
+                  )}
                 </div>
               )
             })}
