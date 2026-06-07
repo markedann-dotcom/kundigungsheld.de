@@ -122,11 +122,49 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
+
   body {
     @apply bg-background text-foreground;
   }
+
   html {
     @apply font-sans;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
   }
+}
+
+/* ── GPU acceleration for animated elements ── */
+.animate-ticker,
+.animate-ticker-reverse {
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+[class*="animate-fade"],
+[class*="animate-slide"],
+[class*="animate-zoom"] {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+}
+
+/* ── Reduce backdrop-blur cost on desktop ── */
+@media (min-width: 1024px) {
+  .ticker-card {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background-color: oklch(var(--card) / 0.92) !important;
+  }
+}
+
+/* ── Compositing hint for bg blur decorations ── */
+.bg-blur-decoration {
+  transform: translateZ(0);
+  isolation: isolate;
+  will-change: auto;
 }
