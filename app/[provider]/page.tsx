@@ -12,6 +12,8 @@ import {
   Star,
   AlertTriangle,
   Zap,
+  ArrowRight,
+  FileText,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { companies, CATEGORY_LABELS, type Company } from "@/lib/companies"
@@ -140,17 +142,219 @@ export default async function ProviderPage({ params }: Props) {
       <Navbar />
 
       <main>
+        {/* ── Hero ── */}
         <section className="relative overflow-hidden bg-background">
           <div className="pointer-events-none absolute inset-0 overflow-hidden">
             <div className="absolute -top-40 -right-40 h-[600px] w-[600px] rounded-full bg-primary/5 blur-[120px]" />
             <div className="absolute top-20 left-0 h-[300px] w-[300px] rounded-full bg-muted/40 blur-[80px]" />
           </div>
+
           <div className="relative mx-auto max-w-6xl px-4 pb-12 pt-8 lg:px-8 lg:pb-16 lg:pt-12">
+            {/* Breadcrumb */}
             <nav className="mb-8 flex items-center gap-2 text-sm text-muted-foreground">
-              <Link href="/" className="hover:text-foreground transition-colors">KündigungsHeld</Link>
+              <Link href="/" className="hover:text-foreground transition-colors">
+                KündigungsHeld
+              </Link>
               <ChevronRight className="h-3.5 w-3.5" />
               <span className="text-foreground font-medium">{company.name} kündigen</span>
             </nav>
+
+            <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
+              {/* Left: text */}
+              <div className="space-y-6">
+                {/* Category badge */}
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-border/60 bg-muted/50 px-3 py-1 text-xs font-semibold text-muted-foreground">
+                  {categoryLabel}
+                </span>
+
+                <h1 className="text-4xl font-bold tracking-tight text-foreground lg:text-5xl">
+                  {company.name} kündigen
+                </h1>
+
+                <p className="text-lg text-muted-foreground leading-relaxed">
+                  Erstellen Sie Ihr rechtssicheres Kündigungsschreiben für{" "}
+                  <strong className="text-foreground">{company.name}</strong> in unter 2 Minuten —
+                  kostenlos, ohne Registrierung, DSGVO-konform.
+                </p>
+
+                {/* Trust badges */}
+                <div className="flex flex-wrap gap-4">
+                  {[
+                    { icon: ShieldCheck, label: "Rechtssicher" },
+                    { icon: FileDown, label: "Als PDF" },
+                    { icon: Zap, label: "In 2 Minuten" },
+                  ].map(({ icon: Icon, label }) => (
+                    <div key={label} className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+                      <Icon className="h-4 w-4 text-primary" />
+                      {label}
+                    </div>
+                  ))}
+                </div>
+
+                {/* CTA */}
+                <Link href={`/#generator`}>
+                  <Button size="lg" className="h-14 rounded-full px-8 text-base font-semibold shadow-lg">
+                    Jetzt {company.name} kündigen
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </Button>
+                </Link>
+              </div>
+
+              {/* Right: company card */}
+              <div className="flex justify-center lg:justify-end">
+                <div className="w-full max-w-sm rounded-2xl border border-border/60 bg-card p-8 shadow-xl">
+                  {/* Logo */}
+                  <div className="mb-6 flex justify-center">
+                    {logoUrl ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={logoUrl}
+                        alt={`${company.name} Logo`}
+                        className="h-16 w-auto object-contain"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).style.display = "none"
+                        }}
+                      />
+                    ) : (
+                      <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-muted text-2xl font-bold text-muted-foreground">
+                        {company.name.charAt(0)}
+                      </div>
+                    )}
+                  </div>
+
+                  <h2 className="mb-1 text-center text-xl font-bold text-foreground">{company.name}</h2>
+                  <p className="mb-6 text-center text-sm text-muted-foreground">{categoryLabel}</p>
+
+                  {/* Stats */}
+                  <div className="space-y-3">
+                    {(company as any).kuendigungsfrist && (
+                      <div className="flex items-center justify-between rounded-xl bg-muted/50 px-4 py-3">
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                          <Clock className="h-4 w-4" />
+                          Kündigungsfrist
+                        </div>
+                        <span className="text-sm font-semibold text-foreground">
+                          {(company as any).kuendigungsfrist}
+                        </span>
+                      </div>
+                    )}
+                    {avgFee > 0 && (
+                      <div className="flex items-center justify-between rounded-xl bg-muted/50 px-4 py-3">
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                          <Star className="h-4 w-4" />
+                          Ø Monatsbeitrag
+                        </div>
+                        <span className="text-sm font-semibold text-foreground">
+                          {avgFee.toFixed(2).replace(".", ",")} €
+                        </span>
+                      </div>
+                    )}
+                    <div className="flex items-center justify-between rounded-xl bg-muted/50 px-4 py-3">
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <FileText className="h-4 w-4" />
+                        Kündigung per
+                      </div>
+                      <span className="text-sm font-semibold text-foreground">Post / E-Mail</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ── How it works ── */}
+        <section className="border-y border-border/50 bg-muted/20 py-14">
+          <div className="mx-auto max-w-6xl px-4 lg:px-8">
+            <h2 className="mb-10 text-center text-2xl font-bold text-foreground">
+              So kündigen Sie {company.name} in 3 Schritten
+            </h2>
+            <div className="grid gap-6 sm:grid-cols-3">
+              {[
+                { step: "01", icon: CheckCircle2, title: "Anbieter wählen", desc: `${company.name} im Generator auswählen` },
+                { step: "02", icon: Send, title: "Daten eingeben", desc: "Name, Adresse und Vertragsdaten eintragen" },
+                { step: "03", icon: FileDown, title: "PDF herunterladen", desc: "Rechtssicheres Schreiben sofort fertig" },
+              ].map(({ step, icon: Icon, title, desc }) => (
+                <div key={step} className="relative rounded-2xl border border-border/50 bg-card p-6 text-center shadow-sm">
+                  <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10">
+                    <Icon className="h-6 w-6 text-primary" />
+                  </div>
+                  <div className="mb-1 text-xs font-bold uppercase tracking-widest text-muted-foreground">
+                    Schritt {step}
+                  </div>
+                  <h3 className="mb-2 font-bold text-foreground">{title}</h3>
+                  <p className="text-sm text-muted-foreground">{desc}</p>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-10 text-center">
+              <Link href="/#generator">
+                <Button size="lg" className="h-12 rounded-full px-8 font-semibold">
+                  Jetzt kostenlos starten
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* ── Savings Calculator ── */}
+        <section className="py-14">
+          <div className="mx-auto max-w-6xl px-4 lg:px-8">
+            <h2 className="mb-8 text-center text-2xl font-bold text-foreground">
+              Wie viel können Sie sparen?
+            </h2>
+            <SavingsCalculator company={company} avgFee={avgFee} />
+          </div>
+        </section>
+
+        {/* ── Important notice ── */}
+        <section className="py-6">
+          <div className="mx-auto max-w-6xl px-4 lg:px-8">
+            <div className="flex items-start gap-4 rounded-2xl border border-amber-200 bg-amber-50 p-5">
+              <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-amber-600" />
+              <div className="text-sm text-amber-800">
+                <strong className="font-semibold">Wichtig:</strong> Prüfen Sie vor der Kündigung Ihre
+                Vertragslaufzeit und Kündigungsfristen. Diese finden Sie in Ihren Vertragsunterlagen
+                oder im Kundenportal von {company.name}.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ── FAQ ── */}
+        <section className="py-14">
+          <div className="mx-auto max-w-3xl px-4 lg:px-8">
+            <h2 className="mb-8 text-center text-2xl font-bold text-foreground">
+              Häufige Fragen zur {company.name} Kündigung
+            </h2>
+            <div className="space-y-4">
+              {faqs.map(({ q, a }, i) => (
+                <div key={i} className="rounded-2xl border border-border/60 bg-card p-6 shadow-sm">
+                  <h3 className="mb-3 font-semibold text-foreground">{q}</h3>
+                  <p className="text-sm leading-relaxed text-muted-foreground">{a}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ── Final CTA ── */}
+        <section className="py-14">
+          <div className="mx-auto max-w-2xl px-4 text-center lg:px-8">
+            <h2 className="mb-4 text-3xl font-bold text-foreground">
+              Bereit, {company.name} zu kündigen?
+            </h2>
+            <p className="mb-8 text-muted-foreground">
+              Kostenlos, rechtssicher, in 2 Minuten. Keine Registrierung nötig.
+            </p>
+            <Link href="/#generator">
+              <Button size="lg" className="h-14 rounded-full px-10 text-base font-semibold shadow-lg">
+                Kündigung jetzt erstellen
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </Link>
           </div>
         </section>
       </main>
