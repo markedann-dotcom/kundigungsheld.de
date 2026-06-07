@@ -305,7 +305,7 @@ export default async function ProviderPage({ params }: Props) {
             <h2 className="mb-8 text-center text-2xl font-bold text-foreground">
               Wie viel können Sie sparen?
             </h2>
-            <SavingsCalculator company={company} avgFee={avgFee} />
+            <SavingsCalculator companyName={company.name} avgMonthlyFee={avgFee} />
           </div>
         </section>
 
