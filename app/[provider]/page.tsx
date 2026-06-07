@@ -211,9 +211,6 @@ export default async function ProviderPage({ params }: Props) {
                         src={logoUrl}
                         alt={`${company.name} Logo`}
                         className="h-16 w-auto object-contain"
-                        onError={(e) => {
-                          (e.target as HTMLImageElement).style.display = "none"
-                        }}
                       />
                     ) : (
                       <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-muted text-2xl font-bold text-muted-foreground">
