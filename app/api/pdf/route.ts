@@ -61,8 +61,8 @@ export async function POST(req: NextRequest) {
       { waitUntil: "load", timeout: 15000 }
     )
 
-    // Wait for external images (QR code)
-    await new Promise((resolve) => setTimeout(resolve, 1500))
+    // Wait for fonts + external images (QR code)
+    await new Promise((resolve) => setTimeout(resolve, 2500))
 
     const pdfBuffer = await page.pdf({
       format: "A4",
