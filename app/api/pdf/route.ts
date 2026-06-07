@@ -1,12 +1,9 @@
 import { NextRequest, NextResponse } from "next/server"
-import chromium from "@sparticuz/chromium"
-import puppeteer from "puppeteer-core"
 
 export const runtime = "nodejs"
-export const maxDuration = 30
+export const maxDuration = 60
 
 export async function POST(req: NextRequest) {
-  let browser = null
   try {
     const { html } = await req.json()
     if (!html || typeof html !== "string") {
@@ -14,27 +11,40 @@ export async function POST(req: NextRequest) {
     }
 
     const isDev = process.env.NODE_ENV === "development"
+    let browser: import("puppeteer-core").Browser
 
-    browser = await puppeteer.launch(
-      isDev
-        ? {
-            executablePath:
-              process.platform === "win32"
-                ? "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
-                : process.platform === "darwin"
-                ? "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
-                : "/usr/bin/google-chrome",
-            headless: true,
-            args: ["--no-sandbox", "--disable-setuid-sandbox"],
-          }
-        : {
-            args: chromium.args,
-            executablePath: await chromium.executablePath(),
-            headless: true,
-          }
-    )
+    if (isDev) {
+      const puppeteer = await import("puppeteer-core")
+      const executablePath =
+        process.platform === "win32"
+          ? "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
+          : process.platform === "darwin"
+          ? "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+          : "/usr/bin/google-chrome"
+
+      browser = await puppeteer.default.launch({
+        executablePath,
+        headless: true,
+        args: ["--no-sandbox", "--disable-setuid-sandbox"],
+      })
+    } else {
+      // Production: Vercel
+      const chromium = await import("@sparticuz/chromium")
+      const puppeteer = await import("puppeteer-core")
+
+      const executablePath = await chromium.default.executablePath(
+        "https://github.com/Sparticuz/chromium/releases/download/v131.0.1/chromium-v131.0.1-pack.tar"
+      )
+
+      browser = await puppeteer.default.launch({
+        args: chromium.default.args,
+        executablePath,
+        headless: true,
+      })
+    }
 
     const page = await browser.newPage()
+    await page.setViewport({ width: 794, height: 1123 })
 
     await page.setContent(
       `<!DOCTYPE html>
@@ -51,14 +61,16 @@ export async function POST(req: NextRequest) {
       { waitUntil: "load", timeout: 15000 }
     )
 
-    // Wait for external images (QR code) to load
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+    // Wait for external images (QR code)
+    await new Promise((resolve) => setTimeout(resolve, 1500))
 
     const pdfBuffer = await page.pdf({
       format: "A4",
       printBackground: true,
       margin: { top: 0, right: 0, bottom: 0, left: 0 },
     })
+
+    await browser.close()
 
     return new NextResponse(pdfBuffer, {
       status: 200,
@@ -69,8 +81,9 @@ export async function POST(req: NextRequest) {
     })
   } catch (error) {
     console.error("PDF route error:", error)
-    return NextResponse.json({ error: "PDF generation failed" }, { status: 500 })
-  } finally {
-    if (browser) await browser.close()
+    return NextResponse.json(
+      { error: "PDF generation failed", details: String(error) },
+      { status: 500 }
+    )
   }
 }
