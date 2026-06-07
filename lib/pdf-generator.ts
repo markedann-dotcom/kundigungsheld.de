@@ -1,6 +1,5 @@
 "use client"
 
-import html2canvas from "html2canvas"
 import jsPDF from "jspdf"
 
 /* ── Loading Screen ── */
@@ -74,9 +73,6 @@ export function hideLoading() {
 
 /* ── Helpers ── */
 
-/**
- * Escape HTML entities so that raw letter text is safe inside innerHTML.
- */
 function escapeHtml(text: string): string {
   return text
     .replace(/&/g, "&amp;")
@@ -85,19 +81,6 @@ function escapeHtml(text: string): string {
     .replace(/"/g, "&quot;")
 }
 
-/**
- * Convert plain-text letter (with \n line breaks) into HTML paragraphs.
- *
- * Rules:
- *  - Empty lines become paragraph separators (margin between blocks).
- *  - Non-empty lines within the same block are joined with <br>.
- *
- * This replaces `white-space: pre-wrap` which causes every line to be rendered
- * at full line-height — even short lines still consume a full row, making it
- * impossible to keep the letter on one page without extreme font-size reduction.
- *
- * With proper <p> blocks we can use compact paragraph spacing instead.
- */
 function letterTextToHtml(text: string): string {
   const lines = text.split("\n")
   const blocks: string[][] = []
@@ -198,10 +181,6 @@ function getPerfectPDFTemplate(letterText: string, companyName: string): string 
         word-wrap: break-word;
         overflow-wrap: break-word;
       ">
-        <!--
-          p  = Absatz  → margin-bottom schafft Luft zwischen Abschnitten
-          br = Zeilenumbruch innerhalb eines Absatzes (Adressblock, Betreff etc.)
-        -->
         <style>
           .letter-body p {
             margin: 0 0 8px 0;
@@ -283,58 +262,19 @@ export async function generatePdfBlob(
   letterText: string,
   companyName: string
 ): Promise<Blob> {
-  const container = document.createElement("div")
-  container.style.cssText = `
-    position: fixed;
-    left: -99999px;
-    top: 0;
-    width: 210mm;
-    background: white;
-    -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
-  `
-  container.innerHTML = getPerfectPDFTemplate(letterText, companyName)
-  document.body.appendChild(container)
+  const html = getPerfectPDFTemplate(letterText, companyName)
 
-  // Wait for QR image + layout
-  await new Promise((resolve) => setTimeout(resolve, 800))
-
-  const canvas = await html2canvas(container, {
-    scale: 3,
-    useCORS: true,
-    logging: false,
-    backgroundColor: "#ffffff",
-    width: container.offsetWidth,
-    height: container.offsetHeight,
-    windowWidth: container.offsetWidth,
+  const response = await fetch("/api/pdf", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ html }),
   })
 
-  const imgData = canvas.toDataURL("image/jpeg", 1.0)
-  const pdf = new jsPDF({
-    orientation: "portrait",
-    unit: "mm",
-    format: "a4",
-    compress: true,
-  })
-
-  const pdfWidth = 210
-  const pageHeight = 297
-  const imgHeight = (canvas.height * pdfWidth) / canvas.width
-  let heightLeft = imgHeight
-  let position = 0
-
-  pdf.addImage(imgData, "JPEG", 0, position, pdfWidth, imgHeight, undefined, "FAST")
-  heightLeft -= pageHeight
-
-  while (heightLeft > 0) {
-    position = heightLeft - imgHeight
-    pdf.addPage()
-    pdf.addImage(imgData, "JPEG", 0, position, pdfWidth, imgHeight, undefined, "FAST")
-    heightLeft -= pageHeight
+  if (!response.ok) {
+    throw new Error(`PDF API error: ${response.status}`)
   }
 
-  document.body.removeChild(container)
-  return pdf.output("blob")
+  return response.blob()
 }
 
 /* ── Print ── */
@@ -365,7 +305,7 @@ export function printKundigung(letterText: string, companyName: string): void {
       <script>
         window.onload = function() { setTimeout(function() { window.print(); }, 250); };
         window.onafterprint = function() { window.close(); };
-      </script>
+      <\/script>
     </body>
     </html>
   `)
