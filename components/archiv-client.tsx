@@ -59,25 +59,28 @@ type SortDir = "asc" | "desc"
 
 const STATUS_CONFIG: Record<
   Status,
-  { label: string; icon: typeof Clock; color: string; dot: string }
+  { label: string; icon: typeof Clock; color: string; dot: string; ring: string }
 > = {
   erstellt: {
     label: "Erstellt",
     icon: Clock,
     color: "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/40 dark:text-amber-400 dark:border-amber-800/40",
     dot: "bg-amber-400",
+    ring: "ring-amber-400/20",
   },
   gesendet: {
     label: "Gesendet",
     icon: Send,
     color: "bg-sky-50 text-sky-700 border-sky-200 dark:bg-sky-950/40 dark:text-sky-400 dark:border-sky-800/40",
     dot: "bg-sky-400",
+    ring: "ring-sky-400/20",
   },
   bestaetigt: {
     label: "Bestätigt",
     icon: Check,
     color: "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-400 dark:border-emerald-800/40",
     dot: "bg-emerald-400",
+    ring: "ring-emerald-400/20",
   },
 } as const
 
@@ -93,11 +96,12 @@ const STAT_ITEMS: {
   label: string
   colorClass: string
   bgClass: string
+  borderActive: string
 }[] = [
-  { key: "total",       label: "Gesamt",    colorClass: "text-foreground",                                          bgClass: "bg-muted/60" },
-  { key: "erstellt",    label: "Erstellt",  colorClass: "text-amber-600 dark:text-amber-400",                       bgClass: "bg-amber-50 dark:bg-amber-950/30" },
-  { key: "gesendet",    label: "Gesendet",  colorClass: "text-sky-600 dark:text-sky-400",                           bgClass: "bg-sky-50 dark:bg-sky-950/30" },
-  { key: "bestaetigt",  label: "Bestätigt", colorClass: "text-emerald-600 dark:text-emerald-400",                   bgClass: "bg-emerald-50 dark:bg-emerald-950/30" },
+  { key: "total",      label: "Gesamt",    colorClass: "text-foreground",                            bgClass: "bg-muted/40",              borderActive: "border-foreground/20" },
+  { key: "erstellt",   label: "Erstellt",  colorClass: "text-amber-600 dark:text-amber-400",         bgClass: "bg-amber-50 dark:bg-amber-950/30",   borderActive: "border-amber-300 dark:border-amber-700" },
+  { key: "gesendet",   label: "Gesendet",  colorClass: "text-sky-600 dark:text-sky-400",             bgClass: "bg-sky-50 dark:bg-sky-950/30",       borderActive: "border-sky-300 dark:border-sky-700" },
+  { key: "bestaetigt", label: "Bestätigt", colorClass: "text-emerald-600 dark:text-emerald-400",     bgClass: "bg-emerald-50 dark:bg-emerald-950/30", borderActive: "border-emerald-300 dark:border-emerald-700" },
 ]
 
 const STATUSES: Status[] = ["erstellt", "gesendet", "bestaetigt"]
@@ -140,7 +144,6 @@ function formatDateLong(iso: string) {
 
 function StatusBadge({ status }: { status: Status }) {
   const cfg = STATUS_CONFIG[status]
-  const Icon = cfg.icon
   return (
     <span className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-[11px] font-semibold ${cfg.color}`}>
       <span className={`h-1.5 w-1.5 rounded-full ${cfg.dot}`} />
@@ -161,12 +164,12 @@ function EmptyState({
   action?: React.ReactNode
 }) {
   return (
-    <div className="flex flex-col items-center rounded-2xl border border-dashed border-border/60 bg-card/50 py-20 text-center">
-      <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-muted">
-        <Icon className="h-8 w-8 text-muted-foreground/40" aria-hidden="true" />
+    <div className="flex flex-col items-center rounded-2xl border border-dashed border-border/50 bg-muted/20 py-20 text-center">
+      <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-muted shadow-sm">
+        <Icon className="h-7 w-7 text-muted-foreground/30" aria-hidden="true" />
       </div>
-      <h2 className="mt-5 text-lg font-semibold text-foreground">{title}</h2>
-      <p className="mt-2 max-w-sm text-sm text-muted-foreground leading-relaxed">{description}</p>
+      <h2 className="mt-5 text-base font-semibold text-foreground">{title}</h2>
+      <p className="mt-2 max-w-xs text-sm text-muted-foreground leading-relaxed">{description}</p>
       {action && <div className="mt-6">{action}</div>}
     </div>
   )
@@ -190,36 +193,35 @@ function DeleteDialog({
   const isBulk = (count ?? 0) > 1
   return (
     <AlertDialog open={open}>
-      <AlertDialogContent className="max-w-md">
+      <AlertDialogContent className="max-w-sm rounded-2xl">
         <AlertDialogHeader>
-          <div className="flex items-start gap-3 mb-2">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-destructive/10 mt-0.5">
+          <div className="flex items-start gap-4 mb-1">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-destructive/10">
               <AlertTriangle className="h-5 w-5 text-destructive" aria-hidden="true" />
             </div>
             <div>
-              <AlertDialogTitle className="text-lg">
-                {isBulk ? `${count} Kündigungen löschen?` : "Kündigung löschen?"}
+              <AlertDialogTitle className="text-base font-semibold">
+                {isBulk ? `${count} Einträge löschen?` : "Eintrag löschen?"}
               </AlertDialogTitle>
-              <AlertDialogDescription className="mt-1 text-sm text-muted-foreground">
+              <AlertDialogDescription className="mt-1 text-sm text-muted-foreground leading-relaxed">
                 {isBulk
-                  ? `${count} ausgewählte Kündigungen werden unwiderruflich aus Ihrem Archiv entfernt.`
-                  : <>Die Kündigung für <span className="font-semibold text-foreground">{companyName}</span> wird unwiderruflich aus Ihrem Archiv entfernt.</>
-                }{" "}
-                Diese Aktion kann nicht rückgängig gemacht werden.
+                  ? `${count} ausgewählte Kündigungen werden unwiderruflich entfernt.`
+                  : <>Kündigung für <span className="font-medium text-foreground">{companyName}</span> wird unwiderruflich entfernt.</>
+                }
               </AlertDialogDescription>
             </div>
           </div>
         </AlertDialogHeader>
-        <AlertDialogFooter className="gap-2 sm:gap-2">
-          <AlertDialogCancel onClick={onCancel} className="flex-1 sm:flex-none">
+        <AlertDialogFooter className="gap-2 mt-2">
+          <AlertDialogCancel onClick={onCancel} className="flex-1 rounded-xl">
             Abbrechen
           </AlertDialogCancel>
           <AlertDialogAction
             onClick={onConfirm}
-            className="flex-1 sm:flex-none bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            className="flex-1 rounded-xl bg-destructive text-destructive-foreground hover:bg-destructive/90"
           >
-            <Trash2 className="mr-1.5 h-3.5 w-3.5" aria-hidden="true" />
-            Endgültig löschen
+            <Trash2 className="mr-1.5 h-3.5 w-3.5" />
+            Löschen
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
@@ -247,17 +249,54 @@ function SortButton({
     <button
       type="button"
       onClick={() => onClick(field)}
-      className={`flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-xs font-medium transition-colors ${
+      className={`flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-xs font-medium transition-all duration-150 ${
         active
           ? "bg-foreground/8 text-foreground"
           : "text-muted-foreground hover:text-foreground hover:bg-muted"
       }`}
     >
       {label}
-      <ArrowUpDown className={`h-3 w-3 ${active ? "opacity-100" : "opacity-40"}`} />
-      {active && (
-        <span className="text-[10px] opacity-60">{currentDir === "asc" ? "↑" : "↓"}</span>
-      )}
+      {active
+        ? <span className="text-[11px] opacity-70 ml-0.5">{currentDir === "asc" ? "↑" : "↓"}</span>
+        : <ArrowUpDown className="h-3 w-3 opacity-30" />
+      }
+    </button>
+  )
+}
+
+/* ─── Action button helper ─────────────────────────────────────────────────── */
+
+function ActionBtn({
+  icon: Icon,
+  label,
+  onClick,
+  variant = "default",
+  active = false,
+  className = "",
+}: {
+  icon: typeof Copy
+  label: string
+  onClick: () => void
+  variant?: "default" | "danger" | "primary"
+  active?: boolean
+  className?: string
+}) {
+  const base = "inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-medium transition-all duration-150 select-none"
+  const variants = {
+    default: "border-border/60 bg-background text-muted-foreground hover:text-foreground hover:border-border hover:bg-muted/50",
+    danger: "border-destructive/20 bg-background text-destructive hover:bg-destructive/8 hover:border-destructive/40",
+    primary: "border-primary/30 bg-background text-primary hover:bg-primary/6 hover:border-primary/50",
+  }
+  const activeClass = active ? "border-emerald-300 bg-emerald-50 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-400" : ""
+
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`${base} ${active ? activeClass : variants[variant]} ${className}`}
+    >
+      <Icon className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+      {label}
     </button>
   )
 }
@@ -275,24 +314,13 @@ export function ArchivClient() {
   const [copiedId, setCopiedId] = useState<string | null>(null)
   const [deleteTarget, setDeleteTarget] = useState<ArchivedKundigung | null>(null)
   const [reCreatingId, setReCreatingId] = useState<string | null>(null)
-  // Sorting
   const [sortField, setSortField] = useState<SortField>("datum")
   const [sortDir, setSortDir] = useState<SortDir>("desc")
-  // Bulk selection
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set())
   const [bulkDeleteOpen, setBulkDeleteOpen] = useState(false)
 
-  /* ─── Data loading ─── */
-
-  const loadItems = useCallback(() => {
-    setItems(getArchiv())
-  }, [])
-
-  useEffect(() => {
-    loadItems()
-  }, [loadItems])
-
-  /* ─── Derived state ─── */
+  const loadItems = useCallback(() => setItems(getArchiv()), [])
+  useEffect(() => { loadItems() }, [loadItems])
 
   const filteredItems = useMemo(() => {
     const q = searchQuery.toLowerCase()
@@ -302,18 +330,14 @@ export function ArchivClient() {
         item.companyName.toLowerCase().includes(q) ||
         item.nachname.toLowerCase().includes(q) ||
         item.grundLabel.toLowerCase().includes(q)
-      const matchesStatus =
-        filterStatus === "alle" || item.status === filterStatus
+      const matchesStatus = filterStatus === "alle" || item.status === filterStatus
       return matchesSearch && matchesStatus
     })
-
     result = [...result].sort((a, b) => {
       let cmp = 0
-      if (sortField === "datum") {
-        cmp = new Date(a.datum).getTime() - new Date(b.datum).getTime()
-      } else if (sortField === "companyName") {
-        cmp = a.companyName.localeCompare(b.companyName, "de")
-      } else if (sortField === "status") {
+      if (sortField === "datum") cmp = new Date(a.datum).getTime() - new Date(b.datum).getTime()
+      else if (sortField === "companyName") cmp = a.companyName.localeCompare(b.companyName, "de")
+      else if (sortField === "status") {
         const order: Record<Status, number> = { erstellt: 0, gesendet: 1, bestaetigt: 2 }
         const sa = (a.status && STATUS_CONFIG[a.status as Status]) ? a.status as Status : "erstellt"
         const sb = (b.status && STATUS_CONFIG[b.status as Status]) ? b.status as Status : "erstellt"
@@ -321,73 +345,47 @@ export function ArchivClient() {
       }
       return sortDir === "asc" ? cmp : -cmp
     })
-
     return result
   }, [items, searchQuery, filterStatus, sortField, sortDir])
 
   const stats = useMemo(() => {
     const counts: Record<string, number> = { total: items.length }
-    for (const s of STATUSES) {
-      counts[s] = items.filter((i) => i.status === s).length
-    }
+    for (const s of STATUSES) counts[s] = items.filter((i) => i.status === s).length
     return counts
   }, [items])
 
   const hasItems = items.length > 0
-
-  const allVisibleSelected =
-    filteredItems.length > 0 &&
-    filteredItems.every((i) => selectedIds.has(i.id))
+  const allVisibleSelected = filteredItems.length > 0 && filteredItems.every((i) => selectedIds.has(i.id))
   const someSelected = selectedIds.size > 0
 
-  /* ─── Handlers ─── */
+  const handleStatusChange = useCallback((id: string, status: Status) => {
+    updateArchivItem(id, { status })
+    loadItems()
+  }, [loadItems])
 
-  const handleStatusChange = useCallback(
-    (id: string, status: Status) => {
-      updateArchivItem(id, { status })
-      loadItems()
-    },
-    [loadItems]
-  )
-
-  const handleDeleteRequest = useCallback((item: ArchivedKundigung) => {
-    setDeleteTarget(item)
-  }, [])
+  const handleDeleteRequest = useCallback((item: ArchivedKundigung) => setDeleteTarget(item), [])
 
   const handleDeleteConfirm = useCallback(() => {
     if (!deleteTarget) return
     deleteArchivItem(deleteTarget.id)
     loadItems()
     setExpandedId((prev) => (prev === deleteTarget.id ? null : prev))
-    setSelectedIds((prev) => {
-      const next = new Set(prev)
-      next.delete(deleteTarget.id)
-      return next
-    })
+    setSelectedIds((prev) => { const next = new Set(prev); next.delete(deleteTarget.id); return next })
     setDeleteTarget(null)
   }, [deleteTarget, loadItems])
 
-  const handleDeleteCancel = useCallback(() => {
-    setDeleteTarget(null)
-  }, [])
-
   const handleBulkDeleteConfirm = useCallback(() => {
-    for (const id of selectedIds) {
-      deleteArchivItem(id)
-    }
+    for (const id of selectedIds) deleteArchivItem(id)
     loadItems()
     setSelectedIds(new Set())
     setBulkDeleteOpen(false)
   }, [selectedIds, loadItems])
 
-  const handleNotizSave = useCallback(
-    (id: string) => {
-      updateArchivItem(id, { notiz: notizText })
-      loadItems()
-      setEditingNotiz(null)
-    },
-    [notizText, loadItems]
-  )
+  const handleNotizSave = useCallback((id: string) => {
+    updateArchivItem(id, { notiz: notizText })
+    loadItems()
+    setEditingNotiz(null)
+  }, [notizText, loadItems])
 
   const startEditingNotiz = useCallback((item: ArchivedKundigung) => {
     setEditingNotiz(item.id)
@@ -399,9 +397,7 @@ export function ArchivClient() {
       await navigator.clipboard.writeText(text)
       setCopiedId(id)
       setTimeout(() => setCopiedId(null), 2000)
-    } catch {
-      /* clipboard not available */
-    }
+    } catch { /* clipboard not available */ }
   }, [])
 
   const handleDownloadTxt = useCallback((item: ArchivedKundigung) => {
@@ -417,11 +413,9 @@ export function ArchivClient() {
     const rows = items.map((item) => {
       const validStatus = (item.status && STATUS_CONFIG[item.status as Status]) ? item.status as Status : "erstellt"
       return [
-        item.companyName,
-        item.grundLabel,
+        item.companyName, item.grundLabel,
         STATUS_CONFIG[validStatus].label,
-        formatDateLong(item.datum),
-        item.kuendigungZum,
+        formatDateLong(item.datum), item.kuendigungZum,
         `${item.vorname} ${item.nachname}`,
         (item.notiz || "").replace(/\n/g, " "),
       ].join(";")
@@ -435,16 +429,12 @@ export function ArchivClient() {
 
   const toggleExpand = useCallback((id: string) => {
     setExpandedId((prev) => (prev === id ? null : id))
-    // close note editor when collapsing
     setEditingNotiz((prev) => (prev === id ? null : prev))
   }, [])
 
   const handleSort = useCallback((field: SortField) => {
     setSortField((prev) => {
-      if (prev === field) {
-        setSortDir((d) => (d === "asc" ? "desc" : "asc"))
-        return prev
-      }
+      if (prev === field) { setSortDir((d) => (d === "asc" ? "desc" : "asc")); return prev }
       setSortDir("desc")
       return field
     })
@@ -460,82 +450,48 @@ export function ArchivClient() {
   }, [])
 
   const toggleSelectAll = useCallback(() => {
-    if (allVisibleSelected) {
-      setSelectedIds(new Set())
-    } else {
-      setSelectedIds(new Set(filteredItems.map((i) => i.id)))
-    }
+    if (allVisibleSelected) setSelectedIds(new Set())
+    else setSelectedIds(new Set(filteredItems.map((i) => i.id)))
   }, [allVisibleSelected, filteredItems])
 
-  const handleErneut = useCallback(
-    (item: ArchivedKundigung) => {
-      setReCreatingId(item.id)
-      try {
-        localStorage.setItem(
-          "kundigung-prefill",
-          JSON.stringify({
-            companyName: item.companyName,
-            formData: {
-              vorname: item.vorname,
-              nachname: item.nachname,
-              grund: item.grund,
-              kuendigungZum: item.kuendigungZum,
-              kundennummer: "",
-              vertragsnummer: "",
-              kuendigungsDatum: "",
-              zusatztext: "",
-            },
-          })
-        )
-        router.push("/#generator")
-      } catch {
-        router.push("/#generator")
-      }
-    },
-    [router]
-  )
+  const handleErneut = useCallback((item: ArchivedKundigung) => {
+    setReCreatingId(item.id)
+    try {
+      localStorage.setItem("kundigung-prefill", JSON.stringify({
+        companyName: item.companyName,
+        formData: { vorname: item.vorname, nachname: item.nachname, grund: item.grund, kuendigungZum: item.kuendigungZum, kundennummer: "", vertragsnummer: "", kuendigungsDatum: "", zusatztext: "" },
+      }))
+      router.push("/#generator")
+    } catch { router.push("/#generator") }
+  }, [router])
 
   /* ─── Render ─────────────────────────────────────────────────────────────── */
 
   return (
     <section className="min-h-screen py-10 lg:py-14">
-      <div className="mx-auto max-w-5xl px-4 lg:px-8">
+      <div className="mx-auto max-w-4xl px-4 lg:px-6">
 
-        {/* ── Dialogs ── */}
-        <DeleteDialog
-          open={!!deleteTarget}
-          companyName={deleteTarget?.companyName ?? ""}
-          onConfirm={handleDeleteConfirm}
-          onCancel={handleDeleteCancel}
-        />
-        <DeleteDialog
-          open={bulkDeleteOpen}
-          companyName=""
-          count={selectedIds.size}
-          onConfirm={handleBulkDeleteConfirm}
-          onCancel={() => setBulkDeleteOpen(false)}
-        />
+        <DeleteDialog open={!!deleteTarget} companyName={deleteTarget?.companyName ?? ""} onConfirm={handleDeleteConfirm} onCancel={() => setDeleteTarget(null)} />
+        <DeleteDialog open={bulkDeleteOpen} companyName="" count={selectedIds.size} onConfirm={handleBulkDeleteConfirm} onCancel={() => setBulkDeleteOpen(false)} />
 
-        {/* ── Back link ── */}
-        <div className="mb-6">
-          <Button variant="ghost" size="sm" className="gap-2 text-muted-foreground hover:text-foreground -ml-2" asChild>
+        {/* ── Back ── */}
+        <div className="mb-8">
+          <Button variant="ghost" size="sm" className="gap-2 text-muted-foreground hover:text-foreground -ml-2 rounded-xl" asChild>
             <Link href="/">
-              <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+              <ArrowLeft className="h-4 w-4" />
               Zur Startseite
             </Link>
           </Button>
         </div>
 
-        {/* ── Page header ── */}
-        <div className="mb-8 flex items-start justify-between gap-4">
+        {/* ── Header ── */}
+        <div className="mb-8 flex items-center justify-between gap-4">
           <div className="flex items-center gap-4">
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-sm">
-              <Archive className="h-6 w-6" aria-hidden="true" />
+            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-primary/10 border border-primary/20">
+              <Archive className="h-5 w-5 text-primary" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
-                Mein Archiv
-              </h1>
+              <h1 className="text-xl font-bold tracking-tight text-foreground sm:text-2xl">Mein Archiv</h1>
               <p className="mt-0.5 text-sm text-muted-foreground">
                 {hasItems
                   ? `${items.length} Kündigung${items.length !== 1 ? "en" : ""} gespeichert`
@@ -544,51 +500,49 @@ export function ArchivClient() {
             </div>
           </div>
           {hasItems && (
-            <Button
-              size="sm"
-              variant="outline"
-              className="shrink-0 gap-1.5 text-xs"
-              onClick={handleExportCsv}
-            >
-              <FileSpreadsheet className="h-3.5 w-3.5" aria-hidden="true" />
+            <Button size="sm" variant="outline" className="shrink-0 gap-2 rounded-xl text-xs h-9" onClick={handleExportCsv}>
+              <FileSpreadsheet className="h-3.5 w-3.5" />
               <span className="hidden sm:inline">CSV exportieren</span>
               <span className="sm:hidden">CSV</span>
             </Button>
           )}
         </div>
 
-        {/* ── Stats grid ── */}
-        <div className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
-          {STAT_ITEMS.map(({ key, label, colorClass, bgClass }) => (
-            <button
-              key={key}
-              type="button"
-              onClick={() => key !== "total" && setFilterStatus(filterStatus === key ? "alle" : key as FilterStatus)}
-              className={`group rounded-xl border p-4 text-left transition-all hover:shadow-sm ${bgClass} ${
-                key !== "total" && filterStatus === key
-                  ? "border-foreground/20 ring-2 ring-foreground/10"
-                  : "border-border/60"
-              }`}
-            >
-              <p className={`text-2xl font-bold tabular-nums ${colorClass}`}>
-                {stats[key] ?? 0}
-              </p>
-              <p className="mt-0.5 text-xs font-medium text-muted-foreground">{label}</p>
-            </button>
-          ))}
+        {/* ── Stats ── */}
+        <div className="mb-6 grid grid-cols-4 gap-2">
+          {STAT_ITEMS.map(({ key, label, colorClass, bgClass, borderActive }) => {
+            const isActive = key !== "total" && filterStatus === key
+            return (
+              <button
+                key={key}
+                type="button"
+                onClick={() => key !== "total" && setFilterStatus(filterStatus === key ? "alle" : key as FilterStatus)}
+                className={`group rounded-2xl border p-4 text-left transition-all duration-200 ${bgClass} ${
+                  isActive
+                    ? `${borderActive} ring-2 ring-offset-0 shadow-sm`
+                    : "border-border/50 hover:border-border/80 hover:shadow-sm"
+                } ${key === "total" ? "cursor-default" : "cursor-pointer"}`}
+              >
+                <p className={`text-2xl font-bold tabular-nums leading-none ${colorClass}`}>
+                  {stats[key] ?? 0}
+                </p>
+                <p className="mt-1.5 text-[11px] font-medium text-muted-foreground/70 uppercase tracking-wide">{label}</p>
+              </button>
+            )
+          })}
         </div>
 
         {/* ── Search & filter ── */}
         {hasItems && (
-          <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center">
+          <div className="mb-4 flex flex-col gap-2.5 sm:flex-row sm:items-center">
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground/50" aria-hidden="true" />
+              <Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground/40 pointer-events-none" />
               <Input
                 type="search"
-                placeholder="Unternehmen, Name oder Grund suchen…"
+                placeholder="Unternehmen, Name oder Grund…"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 pr-9"
+                className="pl-10 pr-9 h-10 rounded-xl border-border/60 bg-background focus-visible:ring-primary/20"
               />
               {searchQuery && (
                 <button
@@ -600,7 +554,7 @@ export function ArchivClient() {
                 </button>
               )}
             </div>
-            <div className="flex gap-1.5 rounded-xl border border-border/60 bg-card p-1" role="tablist" aria-label="Status-Filter">
+            <div className="flex gap-1 rounded-xl border border-border/50 bg-muted/40 p-1" role="tablist">
               {FILTER_OPTIONS.map(({ value, label }) => (
                 <button
                   key={value}
@@ -608,9 +562,9 @@ export function ArchivClient() {
                   role="tab"
                   aria-selected={filterStatus === value}
                   onClick={() => setFilterStatus(value)}
-                  className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-all ${
+                  className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-all duration-150 ${
                     filterStatus === value
-                      ? "bg-foreground text-background shadow-sm"
+                      ? "bg-background text-foreground shadow-sm"
                       : "text-muted-foreground hover:text-foreground"
                   }`}
                 >
@@ -621,35 +575,31 @@ export function ArchivClient() {
           </div>
         )}
 
-        {/* ── Toolbar: sort + bulk actions ── */}
+        {/* ── Toolbar ── */}
         {filteredItems.length > 0 && (
-          <div className="mb-3 flex items-center justify-between gap-3 px-1">
-            <div className="flex items-center gap-1">
-              {/* Select-all toggle */}
+          <div className="mb-3 flex items-center justify-between gap-2 px-1">
+            <div className="flex items-center gap-1.5">
               <button
                 type="button"
                 onClick={toggleSelectAll}
                 className="flex items-center gap-1.5 rounded-lg px-2 py-1.5 text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
-                title={allVisibleSelected ? "Alle abwählen" : "Alle auswählen"}
               >
-                {allVisibleSelected ? (
-                  <CheckSquare className="h-4 w-4" />
-                ) : someSelected ? (
-                  <Minus className="h-4 w-4" />
-                ) : (
-                  <Square className="h-4 w-4" />
-                )}
-                <span className="hidden sm:inline">
+                {allVisibleSelected
+                  ? <CheckSquare className="h-3.5 w-3.5" />
+                  : someSelected
+                  ? <Minus className="h-3.5 w-3.5" />
+                  : <Square className="h-3.5 w-3.5" />
+                }
+                <span className="hidden sm:inline text-xs">
                   {allVisibleSelected ? "Alle abwählen" : "Alle auswählen"}
                 </span>
               </button>
 
-              {/* Bulk delete */}
               {someSelected && (
                 <button
                   type="button"
                   onClick={() => setBulkDeleteOpen(true)}
-                  className="flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-medium text-destructive hover:bg-destructive/10 transition-colors"
+                  className="flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-medium text-destructive hover:bg-destructive/8 transition-colors"
                 >
                   <Trash2 className="h-3.5 w-3.5" />
                   {selectedIds.size} löschen
@@ -657,51 +607,48 @@ export function ArchivClient() {
               )}
             </div>
 
-            {/* Sort controls */}
-            <div className="flex items-center gap-1 text-xs text-muted-foreground">
-              <span className="hidden sm:inline">Sortieren:</span>
-              <SortButton field="datum"        label="Datum"      currentField={sortField} currentDir={sortDir} onClick={handleSort} />
-              <SortButton field="companyName"  label="Name"       currentField={sortField} currentDir={sortDir} onClick={handleSort} />
-              <SortButton field="status"       label="Status"     currentField={sortField} currentDir={sortDir} onClick={handleSort} />
+            <div className="flex items-center gap-0.5">
+              <span className="hidden sm:inline text-xs text-muted-foreground/50 mr-1.5">Sortieren:</span>
+              <SortButton field="datum"       label="Datum"  currentField={sortField} currentDir={sortDir} onClick={handleSort} />
+              <SortButton field="companyName" label="Name"   currentField={sortField} currentDir={sortDir} onClick={handleSort} />
+              <SortButton field="status"      label="Status" currentField={sortField} currentDir={sortDir} onClick={handleSort} />
             </div>
           </div>
         )}
 
-        {/* ── Empty: no items at all ── */}
+        {/* ── Empty states ── */}
         {!hasItems && (
           <EmptyState
             icon={FileText}
             title="Noch keine Kündigungen"
-            description="Erstellen Sie Ihre erste Kündigung mit unserem Generator. Sie können sie anschließend hier im Archiv speichern und verwalten."
+            description="Erstellen Sie Ihre erste Kündigung mit unserem Generator."
             action={
-              <Button className="rounded-full px-6" asChild>
+              <Button className="rounded-full px-6 h-10" asChild>
                 <Link href="/#generator">Kündigung erstellen</Link>
               </Button>
             }
           />
         )}
 
-        {/* ── Empty: no search results ── */}
         {hasItems && filteredItems.length === 0 && (
           <EmptyState
             icon={Search}
             title="Keine Ergebnisse"
             description="Versuchen Sie einen anderen Suchbegriff oder Filter."
             action={
-              <Button variant="outline" size="sm" onClick={() => { setSearchQuery(""); setFilterStatus("alle") }}>
+              <Button variant="outline" size="sm" className="rounded-xl" onClick={() => { setSearchQuery(""); setFilterStatus("alle") }}>
                 Filter zurücksetzen
               </Button>
             }
           />
         )}
 
-        {/* ── Item list ── */}
-        <div className="space-y-2.5" role="list">
+        {/* ── List ── */}
+        <div className="space-y-2" role="list">
           {filteredItems.map((item, index) => {
             const isExpanded = expandedId === item.id
             const isSelected = selectedIds.has(item.id)
             const validStatus = (item.status && STATUS_CONFIG[item.status as Status]) ? item.status as Status : "erstellt"
-            const statusCfg = STATUS_CONFIG[validStatus]
             const isCopied = copiedId === item.id
             const isReCreating = reCreatingId === item.id
 
@@ -709,20 +656,22 @@ export function ArchivClient() {
               <div
                 key={item.id || `archiv-item-${index}`}
                 role="listitem"
-                className={`overflow-hidden rounded-xl border bg-card transition-all duration-200 ${
+                className={`overflow-hidden rounded-2xl border bg-card transition-all duration-200 ${
                   isSelected
-                    ? "border-primary/40 ring-2 ring-primary/10 shadow-sm"
-                    : "border-border/60 hover:border-border hover:shadow-sm"
+                    ? "border-primary/40 ring-2 ring-primary/8 shadow-sm"
+                    : isExpanded
+                    ? "border-border shadow-sm"
+                    : "border-border/50 hover:border-border/80 hover:shadow-sm"
                 }`}
               >
-                {/* ── Collapsed header ── */}
-                <div className="flex items-center gap-3 px-4 py-3.5 sm:px-5">
+                {/* ── Header row ── */}
+                <div className="flex items-center gap-3 px-4 py-3.5">
                   {/* Checkbox */}
                   <button
                     type="button"
                     onClick={() => toggleSelectItem(item.id)}
                     aria-label={isSelected ? "Abwählen" : "Auswählen"}
-                    className="shrink-0 text-muted-foreground/40 hover:text-primary transition-colors"
+                    className="shrink-0 text-muted-foreground/30 hover:text-primary transition-colors"
                   >
                     {isSelected
                       ? <CheckSquare className="h-4 w-4 text-primary" />
@@ -730,50 +679,42 @@ export function ArchivClient() {
                     }
                   </button>
 
-                  {/* Expand toggle — takes rest of width */}
+                  {/* Expand area */}
                   <button
                     type="button"
                     aria-expanded={isExpanded}
                     aria-controls={`archiv-panel-${item.id || index}`}
                     onClick={() => toggleExpand(item.id)}
-                    className="flex flex-1 items-center gap-3 text-left focus-visible:outline-none min-w-0"
+                    className="flex flex-1 items-center gap-3 text-left min-w-0 focus-visible:outline-none"
                   >
-                    {/* Icon */}
-                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/8">
-                      <FileText className="h-4 w-4 text-primary" aria-hidden="true" />
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary/8 border border-primary/10">
+                      <FileText className="h-4 w-4 text-primary" />
                     </div>
 
-                    {/* Info */}
                     <div className="min-w-0 flex-1">
                       <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
-                        <span className="font-semibold text-foreground text-sm truncate">
+                        <span className="font-semibold text-sm text-foreground truncate">
                           {item.companyName}
                         </span>
                         <StatusBadge status={validStatus} />
+                        {item.notiz && (
+                          <span className="inline-flex items-center gap-1 text-[10px] text-muted-foreground/50">
+                            <StickyNote className="h-3 w-3" />
+                            Notiz
+                          </span>
+                        )}
                       </div>
-                      <div className="mt-0.5 flex flex-wrap items-center gap-x-2.5 gap-y-0.5 text-[11px] text-muted-foreground">
+                      <div className="mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-0 text-[11px] text-muted-foreground/60">
                         <span>{item.grundLabel}</span>
                         <span className="opacity-40">·</span>
                         <time dateTime={item.datum}>{formatDate(item.datum)}</time>
                         <span className="opacity-40">·</span>
-                        <span>Kündigung zum {item.kuendigungZum}</span>
-                        {item.notiz && (
-                          <>
-                            <span className="opacity-40">·</span>
-                            <span className="flex items-center gap-1">
-                              <StickyNote className="h-3 w-3" />
-                              Notiz
-                            </span>
-                          </>
-                        )}
+                        <span>zum {item.kuendigungZum}</span>
                       </div>
                     </div>
 
                     <ChevronDown
-                      className={`h-4 w-4 shrink-0 text-muted-foreground/50 transition-transform duration-200 ${
-                        isExpanded ? "rotate-180" : ""
-                      }`}
-                      aria-hidden="true"
+                      className={`h-4 w-4 shrink-0 text-muted-foreground/30 transition-transform duration-300 ${isExpanded ? "rotate-180" : ""}`}
                     />
                   </button>
                 </div>
@@ -782,13 +723,11 @@ export function ArchivClient() {
                 {isExpanded && (
                   <div
                     id={`archiv-panel-${item.id || index}`}
-                    className="border-t border-border/40 bg-muted/20 px-4 pb-5 pt-4 sm:px-5 space-y-4"
+                    className="border-t border-border/40 px-4 pb-5 pt-4 space-y-5"
                   >
-                    {/* Status change */}
+                    {/* Status */}
                     <div>
-                      <p className="mb-2 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/70">
-                        Status
-                      </p>
+                      <p className="mb-2.5 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/50">Status ändern</p>
                       <div className="flex flex-wrap gap-2">
                         {STATUSES.map((status) => {
                           const cfg = STATUS_CONFIG[status]
@@ -799,24 +738,25 @@ export function ArchivClient() {
                               key={status}
                               type="button"
                               onClick={() => handleStatusChange(item.id, status)}
-                              className={`flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-medium transition-all ${
+                              className={`flex items-center gap-1.5 rounded-xl border px-3.5 py-2 text-xs font-medium transition-all duration-150 ${
                                 isActive
                                   ? cfg.color + " shadow-sm"
-                                  : "border-border/60 bg-background text-muted-foreground hover:border-border hover:text-foreground"
+                                  : "border-border/50 bg-background text-muted-foreground hover:border-border hover:text-foreground"
                               }`}
                             >
-                              <Icon className="h-3.5 w-3.5" aria-hidden="true" />
+                              <Icon className="h-3.5 w-3.5" />
                               {cfg.label}
+                              {isActive && <Check className="h-3 w-3 ml-0.5 opacity-70" />}
                             </button>
                           )
                         })}
                       </div>
                     </div>
 
-                    {/* Notes */}
+                    {/* Note */}
                     <div>
-                      <p className="mb-2 flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/70">
-                        <StickyNote className="h-3.5 w-3.5" aria-hidden="true" />
+                      <p className="mb-2.5 flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/50">
+                        <StickyNote className="h-3 w-3" />
                         Notiz
                       </p>
                       {editingNotiz === item.id ? (
@@ -824,16 +764,16 @@ export function ArchivClient() {
                           <Textarea
                             value={notizText}
                             onChange={(e) => setNotizText(e.target.value)}
-                            placeholder="Notiz hinzufügen (z.B. Versanddatum, Tracking-Nummer...)"
+                            placeholder="Versanddatum, Tracking-Nummer, Anmerkungen…"
                             rows={3}
-                            className="resize-none text-sm bg-background"
+                            className="resize-none text-sm rounded-xl bg-background"
                             autoFocus
                           />
                           <div className="flex gap-2">
-                            <Button size="sm" onClick={() => handleNotizSave(item.id)} className="text-xs h-8">
+                            <Button size="sm" onClick={() => handleNotizSave(item.id)} className="rounded-xl text-xs h-8 px-4">
                               Speichern
                             </Button>
-                            <Button size="sm" variant="ghost" onClick={() => setEditingNotiz(null)} className="text-xs h-8">
+                            <Button size="sm" variant="ghost" onClick={() => setEditingNotiz(null)} className="rounded-xl text-xs h-8">
                               Abbrechen
                             </Button>
                           </div>
@@ -842,11 +782,11 @@ export function ArchivClient() {
                         <button
                           type="button"
                           onClick={() => startEditingNotiz(item)}
-                          className="w-full rounded-lg border border-dashed border-border/60 bg-background p-3 text-left text-sm text-muted-foreground transition-colors hover:border-primary/40 hover:bg-primary/5 hover:text-foreground"
+                          className="w-full rounded-xl border border-dashed border-border/50 bg-muted/30 p-3.5 text-left text-sm text-muted-foreground transition-all hover:border-primary/30 hover:bg-primary/4 hover:text-foreground"
                         >
                           {item.notiz || (
-                            <span className="text-muted-foreground/50">
-                              Klicken, um eine Notiz hinzuzufügen…
+                            <span className="text-muted-foreground/40 text-xs">
+                              + Notiz hinzufügen…
                             </span>
                           )}
                         </button>
@@ -855,71 +795,39 @@ export function ArchivClient() {
 
                     {/* Letter preview */}
                     <div>
-                      <p className="mb-2 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/70">
-                        Kündigungsschreiben
-                      </p>
-                      <pre className="max-h-56 overflow-auto rounded-lg border border-border/40 bg-background p-4 font-mono text-[11px] leading-relaxed text-foreground/70 scrollbar-thin">
+                      <p className="mb-2.5 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/50">Kündigungsschreiben</p>
+                      <pre className="max-h-52 overflow-auto rounded-xl border border-border/40 bg-muted/30 p-4 font-mono text-[11px] leading-relaxed text-foreground/60 scrollbar-thin">
                         {item.text}
                       </pre>
                     </div>
 
-                    {/* Action buttons */}
+                    {/* Actions */}
                     <div>
-                      <p className="mb-2 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/70">
-                        Aktionen
-                      </p>
+                      <p className="mb-2.5 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/50">Aktionen</p>
                       <div className="flex flex-wrap gap-2">
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          className={`gap-1.5 text-xs h-8 transition-all ${isCopied ? "border-emerald-300 bg-emerald-50 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-400" : ""}`}
+                        <ActionBtn
+                          icon={isCopied ? Check : Copy}
+                          label={isCopied ? "Kopiert!" : "Kopieren"}
                           onClick={() => handleCopy(item.text, item.id)}
-                        >
-                          {isCopied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
-                          {isCopied ? "Kopiert!" : "Kopieren"}
-                        </Button>
-
-                        <Button size="sm" variant="outline" className="gap-1.5 text-xs h-8" onClick={() => handleDownloadTxt(item)}>
-                          <Download className="h-3.5 w-3.5" aria-hidden="true" />
-                          TXT
-                        </Button>
-
-                        <Button size="sm" variant="outline" className="gap-1.5 text-xs h-8" onClick={() => generatePdf(item.text, item.companyName)}>
-                          <FileDown className="h-3.5 w-3.5" aria-hidden="true" />
-                          PDF
-                        </Button>
-
-                        <Button size="sm" variant="outline" className="gap-1.5 text-xs h-8" onClick={() => printKundigung(item.text, item.companyName)}>
-                          <Printer className="h-3.5 w-3.5" aria-hidden="true" />
-                          Drucken
-                        </Button>
-
-                        <Button size="sm" variant="outline" className="gap-1.5 text-xs h-8" onClick={() => openMailto(item.text, item.companyName)}>
-                          <Mail className="h-3.5 w-3.5" aria-hidden="true" />
-                          E-Mail
-                        </Button>
-
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          className="gap-1.5 text-xs h-8 text-primary border-primary/30 hover:bg-primary/5 hover:border-primary/60"
+                          active={isCopied}
+                        />
+                        <ActionBtn icon={Download}  label="TXT"             onClick={() => handleDownloadTxt(item)} />
+                        <ActionBtn icon={FileDown}  label="PDF"             onClick={() => generatePdf(item.text, item.companyName)} />
+                        <ActionBtn icon={Printer}   label="Drucken"         onClick={() => printKundigung(item.text, item.companyName)} />
+                        <ActionBtn icon={Mail}      label="E-Mail"          onClick={() => openMailto(item.text, item.companyName)} />
+                        <ActionBtn
+                          icon={isReCreating ? Check : RefreshCw}
+                          label={isReCreating ? "Wird geladen…" : "Erneut erstellen"}
                           onClick={() => handleErneut(item)}
-                        >
-                          {isReCreating
-                            ? <><Check className="h-3.5 w-3.5" />Wird geladen…</>
-                            : <><RefreshCw className="h-3.5 w-3.5" />Erneut erstellen</>
-                          }
-                        </Button>
-
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          className="gap-1.5 text-xs h-8 text-destructive border-destructive/20 hover:bg-destructive/10 hover:border-destructive/40 hover:text-destructive ml-auto"
+                          variant="primary"
+                        />
+                        <ActionBtn
+                          icon={Trash2}
+                          label="Löschen"
                           onClick={() => handleDeleteRequest(item)}
-                        >
-                          <Trash2 className="h-3.5 w-3.5" aria-hidden="true" />
-                          Löschen
-                        </Button>
+                          variant="danger"
+                          className="ml-auto"
+                        />
                       </div>
                     </div>
                   </div>
@@ -931,9 +839,9 @@ export function ArchivClient() {
 
         {/* ── Privacy notice ── */}
         {hasItems && (
-          <div className="mt-8 flex items-center justify-center gap-2 text-xs text-muted-foreground/60">
-            <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-400" />
-            Alle Daten werden lokal in Ihrem Browser gespeichert — keine Übertragung an Server.
+          <div className="mt-10 flex items-center justify-center gap-2 text-xs text-muted-foreground/40">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+            Daten werden lokal gespeichert — keine Übertragung an Server.
           </div>
         )}
       </div>
