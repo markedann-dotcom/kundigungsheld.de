@@ -48,8 +48,11 @@ export async function POST(req: NextRequest) {
         </head>
         <body>${html}</body>
       </html>`,
-      { waitUntil: "networkidle0", timeout: 15000 }
+      { waitUntil: "load", timeout: 15000 }
     )
+
+    // Wait for external images (QR code) to load
+    await new Promise((resolve) => setTimeout(resolve, 1000))
 
     const pdfBuffer = await page.pdf({
       format: "A4",
